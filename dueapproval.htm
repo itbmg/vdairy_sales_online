@@ -1,0 +1,107 @@
+﻿<div align="center">
+    <span style="color: Red; font-size: 18px;font-weight:700;">Due Approval</span>
+</div>
+<div style="width: 100%; float: left; border: 1px solid #d6d6d6; border-radius: 5px 5px 5px 5px;
+    background-color: #FFFFEC">
+    <table align="left" cellpadding="0" cellspacing="0" style="float: left; width: 100%;"
+        id="table_Indent_details" class="mainText2" border="1">
+        <thead>
+            <tr>
+                <td style=" height: 20px; color: #2f3293; font-size: 12px; font-weight: bold;
+                    text-align: center;">
+                    Route Name
+                    <br />
+                </td>
+                <td style=" text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Agent Name
+                    <br />
+                </td>
+                <td style=" text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                   Mobile No
+                    <br />
+                </td>
+                <td style=" text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Collection Type
+                    <br />
+                </td>
+                <td style=" text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Sale Value
+                    <br />
+                </td>
+                <td style=" text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Collected Amount
+                    <br />
+                </td>
+                <td style=" text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Due Amount
+                    <br />
+                </td>
+                <td style=" text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Remarks
+                    <br />
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            {#foreach $T as data}
+            <tr class="tblrowcolor">
+                <td style=" height: 30px; vertical-align: middle; font-size: 12px; font-weight: 500;
+                    text-align: center; padding: 0px 0px 0px 3px">
+                    <span id="txtIndentNo" style="font-size: 14px;"><b>{ $T.data.routename }</b></span>
+                    <input type="hidden" id="hdnrouteid" value="{ $T.data.routesno }" />
+
+                </td>
+                <td style=" height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
+                    color: Gray;">
+                    <span id="txtProductName" style="font-size: 14px; color: #3c8dbc;"><b>{ $T.data.agentname
+                        }</b></span>
+                    <input type="hidden" id="hdnagentid" value="{ $T.data.agentid }" />
+                </td>
+                <td style=" height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
+                    color: Gray;">
+                    <span id="txtphonenumber" style="font-size: 12px; "><b>{ $T.data.phonenumber
+                        }</b></span>
+                </td>
+                <td style=" height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
+                    color: Gray;">
+                    <span id="txtcollectiontype" style="font-size: 12px; "><b>{ $T.data.collectiontype
+                        }</b></span>
+                </td>
+                <td style=" height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <span id="txtsalevalue" style="font-size: 15px; color: Green;float:right;"><b>{ $T.data.salevalue }</b></span>
+                    <!--<span id="txtUnitCost" style="font-size: 15px; color: Red;"  ><b>{ $T.data.UnitCost }</b></span>-->
+                </td>
+                <td style=" height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <span id="txtamountcollected" style="font-size: 12px;float:right; "><b>{ $T.data.collection
+                        }</b></span>
+                </td>
+                 <td style=" height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <span id="txtdue" style="font-size: 12px; color: Red;float:right;"><b>{ $T.data.due
+                        }</b></span>
+                </td>
+                <td style=" height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                   <textarea rows="2" cols="20" id="txtremarks" placeholder="Enter Remarks" >To Be Collected
+                        </textarea>
+                </td>
+                <td style="width: 13%; height: 40px; font-size: 16px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                       <input type="button" id="btnsave" value="Save" onclick="btnDueSaveClick(this);"  class="btn btn-success" />
+            </td>
+               
+            </tr>
+            {#/for}
+        </tbody>
+    </table>
+   
+</div>

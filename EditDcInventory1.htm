@@ -1,0 +1,66 @@
+﻿<div align="center">
+<div align="center">
+ <span style="color: #00a65a;font-size: 20px;font-weight: 700">Inventory</span>
+</div>
+<div style="width: 100%; float: left; border: 1px solid #d6d6d6; border-radius: 5px 5px 5px 5px;
+    background-color: #FFFFEC">
+    <table align="left" cellpadding="0" cellspacing="0" style="float: left; width: 100%;"
+        id="table_inventory_details" class="mainText2" border="1">
+        <thead>
+            <!-- <tr>
+                            <td>
+                                <br />
+                            </td>
+                        </tr>-->
+            <tr>
+                <td style="width: 30%; height: 20px; color: #2f3293; font-size: 12px; font-weight: bold;
+                    text-align: center;">
+                    SNo
+                    <br />
+                </td>
+                <td style="width: 30%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Inventory Name
+                    <br />
+                </td>
+                <td style="width: 30%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293; padding: 0px 0px 0px 2%;">
+                    Qty
+                    <br />
+                </td>
+              
+            </tr>
+        </thead>
+        <tbody>
+            {#foreach $T as data}
+            <tr class="tblrowcolor">
+                <td style="width: 30%; height: 30px; vertical-align: middle; font-size: 12px; font-weight: 500;
+                    text-align: center; padding: 0px 0px 0px 3px">
+                    <span id="txtsno" style="font-size: 10px; color: Red;" ><b>{ $T.data.snoO }</span>
+                </td>
+                <td style="width: 30%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
+                    color: Gray;">
+                    <span id="txtproduct" style="font-size: 15px; color: Red;"  ><b>{ $T.data.inventoryname }</b></span>
+                    <input type="hidden" id="hdnProductSno" value="{ $T.data.sno }"/>
+                    <input type="hidden" id="hdn_inv_editqty" value="{ $T.data.totqty }"/>
+                </td>
+                <td style="width: 30%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <input type="number" id="txtInvQty"  value="{$T.data.totqty}"
+                          onkeypress="return numberOnlyExample();" onkeyup="OrderUnitChange(this);" style="width:80%;height:30px;font-size:16px; border:1px solid gray; border-radius:6px 6px 6px 6px;"
+                        placeholder="Enter Qty" />
+                </td>
+              
+            </tr>
+            {#/for}
+        </tbody>
+    </table>
+    <table id="DivSave" style="padding-left:40%;">
+        <tr>
+            <td>
+                <input type="button" id="BtnSave" value="SAVE" onclick="btnEditDCSaveclick();" class="btn btn-primary"/>
+            </td>
+        </tr>
+    </table>
+</div>
+</div>

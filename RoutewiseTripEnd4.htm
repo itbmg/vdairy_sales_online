@@ -1,0 +1,36 @@
+﻿{#foreach $T as data}
+<div class="plan">
+    <table style="width:100%;">
+        <tr>
+            <td>
+                <ul>
+                    <li class="title" id="txtroutename" style="background-color: darkcyan;">{ $T.data.routename}</li>
+                    <li><span id="txttripid" class="pull-right">{ $T.data.tripdata}</span> DCNO <i class="icon icon-question-sign">
+                    </i></li>
+                    <li><span id="txtempname" class="pull-right">{ $T.data.empname}</span> Sales Men <i
+                        class="icon icon-question-sign"></i></li>
+                    <li><span id="txtcollecteddate" class="pull-right">{ $T.data.Cdate}</span> Collected
+                        Date <i class="icon icon-question-sign"></i></li>
+                    <li><span id="txtcollectedamt" class="pull-right">{ $T.data.collectedamount}</span>
+                        Collected Amount <i class="icon icon-question-sign"></i></li>
+                    <li><span id="txtsubmittedamt" class="pull-right">{ $T.data.submittedamount}</span>
+                        Submitted Amount <i class="icon icon-question-sign"></i></li>
+                    <li>
+                        <input id="txtreceivedamount"  class="pull-right txtreceivedamount"></>
+                        Received Amount <i class="icon icon-question-sign"></i></li>
+                    <li style="height: 90px;">
+                        <textarea rows="3" class="pull-right" cols="20" id="txtremarks" placeholder="Enter Remarks">
+                        </textarea>
+                        Remarks <i class="icon icon-question-sign"></i></li>
+                    <li class="button">
+                        <input type="button" value="SAVE" style="width: 100px; height: 30px; font-size: 18px;
+                            color: #ECF0F1; padding: .5em 1em; background: rgba(202, 71, 60, 0.82); border: none;"
+                            onclick="btnTripendclick(this);" />
+                    </li>
+                </ul>
+            </td>
+           
+        </tr>
+    </table>
+</div>
+{#/for} 

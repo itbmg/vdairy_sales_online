@@ -1,0 +1,80 @@
+﻿/*Left Nav   july 09 minwidth 530 from 550 */
+.leftNav { border-right: 1px solid #939598; float: left;text-align: left;/*min-height:570; */ width:100%;height:550px;  }
+.leftNav ul{list-style: none;}
+.leftNav li {/* font: 15.59px 'Rambla';*/ padding: 0 15px 0 0; position: relative;font-weight:900;font-size: 15px;}
+.leftNav li a { color: #414042; display: block; background: url(../images/left-nav.png) repeat-x left bottom; padding: 20px 0 6px; position: relative;transition:background 300ms ease;-moz-transition:background 300ms ease;-webkit-transition:background 300ms ease;text-decoration: none;}
+.leftNav li a:hover, .leftNav li.active a { background-position: right bottom }
+.leftNav li a:after { background: url("../images/left-nav-active-arrow.png") no-repeat scroll center 26px transparent; content: ""; display: block; height: 45px; position: absolute; right: -21px; top: 0; width: 0; transition: all 300ms ease; -moz-transition: all 300ms ease; -webkit-transition: all 300ms ease; }
+.leftNav li:hover a:after, .leftNav li.active a:after { width: 12px }
+.leftNav li .drop {
+  display: none;
+ /* padding: 0 9px;*/
+  position: absolute;
+  right: -177px;
+  top:0;
+  width: 177px;
+  z-index: 1010;
+}
+.leftNav li:hover > .drop { display: block }
+.leftNav li .drop ul { background: none repeat scroll 0 0 #F1F1F2; border: 1px solid #B9BBBD; border-radius: 5px;width:100%;padding: 0% 0% 0% 0%; }
+.leftNav li .drop li { padding: 0;    font: 15.57px 'Rambla'; border-bottom: 1px solid rgb(223, 223, 255); }
+.leftNav li .drop li a { background: none; padding: 0; text-align: left; padding: 4px 5%;width:auto;text-decoration: none;}
+.leftNav li .drop li:hover > a { background: #d1d3d4; }
+.leftNav li .drop li a:after { display: none }
+.leftNav li .drop li.more a:after { background: url(../images/submenu-bg.png) no-repeat center center; height: 28px; right: 10px; width: 0; display: block;}
+.leftNav li .drop li.more:hover a:after { width: 21px; }
+.leftNav li .drop li.more:hover .drop li a:after { width: 0; display: none }
+.leftNav li .drop li.more:hover .drop li.more a:after {background: url(../images/submenu-bg.png) no-repeat center center; height: 28px; right: 10px; width: 0; display: block} 
+.leftNav li .drop li.more:hover .drop li.more:hover a:after { width:21px}
+.leftNav li .drop li.more:hover .drop li.more:hover ul li a:after { display:none}
+.leftNav li .drop li.more .drop{top:0} 
+
+
+/*.leftNav li .drop2 ul { background: none repeat scroll 0 0 #F1F1F2; border: 1px solid #B9BBBD; border-radius: 5px;width:100%;padding: 0% 0% 0% 0%; }
+.leftNav li .drop2 li { padding: 0; font: 15.57px 'Rambla' }
+.leftNav li .drop2 li a { background: none; padding: 0; text-align: left; padding: 4px 5%;width:auto}
+.leftNav li .drop2 li:hover > a { background: #d1d3d4; }
+.leftNav li .drop2 li a:after { display: none }
+.leftNav li .drop2 li.more a:after { background: url(../images/submenu-bg.png) no-repeat center center; height: 28px; right: 10px; width: 0; display: block;} */
+.leftNav li:hover > .drop2 { display: block } 
+.leftNav li .drop li.more:hover a:after { width: 21px; }
+.leftNav li .drop li.more:hover .drop2 li a:after { width: 0; display: none }
+.leftNav li .drop li.more:hover .drop2 li.more a:after {background: url(../images/submenu-bg.png) no-repeat center center; height: 28px; right: 10px; width: 0; display: block} 
+.leftNav li .drop li.more:hover .drop2 li.more:hover a:after { width:21px}
+.leftNav li .drop li.more:hover .drop2 li.more:hover ul li a:after { display:none}
+.leftNav li .drop li.more .drop2{top:0} 
+
+
+.leftNav li:hover > .drop3 { display: block } 
+.leftNav li .drop li.more:hover a:after { width: 21px; }
+.leftNav li .drop li.more:hover .drop3 li a:after { width: 0; display: none }
+.leftNav li .drop li.more:hover .drop3 li.more a:after {background: url(../images/submenu-bg.png) no-repeat center center; height: 28px; right: 10px; width: 0; display: block} 
+.leftNav li .drop li.more:hover .drop3 li.more:hover a:after { width:21px}
+.leftNav li .drop li.more:hover .drop3 li.more:hover ul li a:after { display:none}
+.leftNav li .drop li.more .drop3{top:0} 
+
+
+.leftNav li .drop2 {
+  display: none;
+  padding: 0 4px;
+  position: absolute;
+  right: -285%;
+  top:0;
+  width: 500px;
+  z-index: 1010;
+  border:1px solid #B9BBBD;
+  border-radius: 5px;
+  background:#F1F1F2;
+}
+.leftNav li .drop3 {
+  display: none;
+ /* padding: 0 9px;*/
+  position: absolute;
+  right: -177px;
+  top:0;
+  width: 177px;
+  z-index: 1010;
+}
+
+
+/*Left Nav end*/ 

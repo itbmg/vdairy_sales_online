@@ -1,0 +1,200 @@
+﻿{#foreach $T as data}
+<div class="analytics-header">
+    <div class="fluid3">
+        <h3 class="analytics-header-title twitter-analytics-header-title">
+            <!--<i class="tl-sprite tl-sprite-twitter-white"></i>-->
+            Sales
+        </h3>
+        <ul class="social-numbers">
+            <li>Total Indent <h3><span id="Span1" class="Total Indent" onclick="templateonclick(this);">
+                
+                    { $T.data.Totalindent }
+            </span></h3></li>
+            <li>Total Dispatch <h3><span id="Span2" class="Total Dispatch" onclick="templateonclick(this);">
+                
+                    { $T.data.TotalDispatch }
+            </span></h3></li>
+            <li>Total Sale <h3><span id="Span3" class="Total Sale" onclick="templateonclick(this);">
+                
+                    { $T.data.Totalsale }
+            </span></h3></li>
+            <li>Sale Value in Rs <h3><span id="Span4" class="Sale Value in Rs" onclick="templateonclick(this);">
+                
+                   { $T.data.salevalue }
+            </span></h3></li>
+            <li>TotalLeaks<h3><span id="Span5" class="TotalLeaks" onclick="templateonclick(this);">
+                
+                   { $T.data.TotalLeaks }
+            </span></h3></li>
+            <li>TotalReturns<h3><span id="Span6" class="TotalReturns" onclick="templateonclick(this);">
+               
+                  { $T.data.TotalReturns }
+            </span></h3></li>
+            <li>TotalShort<h3><span id="Span7" class="TotalShort" onclick="templateonclick(this);">
+               
+                  { $T.data.TotalShort }
+            </span></h3></li>
+            <li>TotalFree<h3><span id="Span11" class="TotalFree" onclick="templateonclick(this);">
+               
+                  { $T.data.TotalFree }
+            </span></h3></li>
+             <li>Verified Leaks<h3><span id="Span12" class="Verified Leaks" onclick="templateonclick(this);">
+               
+                  { $T.data.VerifiedLeaks }
+            </span></h3></li>
+             <li>Verified Returns<h3><span id="Span13" class="Verified Returns" onclick="templateonclick(this);">
+               
+                  { $T.data.VerifiedReturns }
+            </span></h3></li>
+        </ul>
+    </div>
+    <div class="fluid3">
+        <h3 class="analytics-header-title facebook-analytics-header-title">
+            <!--<i class="tl-sprite tl-sprite-facebook-white"></i>-->
+            Inventory
+        </h3>
+        <ul class="social-numbers">
+            <li>Issued Crates <h3><span id="txtsno" class="Issued Crates" onclick="templateonclick(this);">
+                { $T.data.IssuedCrates }
+            </span></h3></li>
+            <li>Return Crates <h3><span id="Span8" class="Return Crates" onclick="templateonclick(this);">
+                
+                  { $T.data.ReturnCrates }
+            </span></h3></li>
+            <li>Issued Cans <h3><span id="Span9" class="Issued Cans" onclick="templateonclick(this);">
+                
+                   { $T.data.IssuedCans }
+            </span></h3></li>
+            <li>Return Cans <h3><span id="Span10" class="Return Cans" onclick="templateonclick(this);">
+                
+                    { $T.data.ReturnCans }
+            </span></h3></li>
+            <li>Verified Crates<h3><span id="Span14" class="Verified Crates" onclick="templateonclick(this);">
+                
+                    0
+            </span></h3></li>
+            <li>Verified Cans<h3><span id="Span15" class="Verified Cans" onclick="templateonclick(this);">
+                
+                    0
+            </span></h3></li>
+        </ul>
+    </div>
+    <div class="fluid3">
+        
+        <div class="stat">
+            <h2>
+               { $T.data.TodayDue } <small>Total Due</small></h2>
+        </div>
+        <div class="stat">
+            <h2>
+              { $T.data.TodayDue }<small>ToDay Due</small></h2>
+        </div>
+        <div class="stat">
+            <h2>
+              { $T.data.RegularDue }<small>Regular Due Points</small></h2>
+        </div>
+        <div class="stat">
+            <h2>
+              { $T.data.TodayCASHDue }<small>Non Due Points</small></h2>
+        </div>
+        <div class="stat important">
+            <h2>
+               { $T.data.PaidAmountinRs }<small>Paid Amount in Rs</small></h2>
+        </div>
+    </div>
+</div>
+    {#/for}
+
+
+
+
+
+ROUTEWISETIMELINE.htm
+
+{#foreach $T as data}
+<div class="plan">
+      <ul>
+        <li class="title">{ $T.data.dispName}</li>
+        <li class="price">
+          <span class="pull-right">{ $T.data.TodayDue}</span> ToDay Due:
+          </li>
+           <li class="price">
+          <span class="pull-right">{ $T.data.RegularDue}</span> Regular Due Points:
+          </li>
+           <li class="price">
+          <span class="pull-right">{ $T.data.TodayCASHDue}</span> Non Due Points:
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.Totalindent}</span> TotalIndent
+          <i class="icon icon-question-sign" ></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.TotalDispatch}</span>
+          Total Dispatch
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.Totalsale}</span>
+          Total Sale
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.salevalue}</span>
+          Sale Value 
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.PaidAmountinRs}</span>
+          Paid Amount
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.TotalLeaks}</span>
+          Total Leaks
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.TotalReturns}</span>
+          Total Returns
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.TotalShort}</span>
+          Total Short
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.TotalFree}</span>
+          Total Free
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.IssuedCrates}</span>
+          Issued Crates
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.ReturnCrates}</span>
+          Return Crates
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.IssuedCans}</span>
+          Issued Cans
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.ReturnCans}</span>
+          Return Cans
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li class="button">
+        <input type="button" Value="Approve" class="btn btn-large" />
+          <!--<a href="/" class="btn btn-large">
+            Approve
+          </a>-->
+        </li>
+        
+      </ul>
+    </div>
+    {#/for}

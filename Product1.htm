@@ -1,0 +1,73 @@
+﻿<div>
+
+    <table align="left" cellpadding="0" cellspacing="0" style="float: left; width: 100%;"
+        id="tableaProductdetails" class="mainText2" border="1">
+        <thead>
+            <tr>
+                <td style="width: 33%; text-align: center; height: 20px; font-size: 16px; font-weight: bold;
+                    color: #2f3293;">
+                    <b>Categeory Name</b>
+                    <br />
+                </td>
+                <td style="width: 33%; height: 20px; text-align: center; font-size: 16px; font-weight: bold;
+                    color: #2f3293;">
+                    <b>Sub Categeory Name</b>
+                    <br />
+                </td>
+                 <td style="width: 33%; height: 20px; text-align: center; font-size: 16px; font-weight: bold;
+                    color: #2f3293;">
+                    <b>Qty</b>
+                    <br />
+                </td>
+                  <td style="width: 33%; height: 20px; text-align: center; font-size: 16px; font-weight: bold;
+                    color: #2f3293;">
+                    <b>%</b>
+                    <br />
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            {#foreach $T as data}
+            <tr class="tblIndentPlanrowcolor">
+                <td style="width: 33%; height: 20px; vertical-align: middle; font-size: 16px; text-align: center;
+                    color: Gray;">
+                    <span id="txtAccount" style="font-size: 12px; color: Red;  
+                        font-weight: bold;" class="AccountClass"><b>{ $T.data.CategeoryName }</b></span>
+                </td>
+                <td style="width: 33%; height: 20px; font-size: 16px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <span id="txtamount" style="font-size: 14px;color:#00a65a;  font-weight: bold;cursor:pointer;" title="view Product in Line Chart" onclick="btnVariationProductlineChart(this);"
+                     class="subCategeoryClass"><b>{ $T.data.subCategeoryName }</b></span>
+                       <input type="hidden" id="hdnsubCatsno" value="{ $T.data.subCatsno }" />
+                </td>
+                   <td style="width: 33%; height: 20px; font-size: 16px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <span id="Span1" style="font-size: 14px;color: #00a65a;  font-weight: bold;"
+                     class="QtyClass"><b>{ $T.data.Qty }</b></span>
+                </td>
+                   <td style="width: 33%; height: 20px; font-size: 16px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <span id="txtPercentage" style="font-size: 14px;color: #00a65a;  font-weight: bold;"
+                     class="PercentageClass"><b></b></span>
+                </td>
+            </tr>
+            {#/for}
+             <tr>
+             <td style="width: 33%; height: 20px; vertical-align: top; font-size: 16px; font-weight: 500;
+                    text-align: center; padding: 0px 0px 0px 3px">
+                    </td>
+             <td style="width: 33%; height: 20px; vertical-align: top; font-size: 12px; font-weight: 500;
+                    text-align: center; padding: 0px 0px 0px 3px">
+                    <span style="width:100%;font-size: 18px; color: #3c8dbc;font-weight:bold;"> Total Qty.</span>
+                    </td>
+                     <td style="width: 33%; height: 20px; vertical-align: middle; font-size: 11px; text-align: center;
+                    color: Gray;">
+                    <span style="width:100%;font-size: 18px; color: #3c8dbc;font-weight:bold;cursor:pointer;" id="txt_total" title="view sales in Line Chart" onclick="btnProductlineChart();">{ $T.data.Total }</span>
+                </td>
+                  <td style="width: 33%; height: 20px; vertical-align: middle; font-size: 11px; text-align: center;
+                    color: Gray;">
+                    <span style="width:100%;font-size: 18px; color: #3c8dbc;font-weight:bold;" id="Span2" >100.00</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>

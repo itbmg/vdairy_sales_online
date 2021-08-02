@@ -1,0 +1,123 @@
+﻿<div align="center">
+    <span style="color: Red; font-size: 18px;">Indent Analysis</span>
+</div>
+<div >
+    <table align="left" cellpadding="0" cellspacing="0" style="float: left; width: 100%;"
+        id="table_Indent_Approval_details" class="table table-bordered table-hover dataTable no-footer">
+        <thead>
+            <tr>
+                <!--<td style="width: 20%; height: 20px; color: #2f3293; font-size: 12px; font-weight: bold;
+                    text-align: center;">
+                    Route Name
+                    <br />
+                </td>-->
+                <td style="width: 20%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Agent Name
+                    <br />
+                </td>
+               <!-- <td style="width: 20%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                   Mobile No
+                    <br />
+                </td>-->
+                
+                <td style="width: 10%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    <span id="Span1" style="font-size: 15px;"><b>From Date<br /><span id="spnprev"></span></b></span>
+                    
+                    <br />
+                </td>
+                <td style="width: 10%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                                        <span id="Span2" style="font-size: 15px;;"><b>To Date<br /><span id="spnpresent"></span></b></span>
+                    <br />
+                </td>
+                <td style="width: 10%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                 Increase
+                </td>
+                <td style="width: 10%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                 Decrease 
+                </td>
+                <td style="width: 20%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Reason
+                    <br />
+                </td>
+                <td style="width: 20%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Remarks
+                    <br />
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            {#foreach $T as data}
+            <tr class="tblrowcolor">
+                <!--<td style="width: 20%; height: 30px; vertical-align: middle; font-size: 12px; font-weight: 500;
+                    text-align: center; padding: 0px 0px 0px 3px">
+                    <span id="txtIndentNo" style="font-size: 15px; color: Red;"><b>{ $T.data.routename }</b></span>
+                    
+
+                </td>-->
+                <td style="width: 20%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
+                    color: Gray;">
+                    <span id="txtProductName" style="font-size: 15px; color: Red;"><b>{ $T.data.agentname
+                        }</b></span>
+                        <input type="hidden" id="hdnrouteid" value="{ $T.data.routesno }" />
+                    <input type="hidden" id="hdnagentid" value="{ $T.data.agentid }" />
+                </td>
+                <!--<td style="width: 20%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
+                    color: Gray;">
+                    <span id="txtphonenumber" style="font-size: 15px; color: Red;"><b>{ $T.data.phonenumber
+                        }</b></span>
+                </td>-->
+                
+                <td style="width: 10%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Red;" align="center">
+                    <span id="txt_indent_yesterday" style="font-size: 15px; color: Red;"><b>{ $T.data.salevalue }</b></span>
+                    <!--<span id="txtUnitCost" style="font-size: 15px; color: Red;"  ><b>{ $T.data.UnitCost }</b></span>-->
+                </td>
+                <td style="width: 10%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Red;" align="center">
+                    <span id="txt_indent_today" style="font-size: 15px; color: Red;"><b>{ $T.data.collection
+                        }</b></span>
+                </td>
+                <td style="width: 10%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <span id="txtincreasepercent" style="font-size: 18px; color: Green;font-weight:bold;"><b>{ $T.data.indent_increase
+                        }</b></span>
+                </td>
+                <td style="width: 10%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <span id="txtdecreasepercent" style="font-size: 18px; color: Red;font-weight:bold;"><b>{ $T.data.indent_decrease
+                        }</b></span>
+                </td>
+                 <td style="width: 20%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <select id="ddlreason" class="form-control">
+                    <option value="Others">Others</option>
+                    <option value="Heavy Rain">Heavy Rain</option>
+                    </select>
+                </td>
+                <td style="width: 100%; height: 30px; font-size: 11px; 
+                    color: Gray;" align="center">
+                   <textarea rows="4" cols="20" style="width: 350px;" id="txtremarks" placeholder="Enter Remarks" >NO REMARKS
+                        </textarea>
+                </td>
+                <!--<td style="width: 13%; height: 40px; font-size: 16px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                       <input type="button" id="btnsave" value="Save" onclick="btnApproveSaveClick(this);" style="width:100%;height:40px;font-size:16px;" class="SaveButton" />
+            </td>-->
+                <!--<td>
+                <input type="button" id="Button2" value="Refresh" onclick="btnPlantTripRefreshClick();" style="width:100px;height:24px;font-size:14px;" class="ContinueButton"/>
+            </td>
+        -->
+            </tr>
+            {#/for}
+        </tbody>
+    </table>
+   
+</div>

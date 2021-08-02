@@ -1,0 +1,87 @@
+﻿{#foreach $T as data}
+<div class="plan">
+      <ul>
+        <li class="title">{ $T.data.dispName}</li>
+        <li class="price">
+          <span class="pull-right">{ $T.data.TodayDue}</span> ToDay Due:
+          </li>
+           <li class="price">
+          <span class="pull-right">{ $T.data.RegularDue}</span> Regular Due Points:
+          </li>
+           <li class="price">
+          <span class="pull-right">{ $T.data.TodayCASHDue}</span> Non Due Points:
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.Totalindent}</span> TotalIndent
+          <i class="icon icon-question-sign" ></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.TotalDispatch}</span>
+          Total Dispatch
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.Totalsale}</span>
+          Total Sale
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.salevalue}</span>
+          Sale Value 
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.PaidAmountinRs}</span>
+          Paid Amount
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.TotalLeaks}</span>
+          Total Leaks
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.TotalReturns}</span>
+          Total Returns
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.TotalShort}</span>
+          Total Short
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.TotalFree}</span>
+          Total Free
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.IssuedCrates}</span>
+          Issued Crates
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.ReturnCrates}</span>
+          Return Crates
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.IssuedCans}</span>
+          Issued Cans
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li>
+          <span class="pull-right">{ $T.data.ReturnCans}</span>
+          Return Cans
+          <i class="icon icon-question-sign"></i>
+        </li>
+        <li class="button">
+        <input type="button" Value="Approve" class="btn btn-large" />
+          <!--<a href="/" class="btn btn-large">
+            Approve
+          </a>-->
+        </li>
+        
+      </ul>
+    </div>
+    {#/for}

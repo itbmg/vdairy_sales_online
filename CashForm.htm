@@ -1,0 +1,48 @@
+﻿<div style="width: 100%; float: left; border: 1px solid #d6d6d6; border-radius: 5px 5px 5px 5px;
+    background-color: #F8F8FF">
+<div align="center">
+    <span style="color: Red; font-size: 18px;font-weight:bold;"><b>Head Of Account</b></span>
+    </div>
+    <table align="left" cellpadding="0" cellspacing="0" style="float: left; width: 100%;"
+        id="tableCashFormdetails" class="mainText2" border="1">
+        <thead>
+            <tr>
+                <td style="width: 33%; text-align: center; height: 20px; font-size: 16px; font-weight: bold;
+                    color: #2f3293;">
+                    <b>Head Of Account</b>
+                    <br />
+                </td>
+                <td style="width: 33%; height: 20px; text-align: center; font-size: 16px; font-weight: bold;
+                    color: #2f3293;">
+                    <b>Amount</b>
+                    <br />
+                </td>
+                <td style="width: 33%; height: 20px; text-align: center; font-size: 16px; font-weight: bold;
+                    color: #2f3293;">
+                    <br />
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            {#foreach $T as data}
+            <tr class="tblIndentPlanrowcolor">
+                <td style="width: 33%; height: 30px; vertical-align: middle; font-size: 16px; text-align: center;
+                    color: Gray;">
+                    <span id="txtAccount" style="font-size: 16px; color: Red;  
+                        font-weight: bold;" class="AccountClass"><b>{ $T.data.HeadOfAccount }</b></span>
+                        
+                          <input type="hidden" id="hdnHeadSno" value="{ $T.data.HeadSno }" />
+                </td>
+                <td style="width: 33%; height: 30px; font-size: 16px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <span id="txtamount" style="font-size: 16px; color: green; font-weight: bold;"
+                     class="AmountClass"><b>{ $T.data.Amount }</b></span>
+                </td>
+                 <td style="width: 33%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <img src="Images/Odclose.png" onclick="RowDeletingClick(this);" style="cursor:pointer;" width="30px" height="30px" alt="Edit" title="Edit Qty"/> 
+                </td>
+            </tr>
+            {#/for}
+        </tbody>
+    </table>

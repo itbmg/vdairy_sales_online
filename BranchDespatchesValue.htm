@@ -1,0 +1,73 @@
+﻿<div style="width: 99%; float: left;  border-radius: 5px 5px 5px 5px; padding-left:1.3%;" >
+    <div class="row">
+        <div id="datagrid">
+            <div class="box box-solid box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                    <i style="padding-right: 5px;" class="fa fa-fw fa-user"></i>Branch Wise Information</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table align="left" cellpadding="0" cellspacing="0" style="float: left; width: 100%;"
+                        id="tableCashFormdetails" class="table-responsive" border="1" style="background-color:white; font-size: 12px;">
+                        <thead>
+                            <tr>
+                                <td style="width: 8%; text-align: center; height: 20px; font-size: 16px; font-weight: bold;
+                                    color: #2f3293;">
+                                    <b>Branch Name</b>
+                                    <br />
+                                </td>
+                               
+                                <td style="width: 8%; height: 20px; text-align: center; font-size: 16px; font-weight: bold;
+                                    color: #2f3293;">
+                                    <b>SaleValue</b>
+                                    <br />
+                                </td>
+                                <td style="width: 8%; height: 20px; text-align: center; font-size: 16px; font-weight: bold;
+                                    color: #2f3293;">
+                                    <b>Collection</b>
+                                    <br />
+                                </td>
+                                <td style="width: 8%; height: 20px; text-align: center; font-size: 16px; font-weight: bold;
+                                    color: #2f3293;">
+                                    <b>DueAmount</b>
+                                    <br />
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {#foreach $T as data}
+                            <tr class="tblIndentPlanrowcolor">
+                            <td style="width: 8%; height: 20px; vertical-align: middle; font-size: 16px; text-align: center;
+                                    color: Gray;">
+                                    <span id="txtAccount" style="font-size: 12px; color: Red; font-weight: bold;" class="AccountClass">
+                                        <b>{ $T.data.BranchName }</b></span>
+                                    <input type="hidden" id="hdnBranchID" value="{ $T.data.BranchID }" />
+                                </td>
+                                 <td style="width: 8%; height: 20px; font-size: 16px; vertical-align: middle; text-align: center;
+                                    color: Gray;" align="center">
+                                    <span id="Span4" style="font-size: 12px; color: green; font-weight: bold;" class="FreeClass">
+                                        <b>{ $T.data.salevalue }</b></span>
+                                </td>
+                                <td style="width: 8%; height: 20px; font-size: 16px; vertical-align: middle; text-align: center;
+                                    color: Gray;" align="center">
+                                    <span id="Span5" style="font-size: 12px; color: green; font-weight: bold;" class="ShortClass">
+                                        <b>{ $T.data.CollAmount }</b></span>
+                                </td>
+                                <td style="width: 8%; height: 20px; font-size: 16px; vertical-align: middle; text-align: center;
+                                    color: Gray;" align="center">
+                                    <span id="Span6" style="font-size: 12px; color: green; font-weight: bold;" class="ReturnsClass">
+                                        <b>{ $T.data.DueAmount }</b></span>
+                                </td>
+                            </tr>
+                            {#/for}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

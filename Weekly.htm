@@ -1,0 +1,5 @@
+﻿{#foreach $T as data}
+<div class="cp" >
+    <input type="checkbox" class='checkinput' name="vehicle" value="{ $T.data.Sno}" id="{ $T.data.Sno}" onclick='Ravi(this)';/>{ $T.data.BranchName}
+</div>
+{#/for} 

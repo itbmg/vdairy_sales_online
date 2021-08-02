@@ -1,0 +1,109 @@
+﻿body {
+}
+.iconminus
+{
+float: right;
+width: 20px;
+height: 20px;
+margin: 2px 0 0 0;
+background: url("Images/minus.png") no-repeat;
+border-radius: 2px 2px 2px 2px;
+}
+.iconminusli
+{
+float: right;
+width: 20px;
+height: 20px;
+margin: 2px 0 0 0;
+background: url("Images/minus.png") no-repeat;
+border-radius: 2px 2px 2px 2px;
+}
+.inputButton
+{
+width: 100%;
+top: 0;
+left: 0;
+height:60px;
+font-weight: 700;
+color: #222;
+font-size: 18px;
+-webkit-appearance: none;
+cursor: pointer;
+border: 1px solid #ccc;
+margin: .5em 0; /* padding: 0;
+padding: .6em 20px;*/
+border-radius: 10px 10px 10px 10px;
+background: rgba(255,255,255,0);
+filter: Alpha(Opacity=0);
+box-shadow: 3px 3px 3px #ccc;
+}
+.inputButton:hover
+{
+width: 100%;
+top: 0;
+left: 0;
+height:60px;
+font-weight: 700;
+background: rgba(455,455,455,0);
+font-size: 18px;
+-webkit-appearance: none;
+cursor: pointer;
+background: #fff;
+border: 1px solid #ccc;
+border-radius: 10px 10px 10px 10px;
+filter: Alpha(Opacity=0);
+box-shadow: 3px 3px 3px #ccc;
+}
+.ddlBranch
+{
+width: 100%;
+top: 0;
+left: 0;
+height:60px;
+font-weight: 700;
+font-size: 18px;
+cursor: pointer;
+background: #fff;
+border: 1px solid Gray;
+margin: .5em 0;
+padding: .6em 20px;
+border-radius: 10px 10px 10px 10px;
+filter: Alpha(Opacity=0);
+box-shadow: 3px 3px 3px #ccc;
+}
+.ContinueButton
+{
+background: #2a81d7;
+background: -moz-linear-gradient(0% 100% 90deg,#206bcb,#3e9ee5);
+background: -webkit-gradient(linear,0% 0,0% 100%,from(#3e9ee5),to(#206bcb));
+border-top: 1px solid #2a73a6;
+border-right: 1px solid #165899;
+border-bottom: 1px solid #07428f;
+border-left: 1px solid #165899;
+-moz-box-shadow: inset 0 1px 0 0 #62b1e9;
+-webkit-box-shadow: inset 0 1px 0 0 #62b1e9;
+box-shadow: inset 0 1px 0 0 #62b1e9;
+color: #FFF;
+cursor: pointer;
+text-decoration: none;
+text-shadow: 0 -1px 1px #1d62ab;
+border-radius: 4px 4px 4px 4px;
+}
+.ContinueButton:hover
+{
+background: #0066CC;
+background: -moz-linear-gradient(0% 100% 90deg,#206bcb,#3e9ee5);
+background: -webkit-gradient(linear,0% 0,0% 100%,from(#0066CC),to(#0066CC));
+border-top: 1px solid #2a73a6;
+border-right: 1px solid #165899;
+border-bottom: 1px solid #07428f;
+border-left: 1px solid #165899;
+-moz-box-shadow: inset 0 1px 0 0 #62b1e9;
+-webkit-box-shadow: inset 0 1px 0 0 #62b1e9;
+box-shadow: inset 0 1px 0 0 #0066CC;
+color: #FFF;
+cursor: pointer;
+text-decoration: none;
+text-shadow: 0 -1px 1px #1d62ab;
+border-radius: 4px 4px 4px 4px;
+}

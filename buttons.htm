@@ -1,0 +1,11 @@
+﻿{#foreach $T as data}
+<div class="cp">
+     
+        <input type="button" id="{ $T.data.Sno}" Value="{ $T.data.BranchName}" class="{ $T.data.Salestype}"  style="background-color:{ $T.data.color};font-size: 11px;height: 30px;width: 200px;cursor: pointer;" onmouseover="" onclick="buttonclick(this);"/>
+
+          <!--<a href="/" class="btn btn-large">
+            Approve
+          </a>-->
+        
+    </div>
+    {#/for}

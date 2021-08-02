@@ -1,0 +1,60 @@
+﻿.plans {
+margin-top: 45px;
+margin-bottom: 20px;
+overflow: hidden;
+display: inline-block;
+}
+.plan {
+float: left;
+width: 30.5%;
+display: inline-block;
+cursor: pointer;
+position: relative;
+border-width: 1px;
+border-color: #999999;
+
+}
+.plan:first-child {
+margin-left: 0;
+}
+.plan ul li.title {
+background-color: #00b08a;
+font-size: 18px;
+text-align: center;
+/* padding: 15px; */
+color: #ECF0F1;
+}
+.plan ul li 
+{
+list-style: none;
+color: #77939A;
+background-color: #FFFFFF;
+padding: 10px;
+border-bottom: 1px solid #ECF0F1;
+}
+.plan ul li.price {
+position: relative;
+font-size: 18px;
+background-color: #ECF0F1;
+padding: 15px;
+text-align: center;
+height: 74px;
+color:#007fa2;
+}
+.plan ul li {
+color: #77939A;
+background-color: #FFFFFF;
+padding: 10px;
+border-bottom: 1px solid #ECF0F1;
+}
+.plan ul li .pull-right {
+font-weight: bold;
+font-size: 16px;
+}
+.pull-right {
+float: right;
+}
+.plan ul li.button {
+padding: 15px;
+text-align: center;
+}

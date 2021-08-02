@@ -1,0 +1,185 @@
+﻿<div align="center">
+    <span style="color: Red; font-size: 18px;">Edit Leaks</span>
+</div>
+<div style="width: 100%; float: left; border: 1px solid #d6d6d6; border-radius: 5px 5px 5px 5px;
+    background-color: #FFFFEC">
+    <table  cellpadding="0" cellspacing="0" style="float: left; width: 100%;"
+        id="table_Indent_details" class="mainText2" border="1">
+        <thead>
+            <tr>
+                <td style="width: 14%; height: 20px; color: #2f3293; font-size: 12px; font-weight: bold;
+                    text-align: center;">
+                    DC No
+                    <br />
+                </td>
+                <td style="width: 16%; height: 20px; color: #2f3293; font-size: 12px; font-weight: bold;
+                    text-align: center;">
+                    Date
+                    <br />
+                </td>
+                <td style="width: 14%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Product Name
+                    <br />
+                </td>
+                <td style="width: 14%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Leak Qty
+                    <br />
+                </td>
+                <td style="width: 14%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Short Qty
+                    <br />
+                </td>
+                <td style="width: 14%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Free Qty
+                    <br />
+                </td>
+                <td style="width: 14%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Return Qty
+                    <br />
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            {#foreach $T as data}
+            <tr class="tblrowcolor">
+                <td style="width: 14%; height: 30px; vertical-align: middle; font-size: 12px; font-weight: 500;
+                    text-align: center; padding: 0px 0px 0px 3px">
+                    <span id="txtIndentNo" style="font-size: 15px; color: Red;"><b>{ $T.data.Dcno }</span>
+                    <input type="hidden" id="hdntabletype" value="{ $T.data.tabletype }" />
+                </td>
+                <td style="width: 16%; height: 30px; vertical-align: middle; font-size: 12px; font-weight: 500;
+                    text-align: center; padding: 0px 0px 0px 3px">
+                    <span id="txtdate" style="font-size: 15px; color: Red;"><b>{ $T.data.Entrydate }</span>
+                    <input type="hidden" id="hdnbranchid" value="{ $T.data.BranchId }" />
+                </td>
+                <td style="width: 14%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
+                    color: Gray;">
+                    <span id="txtProductName" style="font-size: 15px; color: Red;" class="ProductClass"><b>{ $T.data.Productname
+                        }</b></span>
+                    <input type="hidden" id="hdnProductSno" value="{ $T.data.productid }" />
+                </td>
+                <td style="width: 14%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <input type="number" id="txtleak" value="{ $T.data.Leaks }" style="width: 80%; height: 34px;
+                        font-size: 16px; border: 1px solid gray; border-radius: 6px 6px 6px 6px;" placeholder="Enter Leak Qty" />
+                    <input type="hidden" id="hdnleak" value="{ $T.data.Leaks }" />
+                </td>
+                <td style="width: 14%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <input type="number" id="txtShortQty" value="{ $T.data.Shorts }" style="width: 80%;
+                        height: 34px; font-size: 16px; border: 1px solid gray; border-radius: 6px 6px 6px 6px;"
+                        placeholder="Enter Short Qty" />
+                    <input type="hidden" id="hdnShortQty" value="{ $T.data.Shorts }" />
+                </td>
+                <td style="width: 14%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <input type="number" id="txtfreeqty" value="{ $T.data.Free }" style="width: 80%;
+                        height: 34px; font-size: 16px; border: 1px solid gray; border-radius: 6px 6px 6px 6px;"
+                        placeholder="Enter Free Qty" />
+                    <input type="hidden" id="hdnfreeqty" value="{ $T.data.Free }" />
+                </td>
+                <td style="width: 14%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <input type="number" id="txtreturnqty" value="{ $T.data.Returns }" style="width: 80%;
+                        height: 34px; font-size: 16px; border: 1px solid gray; border-radius: 6px 6px 6px 6px;"
+                        placeholder="Enter Return Qty" />
+                    <input type="hidden" id="hdnreturnqty" value="{ $T.data.Returns }" />
+                </td>
+            </tr>
+            {#/for}
+             <tr class="tblrowcolor">
+              <td style="width: 14%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
+                    color: Gray;">
+                      <img src="Images/add.png" onclick="AddNewRowDelivers();" style="cursor:pointer;" /> 
+                </td>
+                <td style="width: 14%; height: 30px; vertical-align: middle; font-size: 12px; font-weight: 500;
+                    text-align: center; padding: 0px 0px 0px 3px">
+                </td>
+                <td style="width: 16%; height: 30px; vertical-align: middle; font-size: 12px; font-weight: 500;
+                    text-align: center; padding: 0px 0px 0px 3px">
+                </td>
+                <td style="width: 14%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
+                    color: Gray;">
+                </td>
+                <td style="width: 14%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                </td>
+                <td style="width: 14%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                </td>
+                <td style="width: 14%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                </td>
+                <td style="width: 14%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+   <!-- <table style="width: 100%; height: 16%; padding-left: 40%;">
+        <tr>
+            <td>
+                <input type="button" id="Button1" value="Update" onclick="btnEditLeaksReturnsClick();"
+                    style="width: 100px; height: 24px; font-size: 16px;" class="SaveButton" />
+            </td>
+        </tr>
+    </table>-->
+     <div id="divDeliveryProducts" class="pickupclass" style="text-align: center; height: 100%;
+        width: 100%; position: absolute; display: none; left: 0%; top: 0%; z-index: 99999;
+        background: rgba(192, 192, 192, 0.7);">
+        <div id="divAddNewRow" style="border: 5px solid #A0A0A0; position: absolute; top: 30%;
+            background-color: White; left: 10%; right: 10%; width: 80%; height: 50%; -webkit-box-shadow: 1px 1px 10px rgba(50, 50, 50, 0.65);
+            -moz-box-shadow: 1px 1px 10px rgba(50, 50, 50, 0.65); box-shadow: 1px 1px 10px rgba(50, 50, 50, 0.65);
+            border-radius: 10px 10px 10px 10px;">
+            <table align="left" cellpadding="0" cellspacing="0" style="float: left; width: 100%;"
+                id="tableDeliverProductDetails" class="mainText2" border="1">
+                <tr>
+                    <td style="width: 20%;float:left;">
+                 <label>
+                            Categeory Name</label>
+                    </td>
+                    <td style="width: 79%;float:left;">
+                     <select id="cmb_brchprdt_Catgry_name" class="ddlsize" onchange="productsdata_categoryname_onchange();">
+                        </select>
+                    </td>
+                </tr>
+                 <tr>
+                    <td style="width: 20%;float:left;">
+                 <label>
+                           Sub Categeory Name</label>
+                    </td>
+                    <td style="width: 79%;float:left;">
+                      <select id="cmb__brnch_subcatgry" class="ddlsize" onchange="productsdata_subcategory_onchange();">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 20%;float:left;">
+                        <label>
+                            Product Name</label>
+                    </td>
+                    <td style="width: 79%;float:left;">
+                        <select id="cmb_productname" class="ddlsize" onchange="ProductNameChane(this)">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <input type="button" value="ADD" id="btnAdd" onclick="btnDeliversAddClick();" class="ContinueButton" style="width:100%;height:40px;font-size:16px;"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="divclose" style="width: 35px; top: 24.5%; right: 9.5%; position: absolute;
+            z-index: 99999; cursor: pointer;">
+            <img src="Images/Odclose.png" alt="close" onclick="DeliversCloseClick();"/>
+        </div>
+    </div>
+</div>

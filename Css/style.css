@@ -1,0 +1,232 @@
+* { margin: 0; padding: 0; outline: 0; }
+
+body {
+ 
+}
+.ContinueButton
+{
+background: #2a81d7;
+background: -moz-linear-gradient(0% 100% 90deg,#206bcb,#3e9ee5);
+background: -webkit-gradient(linear,0% 0,0% 100%,from(#3e9ee5),to(#206bcb));
+border-top: 1px solid #2a73a6;
+border-right: 1px solid #165899;
+border-bottom: 1px solid #07428f;
+border-left: 1px solid #165899;
+-moz-box-shadow: inset 0 1px 0 0 #62b1e9;
+-webkit-box-shadow: inset 0 1px 0 0 #62b1e9;
+box-shadow: inset 0 1px 0 0 #62b1e9;
+color: #FFF;
+cursor: pointer;
+text-decoration: none;
+text-shadow: 0 -1px 1px #1d62ab;
+border-radius: 4px 4px 4px 4px;
+}
+.ContinueButton:hover
+{
+background: #0066CC;
+background: -moz-linear-gradient(0% 100% 90deg,#206bcb,#3e9ee5);
+background: -webkit-gradient(linear,0% 0,0% 100%,from(#0066CC),to(#0066CC));
+border-top: 1px solid #2a73a6;
+border-right: 1px solid #165899;
+border-bottom: 1px solid #07428f;
+border-left: 1px solid #165899;
+-moz-box-shadow: inset 0 1px 0 0 #62b1e9;
+-webkit-box-shadow: inset 0 1px 0 0 #62b1e9;
+box-shadow: inset 0 1px 0 0 #0066CC;
+color: #FFF;
+cursor: pointer;
+text-decoration: none;
+text-shadow: 0 -1px 1px #1d62ab;
+border-radius: 4px 4px 4px 4px;
+}
+h3 { font-size: 29px; line-height: 46px; }
+h4 { font-size: 16px; line-height: 19px; color: #1b3b64; }
+h5 { font-size: 14px; line-height: 23px; color: #1ca7f0; }
+h6 { font-size: 12px; line-height: 19px; color: #fff; padding-bottom: 10px; }
+
+a { color: #0252aa; text-decoration: none; cursor: pointer; }
+a:hover { text-decoration: underline; }
+a img { border: 0; }
+
+input, textarea, select { font-size: 11px; font-family: 'Trebuchet MS', arial, sans-serif; }
+textarea { overflow: auto; }
+
+.cl { display: block; height: 0; font-size: 0; line-height: 0; text-indent: -4000px; clear: both; }
+.notext { font-size: 0; line-height: 0; text-indent: -4000px; }
+.left, .alignleft { float: left; display: inline; }
+.right, .alignright { float: right; display: inline; }
+
+html, body { height: 100%; }
+
+#wrapper { height: 100%; margin: 0 auto -228px; }
+
+.shell { width: 944px; margin: 0 auto; position: relative;
+          }
+.shellstyle
+{
+     width: 974px; margin: 0 auto; position: relative;
+          border:4px solid white;
+            border-radius:10px 10px 10px 10px;
+            z-index:99;
+           margin-bottom:16px;
+           background-color:#FFFFFF;
+}
+#header {  }
+#header .social-links { float: right; display: inline; padding-right: 7px; }
+#header .social-links ul li { list-style: none; display: inline; }
+#header .social-links ul li a { display: inline-block; }
+#header .social-links ul li a img { display: block; }
+
+h1#logo { display: block; width: 500px; height: 101px; font-size: 0; line-height: 0; padding-top: 0px; }
+h1#logo a { display: block; height: 101px;width:150px;  text-indent: -4000px; }
+
+#slogan { font-family: Arial, sans-serif; font-size: 10px; line-height: 23px; color: #c1c0c0; padding-left: 4px; }
+ /*background: url(images/navigation.png) repeat-x 0 0;background: url(images/navigation.png) repeat-x 0 0;*/
+#navigation { 
+margin-bottom: 12px; z-index:9998; position:relative;
+    top: 4px;
+}
+#navigation1 {  height: 36px; margin-bottom: 12px; z-index:9998; position:relative; }
+/*#navigation ul { list-style: none; margin-left: 4px; padding-left: 2px; background: url(images/navigation-separator.png) no-repeat 0 0; float: left; display: inline; }
+#navigation ul li { float: left; display: inline; padding-right: 2px; background: url(images/navigation-separator.png) no-repeat right 0; }
+#navigation ul li a { color: #fff; display: block; }
+#navigation ul li a:hover,
+#navigation ul li a.active { background: #0977b0; text-decoration: none; }*/
+
+#pad {height:140px;}
+/* ================================================================ 
+This copyright notice must be untouched at all times.
+
+The original version of this stylesheet and the associated (x)html
+is available at http://www.cssmenus.co.uk
+Copyright (c) 2009- Stu Nicholls. All rights reserved.
+This stylesheet and the associated (x)html may be modified in any 
+way to fit your requirements.
+=================================================================== */
+
+#divBlack
+{
+    background:#000000;
+    height:30px;
+   border-radius:8px 8px 8px 8px;
+   
+}
+/**/
+
+
+
+#contents {
+    float:left;
+    background:gold;
+    width:100%;
+    height:200px;
+}
+
+
+
+
+/**/
+
+/**/
+
+#horizontalmenu ul {
+padding:1; margin:1; list-style:none;
+}
+#horizontalmenu li {
+float:left; position:relative; padding-right:100; display:block;
+border:4px solid #CC55FF;
+border-style:inset;
+}
+#horizontalmenu li ul {
+    display:none;
+position:absolute;
+}
+#horizontalmenu li:hover ul{
+    display:block;
+    background:red;
+height:auto; width:8em;
+}
+#horizontalmenu li ul li{
+    clear:both;
+border-style:none;}
+
+
+
+
+
+ul#menu, ul#menu ul.sub-menu {
+    padding:0;
+    margin: 0;
+}
+ul#menu li, ul#menu ul.sub-menu li {
+    list-style-type: none;
+    display: inline-block;
+}
+ul#menu li a, ul#menu li ul.sub-menu li a {
+    text-decoration: none;
+    color: #fff;
+    background: #666;
+    padding: 5px;
+    display:inline-block;
+}
+ul#menu li {
+    position: relative;
+}
+ul#menu li ul.sub-menu {
+    display:none;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 100px;
+}
+ul#menu li:hover ul.sub-menu {
+    display:block;
+}
+
+
+
+/**/
+.caretd
+{
+    background-color:Green;
+    width:240px;
+    height:35px;
+    border-radius:4px 4px 4px 4px;
+    font-size:16px;
+    text-align:center;
+    vertical-align:middle;
+    color:Yellow;
+    font-weight:bold;
+    margin-top: 38px;
+}
+
+
+
+#main { padding-bottom: 20px;
+   top: 4px;
+    left: 14px;
+}
+#maindiv { padding-bottom: 20px;
+           top: 4px;
+}
+#content { padding-right: 24px; }
+
+.post {  position: relative; padding-bottom: 29px; }
+.post h3 { margin-bottom: 6px; padding-left: 4px; }
+.post h4 { padding: 16px 0 8px; }
+.post h5 { padding: 13px 0 9px; }
+.post p { padding: 0 3px 8px; }
+.post.left { float: left; display: inline; width: 590px;
+    top: -4px;
+    left: 12px;
+}
+.post.left h3 { color: #0d71b4; }
+
+.post.right { float: right; display: inline; width: 300px; }
+.post.right h3 { color: #0f2d55; }
+
+.post .btn { position: absolute; bottom: 0; height: 29px; line-height: 29px; padding: 0 10px; background: #01659c; font-size: 16px; color: #fff; font-weight: bold; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; }
+.post .btn:hover { text-decoration: none; color: #228ac8; }
+
+#footer-push { height: 100px; }
+

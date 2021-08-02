@@ -1,0 +1,982 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <link rel="icon" href="Images/Vyshnavilogo.PNG" type="image/x-icon" title=BMG />
+    <title>Veer Dairy </title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <link href="Css/VyshnaviStyles.css?v=1505" rel="stylesheet" type="text/css" />
+    <link href="Styles/sidemenu.css?v=1505" rel="stylesheet" type="text/css" />
+    <script src="js/jconfirmaction.jquery.js" type="text/javascript"></script>
+    <link href="Css/Parlourcss.css?v=1505" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css?v=1504">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="dist/css/AdminLTE.css?v=1505" />
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css?v=1505">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet'
+        type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/theme.css?v=1505">
+    <link rel="stylesheet" type="text/css" href="stylesheets/premium.css?v=1505">
+    <script src="js/jquery.blockUI.js?v=1505" type="text/javascript"></script>
+    <meta name="google-site-verification" content="XYRQcdP4pSdqcbJ-xFwpcIE96OkKQOPwGOynOPhFwfQ" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta name="description" content="Veer Dairy  is recognized for its insight, understanding and expertise of each of its individual commercial business.">
+    <meta name="keywords" content="software development company india, it services in india, software outsourcing company india, offshore company in india" />
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+  m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-90586232-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+    <!-- Google Tag Manager -->
+    <script>        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({ 'gtm.start':
+new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-WJP55XK');</script>
+    <!-- End Google Tag Manager -->
+    <style type="text/css">
+        .navbar-default .navbar-brand
+        {
+            color: #FFF;
+        }
+        body
+        {
+            background: url(Images/bgfit3.jpg) no-repeat center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        .editcls
+        {
+            background: #00a65a !important;
+            border-radius: 100% !important;
+            padding: 0px !important;
+            height: 30px !important;
+            width: 30px !important;
+            color: #ffffff !important;
+            border-color: #00a65a !important;
+        }
+        .label
+        {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        .datepicker
+        {
+            border: 1px solid gray;
+            background: url("Images/CalBig.png") no-repeat scroll 99%;
+            width: 70%;
+            top: 0;
+            left: 0;
+            height: 20px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            border: 1px solid gray;
+            margin: .5em 0;
+            padding: .6em 20px;
+            border-radius: 10px 10px 10px 10px;
+            filter: Alpha(Opacity=0);
+            box-shadow: 3px 3px 3px #ccc;
+        }
+        .divselectedclass
+        {
+            border: 1px solid gray;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+        .back-red
+        {
+            background-color: #ffffcc;
+        }
+        .back-white
+        {
+            background-color: #ffffff;
+        }
+        .btn
+        {
+            border-radius: 3px;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            border: 1px solid transparent;
+            padding: 6px;
+        }
+        .ui-autocomplete
+        {
+            max-height: 100px;
+            overflow-y: auto; /* prevent horizontal scrollbar */
+            overflow-x: hidden; /* add padding to account for vertical scrollbar */
+            z-index: 1000 !important;
+        }
+        .custom-combobox
+        {
+            position: relative;
+            display: inline-block;
+        }
+        .custom-combobox-toggle
+        {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin-left: -1px;
+            padding: 0;
+        }
+        .custom-combobox-input
+        {
+            margin: 0;
+            height: 35px;
+            width: 250px;
+        }
+    </style>
+    <style>
+        input[type=checkbox]
+        {
+            transform: scale(1.5);
+        }
+        input[type=checkbox]
+        {
+            width: 30px;
+            height: 18px;
+            margin-right: 8px;
+            cursor: pointer;
+            font-size: 10px;
+            visibility: hidden;
+        }
+        input[type=checkbox]:after
+        {
+            content: " ";
+            background-color: #fff;
+            display: inline-block;
+            margin-left: 10px;
+            padding-bottom: 0px;
+            color: #24b6dc;
+            width: 16px;
+            height: 16px;
+            visibility: visible;
+            border: 1px solid rgba(18, 18, 19, 0.12);
+            padding-left: 3px;
+            border-radius: 0px;
+        }
+        input[type="checkbox"]:not(:disabled):hover:after
+        {
+            border: 1px solid #24b6dc;
+        }
+        input[type=checkbox]:checked:after
+        {
+            content: "\2714";
+            padding: -5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="theme-blue">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJP55XK" height="0"
+            width="0" style="display: none; visibility: hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <style type="text/css">
+        .iconminus
+        {
+            float: right;
+            width: 20px;
+            height: 20px;
+            margin: 2px 0 0 0;
+            background: url("Images/minus.png") no-repeat;
+            border-radius: 2px 2px 2px 2px;
+        }
+        .iconminusli
+        {
+            float: right;
+            width: 20px;
+            height: 20px;
+            margin: 2px 0 0 0;
+            background: url("Images/minus.png") no-repeat;
+            border-radius: 2px 2px 2px 2px;
+        }
+        .btn
+        {
+            padding: 6px 12px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            var Level = '<%=Session["LevelType"] %>';
+            var sales = '<%=Session["salestype"] %>';
+            document.getElementById('txtUserName').innerHTML = '<%=Session["EmpName"] %>';
+            if (Level == "MAdmin") {
+                $('#lidueapproval').css('display', 'block ');
+                $('#liemployee').css('display', 'block ');
+                $('#litools').css('display', 'block ');
+                $('#liagentamounts').css('display', 'block ');
+                $('#liagentinventory').css('display', 'block ');
+                $('#ligheestocktransfer').css('display', 'block ');
+                $('#libiprdtsinward').css('display', 'block ');
+                $('#Li_biprdtsclosing').css('display', 'block ');
+                $('#liincentivestructure').css('display', 'block ');
+                $('#liIncentive').css('display', 'block ');
+                $('#li156').css('display', 'none ');
+                $('#liaudit').css('display', 'block ');
+            }
+            if (Level == "Admin") {
+                $('#lidueapproval').css('display', 'block ');
+                $('#liemployee').css('display', 'block ');
+                $('#litools').css('display', 'block ');
+                $('#liagentamounts').css('display', 'block ');
+                $('#liagentinventory').css('display', 'block ');
+                $('#ligheestocktransfer').css('display', 'block ');
+                $('#libiprdtsinward').css('display', 'block ');
+                $('#Li_biprdtsclosing').css('display', 'block ');
+                $('#liincentivestructure').css('display', 'block ');
+                $('#liIncentive').css('display', 'block ');
+                $('#li156').css('display', 'none ');
+                $('#liaudit').css('display', 'block ');
+                $('#incentivereport').css('display', 'block ');
+            }
+            if (Level == "SalesManager") {
+                $('#lidueapproval').css('display', 'block ');
+                $('#liemployee').css('display', 'block ');
+                $('#litools').css('display', 'block ');
+                $('#liagentamounts').css('display', 'block ');
+                $('#liagentinventory').css('display', 'block ');
+                $('#ligheestocktransfer').css('display', 'block ');
+                $('#libiprdtsinward').css('display', 'block ');
+                $('#Li_biprdtsclosing').css('display', 'block ');
+                $('#liincentivestructure').css('display', 'block ');
+                $('#liIncentive').css('display', 'none ');
+                $('#li156').css('display', 'none ');
+                $('#liaudit').css('display', 'block ');
+            }
+            if (Level == "Accountant") {
+                $('#lidayendreport').css('display', 'none ');
+                $('#lidueapproval').css('display', 'none ');
+                $('#lisaleprice').css('display', 'block ');
+                $('#limanage').css('display', 'none ');
+                $('#lioperations').css('display', 'block');
+                $('#liSpecialDispatch').css('display', 'none');
+                $('#liPuffPlanning').css('display', 'none');
+                $('#litripend').css('display', 'block');
+                $('#ligatepass').css('display', 'none');
+                $('#litimingreport').css('display', 'none');
+                $('#liLocalSale').css('display', 'block');
+                $('#liAgentSales').css('display', 'none');
+                $('#litripreassign').css('display', 'none');
+                $('#liclosingstock').css('display', 'none');
+                $('#lisales').css('display', 'none ');
+                $('#libranch').css('display', 'none ');
+                $('#litripreassign').css('display', 'none ');
+                $('#liRatesManage').css('display', 'none ');
+                $('#liprdtmanage').css('display', 'none ');
+                $('#liroutemanage').css('display', 'none ');
+                $('#litripassignment').css('display', 'none ');
+                $('#lidepartment').css('display', 'none ');
+                $('#liemployee').css('display', 'none ');
+                $('#liinventory').css('display', 'none ');
+                $('#lireports').css('display', 'block ');
+                $('#ligatepass').css('display', 'none ');
+                $('#liroutesheet').css('display', 'none ');
+                $('#incentivereport').css('display', 'none ');
+                $('#liBranchWiseRatesManagement').css('display', 'none');
+                $('#liCashCollections').css('display', 'block');
+                $('#li45').css('display', 'block ');
+                $('#lidashboard').css('display', 'none ');
+            }
+            if (Level == "Casheir") {
+                $('#lidayendreport').css('display', 'none ');
+                $('#lidueapproval').css('display', 'none ');
+                $('#limanage').css('display', 'none ');
+                $('#lioperations').css('display', 'block');
+                $('#liSpecialDispatch').css('display', 'none');
+                $('#liPuffPlanning').css('display', 'none');
+                $('#litripend').css('display', 'block');
+                $('#ligatepass').css('display', 'none');
+                $('#litimingreport').css('display', 'none');
+                $('#liLocalSale').css('display', 'block');
+                $('#liAgentSales').css('display', 'none');
+                $('#litripreassign').css('display', 'none');
+                $('#liclosingstock').css('display', 'none');
+                $('#lisales').css('display', 'none ');
+                $('#libranch').css('display', 'none ');
+                $('#litripreassign').css('display', 'none ');
+                $('#liRatesManage').css('display', 'none ');
+                $('#liprdtmanage').css('display', 'none ');
+                $('#liroutemanage').css('display', 'none ');
+                $('#litripassignment').css('display', 'none ');
+                $('#lidepartment').css('display', 'none ');
+                $('#liemployee').css('display', 'none ');
+                $('#liinventory').css('display', 'none ');
+                $('#lireports').css('display', 'block ');
+                $('#ligatepass').css('display', 'none ');
+                $('#liroutesheet').css('display', 'none ');
+                $('#incentivereport').css('display', 'none ');
+                $('#liBranchWiseRatesManagement').css('display', 'none');
+                $('#liCashCollections').css('display', 'block');
+            }
+            if (Level == "AccountsOfficer") {
+                $('#lidayendreport').css('display', 'block ');
+                $('#liprdtmanage').css('display', 'none ');
+                $('#liIncentive').css('display', 'none ');
+                $('#li56').css('display', 'none ');
+                $('#lisaleprice').css('display', 'block ');
+                $('#liagentamounts').css('display', 'block ');
+                $('#liagentinventory').css('display', 'block ');
+                $('#lipermissions').css('display', 'block ');
+                $('#limanage').css('display', 'none ');
+                $('#liaudit').css('display', 'block ');
+
+            }
+            if (Level == "Users") {
+                $('#lidayendreport').css('display', 'none ');
+                $('#lidueapproval').css('display', 'none ');
+                $('#limanage').css('display', 'none ');
+                $('#ulreports').css('display', 'block');
+                $('#lioperations').css('display', 'none ');
+                $('#lirouteWdelivery').css('display', 'none ');
+                $('#liproductleak').css('display', 'none ');
+                $('#liroutesheet').css('display', 'none ');
+                $('#litotaldc').css('display', 'none ');
+                $('#lidcreport').css('display', 'none ');
+                $('#incentivereport').css('display', 'none ');
+                $('#lileaksandreturns').css('display', 'none ');
+                $('#liproductleak').css('display', 'none ');
+                $('#litotalleaks').css('display', 'none ');
+                $('#licollection').css('display', 'none ');
+                $('#lidelivery').css('display', 'none ');
+                $('#litimingreport').css('display', 'none ');
+                $('#liinventoryreport').css('display', 'none');
+                $('#litripreassign').css('display', 'none ');
+                $('#agentincentivereport').css('display', 'none ');
+                $('#liIncentive').css('display', 'none ');
+                $('#li156').css('display', 'none ');
+                $('#liclosingstock').css('display', 'none ');
+                $('#liBranchWiseRatesManagement').css('display', 'none');
+            }
+            if (Level == "Dispatcher") {
+                $('#lidayendreport').css('display', 'none ');
+                $('#lidueapproval').css('display', 'none ');
+                $('#limanage').css('display', 'none ');
+                $('#ulreports').css('display', 'block');
+                $('#lioperations').css('display', 'none ');
+                $('#litripreassign').css('display', 'none ');
+                $('#incentivereport').css('display', 'none ');
+                $('#agentincentivereport').css('display', 'none ');
+                $('#litripend').css('display', 'none ');
+                $('#liIncentive').css('display', 'none ');
+                $('#li156').css('display', 'none ');
+                $('#liclosingstock').css('display', 'none ');
+                $('#liBranchWiseRatesManagement').css('display', 'none');
+            }
+            if (Level == "Opperations") {
+                $('#lidayendreport').css('display', 'none ');
+                $('#lidueapproval').css('display', 'none ');
+                $('#limanage').css('display', 'none ');
+                $('#ulreports').css('display', 'block');
+                $('#lioperations').css('display', 'none ');
+                $('#incentivereport').css('display', 'none ');
+                $('#liproductleak').css('display', 'none ');
+                $('#litimingreport').css('display', 'none ');
+                $('#litripreassign').css('display', 'none ');
+                $('#agentincentivereport').css('display', 'none ');
+                $('#liIncentive').css('display', 'none ');
+                $('#liclosingstock').css('display', 'none ');
+                $('#liBranchWiseRatesManagement').css('display', 'none');
+                $('#lisms').css('display', 'none');
+                $('#lichartreports').css('display', 'none ');
+                $('#lidashboard').css('display', 'none ');
+
+            }
+            if (Level == "PlantDispatcher") {
+                $('#lidayendreport').css('display', 'none ');
+                $('#lidueapproval').css('display', 'none ');
+                $('#liCollections').css('display', 'none ');
+                $('#litripreassign').css('display', 'none ');
+                $('#litimingreport').css('display', 'none ');
+                $('#licheckdetails').css('display', 'none ');
+                $('#limanage').css('display', 'none ');
+                $('#lioperations').css('display', 'block ');
+                $('#litripassignment').css('display', 'block ');
+                $('#liAgentSales').css('display', 'block ');
+                $('#liLocalSale').css('display', 'block ');
+                $('#litripend').css('display', 'none ');
+                $('#liPuffPlanning').css('display', 'none ');
+                $('#liIncentive').css('display', 'none ');
+                $('#liclosingstock').css('display', 'none ');
+                $('#liBranchWiseRatesManagement').css('display', 'none');
+            }
+            if (Level == "Manager") {
+                $('#limanage').css('display', 'none ');
+                $('#liprdtmanage').css('display', 'block ');
+                $('#liemployee').css('display', 'block ');
+                $('#li45').css('display', 'block ');
+                $('#litools').css('display', 'none ');
+                $('#lipermissions').css('display', 'block ');
+                $('#liagentamounts').css('display', 'block ');
+                $('#liincentivestructure').css('display', 'none ');
+                $('#ligheestocktransfer').css('display', 'block ');
+                $('#libiprdtsinward').css('display', 'block ');
+                $('#Li_biprdtsclosing').css('display', 'block ');
+                $('#litripreassign').css('display', 'none ');
+                $('#liIncentive').css('display', 'none ');
+
+            }
+            preventclick();
+            $('.leftNav > ul > li').click(function () {
+                $('.drop').css('display', 'none');
+                $(this).find('.drop').css('display', 'block');
+            });
+            $('.drop > ul > li').click(function (e) {
+                $('.drop3').css('display', 'none');
+                $('.drop2').css('display', 'none');
+                $(this).find('.drop2').css('display', 'block');
+                $(this).find('.drop3').css('display', 'block');
+            });
+            $('#rightdiv,#topdiv').click(function () {
+                $('.drop').css('display', 'none');
+                $('.drop2').css('display', 'none');
+                $('.drop3').css('display', 'none');
+            });
+        });
+        function preventclick() {
+            $('.leftNav').click(function () {
+                return true;
+            });
+            return false;
+        }
+        function operations_click() {
+            $("#limanage").attr('class', 'expandable');
+            $("#lioperations").attr('class', 'closed collapsable');
+            $("#lireports").attr('class', 'closed expandable');
+            $("#li1").attr('class', 'closed expandable lastExpandable');
+        }
+    </script>
+    <script type="text/javascript">
+        var hidden = false;
+        var hiddenvalue = false;
+        function showpanel(strid) {
+            if (hiddenvalue) {
+                $("#leftdiv").animate({ left: '0px' }, 0)
+                $("#rightdiv").css('width', '86%');
+                hiddenvalue = false;
+            }
+            else {
+                $("#leftdiv").css('margin-left', 0);
+                $("#leftdiv").css('margin-right', 0);
+                $("#leftdiv").animate({ left: '-640px' }, 0);
+                $("#rightdiv").css('width', '100%');
+                hiddenvalue = true;
+            }
+        }
+
+        function AddFormsList() {
+            $('#divBuitinBoard').focus();
+            $('#divBuitinBoard').css('display', 'block');
+        }
+
+        function get_radio_value() {
+            var inputs = document.getElementsByName("selected");
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].checked) {
+                    return inputs[i].value;
+                }
+            }
+        }
+        function SaveFormName() {
+            var FormName = get_radio_value();
+            if (FormName == "") {
+                alert("Please Select Type");
+                return false;
+            }
+            var data = { 'operation': 'SaveFormName', 'FormName': FormName }; //, 'Status': status, 'tax_per': tax_per
+            var s = function (msg) {
+                if (msg) {
+                    if (msg.length > 0) {
+                        // alert(msg);
+                        $('#divBuitinBoard').css('display', 'none');
+                        window.location = msg;
+                    }
+                }
+                else {
+                }
+            };
+            var e = function (x, h, e) {
+            };
+
+            $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+            callHandler(data, s, e);
+        }
+
+        function callHandler(d, s, e) {
+            $.ajax({
+                url: 'DairyFleet.axd',
+                data: d,
+                type: 'GET',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                async: true,
+                cache: true,
+                success: s,
+                error: e
+            });
+        }
+
+        function CloseBuilten() {
+            $('#divBuitinBoard').css('display', 'none');
+        }
+
+    </script>
+    <form runat="server" id="form1">
+    <div style="float: left; width: 100%" id="topdiv">
+    </div>
+    <div class="navbar navbar-default" role="navigation" style="min-height: 63px;">
+        <img src="Images/Vyshnavilogo.png" style="width: 100px; height: 65px;" />
+        <a class="" href="DashBoard.aspx"><span class="navbar-brand" style="font-size: 24px;
+            font-weight: 600; text-align: center;"><span></span></span></a><a id="btnClose" onclick="showpanel();"
+                style="background: none repeat scroll 0 0 rgba(0, 0, 0, 0.3); border-radius: 30px;
+                color: rgba(255, 255, 255, 0.8); cursor: pointer; display: block; height: 15px;
+                position: absolute; padding-bottom: 31px; top: 22.5%; left: 13.5%; width: 2%;"
+                data-toggle="control-sidebar"><i class="fa fa-bars" title="Menu" style="padding-left: 8px;
+                    padding-top: 9px;" aria-hidden="true"></i><span class="sr-only">Toggle navigation</span>
+            </a>
+        <div style="cursor: pointer; display: block; position: absolute; padding-bottom: 31px;
+            left: 34%; top: 10%;">
+            <span class="navbar-brand" style="font-size: 25px; font-weight: 600; text-align: center;padding-right: 6px;"
+                id="Span1" >Veer Dairy</span>
+        </div>
+        <div style="cursor: pointer; display: block; position: absolute; padding-bottom: 32px;
+            left: 72%; top: 16%;">
+            <img src="Images/avatar04.png" style="height: 40px; width: 40px; border-radius: 50%;" />
+        </div>
+        <div style="cursor: pointer; display: block; position: absolute; padding-bottom: 31px;
+            left: 74.5%; text-transform: capitalize; top: 5px;">
+            <span class="navbar-brand" style="font-size: 20px; font-weight: 600; text-align: center;padding-right: 6px;"
+                id="txtUserName" ></span>
+        </div>
+        <div style="cursor: pointer; display: block; position: absolute; padding-bottom: 31px;
+            left: 89%; top: 32%;">
+            <a href="LogOut.aspx" title="Click here to Log Out.">
+                <img src="Images/logout.png" style="height: 20px; width: 20px; border-radius: 50%;" /></a>
+        </div>
+        <div style="cursor: pointer; display: block; position: absolute; padding-bottom: 31px;
+            top: 25.5%; left: 91%;">
+            <a style="color: white; font-size: 20px; font-weight: 600; text-align: center;" tabindex="-1"
+                href="LogOut.aspx">Log Out</a> &nbsp&nbsp&nbsp&nbsp <a style="color: white; font-size: 20px;
+                    font-weight: 600; text-align: center;" tabindex="-1" href="#datagrid" class="small-box-footer"
+                    onclick="AddFormsList();" data-toggle="modal" data-target="#myModal"><i class="fa fa-gear"
+                        title="Settings"></i></a>
+          
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="modal fade in" id="divBuitinBoard" style="display: none; padding-right: 17px;">
+        <div class="modal-dialog" style="float: right; padding-top: 2%;">
+            <div class="modal-content" style="float: right; width: 300px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" onclick="CloseBuilten();">×</span></button>
+                </div>
+                <div class="modal-body" id="divModel" style="overflow-y: scroll;">
+                    <table id="rdolst" align="center">
+                        <tr>
+                            <td>
+                                <input id="rdolst_0" type="radio" name="selected" value="liveboard.aspx" checked="checked" /><label
+                                    for="rdolst_0">DashBord
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="rdolst_1" type="radio" name="selected" value="Delivery_Collection_Report.aspx" /><label
+                                    for="rdolst_1">Net Sales Report</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="rdolst_2" type="radio" name="selected" value="PlantManage.aspx" /><label
+                                    for="rdolst_2">Branch Master</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="rdolst_3" type="radio" name="selected" value="Routes.aspx" /><label for="rdolst_3">Route
+                                    Master</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="rdolst_4" type="radio" name="selected" value="DispatchManagement.aspx" /><label
+                                    for="rdolst_4">Dispatch Master</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="rdolst_5" type="radio" name="selected" value="EmployeeManagement.aspx" /><label
+                                    for="rdolst_5">Employee Master</label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer" style="text-align: right;">
+                    <button type="button" class="btn btn-primary" onclick="SaveFormName();">
+                        OK</button>
+                    <div class="pull-left">
+                        <a href="SwitchAccount.aspx" class="btn btn-default btn-flat">Switch To Accouunt</a>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+    </div>
+    <div style="width: 100%;" id="maindiv">
+        <div id="leftdiv" class="control-sidebar control-sidebar-dark control-sidebar-open"
+            style="height: 100%; width: 14%; background: none; left: 0%; top: 18px;">
+            <div id="main" class="leftNav">
+                <ul id="nav">
+                    <li id="lidashboard"><a href="#"><i class="fa fa-dashboard"></i>&nbsp Dash Board</a>
+                        <div class="drop">
+                            <ul>
+                                <li id="li37"><a href="DcDashBoard.aspx"><i class="fa fa-dashcube"></i>&nbsp DC DashBoard</a></li>
+                                <li id="li35"><a href="liveboard.aspx"><i class="fa fa-dribbble"></i>&nbsp LiveDashBoard</a></li>
+                                <li id="li173"><a href="LiveDashBoard.aspx"><i class="fa fa-dribbble"></i>&nbsp DashBoard</a></li>
+                                <li id="li76"><a href="Invoice_dashboard.aspx"><i class="fa fa-dribbble"></i>&nbsp Invoice
+                                    DashBoard</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li id="limanage" class="more"><a href="#"><i class="fa fa-share"></i>&nbsp Masters</a>
+                        <div class="drop">
+                            <ul>
+                              
+                                <li id="libranch"><a href="PlantManage.aspx">Agent/Branch Master</a></li>
+                                <li id="liroutemanage"><a href="Routes.aspx">Route Management</a></li>
+                               <%-- <li id="liBranchWiseRatesManagement" style="display: none;"><a href="BranchWiseRatesManagement.aspx">
+                                    BranchWise Rates Management</a></li>--%>
+                             <%--   <li id="liRatesManage1"><a href="PriceListForm.aspx">Rate Sheet Upload</a></li>--%>
+                              <%--  <li id="li170"><a href="AvgPriceSummary.aspx">AvgRateDetails</a></li>--%>
+                                <li id="liagentRatesManage"><a href="Agent_wise_rates.aspx">Agent Rate Sheets </a></li>
+                                <li id="liRatesManage"><a href="RatesManage.aspx">Rate Sheet Upload</a></li>
+                                <li id="liemployee"><a href="EmployeeManagement.aspx">Employee Master</a></li>
+                                <li id="lidispatch"><a href="DispatchManagement.aspx">Dispatch Master</a></li>
+                                <li id="li31"><a href="HeadOfAcMaster.aspx">Head Of Accounts</a></li>
+                               
+                                <li id="Helpermaster"><a href="Helpermaster.aspx">Helper Master</a></li>
+                                <li id="liproductclubbing"><a href="ProductClubbing.aspx">Product Clubbing</a></li>
+                                <li id="liincentivestructure" style="display: none;"><a href="incentivestructure.aspx">
+                                    Incentive Structure</a></li>
+                                <li id="li178" class="more" style="min-height: 25px;"><a href="#">Incentive Master</a>
+                                    <div class="drop3">
+                                        <ul id="ul23">
+                                            <li id="li179"><a href="generalincentivestructure.aspx">General Incentive Management</a></li>
+                                            <li id="li177"><a href="incentivenew.aspx">Product Wise Incentive Management</a></li>
+                                            <li id="li180"><a href="gnrlincetiveassigntoagent.aspx">Assign Structure to Agent</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+
+                                <li id="li55" class="more" style="min-height: 25px;"><a href="#">Offers Master</a>
+                                    <div class="drop3">
+                                        <ul id="ul10">
+                                            <li id="li57"><a href="OffersManagement.aspx">Offers Management</a></li>
+                                            <li id="li56"><a href="OfferAssignment.aspx">Offer Assignment</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="li10"><a href="AgentLedger.aspx">Agent Ledger</a></li>
+                                <%-- <li id="liagentdocuments" style="display: none;"><a href="Agent_Document_Upload.aspx">
+                                    Agent Documents</a></li>--%>
+                               <%-- <li id="liagentamounts" style="display: none;"><a href="AgentAmount.aspx">Agent Amounts</a></li>
+                                <li id="liagentinventory" style="display: none;"><a href="agentinventory.aspx">Agent
+                                    Inventory</a></li>--%>
+                                 <li id="li4"><a href="VehicleMaster.aspx">Vehicle Master</a></li>
+                                  <li id="lisales"><a href="SalesTypeManagement.aspx">Sales Type Master</a></li>
+                                 <li id="liAddress"><a href="AddressMaster.aspx">Mini Master</a></li>
+                                <li id="liinventory"><a href="IventoryManagement.aspx">Inventory Master</a></li>
+                                     
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="more" id="lioperations"><a href="#"><i class="fa fa-share-alt-square"></i>
+                        &nbsp Operations</a>
+                        <div class="drop">
+                            <ul>
+                                <li id="li30" class="more" style="min-height: 25px;"><a href="#"><i class="fa fa-money">
+                                </i>&nbsp Cash</a>
+                                    <div class="drop3">
+                                        <ul id="ul8">
+                                            <%-- <li id="liCollections"><a href="Collections.aspx"><i class="fa fa-ioxhost"></i>&nbsp
+                                                Collections</a></li>
+                                            <li id="liCashCollections"><a href="CashCollections.aspx">Cash Collections</a></li>--%>
+                                            <li id="li8"><a href="NewForm.aspx">Collection</a></li>
+                                            <li id="li25"><a href="JournalVoucher.aspx">Journal Voucher</a></li>
+                                            <li id="li24"><a href="CashForm.aspx">Voucher From</a></li>
+                                            <li id="li39"><a href="CashBook.aspx">Cash Book</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="li72" class="more" style="min-height: 25px;"><a href="#"><i class="fa fa-weibo">
+                                </i>&nbsp Due Details</a>
+                                    <div class="drop3">
+                                        <ul id="ul16">
+                                            <li id="libranchduedetails"><a href="Agent_Due_Details.aspx">AgentWise Due Report</a></li>
+                                            <li id="libranchdueconsolidatedetails"><a href="Periodic_Due_Report.aspx">AgentWise Periodic Due</a></li>
+                                            <li id="libranchdueSummary"><a href="Branchwise_due_summary.aspx">Branch Wise Due Summary</a></li>
+                                            <li id="li70"><a href="BranchWiseIndent.aspx">AgentWise Indent Comparison</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="litripassignment"><a href="PlanDespatch.aspx"><i class="fa fa-slack"></i>&nbsp
+                                    Plan Despatch</a></li>
+                                <li id="liSpecialDispatch"><a href="SpecialDispatch.aspx"><i class="fa fa-get-pocket">
+                                </i>&nbsp Special Despatch</a></li>
+                                <li id="liLocalSale"><a href="LocalSale.aspx"><i class="fa fa-ioxhost"></i>&nbsp Local
+                                    Sale</a></li>
+                                <li id="li169"><a href="ProductManagement.aspx"><i class="fa fa-dashcube"></i>&nbsp
+                                    ProductAssignment</a></li>
+                                <li id="litools" class="more" style="min-height: 25px; display: none;"><a href="#"><i
+                                    class="fa fa-leanpub"></i>&nbsp Edit Tools</a>
+                                    <div class="drop3">
+                                        <ul id="ultools">
+                                            <li id="liSalesEdit"><a href="EditIndent.aspx">Sales Edit</a></li>
+                                            <li id="LiCollectionsedit"><a href="EditCollections.aspx">Amount Collections Edit</a></li>
+                                            <li id="LiLeaksEdit"><a href="NewEditLeaks.aspx">Leakage Edit</a></li>
+                                            <li id="LiDcEdit"><a href="EditDC.aspx">DC Edit</a></li>
+                                            <li id="LiCahsbookEdit"><a href="EditCashBook.aspx">CashBook Edit</a></li>
+                                            <li id="liInventoryEdit"><a href="InventoryEdit.aspx">Inventory Edit</a></li>
+                                            <li id="listockclear"><a href="StockEdit.aspx">Stock Clear</a></li>
+                                            <li id="li28"><a href="editduetransactions.aspx">Edit Due Transactions</a></li>
+                                            <li id="li21"><a href="InventoryUpdate.aspx">Inventory Update</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="litripend"><a href="TripEnd.aspx"><i class="fa fa-dribbble"></i>&nbsp Trip End</a></li>
+                                <%-- <li id="liclosingstock"><a href="StockClosing.aspx"><i class="fa fa-safari"></i>&nbsp
+                                    Stock Closing</a></li>
+                                    <li id="liLoginInformation"><a href="logininformation.aspx"><i class="fa fa-safari"></i>&nbsp
+                                    Login Information</a></li>
+                                <li id="lisms"><a href="SmsForm.aspx"><i class="fa fa-whatsapp"></i>SMS</a></li>--%>
+                            </ul>
+                        </div>
+                    </li>
+                    
+                    <li id="lireports" class="more"><a href="#"><i class="fa fa-laptop"></i>&nbsp Reports</a>
+                        <div class="drop">
+                            <ul id="ulreports">
+                                <li id="li5" class="more" style="min-height: 25px;"><a href="#"><i class="fa fa-bars">
+                                </i>&nbsp Orders</a>
+                                    <div class="drop3">
+                                        <ul id="ul1">
+                                            <li id="liorder"><a href="Order_Report.aspx">Route Wise Orders</a></li>
+                                            <li id="litotalindent"><a href="IndentReport.aspx">Total Indent</a></li>
+                                            <li id="litotalindentt"><a href="RouteWiseDueAgentsAvgSales.aspx">Route Wise Indent
+                                                Classifications</a></li>
+                                            <li id="li36"><a href="indentCrates.aspx">Indent Crates</a></li>
+                                            <li id="li19"><a href="RouteInfo.aspx">Route Info</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="li6" class="more" style="min-height: 25px;"><a href="#"><i class="fa fa-money">
+                                </i>&nbsp Sales</a>
+                                    <div class="drop2" style="float: left;">
+                                        <div style="width: 50%; float: left; border: 0;">
+                                            <ul id="ul2" style="border: 0px solid #B9BBBD;">
+                                                <li id="lidelivery"><a href="NewDelivery_Report.aspx">Deliveries</a></li>
+                                                <li id="lidelivery_sheet"><a href="Derivery_sheet.aspx">Delivery History</a></li>
+                                                <li id="lirouteWdelivery"><a href="RouteWiseDelivery.aspx">Route Wise Delivery</a></li>
+                                                <li id="lisaleprice" style="display: none;"><a href="RouteWiseSalePrice.aspx">RouteWise
+                                                    Sale Price</a></li>
+                                                <li id="li63"><a href="AgentAvgSale.aspx">Agent Avg Sale</a></li>
+                                                <li id="li33"><a href="agentavgmilk_curdsale.aspx">Agent milk & curd avg Sale</a></li>
+                                                <li id="liroutewisedeliverymontly"><a href="monthlyroutewisedelivery.aspx">Monthly Route
+                                                    Wise Delivery</a></li>
+                                                <li id="licollection"><a href="Delivery_Collection_Report.aspx">Net Sales Report</a></li>
+                                                <li id="lidcvssale"><a href="dcvssale.aspx">Branch Day Wise Qty Summary</a></li>
+                                                <li id="li23"><a href="ClosingStock.aspx">Closing Stock</a></li>
+                                                <li id="lioffereport"><a href="OfferIndent.aspx">Offer Indent Delivery</a></li>
+                                                <li id="li12"><a href="Routewisesaleqty.aspx">Route Wise Sale Qty</a></li>
+                                                <li id="lisalesofficecollection"><a href="SalesOfficeCollection.aspx">SalesOffice Collections</a></li>
+                                                <li id="liroutewisecollections"><a href="RouteWiseCollections.aspx">Route Wise Collections</a></li>
+                                                <li id="liAgentTransaction"><a href="AgentTransaction.aspx">Agent Statement</a></li>
+                                              <%--  <li id="li47"><a href="TotalReport.aspx">Sangam Report</a></li>--%>
+                                                <li id="liRouteWiseActivity"><a href="RouteWiseActivity.aspx">Route Wise Activity</a></li>
+                                                <li id="liSalesOfficewiseActivity"><a href="SalesOfficeWiseActivity.aspx">SalesOffice
+                                                    Wise Activity</a></li>
+                                                <li id="li1"><a href="RouteWiseClassification.aspx">Route Wise Classification Report</a></li>
+                                                <li id="linewagentreport"><a href="NewAgentReport.aspx">New Agent Report</a></li>
+                                              <%--  <li id="licompassinvoice"><a href="AgentInvoiceReport.aspx">CompassInvoiceReport</a></li>--%>
+                                            </ul>
+                                        </div>
+                                        <div style="width: 50%; float: left; border: 0;">
+                                            <ul id="ul7" style="border: 0px solid #B9BBBD;">
+                                                <li id="li15"><a href="BranchWiseDispatch.aspx">Branch Wise Despatch</a></li>
+                                                <li id="li14"><a href="NetSalesBranchWise.aspx">Net Sales Branch Wise</a></li>
+                                                <li id="li38"><a href="DaywiseMilkSales.aspx">Day Wise Milk And Curd Sales</a></li>
+                                                <li id="liAgentMonthlyProducts"><a href="AgentMonthlyProducts.aspx">Agent Monthly Transaction</a></li>
+                                                <li id="liSalesOfficeStock"><a href="SalesOfficeStock.aspx">Sales Office Stock</a></li>
+                                                <li id="HelperCharges"><a href="HelperCharges.aspx">Helper Charges</a></li>
+                                                <li id="liduereport"><a href="AgentDueReport.aspx">Due Report</a></li>
+                                                <li id="liagentwisedue"><a href="AgentwiseDueReport.aspx">Agent Wise Due</a></li>
+                                                <li id="liroutewisedue"><a href="RouteWiseDue.aspx">Route Wise Due</a></li>
+                                                <li id="liagentinvoice"><a href="Agent_invoice.aspx">Agent Invoice</a></li>
+                                                <li id="li26"><a href="indent_invoice.aspx">Indent Invoice</a></li>
+                                                <li id="li95"><a href="New_agent_invoice.aspx">New Agent Invoice</a></li>
+                                                <li id="litimingreport"><a href="PlantConsolidateSales.aspx">PlantWiseSaleSummary</a></li>
+                                                <%--<li id="litimingreport"><a href="TimingReport.aspx">Timing Report</a></li>--%>
+                                                <%-- <li id="liTimeline"><a href="TimeLine.aspx">Time Line</a></li>--%>
+                                              <%--  <li id="liagentdelivery"><a href="AgentDelivery.aspx">Agent Delivery</a></li>--%>
+                                                <li id="li66"><a href="RouteVerification.aspx">Trip Sheet</a></li>
+                                                <li id="liagentack" style="display: none;"><a href="AgentAcknoledgement.aspx">Agent
+                                                    Acknoledgement</a></li>
+                                                <li id="li98"><a href="StoppedAgentReport.aspx">Stopped Agent Report</a></li>
+                                                <li id="li78"><a href="SalesRepresentative.aspx">SR Wise Report</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li id="liCashReports" class="more" style="min-height: 25px;"><a href="#"><i class="fa fa-money">
+                                </i>&nbsp Cash Reports</a>
+                                    <div class="drop3">
+                                        <ul id="ul13">
+                                            <li id="li65"><a href="VoucherPrint.aspx">VoucherPrint</a></li>
+                                            <li id="liApprovalVoucher"><a href="VoucherApprovalReport.aspx">Approval Report</a></li>
+                                            <li id="licheckdetails"><a href="CheckDetails.aspx">Cheque Details</a></li>
+                                            <li id="li32"><a href="ChequeReport.aspx">Cheque Report</a></li>
+                                            <li id="li34"><a href="ReceiptReport.aspx">Receipts Report</a></li>
+                                            <li id="li61"><a href="creditvoucherdetails.aspx">Credit Details</a></li>
+                                            <li id="li29"><a href="LedgerWiseTransactions.aspx">Ledger Details</a></li>
+                                            <li id="liroureceipt"><a href="RoutewiseRecipt.aspx">Agent wise Receipt</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="liLeaksReports" class="more" style="min-height: 25px;"><a href="#"><i class="fa fa-ticket">
+                                </i>&nbsp Leakages</a>
+                                    <div class="drop3">
+                                        <ul id="ul11">
+                                            <li id="li84"><a href="Puff_Leakes.aspx">Puff Leaks Report</a></li>
+                                            <li id="lileaksandreturns"><a href="LeaksAndReturns.aspx">Leaks and Returns Report</a></li>
+                                            <li id="litotleaksanddispatch"><a href="TotalLeakReturnDispatch.aspx">Total Leaks Returns
+                                                And Dispatch</a></li>
+                                            <li id="litotalleaks"><a href="TotalLeaks.aspx">Total Leaks and Returns</a></li>
+                                            <li id="liverifiedleaks"><a href="VarifyingLeaks.aspx">Verified Leaks and Returns</a></li>
+                                            <li id="limonthlyverifiedleaks"><a href="MonthlyVerifiedLeaks.aspx">Monthly Verified
+                                                Leaks </a></li>
+                                            <li id="li58"><a href="SalesMenActivity.aspx">Sales Men Activity</a></li>
+                                            <li id="liLeakageActivityReport"><a href="LeakageActivityReport.aspx">Leakage Activity</a></li>
+                                            <li id="liLeaksConsolidatedReport"><a href="LeaksConsolidatedReport.aspx">Branch Wise
+                                                Leaks Consolidated Report</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="li7" class="more" style="min-height: 25px;"><a href="#"><i class="fa fa-newspaper-o">
+                                </i>&nbsp Inventory</a>
+                                    <div class="drop3">
+                                        <ul id="ul3">
+                                            <li id="liinventoryreport"><a href="InventoryReport.aspx">Inventory Details</a></li>
+                                            <li id="lidaywiseinventory"><a href="CratesReport.aspx">Day Wise Inventory Transactions</a></li>
+                                            <li id="limonthlyroutewisecratesreport"><a href="MonthlyRouteWiseCratesReport.aspx">
+                                                Monthly Route Wise Inventory Transactions</a></li>
+                                            <li id="liroutewisetransaction"><a href="RouteWiseCratesReport.aspx">Route Wise Inventory
+                                                Transactions</a></li>
+                                            <li id="lidispatchwiseinventory"><a href="PuffWiseInventory.aspx">Dispatch Wise Inventory
+                                                Transactions</a></li>
+                                            <li id="li13"><a href="DayWisePuffInventory.aspx">Day Wise Puff Inventory</a></li>
+                                            <li id="li172"><a href="InventarySummary.aspx">InventarySummary</a></li>
+                                            <li id="li167"><a href="InventaryDetails.aspx">InventaryClassification</a></li>
+                                            <li id="li168"><a href="InventaryMoniter.aspx">DirectSalesInventary</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="liIncentive" class="more" style="min-height: 25px;"><a href="#"><i class="fa fa-calculator">
+                                </i>&nbsp Incentive</a>
+                                    <div class="drop3">
+                                        <ul id="ul4">
+                                            <li id="liincentivestructureapproval"><a href="IncentiveStructureApproval.aspx">Incentive
+                                                Approval</a></li>
+                                            <li id="incentivereport"><a href="IncentiveReport.aspx">Incentive Report</a></li>
+                                            <li id="agentincentivereport"><a href="AgentWiseTotalIncentive.aspx">Agent Wise Incentive</a></li>
+                                            <li id="Li16"><a href="RouteWiseIncentive.aspx">Route Wise Incentive</a></li>
+                                            <li id="Liincentivestatement"><a href="monthlyagentwiseincentive.aspx">Incentive Statement</a></li>
+                                            <li id="LiIncentiveStructureApproval"><a href="IncentiveStructureApproval.aspx">Incentive Structure Approval</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="li9" class="more" style="min-height: 25px;"><a href="#"><i class="fa fa-truck">
+                                </i>&nbsp Despatch</a>
+                                    <div class="drop3">
+                                        <ul id="ul5">
+                                            <li id="lidcreport"><a href="Dc_print.aspx">DC Report</a></li>
+                                            <li id="litotaldc"><a href="TotalDCReport.aspx">Total DC Report</a></li>
+                                            <li id="li11"><a href="DayWiseDispatch.aspx">Day Wise DC Report</a></li>
+                                            <li id="liproductwisedcreport"><a href="ProductWiseTotalDCReport.aspx">Product Wise
+                                                Total DC Report</a></li>
+                                            <li id="li17"><a href="DispatchWiseDcReport.aspx">Despatch Wise DC Report</a></li>
+                                            <li id="PlantSales"><a href="PlantSales.aspx">Net Sale</a></li>
+                                            <li id="lidaywisedc"><a href="MonthlyProductwiseTransaction.aspx">Monthly Product Wise
+                                                Transaction</a></li>
+                                           <%-- <li id="li67"><a href="Deliverychallan_print.aspx">DC with UOM</a></li>--%>
+                                            <%--<li id="li184"><a href="dcvssale.aspx">DC vs Sales Comparison</a></li>--%>
+                                            <li id="liReturnDC"><a href="ReturnDC.aspx">Return DC</a></li>
+                                            
+                                        </ul>
+                                    </div>
+                                </li>
+                                <%--<li id="li18" class="more" style="min-height: 25px;"><a href="#"><i class="fa fa-map">
+                                </i>&nbsp Google Map</a>
+                                    <div class="drop3">
+                                        <ul id="ul6">
+                                            <li id="li85"><a href="RouteAgents.aspx">Show Agent Locations</a></li>
+                                            <li id="li62"><a href="Retail_agents_map.aspx">Show Retail Locations</a></li>
+                                            <li id="li94"><a href="Avg_Fat_calculation_brachwise.aspx">Avg Fat Calculation</a></li>
+                                        </ul>
+                                    </div>
+                                </li>--%>
+                                <li id="li53" style="display: none;"><a href="ClosingStock.aspx">Closing Stock</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li id="lichartreports" class="more" id="li1"><a href="#"><i class="fa fa-pie-chart">
+                    </i>&nbsp Chart Reports</a>
+                        <div class="drop">
+                            <ul>
+                                <li id="li74"><a href="LineChart.aspx"><i class="fa fa-line-chart"></i>&nbspLine Chart
+                                    Report</a></li>
+                                <li id="li75"><a href="AvgSaleinLineChart.aspx"><i class="fa fa-line-chart"></i>&nbspAvg
+                                    Sales Chart</a></li>
+                                <li id="li77"><a href="ProductWise_chartReport.aspx"><i class="fa fa-line-chart"></i>
+                                    &nbsp ProductWise Chart</a></li>
+                                <li id="li3"><a href="Classification_linechart.aspx"><i class="fa fa-line-chart"></i>
+                                    &nbsp Classification Line Chart</a></li>
+                                <li id="li20"><a href="PieChart.aspx"><i class="fa fa-pie-chart"></i>&nbsp Pie Chart
+                                </a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="rightdiv" style="float: right; width: 86%; position: relative; z-index: 100">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1525
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "sales_bmg_online", ".", "{FED8D4F5-A45D-4B59-8F57-8418F105474A}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_1158"
+		Debug.AspNetCompiler.PhysicalPath = "..\sales_bmg_online\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_1158\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_1158"
+		Release.AspNetCompiler.PhysicalPath = "..\sales_bmg_online\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_1158\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "1158"
+		SlnRelativePath = "..\sales_bmg_online\"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FED8D4F5-A45D-4B59-8F57-8418F105474A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FED8D4F5-A45D-4B59-8F57-8418F105474A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {358FD086-1F85-4990-8175-D8FA1418C4C8}
+	EndGlobalSection
+EndGlobal

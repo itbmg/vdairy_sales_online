@@ -1,0 +1,101 @@
+﻿<div align="center">
+ <span style="color: Red; font-size: 18px;">Edit Inventory</span>
+</div>
+<div style="width: 100%; float: left; border: 1px solid #d6d6d6; border-radius: 5px 5px 5px 5px;
+    background-color: #FFFFEC">
+    <table align="left" cellpadding="0" cellspacing="0" style="float: left; width: 100%;"
+        id="table_Indent_details" class="mainText2" border="1">
+        <thead>
+            <!-- <tr>
+                            <td>
+                                <br />
+                            </td>
+                        </tr>-->
+            <tr>
+                <td style="width: 20%; height: 20px; color: #2f3293; font-size: 12px; font-weight: bold;
+                    text-align: center;">
+                      Inventory Id
+                    <br />
+                </td>
+                <td style="width: 20%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Inventory Name
+                    <br />
+                </td>
+                <td style="width: 20%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                   Issued
+                    <br />
+                </td>
+                <td style="width: 20%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Received
+                    <br />
+                </td>
+                <td style="width: 20%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
+                    Closing
+                    <br />
+                </td>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {#foreach $T as data}
+            <tr class="tblrowcolor">
+                <td style="width: 20%; height: 30px; vertical-align: middle; font-size: 12px; font-weight: 500;
+                    text-align: center; padding: 0px 0px 0px 3px">
+                    <span id="txtIndentNo" style="font-size: 15px; color: Red;" ><b>{ $T.data.invsno }</span>
+                </td>
+                <td style="width: 20%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
+                    color: Gray;">
+                    <span id="txtProductName" style="font-size: 15px; color: Red;" class="ProductClass"  ><b>{ $T.data.inventoryname }</b></span>
+                     <input type="hidden" id="hdnProductSno" value="{ $T.data.refsno }"/>
+                     <input type="hidden" id="hdninvdel" value="{ $T.data.Deliveryqty }"/>
+
+                    
+                </td>
+                <td style="width: 20%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <input type="number" id="txtinvdel" class="totqtyclass" value="{ $T.data.Deliveryqty }" style="width: 80%; height: 34px; font-size: 16px;
+                        border: 1px solid gray; border-radius: 6px 6px 6px 6px;" placeholder="Enter Del Qty" onkeyup="return DeliveryChange(this);" />
+
+                </td>
+                <td style="width: 20%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                     <input type="number" id="txtUnitCost" class="totRtnclass"  value="{ $T.data.collectionqty }" style="width: 80%; height: 34px; font-size: 16px;
+                        border: 1px solid gray; border-radius: 6px 6px 6px 6px;" placeholder="Enter Rec Qty" onkeyup="return ReceivingChange(this);"/>
+                    <!--<span id="txtUnitCost" style="font-size: 15px; color: Red;"  ><b>{ $T.data.UnitCost }</b></span>-->
+                     <input type="hidden" id="hdninvrec" value="{ $T.data.collectionqty }"/>
+                    
+                </td>
+                <td style="width: 20%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    
+                    <span id="txtinvclosing" style="font-size: 15px; color: Red;" class="ProductClass"  ><b>{ $T.data.oppening }</b></span>
+                     <input type="hidden" id="hdnclosing" value="{ $T.data.oppening }"/>
+
+                </td>
+                
+            <td>
+
+            </td>
+            <!--<td>
+                <input type="button" id="Button2" value="Refresh" onclick="btnPlantTripRefreshClick();" style="width:100px;height:24px;font-size:14px;" class="ContinueButton"/>
+            </td>
+        -->
+            </tr>
+            {#/for}
+            
+        </tbody>
+    </table>
+    <table style="width: 100%; height: 16%;padding-left:40%;">
+        <tr>
+            <td>
+                <input type="button" id="Button1" value="Update" onclick="btnEditInventorySaveClick();"
+                    style="width: 100px; height: 24px; font-size: 16px;" class="SaveButton" />
+            </td>
+            </tr>
+    </table>
+   
+</div>

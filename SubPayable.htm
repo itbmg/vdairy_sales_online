@@ -1,0 +1,42 @@
+﻿<div style="width: 100%; float: left; border: 1px solid #d6d6d6; border-radius: 5px 5px 5px 5px;
+    background-color: #F8F8FF">
+<div align="center">
+    <span style="font-size: 14px;font-weight:bold;"><b>Head Of Account</b></span>
+    </div>
+    <table align="left" cellpadding="0" cellspacing="0" style="float: left; width: 100%;border-top:dotted 1px black; border-bottom:dotted 1px black;"
+        id="tableCashFormdetails" class="mainText2">
+        <thead>
+            <tr >
+                <td style="width: 70%; text-align: center; height: 14px; font-size: 11px;font-weight:bold;border-bottom:dotted 1px black;">
+                    <b>Head Of Account</b>
+                    <br />
+                </td>
+                <td style="width: 30%; height: 14px; text-align: center; font-size: 12px;font-weight:bold;border-bottom:dotted 1px black;">
+                    <b>Amount Rs</b>
+                    <br />
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            {#foreach $T as data}
+            <tr class="tblIndentPlanrowcolor" >
+                <td style="width: 70%; height: 15px; vertical-align: middle; font-size: 12px; text-align: center; border-bottom:dotted 1px black;">
+                    <span id="txtAccount" style="font-size: 12px;font-weight:bold;" class="AccountClass"><b>{ $T.data.HeadOfAccount }</b></span>
+                </td>
+                <td style="width: 30%; height: 15px; font-size: 12px; vertical-align: middle; text-align: center;border-bottom:dotted 1px black;" align="center">
+                    <span id="txtamount" style="font-size: 12px;font-weight:bold;"
+                     class="AmountClass"><b>{ $T.data.Amount }</b></span>
+                </td>
+            </tr>
+            {#/for}
+             <tr >
+             <td style="width: 14%; height: 15px; vertical-align: top; font-size: 12px; font-weight: 500;
+                    text-align: center; padding: 0px 0px 0px 3px; ">
+                  <b>  <span style="width:100%;font-size: 12px; font-weight:bold;"> Total Rs.</span> </b>
+                    </td>
+                     <td style="width: 14%; height: 15px; vertical-align: middle; font-size: 11px; text-align: center;">
+                   <b> <span style="width:100%;font-size: 12px; font-weight:bold;" id="txt_total">{ $T.data.Total }</span> </b>
+                </td>
+            </tr>
+        </tbody>
+    </table>
