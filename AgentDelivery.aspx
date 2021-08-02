@@ -108,7 +108,7 @@
                                         <tr>
                                             <td>
                                                 <div style="text-align: right;">
-                                                    <img src="Images/Vyshnavilogo.png" alt=BMG width="100px" height="72px" />
+                                                    <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="100px" height="72px" />
                                                 </div>
                                             </td>
                                             <td>

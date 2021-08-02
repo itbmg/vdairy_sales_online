@@ -80,7 +80,7 @@
                 <div>
                     <%--<a href="ForgetPassWord.aspx">Forgot PassWord</a>--%>
                 </div>
-                <span style="font-size: 14px;">Powered by <strong>BMG Dairy</strong></span>
+                <span style="font-size: 14px;">Powered by <strong>VT Milk Dairy</strong></span>
 
                 <br />
                 <br />

@@ -89,7 +89,7 @@
             <asp:Panel ID="pnlHide" runat="server" Visible="false">
     <div id="divPrint">
         <div style="width: 11%; float: left;">
-              <img src="Images/Vyshnavilogo.png" alt=BMG width="120px" height="135px" />
+              <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="120px" height="135px" />
         </div>
         <div style="left: 0%; text-align: center;">
             <asp:Label ID="lblTitle" runat="server" Font-Bold="true" Font-Size="26px" ForeColor="#0252aa"

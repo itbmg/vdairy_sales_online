@@ -500,7 +500,7 @@ Ref No
                <div id="divPrint" style="display:none;font-family: initial;">
                 <div style="border: 2px solid gray;" class="col-md-12">
                     <div  style="width: 13%; float: left;">
-                        <img src="Images/Vyshnavilogo.png" alt=BMG width="60px" height="60px" />
+                        <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="60px" height="60px" />
                         <br />
                     </div>
                    

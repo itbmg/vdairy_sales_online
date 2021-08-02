@@ -1093,7 +1093,7 @@
                             <div style="width: 100%;">
                                 <div style="width: 100%;">
                                     <div style="width: 11%; float: left;">
-                                        <img src="Images/Vyshnavilogo.png" alt=BMG width="120px"
+                                        <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="120px"
                                             height="135px" />
                                     </div>
                                     <div style="left: 0%; text-align: center;">
