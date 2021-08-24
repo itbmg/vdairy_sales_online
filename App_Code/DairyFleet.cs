@@ -40589,6 +40589,62 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             cmd.Parameters.AddWithValue("@BranchId", BranchID);
                             vdbmngr.insert(cmd);
                         }
+
+                        string opbal = "0";
+                        string clobal = "0";
+                        cmd = new MySqlCommand("SELECT MAX(sno) as sno FROM agent_bal_trans WHERE agentid=@agentid");
+                        cmd.Parameters.AddWithValue("@agentid", BranchID);
+                        DataTable dtagentbal = vdbmngr.SelectQuery(cmd).Tables[0];
+                        if (dtagentbal.Rows.Count > 0)
+                        {
+                            string sno = dtagentbal.Rows[0]["sno"].ToString();
+                            cmd = new MySqlCommand("SELECT  opp_balance, clo_balance FROM agent_bal_trans WHERE sno=@sno");
+                            cmd.Parameters.AddWithValue("@sno", sno);
+                            DataTable dtopbal = vdbmngr.SelectQuery(cmd).Tables[0];
+                            if (dtopbal.Rows.Count > 0)
+                            {
+                                opbal = dtopbal.Rows[0]["opp_balance"].ToString();
+                                clobal = dtopbal.Rows[0]["clo_balance"].ToString();
+                            }
+                            cmd = new MySqlCommand("UPDATE agent_bal_trans set salesvalue=salesvalue+@Amount, clo_balance=clo_balance+@Amount  where agentid=@BranchId AND inddate=@inddate");
+                            cmd.Parameters.AddWithValue("@inddate", ServerDateCurrentdate);
+                            cmd.Parameters.AddWithValue("@Amount", TotRate);
+                            cmd.Parameters.AddWithValue("@BranchId", BranchID);
+                            if (vdbmngr.Update(cmd) == 0)
+                            {
+                                double clsval = Convert.ToDouble(clobal) + TotRate;
+                                cmd = new MySqlCommand("Insert Into agent_bal_trans(agentid, opp_balance, inddate, salesvalue,  clo_balance, createdate, entryby,Paidamount) values (@BranchId,@opp_balance,@inddate, @salesvalue, @clo_balance, @createdate, @entryby,@Paidamount)");
+                                cmd.Parameters.AddWithValue("@BranchId", BranchID);
+                                cmd.Parameters.AddWithValue("@opp_balance", clobal);
+                                cmd.Parameters.AddWithValue("@inddate", ServerDateCurrentdate);
+                                cmd.Parameters.AddWithValue("@salesvalue", TotRate);
+                                cmd.Parameters.AddWithValue("@Paidamount", 0);
+                                cmd.Parameters.AddWithValue("@clo_balance", clsval);
+                                cmd.Parameters.AddWithValue("@createdate", ServerDateCurrentdate);
+                                cmd.Parameters.AddWithValue("@entryby", Username);
+                                vdbmngr.insert(cmd);
+                            }
+                        }
+                        else
+                        {
+                            cmd = new MySqlCommand("UPDATE agent_bal_trans set salesvalue=salesvalue+@Amount, clo_balance=clo_balance+@Amount  where agentid=@BranchId AND inddate=@inddate");
+                            cmd.Parameters.AddWithValue("@inddate", ServerDateCurrentdate);
+                            cmd.Parameters.AddWithValue("@Amount", TotRate);
+                            cmd.Parameters.AddWithValue("@BranchId", BranchID);
+                            if (vdbmngr.Update(cmd) == 0)
+                            {
+                                cmd = new MySqlCommand("Insert Into agent_bal_trans(agentid, opp_balance, inddate, salesvalue,  clo_balance, createdate, entryby,Paidamount) values (@BranchId,@opp_balance,@inddate, @salesvalue, @clo_balance, @createdate, @entryby,@Paidamount)");
+                                cmd.Parameters.AddWithValue("@BranchId", BranchID);
+                                cmd.Parameters.AddWithValue("@opp_balance", 0);
+                                cmd.Parameters.AddWithValue("@inddate", ServerDateCurrentdate);
+                                cmd.Parameters.AddWithValue("@salesvalue", TotRate);
+                                cmd.Parameters.AddWithValue("@Paidamount", 0);
+                                cmd.Parameters.AddWithValue("@clo_balance", TotRate);
+                                cmd.Parameters.AddWithValue("@createdate", ServerDateCurrentdate);
+                                cmd.Parameters.AddWithValue("@entryby", Username);
+                                vdbmngr.insert(cmd);
+                            }
+                        }
                     }
                 }
             }

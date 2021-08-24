@@ -252,7 +252,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
         {
             var salesoffice = ddlSalesOffice.SelectedItem.Text;
             var salesoff = ddlSalesOffice.SelectedValue;
-            if (salesoff == "5" || salesoff == "7" || salesoff == "9")
+            if (salesoff == "2")
             {
                 GetReport();
             }
@@ -278,7 +278,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
         else
         {
             var salesoff = Session["branch"].ToString();
-            if (salesoff == "5" || salesoff == "7" || salesoff == "9")
+            if (salesoff == "2")
             {
                 GetReport();
             }

@@ -746,8 +746,10 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                 <li id="litripassignment"><a href="PlanDespatch.aspx"><i class="fa fa-slack"></i>&nbsp
                                     Plan Despatch</a></li>
                                 <li id="liSpecialDispatch"><a href="SpecialDispatch.aspx"><i class="fa fa-get-pocket">
-                                </i>&nbsp Special Despatch</a></li>
+                                </i>&nbsp Special Despatch</a></li> 
                                 <li id="liLocalSale"><a href="LocalSale.aspx"><i class="fa fa-ioxhost"></i>&nbsp Local
+                                    Sale</a></li>
+                                <li id="liAgentSales"><a href="AgentSales.aspx"><i class="fa fa-ioxhost"></i>&nbsp Agent
                                     Sale</a></li>
                                 <li id="li169"><a href="ProductManagement.aspx"><i class="fa fa-dashcube"></i>&nbsp
                                     ProductAssignment</a></li>
