@@ -111,7 +111,7 @@ public partial class TotalDCReport : System.Web.UI.Page
                 if (MobNo.Length == 10)
                 {
                     string Date = DateTime.Now.ToString("dd/MM/yyyy");
-                    if (Session["TitleName"].ToString() == "Veer Dairy")
+                    if (Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                     {
                         WebClient client = new WebClient();
                         //string strUrl = " http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=" + no + "&msg=" + message1 + "&type=1 ";
@@ -167,7 +167,7 @@ public partial class TotalDCReport : System.Web.UI.Page
                             if (PhoneNumber.Length == 10)
                             {
                                 string Date = DateTime.Now.ToString("dd/MM/yyyy");
-                                if (Session["TitleName"].ToString() == "Veer Dairy")
+                                if (Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                                 {
                                     WebClient client = new WebClient();
                                     //string strUrl = " http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=" + no + "&msg=" + message1 + "&type=1 ";
@@ -274,7 +274,7 @@ public partial class TotalDCReport : System.Web.UI.Page
                 prevsubdiff = Math.Round(SubCategoryTotalQty - PreviousSubTotalQty);
                 if (MobNo.Length == 10)
                 {
-                    if (Session["TitleName"].ToString() == "Veer Dairy")
+                    if (Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                     {
                         WebClient client1 = new WebClient();
                         //string strUrl = " http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=" + no + "&msg=" + message1 + "&type=1 ";
@@ -325,7 +325,7 @@ public partial class TotalDCReport : System.Web.UI.Page
                             string PhoneNumber = dr["Mobno"].ToString();
                             if (PhoneNumber.Length == 10)
                             {
-                                if (Session["TitleName"].ToString() == "Veer Dairy")
+                                if (Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                                 {
                                     WebClient client1 = new WebClient();
 
@@ -707,7 +707,7 @@ public partial class TotalDCReport : System.Web.UI.Page
                 }
                 if (MobNo.Length == 10)
                 {
-                    if (Session["TitleName"].ToString() == "Veer Dairy")
+                    if (Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                     {
                         WebClient client2 = new WebClient();
                         //string strUrl = " http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=" + no + "&msg=" + message1 + "&type=1 ";
@@ -756,7 +756,7 @@ public partial class TotalDCReport : System.Web.UI.Page
                             string PhoneNumber = dr["Mobno"].ToString();
                             if (PhoneNumber.Length == 10)
                             {
-                                if (Session["TitleName"].ToString() == "Veer Dairy")
+                                if (Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                                 {
                                     WebClient client2 = new WebClient();
                                     //string strUrl = " http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=" + no + "&msg=" + message1 + "&type=1 ";

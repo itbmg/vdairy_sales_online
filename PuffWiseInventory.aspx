@@ -98,7 +98,7 @@
                                             <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="120px" height="135px" />
                                         </div>
                                         <div style="left: 0%; text-align: center;">
-                                            <span style="font-size: 26px; font-weight: bold; color: #0252aa;">Veer Dairy
+                                            <span style="font-size: 26px; font-weight: bold; color: #0252aa;">VITA MILK DAIRY PRODUCTS
                                                   </span>
                                             <br />
                                         </div>

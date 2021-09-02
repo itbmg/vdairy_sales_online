@@ -196,7 +196,7 @@
                     </div>
                     <div>
                         <div style="font-family: Arial; font-size: 14pt; font-weight: bold; color: Black;">
-                            <span>Veer Dairy </span>
+                            <span>VITA MILK DAIRY PRODUCTS </span>
                             <br />
                         </div>
                         <%--<div style="width:26%;">

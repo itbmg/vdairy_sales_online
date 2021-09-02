@@ -92,7 +92,7 @@
                                     <div style="left: 0%; text-align: center;">
                                         <asp:Label ID="lblTitle" runat="server" Font-Bold="true" Font-Size="26px" ForeColor="#0252aa"
                                             Text=""></asp:Label>
-                                        <%--<span style="font-size: 26px; font-weight: bold; color: #0252aa;">Veer Dairy
+                                        <%--<span style="font-size: 26px; font-weight: bold; color: #0252aa;">VITA MILK DAIRY PRODUCTS
                               </span>--%>
                                         <br />
                                     </div>

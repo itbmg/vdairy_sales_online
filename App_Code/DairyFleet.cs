@@ -2917,7 +2917,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
                             //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
 
-                            if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                            if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                             {
                                 string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=%20CashAgents:" + text + "&type=1";
                                 //string baseurl = "http://roundsms.com/api/sendhttp.php?authkey=Y2U3NGE2MGFkM2V&mobiles=" + phonenumber + "&message=" + text + " &sender=VYSNVI&type=1&route=2";
@@ -2994,7 +2994,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 WebClient client = new WebClient();
 
                                 //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
-                                if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                                if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                                 {
                                     string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=%20CashAgents:" + text + "&type=1";
                                    // string baseurl = "http://roundsms.com/api/sendhttp.php?authkey=Y2U3NGE2MGFkM2V&mobiles=" + phonenumber + "&message=" + text + " &sender=VYSNVI&type=1&route=2";
@@ -24863,7 +24863,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     DateTime dtmonth = Convert.ToDateTime(Date);
                                     string strdate = dtmonth.ToString("dd/MMM");
                                     string message = "";
-                                    if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                                    if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                                     {
                                         //string baseurl = "http://103.225.76.43/blank/sms/user/urlsmstemp.php?username=vyshnavidairy&pass=vyshnavi@123&senderid=VYSHRM&dest_mobileno=" + phonenumber + "&message=Dear%20" + BranchName + "%20Your%20Incentive%20Amount%20Credeted%20for%20The%20Month%20Of%20%20" + strdate + "%20Amount%20is =" + PaidAmount + "&response=Y";
                                         string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Incentive%20Amount%20Credeted%20for%20The%20Month%20Of%20%20" + strdate + "%20Amount%20is =" + PaidAmount + "&type=1";
@@ -24902,7 +24902,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         try
                                         {
                                             string Date = PaidDate;
-                                            if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                                            if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                                             {
                                                 WebClient client = new WebClient();
                                                 //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
@@ -36447,7 +36447,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     {
                                         string phonenumber = drmobile["PhoneNumber"].ToString();
                                         WebClient client = new WebClient();
-                                        if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                                        if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                                         {
                                             //string baseurl = "http://103.225.76.43/blank/sms/user/urlsmstemp.php?username=vyshnavidairy&pass=vyshnavi@123&senderid=VYSHRM&dest_mobileno=" + phonenumber + "&message=Dear%20" + AgentName + "%20Your%20Incentive%20Amount%20Credeted%20for%20The%20Month%20Of%20%20" + strdate + "%20Amount%20is =" + PaidAmount + "&response=Y";
                                             //string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=%20" + AgentName + "%20Cheque%20Amount%20Collected%20for%20The%20Date%20Of%20%20" + from_date + "%20Amount%20is =" + BranchAmount + "&type=1";
@@ -36619,7 +36619,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 foreach (DataRow drmobile in dtmobileno.Rows)
                                 {
                                     string phonenumber = drmobile["PhoneNumber"].ToString();
-                                    if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                                    if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                                     {
                                         //string baseurl = "http://103.225.76.43/blank/sms/user/urlsmstemp.php?username=vyshnavidairy&pass=vyshnavi@123&senderid=VYSHRM&dest_mobileno=" + phonenumber + "&message=Dear%20" + BranchName + "%20Your%20Incentive%20Amount%20Credeted%20for%20The%20Month%20Of%20%20" + strdate + "%20Amount%20is =" + PaidAmount + "&response=Y";
                                         //string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=Dear%20" + AgentName + "%20Your%20BankTransfer%20Amount%20Credeted%20for%20The%20Date%20Of%20%20" + from_date + "%20Amount%20is =" + BranchAmount + "&type=1";
@@ -38563,7 +38563,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 try
                                 {
 
-                                    if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                                    if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                                     {
                                         WebClient client = new WebClient();
 
@@ -38776,7 +38776,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 {
                                     try
                                     {
-                                        if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                                        if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                                         {
                                             WebClient client = new WebClient();
                                             //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
@@ -38958,7 +38958,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             {
                                 try
                                 {
-                                    if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                                    if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                                     {
                                         WebClient client = new WebClient();
                                         //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
@@ -40122,7 +40122,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             {
                                 try
                                 {
-                                    if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                                    if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                                     {
                                         WebClient client = new WebClient();
                                         //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
@@ -40169,7 +40169,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 {
                                     try
                                     {
-                                        if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                                        if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                                         {
                                             WebClient client = new WebClient();
 
@@ -40867,7 +40867,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     cmd.Parameters.AddWithValue("@Branch_id", context.Session["branch"].ToString());
                     string TitleName = context.Session["TitleName"].ToString();
                     string BID = "";
-                    if (TitleName == "Veer Dairy")
+                    if (TitleName == "VITA MILK DAIRY PRODUCTS")
                     {
                         BID = "760";
                         cmd.Parameters.AddWithValue("@BranchID", BID);
@@ -41496,7 +41496,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     cmd.Parameters.AddWithValue("@DispMode", "Staff");
                     string TitleName = context.Session["TitleName"].ToString();
                     string BID = "";
-                    if (TitleName == "Veer Dairy")
+                    if (TitleName == "VITA MILK DAIRY PRODUCTS")
                     {
                         BID = "760";
                         cmd.Parameters.AddWithValue("@BranchID", BID);
@@ -41512,7 +41512,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     cmd.Parameters.AddWithValue("@DispType", "Free");
                     cmd.Parameters.AddWithValue("@DispMode", "Free");
                     string TitleName = context.Session["TitleName"].ToString();
-                    if (TitleName == "Veer Dairy")
+                    if (TitleName == "VITA MILK DAIRY PRODUCTS")
                     {
                         cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
                     }
@@ -44299,7 +44299,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             if (mobileno.Length == 10)
             {
                 string Date = DateTime.Now.AddDays(1).ToString("dd/MM/yyyy");
-                if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                 {
                     //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
 
@@ -45207,7 +45207,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     if (MobNo.Length == 10)
                     {
                         string Date = DateTime.Now.ToString("dd/MM/yyyy");
-                        if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                        if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                         {
                             WebClient client = new WebClient();
                             //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
@@ -45260,7 +45260,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 if (PhoneNumber.Length == 10)
                                 {
                                     string Date = DateTime.Now.ToString("dd/MM/yyyy");
-                                    if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                                    if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                                     {
                                         WebClient client = new WebClient();
 
@@ -45363,7 +45363,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     prevsubdiff = Math.Round(SubCategoryTotalQty - PreviousSubTotalQty);
                     if (MobNo.Length == 10)
                     {
-                        if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                        if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                         {
                             WebClient client1 = new WebClient();
                             //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
@@ -45410,7 +45410,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 string PhoneNumber = dr["Mobno"].ToString();
                                 if (PhoneNumber.Length == 10)
                                 {
-                                    if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                                    if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                                     {
                                         WebClient client1 = new WebClient();
 
@@ -45916,7 +45916,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     }
                     if (MobNo.Length == 10)
                     {
-                        if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                        if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                         {
                             WebClient client2 = new WebClient();
                             //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
@@ -45965,7 +45965,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 string PhoneNumber = dr["Mobno"].ToString();
                                 if (PhoneNumber.Length == 10)
                                 {
-                                    if (context.Session["TitleName"].ToString() == "Veer Dairy")
+                                    if (context.Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                                     {
                                         WebClient client2 = new WebClient();
                                         //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
@@ -49795,7 +49795,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 context.Session["SuperBranch"] = dtBranch.Rows[0]["SuperBranch"].ToString();
                 if (PlantID == "172" || Branch == "172" || PlantID == "1801" || Branch == "1801" || PlantID == "3625" || Branch == "3625" || Branch == "3919")
                 {
-                    context.Session["TitleName"] = "Veer Dairy";
+                    context.Session["TitleName"] = "VITA MILK DAIRY PRODUCTS";
                     if (Branch == "3625")
                     {
                         context.Session["Address"] = "No : 170/1B, M.G.R Nagar,Manapakkam,Chennai,TamilNadu (State),PinCode: 600116,TIN No:33140842508,</n>Toll Free No:1800 270 8800 ";

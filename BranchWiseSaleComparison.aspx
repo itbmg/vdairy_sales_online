@@ -793,7 +793,7 @@
                        <div id="routeprint" style="display:none;">
                                 <div>
                                     <div align="center"  style="font-family: Arial; font-size: 18pt; font-weight: bold; color: Black;">
-                                        <span>Veer Dairy </span>
+                                        <span>VITA MILK DAIRY PRODUCTS </span>
                                         <br />
                                     </div>
                                 </div>
@@ -823,7 +823,7 @@
                        <div id="agentprint" style="display:none;">
                                 <div>
                                     <div align="center"  style="font-family: Arial; font-size: 18pt; font-weight: bold; color: Black;">
-                                        <span>Veer Dairy </span>
+                                        <span>VITA MILK DAIRY PRODUCTS </span>
                                         <br />
                                     </div>
                                 </div>
@@ -855,7 +855,7 @@
                        <div id="agentproduct" style="display:none;">
                                 <div>
                                     <div align="center"  style="font-family: Arial; font-size: 18pt; font-weight: bold; color: Black;">
-                                        <span>Veer Dairy </span>
+                                        <span>VITA MILK DAIRY PRODUCTS </span>
                                         <br />
                                     </div>
                                 </div>
@@ -886,7 +886,7 @@
                        <div id="AgentDayProduct" style="display:none;">
                                 <div>
                                     <div align="center"  style="font-family: Arial; font-size: 18pt; font-weight: bold; color: Black;">
-                                        <span>Veer Dairy </span>
+                                        <span>VITA MILK DAIRY PRODUCTS </span>
                                         <br />
                                     </div>
                                 </div>

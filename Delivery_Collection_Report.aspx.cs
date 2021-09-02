@@ -180,7 +180,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                 string Date = DateTime.Now.ToString("dd/MM/yyyy");
                 WebClient client = new WebClient();
                 string SalesOfficeName = ddlSalesOffice.SelectedItem.Text;
-                if (Session["TitleName"].ToString() == "Veer Dairy")
+                if (Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
                 {
                     //string strUrl = " http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=" + no + "&msg=" + message1 + "&type=1 ";
                     string baseurl = "http://roundsms.com/api/sendhttp.php?authkey=Y2U3NGE2MGFkM2V&mobiles=" + MobNo + "&message=%20" + SalesOfficeName + "%20,%20 + NET SALES FOR TODAY" + "%20:%20" + fromdate + "%20%20" + ProductName + "TotalQty =" + TotalQty + "%20,%20" + "Sale Value =" + Totalsalevalue + "&sender=VYSNVI&type=1&route=2"; 

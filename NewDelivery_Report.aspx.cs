@@ -2131,7 +2131,7 @@ public partial class NewDelivery_Report : System.Web.UI.Page
     //protected void btnGenerate_Click(object sender, EventArgs e)
     //{
     //    string TitleName = Session["TitleName"].ToString();
-    //    //if (TitleName == "Veer Dairy")
+    //    //if (TitleName == "VITA MILK DAIRY PRODUCTS")
     //    //{
     //    GetReport();
     //    //}

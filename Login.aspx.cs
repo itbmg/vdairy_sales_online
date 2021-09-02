@@ -221,7 +221,7 @@ public partial class Login : System.Web.UI.Page
                         {
                             PlantID = dtBranch.Rows[0]["SuperBranch"].ToString();
                             Session["SuperBranch"] = dtBranch.Rows[0]["SuperBranch"].ToString();
-                            Session["TitleName"] = "Veer Dairy";
+                            Session["TitleName"] = "VITA MILK DAIRY PRODUCTS";
                             Session["Address"] = "Sy No.115/1,Mugalapalli Village,Bagalur To Berigai Main Road ,ThummanapalliPost, Hosur Tq,Krishnagiri Dist-635 124";
                             Session["TinNo"] = "";
                             Session["BranchName"] = dtBranch.Rows[0]["BranchName"].ToString();

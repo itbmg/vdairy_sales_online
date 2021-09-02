@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <link rel="icon" href="Images/Vyshnavilogo.PNG" type="image/x-icon" title=BMG />
-    <title>Veer Dairy </title>
+    <title>VITA MILK DAIRY PRODUCTS </title>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
     <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
@@ -25,7 +25,7 @@
     <meta name="google-site-verification" content="XYRQcdP4pSdqcbJ-xFwpcIE96OkKQOPwGOynOPhFwfQ" />
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
-    <meta name="description" content="Veer Dairy  is recognized for its insight, understanding and expertise of each of its individual commercial business.">
+    <meta name="description" content="VITA MILK DAIRY PRODUCTS  is recognized for its insight, understanding and expertise of each of its individual commercial business.">
     <meta name="keywords" content="software development company india, it services in india, software outsourcing company india, offshore company in india" />
     <script>
         (function (i, s, o, g, r, a, m) {
@@ -558,7 +558,7 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
         <div style="cursor: pointer; display: block; position: absolute; padding-bottom: 31px;
             left: 34%; top: 10%;">
             <span class="navbar-brand" style="font-size: 25px; font-weight: 600; text-align: center;padding-right: 6px;"
-                id="Span1" >Veer Dairy</span>
+                id="Span1" >VITA MILK DAIRY PRODUCTS</span>
         </div>
         <div style="cursor: pointer; display: block; position: absolute; padding-bottom: 32px;
             left: 72%; top: 16%;">

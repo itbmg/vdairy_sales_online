@@ -340,7 +340,7 @@ public partial class AgentInvoiceReport : System.Web.UI.Page
                 lblfromdate.Visible = false;
                 lbltodate.Visible = false;
                 lblTo.Visible = false;
-                lbladdress1.Text = "Veer Dairy";
+                lbladdress1.Text = "VITA MILK DAIRY PRODUCTS";
                 //lbladdress1.te
             }
             else

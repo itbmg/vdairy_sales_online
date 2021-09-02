@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <link rel="icon" href="Images/Vyshnavilogo.PNG" type="image/x-icon" title=BMG />
-    <title>Veer Dairy </title>
+    <title>VITA MILK DAIRY PRODUCTS </title>
     <script type="text/javascript" src="js/jquery-1.4.4.js"></script>
     <link href="Styles/login.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
