@@ -254,7 +254,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
             var salesoff = ddlSalesOffice.SelectedValue;
             if (salesoff == "2")
             {
-                GetReport();
+                getnelloreReport();
             }
             else
             {
@@ -262,7 +262,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                 {
                     status = "Nellore";
 
-                    getnelloreReport();
+                    //getnelloreReport();
                 }
             }
             cmd = new MySqlCommand("SELECT clotrans.Sno, clotrans.BranchId, clotrans.EmpId, clotrans.IndDate, empmanage.EmpName FROM clotrans INNER JOIN empmanage ON clotrans.EmpId = empmanage.Sno WHERE (clotrans.BranchId = @branch) AND (clotrans.IndDate BETWEEN @d1 AND @d2)");
@@ -280,7 +280,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
             var salesoff = Session["branch"].ToString();
             if (salesoff == "2")
             {
-                GetReport();
+                getnelloreReport();
             }
             else
             {
@@ -291,7 +291,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                 if (salesoff == "AGENT WISE")
                 {
                     status = "Nellore";
-                    getnelloreReport();
+                    //getnelloreReport();
                 }
             }//new
             cmd = new MySqlCommand("SELECT clotrans.Sno, clotrans.BranchId, clotrans.EmpId, clotrans.IndDate, empmanage.EmpName FROM clotrans INNER JOIN empmanage ON clotrans.EmpId = empmanage.Sno WHERE (clotrans.BranchId = @branch) AND (clotrans.IndDate BETWEEN @d1 AND @d2)");
