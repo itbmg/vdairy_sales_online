@@ -2183,7 +2183,7 @@ table#tableaProductdetails {
     <div class="box-body">
         <div class="box box-info">
             <div style="width: 13%; float: left;">
-                <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="120px" height="135px" />
+                <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="95px" height="90px" />
             </div>
             <div style="padding-left: 24%;">
                 <asp:Label ID="lblTitle" runat="server" Font-Bold="true" Font-Size="30px"

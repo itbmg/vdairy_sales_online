@@ -105,7 +105,7 @@
                         <div id="divPrint">
                             <div style="width: 100%;">
                                 <div style="width: 11%; float: left;">
-                                    <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="120px" height="135px"/>
+                                    <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="95px" height="90px"/>
                                 </div>
                                 <div style="left: 0%; text-align: center;">
                                     <span style="font-size: 26px; font-weight: bold; color: #0252aa;">VITA MILK DAIRY PRODUCTS
