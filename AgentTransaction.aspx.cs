@@ -35,7 +35,7 @@ public partial class AgentTransaction : System.Web.UI.Page
                 lblTitle.Text = Session["TitleName"].ToString();
             }
         }
-        //Button1.Visible = false;
+        Button1.Visible = false;
     }
     void FillAgentName()
     {
@@ -431,11 +431,11 @@ public partial class AgentTransaction : System.Web.UI.Page
                     double totalbalance = totalamt - tot_amount;
                     newrow["Bal Amount"] = Math.Round(totalbalance);
                     oppcarry = totalbalance;
-                    //if (Amount + amtpaid + debitedamount != 0)
-                    //{
-                    Report.Rows.Add(newrow);
-                    i++;
-                    //}
+                    if (Amount + amtpaid + debitedamount != 0)
+                    {
+                        Report.Rows.Add(newrow);
+                        i++;
+                    }
                     totsale = totsale - Amount;
                 }
                 DataRow newvartical = Report.NewRow();
