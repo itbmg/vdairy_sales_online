@@ -250,6 +250,9 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                 $('#li156').css('display', 'none ');
                 $('#liaudit').css('display', 'block ');
                 $('#incentivereport').css('display', 'block ');
+                $('#lirlizations').css('display', 'block ');
+                $('#lirlization').css('display', 'block ');
+                
             }
             if (Level == "SalesManager") {
                 $('#lidueapproval').css('display', 'block ');
@@ -264,6 +267,8 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                 $('#liIncentive').css('display', 'none ');
                 $('#li156').css('display', 'none ');
                 $('#liaudit').css('display', 'block ');
+                $('#lirlizations').css('display', 'none ');
+                $('#lirlization').css('display', 'none ');
             }
             if (Level == "Accountant") {
                 $('#lidayendreport').css('display', 'none ');
@@ -298,6 +303,8 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                 $('#liCashCollections').css('display', 'block');
                 $('#li45').css('display', 'block ');
                 $('#lidashboard').css('display', 'none ');
+                $('#lirlizations').css('display', 'none ');
+                $('#lirlization').css('display', 'none ');
             }
             if (Level == "Casheir") {
                 $('#lidayendreport').css('display', 'none ');
@@ -329,6 +336,8 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                 $('#incentivereport').css('display', 'none ');
                 $('#liBranchWiseRatesManagement').css('display', 'none');
                 $('#liCashCollections').css('display', 'block');
+                $('#lirlizations').css('display', 'none ');
+                $('#lirlization').css('display', 'none ');
             }
             if (Level == "AccountsOfficer") {
                 $('#lidayendreport').css('display', 'block ');
@@ -341,6 +350,8 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                 $('#lipermissions').css('display', 'block ');
                 $('#limanage').css('display', 'none ');
                 $('#liaudit').css('display', 'block ');
+                $('#lirlizations').css('display', 'none ');
+                $('#lirlization').css('display', 'none ');
 
             }
             if (Level == "Users") {
@@ -368,6 +379,8 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                 $('#li156').css('display', 'none ');
                 $('#liclosingstock').css('display', 'none ');
                 $('#liBranchWiseRatesManagement').css('display', 'none');
+                $('#lirlizations').css('display', 'none ');
+                $('#lirlization').css('display', 'none ');
             }
             if (Level == "Dispatcher") {
                 $('#lidayendreport').css('display', 'none ');
@@ -383,6 +396,8 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                 $('#li156').css('display', 'none ');
                 $('#liclosingstock').css('display', 'none ');
                 $('#liBranchWiseRatesManagement').css('display', 'none');
+                $('#lirlizations').css('display', 'none ');
+                $('#lirlization').css('display', 'none ');
             }
             if (Level == "Opperations") {
                 $('#lidayendreport').css('display', 'none ');
@@ -401,6 +416,8 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                 $('#lisms').css('display', 'none');
                 $('#lichartreports').css('display', 'none ');
                 $('#lidashboard').css('display', 'none ');
+                $('#lirlizations').css('display', 'none ');
+                $('#lirlization').css('display', 'none ');
 
             }
             if (Level == "PlantDispatcher") {
@@ -420,6 +437,8 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                 $('#liIncentive').css('display', 'none ');
                 $('#liclosingstock').css('display', 'none ');
                 $('#liBranchWiseRatesManagement').css('display', 'none');
+                $('#lirlizations').css('display', 'none ');
+                $('#lirlization').css('display', 'none ');
             }
             if (Level == "Manager") {
                 $('#limanage').css('display', 'none ');
@@ -435,6 +454,8 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                 $('#Li_biprdtsclosing').css('display', 'block ');
                 $('#litripreassign').css('display', 'none ');
                 $('#liIncentive').css('display', 'none ');
+                $('#lirlizations').css('display', 'block ');
+                $('#lirlization').css('display', 'block ');
 
             }
             preventclick();
@@ -937,6 +958,14 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                             <%--<li id="li184"><a href="dcvssale.aspx">DC vs Sales Comparison</a></li>--%>
                                             <li id="liReturnDC"><a href="ReturnDC.aspx">Return DC</a></li>
                                             
+                                        </ul>
+                                    </div>
+                                </li>
+                                 <li id="lirlizations" class="more" style="min-height: 25px;"><a href="#"><i class="fa fa-map">
+                                </i>&nbsp Relization</a>
+                                    <div class="drop3">
+                                        <ul id="ul6">
+                                            <li id="lirelization"><a href="RelizationReport.aspx">RelizationReport</a></li>
                                         </ul>
                                     </div>
                                 </li>

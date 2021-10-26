@@ -28,16 +28,24 @@
     </style>
     <script type="text/javascript">
         function CallPrint(strid) {
-            document.getElementById("tbl_po_print").style.borderCollapse = "collapse";
-            document.getElementById("bg-text").style.opacity = "0.1";
-            document.getElementById("bg-text").style.width = "85%";
-            document.getElementById("bg-text").style.position = "absolute";
-            document.getElementById("bg-text").style.padding = "12% 8% 8% 8%";
-            var divToPrint = document.getElementById(strid);
-            var newWin = window.open('', 'Print-Window', 'width=400,height=400,top=100,left=100');
-            newWin.document.open();
-            newWin.document.write('<html><body   onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
-            newWin.document.close();
+            var Invoice = document.getElementById('spntempinvoiceno').innerHTML;
+            if (Invoice > 0) {
+                document.getElementById("tbl_po_print").style.borderCollapse = "collapse";
+                document.getElementById("bg-text").style.opacity = "0.1";
+                document.getElementById("bg-text").style.width = "85%";
+                document.getElementById("bg-text").style.position = "absolute";
+                document.getElementById("bg-text").style.padding = "12% 8% 8% 8%";
+                var divToPrint = document.getElementById(strid);
+                var newWin = window.open('', 'Print-Window', 'width=400,height=400,top=100,left=100');
+                newWin.document.open();
+                newWin.document.write('<html><body   onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
+                newWin.document.close();
+            }
+            else
+            {
+                alert("Please check Invoice Number");
+                return false;
+            }
         }
     </script>
     <script type="text/javascript">
@@ -244,6 +252,8 @@
                 document.getElementById('spnAddress').innerHTML = msg[0].BranchAddress;
                 document.getElementById('spngstnno').innerHTML = msg[0].fromgstn;
                 document.getElementById('spninvoiceno').innerHTML = msg[0].invoiceno;
+                //document.getElementById('spntempinvoiceno').innerHTML = msg[0].TempInvoice;
+                
                 document.getElementById('spninvoicedate').innerHTML = msg[0].invoicedate;
                 //            document.getElementById('spnfrmstatename').innerHTML = msg[0].frmstatename;
                 //            document.getElementById('spnstatecode').innerHTML = msg[0].frmstatecode;
@@ -287,6 +297,7 @@
             if (msg.length > 0) {
                 document.getElementById('spninvoicetype').innerHTML = msg[0].dctype;
                 document.getElementById('spninvoiceno').innerHTML = msg[msglength - 1].invoiceno;
+                document.getElementById('spntempinvoiceno').innerHTML = msg[msglength - 1].TempInvoice;
             }
             for (var i = 0; i < msg.length; i++) {
                 results += '<tr style="font-size: 12px;">'
@@ -514,6 +525,7 @@
                                             <label style="font-size: 12px;">
                                                 Invoice No :</label>
                                             <span id="spninvoiceno" style="font-size: 14px;"></span>
+                                            <span id="spntempinvoiceno" style="display:none;"></span>
                                             <br />
                                             <label style="font-size: 12px;">
                                                 Invoice Date :</label>

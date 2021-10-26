@@ -143,72 +143,88 @@ public partial class MonthlyRouteWiseCratesReport : System.Web.UI.Page
             {
                 BranchID = "158";
             }
-            cmd = new MySqlCommand("SELECT SUM(tripinvdata.Qty) AS issued, SUM(tripinvdata.Remaining) AS returnqty, invmaster.InvName, invmaster.sno, dispatch.sno AS dispatchsno, dispatch.DispName FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate FROM tripdata WHERE (I_Date BETWEEN @d1 AND @d2)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN tripinvdata ON tripdat.Sno = tripinvdata.Tripdata_sno INNER JOIN invmaster ON tripinvdata.invid = invmaster.sno WHERE (dispatch.Branch_Id = @brnchid) GROUP BY dispatch.sno, invmaster.sno");
-            cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-            cmd.Parameters.AddWithValue("@d2", GetHighDate(todate.AddDays(-1)));
-            cmd.Parameters.AddWithValue("@brnchid", BranchID);
-            DataTable dtInventory = vdm.SelectQuery(cmd).Tables[0];
-            if (dtInventory.Rows.Count > 0)
+            //cmd = new MySqlCommand("SELECT SUM(tripinvdata.Qty) AS issued, SUM(tripinvdata.Remaining) AS returnqty, invmaster.InvName, invmaster.sno, dispatch.sno AS dispatchsno, dispatch.DispName FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate FROM tripdata WHERE (I_Date BETWEEN @d1 AND @d2)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN tripinvdata ON tripdat.Sno = tripinvdata.Tripdata_sno INNER JOIN invmaster ON tripinvdata.invid = invmaster.sno WHERE (dispatch.Branch_Id = @brnchid) GROUP BY dispatch.sno, invmaster.sno");
+            //cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+            //cmd.Parameters.AddWithValue("@d2", GetHighDate(todate.AddDays(-1)));
+            //cmd.Parameters.AddWithValue("@brnchid", BranchID);
+            //DataTable dtInventory = vdm.SelectQuery(cmd).Tables[0];
+            cmd = new MySqlCommand("SELECT branchdata.sno, branchdata.BranchName, branchroutes.RouteName,branchroutes.sno as RouteSno FROM branchdata INNER JOIN branchroutesubtable ON branchdata.sno = branchroutesubtable.BranchID INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchroutes ON branchroutesubtable.RefNo = branchroutes.Sno WHERE (branchmappingtable.SuperBranch = @bid) AND (branchdata.SalesType <> '21') AND (branchdata.flag = 1)");
+            cmd.Parameters.AddWithValue("@bid", BranchID);
+            DataTable dtbranch = vdm.SelectQuery(cmd).Tables[0];
+
+            cmd = new MySqlCommand("SELECT invtras.TransType, invtras.FromTran, invtras.ToTran, SUM(invtras.Qty) as Qty,invmaster.sno AS invsno, invmaster.InvName FROM  invtransactions12 as invtras INNER JOIN invmaster ON invtras.B_inv_sno = invmaster.sno INNER JOIN branchmappingtable ON branchmappingtable.SubBranch=invtras.ToTran  WHERE branchmappingtable.SuperBranch=@FromTran and invtras.DOE between @d1 and @d2 GROUP by branchmappingtable.SubBranch ORDER BY invtras.DOE");
+            cmd.Parameters.AddWithValue("@FromTran", BranchID);
+            cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
+            cmd.Parameters.AddWithValue("@d2", GetHighDate(todate));
+            DataTable dtinventaryissued = vdm.SelectQuery(cmd).Tables[0];
+
+            cmd = new MySqlCommand("SELECT invtras.TransType, invtras.FromTran, invtras.ToTran, SUM(invtras.Qty) as Qty,invmaster.sno AS invsno, invmaster.InvName FROM  invtransactions12 as invtras INNER JOIN invmaster ON invtras.B_inv_sno = invmaster.sno INNER JOIN branchmappingtable ON branchmappingtable.SubBranch=invtras.FromTran WHERE branchmappingtable.SuperBranch=@FromTran and invtras.DOE between @d1 and @d2 GROUP by branchmappingtable.SubBranch ORDER BY invtras.DOE");
+            cmd.Parameters.AddWithValue("@FromTran", BranchID);
+            cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
+            cmd.Parameters.AddWithValue("@d2", GetHighDate(todate));
+            DataTable dtinventaryreceived = vdm.SelectQuery(cmd).Tables[0];
+            dtinventaryissued.Merge(dtinventaryreceived);
+            if (dtinventaryissued.Rows.Count > 0)
             {
-                DataView view = new DataView(dtInventory);
+                DataView view = new DataView(dtbranch);
                 Report.Columns.Add("Route Name");
                 Report.Columns.Add("Issued crates").DataType = typeof(Int32);
                 Report.Columns.Add("Return crates").DataType = typeof(Int32);
                 Report.Columns.Add("Difference crates").DataType = typeof(Int32);
-                Report.Columns.Add("Issued can 20ltr").DataType = typeof(Int32);
-                Report.Columns.Add("Return can 20ltr").DataType = typeof(Int32);
-                Report.Columns.Add("Difference can 20ltr").DataType = typeof(Int32);
-                Report.Columns.Add("Issued can 40ltr").DataType = typeof(Int32);
-                Report.Columns.Add("Return can 40ltr").DataType = typeof(Int32);
-                Report.Columns.Add("Difference can 40ltr").DataType = typeof(Int32);
+                //Report.Columns.Add("Issued can 20ltr").DataType = typeof(Int32);
+                //Report.Columns.Add("Return can 20ltr").DataType = typeof(Int32);
+                //Report.Columns.Add("Difference can 20ltr").DataType = typeof(Int32);
+                //Report.Columns.Add("Issued can 40ltr").DataType = typeof(Int32);
+                //Report.Columns.Add("Return can 40ltr").DataType = typeof(Int32);
+                //Report.Columns.Add("Difference can 40ltr").DataType = typeof(Int32);
                 int i = 1;
                 int k = 0;
-                DataTable distincttable = view.ToTable(true, "DispName", "dispatchsno");
-                foreach (DataRow drinv in distincttable.Rows)
+                DataTable distincttable = view.ToTable(true, "BranchName", "sno", "RouteName", "RouteSno");
+                DataTable distinct_route = view.ToTable(true, "RouteName", "RouteSno");
+                double Ctotreccrates = 0;
+                double Dtotissuecrates = 0;
+                foreach (DataRow drrouteinv in distinct_route.Rows)
                 {
+                    string Route_Name = drrouteinv["RouteName"].ToString();
                     DataRow drnew = Report.NewRow();
-                    string dtdate1 = drinv["dispatchsno"].ToString();
-                    string dispatchname = drinv["DispName"].ToString();
-                    drnew["Route Name"] = dispatchname;
-                    foreach (DataRow drinvc in dtInventory.Rows)
+                    drnew["Route Name"] = Route_Name;
+                    foreach (DataRow drinv in distincttable.Select("RouteSno='" + drrouteinv["RouteSno"].ToString() + "'"))
                     {
-                        string dtdate2 = drinvc["dispatchsno"].ToString();
-                        if (dtdate1 == dtdate2)
+                        foreach (DataRow dr in dtinventaryissued.Select("ToTran='" + drinv["sno"].ToString() + "'"))
                         {
-                            if (drinvc["sno"].ToString() == "1")
+                            if (dr["TransType"].ToString() == "2")
                             {
-                                int issuedcrates = 0;
-                                int receivedcrates = 0;
-                                int.TryParse(drinvc["issued"].ToString(), out issuedcrates);
-                                int.TryParse(drinvc["returnqty"].ToString(), out receivedcrates);
-                                drnew["Issued crates"] = drinvc["issued"].ToString();
-                                drnew["Return crates"] = drinvc["returnqty"].ToString();
-                                drnew["Difference crates"] = issuedcrates - receivedcrates;
+                                if (dr["invsno"].ToString() == "1")
+                                {
+                                    double Dcrates = 0;
+                                    double.TryParse(dr["Qty"].ToString(), out Dcrates);
+                                    //newrow[dr["InvName"].ToString()] = Dcrates;
+                                    Dtotissuecrates += Dcrates;
+                                    //totalissueqty += Dcrates;
+                                }
                             }
-                            if (drinvc["sno"].ToString() == "3")
+                        }
+                        foreach (DataRow drr in dtinventaryissued.Select("FromTran='" + drinv["sno"].ToString() + "'"))
+                        {
+                            if (drr["TransType"].ToString() == "1" || drr["TransType"].ToString() == "3")
                             {
-                                int issuedcan20ltr = 0;
-                                int receivedcan20ltr = 0;
-                                int.TryParse(drinvc["issued"].ToString(), out issuedcan20ltr);
-                                int.TryParse(drinvc["returnqty"].ToString(), out receivedcan20ltr);
-                                drnew["Issued can 20ltr"] = drinvc["issued"].ToString();
-                                drnew["Return can 20ltr"] = drinvc["returnqty"].ToString();
-                                drnew["Difference can 20ltr"] = issuedcan20ltr - receivedcan20ltr;
+                                if (drr["invsno"].ToString() == "1")
+                                {
+                                    int Ccrates = 0;
+                                    int.TryParse(drr["Qty"].ToString(), out Ccrates);
+                                    //newrow[drr["InvName"].ToString()] = Ccrates;
+                                    Ctotreccrates += Ccrates;
+                                    //totreceivedqty += Ccrates;
+                                }
                             }
-                            if (drinvc["sno"].ToString() == "4")
-                            {
-                                int issuedcan40ltr = 0;
-                                int receivedcan40ltr = 0;
-                                int.TryParse(drinvc["issued"].ToString(), out issuedcan40ltr);
-                                int.TryParse(drinvc["returnqty"].ToString(), out receivedcan40ltr);
-                                drnew["Issued can 40ltr"] = drinvc["issued"].ToString();
-                                drnew["Return can 40ltr"] = drinvc["returnqty"].ToString();
-                                drnew["Difference can 40ltr"] = issuedcan40ltr - receivedcan40ltr;
-                            }
-
                         }
                     }
+                    drnew["Issued crates"] = Dtotissuecrates;
+                    drnew["Return crates"] = Ctotreccrates;
+                    drnew["Difference crates"] = Dtotissuecrates - Ctotreccrates;
                     Report.Rows.Add(drnew);
+                    Ctotreccrates = 0;
+                    Dtotissuecrates = 0;
                     k++;
                 }
                 DataRow newvartical = Report.NewRow();

@@ -1008,6 +1008,35 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
 
                         }
                     }
+
+
+                    foreach (DataRow drpuffLeaks in dtsalesofficeLeaks.Rows)
+                    {
+                        foreach (DataRow drNew in dtAllLeaks.Rows)
+                        {
+                            if (drpuffLeaks["ProdId"].ToString() == drNew["ProductID"].ToString())
+                            {
+                                float LeakQty = 0;
+                                float.TryParse(drpuffLeaks["LeakQty"].ToString(), out LeakQty);
+                                float AllLeaks = 0;
+                                float.TryParse(drNew["LeakQty"].ToString(), out AllLeaks);
+                                float TotalShortQty = LeakQty + AllLeaks;
+                                drNew["LeakQty"] = TotalShortQty;
+                            }
+                        }
+                    }
+                    foreach (DataRow drdelivery in dtalldelivery.Rows)
+                    {
+                        foreach (DataRow drpuff in dtAllLeaks.Rows)
+                        {
+                            if (drdelivery["sno"].ToString() == drpuff["ProductID"].ToString())
+                            {
+                                float shortQty = 0;
+                                float.TryParse(drpuff["LeakQty"].ToString(), out shortQty);
+                                drdelivery["LeakQty"] = Math.Round(shortQty, 2);
+                            }
+                        }
+                    }
                     newLeakages["Total Qty"] = Math.Round(totLeakQty, 2);
                     grnd_tot_qty += totLeakQty;
                     //newLeakages["Total Amount"] = Math.Round(totLeakAmount, 2);

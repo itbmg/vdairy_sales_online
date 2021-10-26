@@ -13896,7 +13896,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string dctype { get; set; }
         public string invoiceno { get; set; }
         public string pktqty { get; set; }
-
+        public string TempInvoice { get; set; }
+        
     }
     public class Aagent_Invoice
     {
@@ -13933,6 +13934,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string dctype { get; set; }
         public string branchname { get; set; }
         public string buyercompanyname { get; set; }
+        public string Op_balance { get; set; }
+        public string TempInvoice { get; set; }
     }
     public class Aagent_Inventary
     {
@@ -14085,7 +14088,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             DataTable dtTotalDispatches = new DataTable();
             Report = new DataTable();
             string titlename = context.Session["TitleName"].ToString();
-            string SOID = context.Request["SOID"];
+            string SOID = context.Request["SOID"]; 
 
             if (SOID == "572" || SOID == "458")
             {
@@ -14290,12 +14293,63 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     {
                         DcNo = "" + countdc;
                     }
+                    Aagent_Invoice obj1 = new Aagent_Invoice();
 
+                    cmd = new MySqlCommand("SELECT * FROM agent_bal_trans WHERE agentid=@agentid and  inddate between @d1 and @d2");
+                    cmd.Parameters.Add("@agentid", AgentId);
+                    cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+                    cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
+                    DataTable dtagenttrans = vdbmngr.SelectQuery(cmd).Tables[0];
+                    //DataRow[] dragenttrans = dtagenttrans.Select("agentid='" + AgentId + "'");
+                    if (dtagenttrans.Rows.Count == 0)
+                    {
+                        cmd = new MySqlCommand("SELECT MAX(sno) as sno FROM agent_bal_trans WHERE agentid=@Branchid AND (inddate < @d1)");
+                        cmd.Parameters.AddWithValue("@Branchid", AgentId);
+                        cmd.Parameters.AddWithValue("@d1", fromdate.AddDays(-1));
+                        DataTable dtPrev_trans = vdbmngr.SelectQuery(cmd).Tables[0];
+                        if (dtPrev_trans.Rows.Count > 0)
+                        {
+                            string sno = dtPrev_trans.Rows[0]["sno"].ToString();
+                            if (sno == "")
+                            {
+                                obj1.Op_balance = "0"; ;
+                            }
+                            else
+                            {
+                                cmd = new MySqlCommand("SELECT agentid, opp_balance, inddate, salesvalue, clo_balance FROM agent_bal_trans WHERE sno=@sno");
+                                cmd.Parameters.AddWithValue("@sno", dtPrev_trans.Rows[0]["sno"].ToString());
+                                DataTable dtagent_value = vdbmngr.SelectQuery(cmd).Tables[0];
+                                if (dtagent_value.Rows.Count > 0)
+                                {
+                                    double closingbalance = 0;
+                                    double.TryParse(dtagent_value.Rows[0]["clo_balance"].ToString(), out closingbalance);
+                                    string inddate = dtagent_value.Rows[0]["inddate"].ToString();
+                                    DateTime dtinddate = Convert.ToDateTime(inddate);
+                                    if (dtinddate < fromdate)
+                                    {
+                                        obj1.Op_balance  = Math.Round(closingbalance, 2).ToString();
+                                    }
+                                    else
+                                    {
+                                        obj1.Op_balance = "0";
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            obj1.Op_balance ="0";
+                        }
+                    }
+                    else
+                    {
+                        obj1.Op_balance = dtagenttrans.Rows[0]["opp_balance"].ToString();
+                    }
 
                     string BranchId = context.Session["branch"].ToString();
                     DcNo = dtbrnchaddress.Rows[0]["BranchCode"].ToString() + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DcNo;
                     string fromstate = dtbrnchaddress.Rows[0]["stateid"].ToString();
-                    Aagent_Invoice obj1 = new Aagent_Invoice();
+                    //Aagent_Invoice obj1 = new Aagent_Invoice();
                     obj1.AgentAddress = AgentAddress;
                     string address = dtbrnchaddress.Rows[0]["doorno"].ToString() + "," + dtbrnchaddress.Rows[0]["street"].ToString() + "," + dtbrnchaddress.Rows[0]["area"].ToString() + "," + dtbrnchaddress.Rows[0]["city"].ToString() + "," + dtbrnchaddress.Rows[0]["mandal"].ToString() + "," + dtbrnchaddress.Rows[0]["district"].ToString() + "," + dtbrnchaddress.Rows[0]["pincode"].ToString() + "," + dtbrnchaddress.Rows[0]["phonenumber"].ToString() + "," + dtbrnchaddress.Rows[0]["emailid"].ToString();
                     obj1.BranchAddress = address;
@@ -14307,6 +14361,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     obj1.ponumber = pono;
                     obj1.grnno = grnno;
                     obj1.invoiceno = DcNo;
+                    obj1.TempInvoice = countdc.ToString();
                     obj1.city = dtbrnchaddress.Rows[0]["city"].ToString();
                     obj1.invoicedate = fromdate.AddDays(1).ToString("dd/MM/yyyy");
                     obj1.frmstatename = dtbrnchaddress.Rows[0]["statename"].ToString();
@@ -14675,6 +14730,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     obj1.salestype = salestype;
                     obj1.ponumber = pono;
                     obj1.grnno = grnno;
+                    obj1.TempInvoice = countdc.ToString();
                     obj1.invoiceno = DcNo;
                     obj1.city = dtbrnchaddress.Rows[0]["city"].ToString();
                     obj1.invoicedate = fromdate.AddDays(1).ToString("dd/MM/yyyy");
@@ -14966,6 +15022,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             Report.Columns.Add("IGSTamount");
             Report.Columns.Add("totalamount");
             Report.Columns.Add("invoiceno");
+            Report.Columns.Add("TempInvoice");
             string DcNo = "";
             if (dtInvoice.Rows.Count > 0)
             {
@@ -15289,6 +15346,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             }
                             //DcNo = dtbranchcode.Rows[0]["BranchCode"].ToString() + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DCNO;
                             newrow["invoiceno"] = DcNo;
+                            newrow["TempInvoice"] = countdc;
+                            
                             Report.Rows.Add(newrow);
                         }
                     }
@@ -15310,6 +15369,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         getProducts.sgstamount = dr["sgstamount"].ToString();
                         getProducts.dctype = "Bill Of Supply";
                         getProducts.invoiceno = dr["invoiceno"].ToString();
+                        getProducts.TempInvoice = dr["TempInvoice"].ToString();
                         getProducts.cgst = dr["cgst"].ToString();
                         getProducts.cgstamount = dr["cgstamount"].ToString();
                         getProducts.igst = dr["igst"].ToString();
@@ -15557,6 +15617,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             }
                             //DcNo = dtbrnchaddress.Rows[0]["BranchCode"].ToString() + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
                             newrow["invoiceno"] = DcNo;
+                            newrow["TempInvoice"] = countdc;
+
                             Report.Rows.Add(newrow);
                         }
                     }
@@ -15577,6 +15639,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         getProducts.sgstamount = dr["sgstamount"].ToString();
                         getProducts.dctype = "Tax Invoice";
                         getProducts.invoiceno = dr["invoiceno"].ToString();
+                        getProducts.TempInvoice = dr["TempInvoice"].ToString();
+
                         getProducts.cgst = dr["cgst"].ToString();
                         getProducts.cgstamount = dr["cgstamount"].ToString();
                         getProducts.igst = dr["igst"].ToString();
@@ -21203,6 +21267,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string ReturnStatus { get; set; }
         public string tabletype { get; set; }
         public string BranchId { get; set; }
+        public string PuffLeaks { get; set; }
         
     }
     private void GetsoandPlantDespNames(HttpContext context)
@@ -22029,7 +22094,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             }
             else
             {
-                cmd = new MySqlCommand("SELECT 'BranchLeaks' as tabletype,branchleaktrans.BranchID as Branch_Id,DATE_FORMAT(tripdata.I_date,'%d %b %y') as EntryDate, branchleaktrans.ShortQty,branchleaktrans.FreeQty as FreeMilk, branchleaktrans.TripId as Sno,branchleaktrans.ProdId as ProductID,Productsdata.ProductName,Productsdata.Rank  FROM branchleaktrans INNER JOIN tripdata ON branchleaktrans.TripId = tripdata.Sno INNER JOIN Productsdata ON branchleaktrans.ProdId=Productsdata.sno WHERE (tripdata.I_Date BETWEEN @d1 AND @d2) AND (branchleaktrans.BranchID = @BranchID) order by Productsdata.Rank");
+                cmd = new MySqlCommand("SELECT 'BranchLeaks' as tabletype,branchleaktrans.BranchID as Branch_Id,DATE_FORMAT(tripdata.I_date,'%d %b %y') as EntryDate, branchleaktrans.LeakQty as puffleaks,branchleaktrans.ShortQty,branchleaktrans.FreeQty as FreeMilk, branchleaktrans.TripId as Sno,branchleaktrans.ProdId as ProductID,Productsdata.ProductName,Productsdata.Rank  FROM branchleaktrans INNER JOIN tripdata ON branchleaktrans.TripId = tripdata.Sno INNER JOIN Productsdata ON branchleaktrans.ProdId=Productsdata.sno WHERE (tripdata.I_Date BETWEEN @d1 AND @d2) AND (branchleaktrans.BranchID = @BranchID) order by Productsdata.Rank");
                 cmd.Parameters.AddWithValue("@BranchID", soid);
                 cmd.Parameters.AddWithValue("@d1", GetLowDate(dtinddate));
                 cmd.Parameters.AddWithValue("@d2", GetHighDate(dtinddate));
@@ -22052,6 +22117,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 dtall_leakages.Columns.Add("ProductName");
                 dtall_leakages.Columns.Add("EntryDate");
                 dtall_leakages.Columns.Add("TotalLeaks");
+                dtall_leakages.Columns.Add("PuffLeaks");
                 dtall_leakages.Columns.Add("ShortQty");
                 dtall_leakages.Columns.Add("FreeMilk");
                 dtall_leakages.Columns.Add("ReturnQty");
@@ -22070,6 +22136,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         double totshrt = 0;
                         double totretrn = 0;
                         double totfree = 0;
+                        double totPuffLeaks = 0;
                         foreach (DataRow drleaks in dtShortAndFree.Select("ProductId='" + drall["ProductId"].ToString() + "'"))
                         {
                             string paiddate = drleaks["EntryDate"].ToString();
@@ -22080,6 +22147,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             double shortqty = 0;
                             double free = 0;
                             double returnqty = 0;
+                            double PuffLeaks = 0;
                             if (paiddate != "")
                             {
                                 collecteddate = drleaks["EntryDate"].ToString();
@@ -22088,6 +22156,21 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             if (paiddate == "")
                             {
                                 newrow["EntryDate"] = collecteddate;
+                            }
+                            if (ddledittype == "Sales Office")
+                            {
+                                string puffleaks = drleaks["puffleaks"].ToString();
+
+                                if (puffleaks == "")
+                                {
+                                    newrow["PuffLeaks"] = totPuffLeaks;
+                                }
+                                if (puffleaks != "")
+                                {
+                                    double.TryParse(drleaks["puffleaks"].ToString(), out PuffLeaks);
+                                    totPuffLeaks += PuffLeaks;
+                                    newrow["PuffLeaks"] = totPuffLeaks;
+                                }
                             }
                             if (TotalLeaks == "")
                             {
@@ -22145,9 +22228,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         double totshrt = 0;
                         double totfree = 0;
                         double totretrn = 0;
+                        double totpuff = 0;
                         newrow["EntryDate"] = collecteddate;
                         newrow["TotalLeaks"] = totleak;
                         newrow["ShortQty"] = totshrt;
+                        newrow["PuffLeaks"] = totpuff;
                         newrow["FreeMilk"] = totfree;
                         newrow["ReturnQty"] = totretrn;
                         newrow["ProductName"] = "0";
@@ -22169,7 +22254,23 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     string Shortmilk = dr["ShortQty"].ToString();
                     string retunmilk = dr["ReturnQty"].ToString();
                     string freemilk = dr["FreeMilk"].ToString();
+                    if (ddledittype == "Sales Office")
+                    {
+                        string pufleaks = dr["PuffLeaks"].ToString();
 
+                        if (pufleaks == "")
+                        {
+                            GetLeakreturn.PuffLeaks = "0";
+                        }
+                        if (pufleaks != "")
+                        {
+                            GetLeakreturn.PuffLeaks = dr["PuffLeaks"].ToString();
+                        }
+                    }
+                    else
+                    {
+                        GetLeakreturn.PuffLeaks = "0";
+                    }
                     if (paiddate != "")
                     {
                         collecteddate = dr["EntryDate"].ToString();
@@ -22291,10 +22392,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             float Prevreturnqty = 0;
                             float Prevfreeqty = 0;
                             float Prevshortqty = 0;
-                            float.TryParse(o.PrevLeakQty, out Prevleak);
-                            float.TryParse(o.PrevFreeQty, out Prevfreeqty);
-                            float.TryParse(o.PrevReturnQty, out Prevreturnqty);
-                            float.TryParse(o.PrevShortQty, out Prevshortqty);
+                            float.TryParse(o.PLQty, out Prevleak);
+                            float.TryParse(o.PFQty, out Prevfreeqty);
+                            float.TryParse(o.PRQty, out Prevreturnqty);
+                            float.TryParse(o.PSQty, out Prevshortqty);
 
                             float tot = 0;
                             tot = leak + freeqty + returnqt + shortqt;
@@ -22360,88 +22461,118 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     float returnqt = 0;
                     float freeqty = 0;
                     float shortqt = 0;
+                    float puffleaks = 0;
                     float.TryParse(o.LeakQty, out leak);
                     float.TryParse(o.FreeQty, out freeqty);
                     float.TryParse(o.ReturnQty, out returnqt);
-                    float.TryParse(o.ShortQty, out shortqt);
+                    float.TryParse(o.Puff_L, out puffleaks);
 
 
                     float Prevleak = 0;
                     float Prevreturnqty = 0;
                     float Prevfreeqty = 0;
                     float Prevshortqty = 0;
-                    float.TryParse(o.PrevLeakQty, out Prevleak);
-                    float.TryParse(o.PrevFreeQty, out Prevfreeqty);
-                    float.TryParse(o.PrevReturnQty, out Prevreturnqty);
-                    float.TryParse(o.PrevShortQty, out Prevshortqty);
+                    float Prevpuffqty = 0;
+                    float.TryParse(o.PLQty, out Prevleak);
+                    float.TryParse(o.PFQty, out Prevfreeqty);
+                    float.TryParse(o.PRQty, out Prevreturnqty);
+                    float.TryParse(o.PSQty, out Prevshortqty);
+                    float.TryParse(o.PPufLQty, out Prevpuffqty);
+
                     //if (tabletype == "BranchLeaks")
                     //{
-                    cmd = new MySqlCommand("delete from  branchleaktrans WHERE (TripId = @TripId) and (ProdId=@ProdId)");
-                    cmd.Parameters.AddWithValue("@TripId", tripid);
-                    cmd.Parameters.AddWithValue("@ProdId", o.Productsno);
-                    if (leak != Prevleak)
-                        vdbmngr.Delete(cmd);
-                    else if (freeqty != Prevfreeqty)
-                        vdbmngr.Delete(cmd);
-                    else if (shortqt != Prevshortqty)
-                        vdbmngr.Delete(cmd);
 
-                    cmd = new MySqlCommand("select* from branchleaktrans where TripId = @TripId and ProdId = @ProdId");
-                    cmd.Parameters.AddWithValue("@TripId", tripid);
-                    cmd.Parameters.AddWithValue("@ProdId", o.Productsno);
-                    DataTable dt = vdbmngr.SelectQuery(cmd).Tables[0];
-                    if (dt.Rows.Count == 0)
+                    if (puffleaks != Prevpuffqty)
                     {
-                        cmd = new MySqlCommand("INSERT INTO branchleaktrans (EmpId,TripId,ProdId,DOE,BranchID,FreeQty,ShortQty) VALUES (@EmpId,@TripId,@ProdId,@DOE,@BranchID,@FreeQty,@ShortQty)");
+                        cmd = new MySqlCommand("UPDATE  branchleaktrans SET EmpId=EmpId,ProdId=@ProdId,DOE=@DOE,BranchID=@BranchID,LeakQty=@LeakQty where TripId=@TripId and ProdId=@ProdId");
                         cmd.Parameters.AddWithValue("@EmpId", context.Session["UserSno"]);
                         cmd.Parameters.AddWithValue("@TripID", o.TripId);
                         cmd.Parameters.AddWithValue("@ProdId", o.Productsno);
                         cmd.Parameters.AddWithValue("@DOE", ServerDateCurrentdate);
                         cmd.Parameters.AddWithValue("@BranchID", soid);
-                        cmd.Parameters.AddWithValue("@FreeQty", o.FreeQty);
-                        cmd.Parameters.AddWithValue("@ShortQty", o.ShortQty);
-                        if (leak != Prevleak)
+                        cmd.Parameters.AddWithValue("@LeakQty", o.Puff_L);
+                        if (vdbmngr.Update(cmd) == 0)
+                        {
+                            cmd = new MySqlCommand("INSERT INTO branchleaktrans (EmpId,TripId,ProdId,DOE,BranchID,LeakQty) VALUES (@EmpId,@TripId,@ProdId,@DOE,@BranchID,@LeakQty)");
+                            cmd.Parameters.AddWithValue("@EmpId", context.Session["UserSno"]);
+                            cmd.Parameters.AddWithValue("@TripID", o.TripId);
+                            cmd.Parameters.AddWithValue("@ProdId", o.Productsno);
+                            cmd.Parameters.AddWithValue("@DOE", ServerDateCurrentdate);
+                            cmd.Parameters.AddWithValue("@BranchID", soid);
+                            cmd.Parameters.AddWithValue("@LeakQty", o.Puff_L);
                             vdbmngr.insert(cmd);
-                        else if (freeqty != Prevfreeqty)
-                            vdbmngr.insert(cmd);
-                        else if (shortqt != Prevshortqty)
-                            vdbmngr.insert(cmd);
+                        }
                     }
-                    cmd = new MySqlCommand("DELETE FROM leakages WHERE (TripID = @dcno) and (ProductID=@ProductID)");
-                    cmd.Parameters.AddWithValue("@dcno", tripid);
-                    cmd.Parameters.AddWithValue("@ProductID", o.Productsno);
-                    if (leak != Prevleak)
-                        vdbmngr.Delete(cmd);
-                    else if (freeqty != Prevfreeqty)
-                        vdbmngr.Delete(cmd);
-                    else if (shortqt != Prevshortqty)
-                        vdbmngr.Delete(cmd);
-                    else if (returnqt != Prevreturnqty)
-                        vdbmngr.Delete(cmd);
-
-                    cmd = new MySqlCommand("select* from leakages where TripId = @TripId and ProductID = @ProductID");
-                    cmd.Parameters.AddWithValue("@TripId", tripid);
-                    cmd.Parameters.AddWithValue("@ProductID", o.Productsno);
-                    DataTable dtl = vdbmngr.SelectQuery(cmd).Tables[0];
-                    if (dtl.Rows.Count == 0)
+                    else
                     {
-                        cmd = new MySqlCommand("INSERT INTO leakages (TripID, EntryDate, ProductID, ReturnQty,TotalLeaks, VarifyStatus, VarifyReturnStatus,Modified_EmpId) VALUES (@TripID, @EntryDate, @ProductID, @ReturnQty,@TotalLeaks, @VarifyStatus, @VarifyReturnStatus,@Modified_EmpId)");
-                        cmd.Parameters.AddWithValue("@TripID", o.TripId);
-                        cmd.Parameters.AddWithValue("@EntryDate", ServerDateCurrentdate);
-                        cmd.Parameters.AddWithValue("@ProductID", o.Productsno);
-                        cmd.Parameters.AddWithValue("@ReturnQty", o.ReturnQty);
-                        cmd.Parameters.AddWithValue("@TotalLeaks", o.LeakQty);
-                        cmd.Parameters.AddWithValue("@VarifyStatus", null);
-                        cmd.Parameters.AddWithValue("@VarifyReturnStatus", null);
-                        cmd.Parameters.AddWithValue("@Modified_EmpId", context.Session["UserSno"]);
+
+                        cmd = new MySqlCommand("delete from  branchleaktrans WHERE (TripId = @TripId) and (ProdId=@ProdId)");
+                        cmd.Parameters.AddWithValue("@TripId", tripid);
+                        cmd.Parameters.AddWithValue("@ProdId", o.Productsno);
                         if (leak != Prevleak)
-                            vdbmngr.insert(cmd);
+                            vdbmngr.Delete(cmd);
                         else if (freeqty != Prevfreeqty)
-                            vdbmngr.insert(cmd);
-                        else if (returnqt != Prevreturnqty)
-                            vdbmngr.insert(cmd);
+                            vdbmngr.Delete(cmd);
                         else if (shortqt != Prevshortqty)
-                            vdbmngr.insert(cmd);
+                            vdbmngr.Delete(cmd);
+
+                        cmd = new MySqlCommand("select* from branchleaktrans where TripId = @TripId and ProdId = @ProdId");
+                        cmd.Parameters.AddWithValue("@TripId", tripid);
+                        cmd.Parameters.AddWithValue("@ProdId", o.Productsno);
+                        DataTable dt = vdbmngr.SelectQuery(cmd).Tables[0];
+                        if (dt.Rows.Count == 0)
+                        {
+                            cmd = new MySqlCommand("INSERT INTO branchleaktrans (EmpId,TripId,ProdId,DOE,BranchID,FreeQty,ShortQty) VALUES (@EmpId,@TripId,@ProdId,@DOE,@BranchID,@FreeQty,@ShortQty)");
+                            cmd.Parameters.AddWithValue("@EmpId", context.Session["UserSno"]);
+                            cmd.Parameters.AddWithValue("@TripID", o.TripId);
+                            cmd.Parameters.AddWithValue("@ProdId", o.Productsno);
+                            cmd.Parameters.AddWithValue("@DOE", ServerDateCurrentdate);
+                            cmd.Parameters.AddWithValue("@BranchID", soid);
+                            cmd.Parameters.AddWithValue("@FreeQty", o.FreeQty);
+                            cmd.Parameters.AddWithValue("@ShortQty", o.ShortQty);
+                            if (leak != Prevleak)
+                                vdbmngr.insert(cmd);
+                            else if (freeqty != Prevfreeqty)
+                                vdbmngr.insert(cmd);
+                            else if (shortqt != Prevshortqty)
+                                vdbmngr.insert(cmd);
+                        }
+                        cmd = new MySqlCommand("DELETE FROM leakages WHERE (TripID = @dcno) and (ProductID=@ProductID)");
+                        cmd.Parameters.AddWithValue("@dcno", tripid);
+                        cmd.Parameters.AddWithValue("@ProductID", o.Productsno);
+                        if (leak != Prevleak)
+                            vdbmngr.Delete(cmd);
+                        else if (freeqty != Prevfreeqty)
+                            vdbmngr.Delete(cmd);
+                        else if (shortqt != Prevshortqty)
+                            vdbmngr.Delete(cmd);
+                        else if (returnqt != Prevreturnqty)
+                            vdbmngr.Delete(cmd);
+
+                        cmd = new MySqlCommand("select* from leakages where TripId = @TripId and ProductID = @ProductID");
+                        cmd.Parameters.AddWithValue("@TripId", tripid);
+                        cmd.Parameters.AddWithValue("@ProductID", o.Productsno);
+                        DataTable dtl = vdbmngr.SelectQuery(cmd).Tables[0];
+                        if (dtl.Rows.Count == 0)
+                        {
+                            cmd = new MySqlCommand("INSERT INTO leakages (TripID, EntryDate, ProductID, ReturnQty,TotalLeaks, VarifyStatus, VarifyReturnStatus,Modified_EmpId) VALUES (@TripID, @EntryDate, @ProductID, @ReturnQty,@TotalLeaks, @VarifyStatus, @VarifyReturnStatus,@Modified_EmpId)");
+                            cmd.Parameters.AddWithValue("@TripID", o.TripId);
+                            cmd.Parameters.AddWithValue("@EntryDate", ServerDateCurrentdate);
+                            cmd.Parameters.AddWithValue("@ProductID", o.Productsno);
+                            cmd.Parameters.AddWithValue("@ReturnQty", o.ReturnQty);
+                            cmd.Parameters.AddWithValue("@TotalLeaks", o.LeakQty);
+                            cmd.Parameters.AddWithValue("@VarifyStatus", null);
+                            cmd.Parameters.AddWithValue("@VarifyReturnStatus", null);
+                            cmd.Parameters.AddWithValue("@Modified_EmpId", context.Session["UserSno"]);
+                            if (leak != Prevleak)
+                                vdbmngr.insert(cmd);
+                            else if (freeqty != Prevfreeqty)
+                                vdbmngr.insert(cmd);
+                            else if (returnqt != Prevreturnqty)
+                                vdbmngr.insert(cmd);
+                            else if (shortqt != Prevshortqty)
+                                vdbmngr.insert(cmd);
+                        }
                     }
                 }
             }
@@ -24379,15 +24510,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             cmd.Parameters.AddWithValue("@d1", GetLowDate(CurDate));
             cmd.Parameters.AddWithValue("@d2", GetHighDate(CurDate));
             DataTable dtcashbookstatus = vdbmngr.SelectQuery(cmd).Tables[0];
-            if (dtcashbookstatus.Rows.Count > 0)
+            if (paymenttype == "Cheque" || paymenttype == "Bank Transfer")
             {
-                string msg = "Cash Book Has Been Closed For This Day";
-                string response = GetJson(msg);
-                context.Response.Write(response);
-            }
-            else
-            {
-            #endregion
+
+                #endregion
                 #region
                 if (collectiontype == "Other")
                 {
@@ -25305,6 +25431,935 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 string msg = "Cash Collection Saved Successfully";
                 string response = GetJson(msg);
                 context.Response.Write(response);
+            }
+            else
+            {
+                if (dtcashbookstatus.Rows.Count > 0)
+                {
+                    string msg = "Cash Book Has Been Closed For This Day";
+                    string response = GetJson(msg);
+                    context.Response.Write(response);
+                }
+                else
+                {
+                    #region
+                    if (collectiontype == "Other")
+                    {
+                        //cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID");
+                        string CashReceiptNo = "0";
+                        if (paymenttype == "Cash")
+                        {
+                            cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID AND (DOE BETWEEN @d1 AND @d2)");
+                            cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
+                            cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril));
+                            cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch));
+                            DataTable dtReceipt = vdbmngr.SelectQuery(cmd).Tables[0];
+                            CashReceiptNo = dtReceipt.Rows[0]["Sno"].ToString();
+                            cmd = new MySqlCommand("insert into cashreceipts (BranchId,ReceivedFrom,AmountPaid,DOE,Create_by,Remarks,Receipt) values (@BranchId,@ReceivedFrom,@AmountPaid,@DOE, @Create_by,@Remarks,@Receipt)");
+                            cmd.Parameters.AddWithValue("@BranchId", context.Session["branch"].ToString());
+                            cmd.Parameters.AddWithValue("@ReceivedFrom", "Others");
+                            cmd.Parameters.AddWithValue("@AmountPaid", Amount);
+                            cmd.Parameters.AddWithValue("DOE", CurDate);
+                            cmd.Parameters.AddWithValue("@Create_by", context.Session["UserSno"].ToString());
+                            cmd.Parameters.AddWithValue("@Remarks", remarks);
+                            cmd.Parameters.AddWithValue("@Receipt", CashReceiptNo);
+                            vdbmngr.insert(cmd);
+                        }
+                        if (paymenttype == "Cash" || paymenttype == "Bank Transfer")
+                        {
+                            cmd = new MySqlCommand("insert into cashcollections (BranchID,Name,Amount,Remarks,DOE,Receiptno,PaymentType,CollectionType,CollectionFrom,freezertype,freezeramounttype,TransType,ledger_code) values(@BranchID,@Name,@Amount,@Remarks,@DOE,@Receiptno,@PaymentType,@CollectionType,@CollectionFrom,@freezertype,@freezeramounttype,@TransType,@ledger_code)");
+                        }
+                        if (paymenttype == "Cheque" || paymenttype == "DD")
+                        {
+                            cmd = new MySqlCommand("insert into cashcollections (BranchID,Name,Amount,Remarks,DOE,Receiptno,PaymentType,CollectionType,CollectionFrom,CheckStatus,ChequeNo,ChequeDate,BankName,freezertype,freezeramounttype,TransType,ledger_code) values(@BranchID,@Name,@Amount,@Remarks,@DOE,@Receiptno,@PaymentType,@CollectionType,@CollectionFrom,@CheckStatus,@ChequeNo,@ChequeDate,@BankName,@freezertype,@freezeramounttype,@TransType,@ledger_code)");
+
+                        }
+                        cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"]);
+                        cmd.Parameters.AddWithValue("@Name", Name);
+                        cmd.Parameters.AddWithValue("@Amount", Amount);
+                        cmd.Parameters.AddWithValue("@Remarks", Remarks);
+                        cmd.Parameters.AddWithValue("@Receiptno", CashReceiptNo);
+                        cmd.Parameters.AddWithValue("@DOE", CurDate);
+                        cmd.Parameters.AddWithValue("@PaymentType", ddlAmountType);
+                        cmd.Parameters.AddWithValue("@CollectionType", paymenttype);
+                        cmd.Parameters.AddWithValue("@CollectionFrom", collectiontype);
+                        cmd.Parameters.AddWithValue("@CheckStatus", 'P');
+                        cmd.Parameters.AddWithValue("@ChequeNo", ChequeNo);
+                        cmd.Parameters.AddWithValue("@ChequeDate", dtchequedate);
+                        cmd.Parameters.AddWithValue("@BankName", BankName);
+                        cmd.Parameters.AddWithValue("@freezertype", ddlfreezertype);
+                        cmd.Parameters.AddWithValue("@freezeramounttype", ddlfreezeramounttype);
+                        cmd.Parameters.AddWithValue("@TransType", ddlTransType);
+                        cmd.Parameters.AddWithValue("@ledger_code", ledger_code);
+                        vdbmngr.insert(cmd);
+                        string twothousand = "0";
+                        string thousand = "0";
+                        string fivehundred = "0";
+                        string twohundred = "0";
+                        string hundred = "0";
+                        string fifty = "0";
+                        string twenty = "0";
+                        string ten = "0";
+                        string five = "0";
+                        string twos = "0";
+                        string ones = "0";
+                        DenominationString = context.Request["DenominationString"];
+                        DenominationString = DenominationString.Replace("+", " ");
+                        if (paymenttype == "Cash")
+                        {
+                            foreach (string str in DenominationString.Split(' '))
+                            {
+                                if (str != "")
+                                {
+                                    string[] price = str.Split('x');
+                                    string amountcount = price[0];
+                                    string notecount = price[1];
+                                    if (amountcount == "2000")
+                                    {
+                                        twothousand = notecount;
+                                    }
+                                    if (amountcount == "1000")
+                                    {
+                                        thousand = notecount;
+                                    }
+                                    if (amountcount == "500")
+                                    {
+                                        fivehundred = notecount;
+                                    }
+                                    if (amountcount == "200")
+                                    {
+                                        twohundred = notecount;
+                                    }
+                                    if (amountcount == "100")
+                                    {
+                                        hundred = notecount;
+                                    }
+                                    if (amountcount == "50")
+                                    {
+                                        fifty = notecount;
+                                    }
+                                    if (amountcount == "20")
+                                    {
+                                        twenty = notecount;
+                                    }
+                                    if (amountcount == "10")
+                                    {
+                                        ten = notecount;
+                                    }
+                                    if (amountcount == "5")
+                                    {
+                                        five = notecount;
+                                    }
+                                    if (amountcount == "2")
+                                    {
+                                        twos = notecount;
+                                    }
+                                    if (amountcount == "1")
+                                    {
+                                        ones = notecount;
+                                    }
+                                }
+                            }
+                            cmd = new MySqlCommand("Update branch_denomination set amount=amount+@amount,twothousand=twothousand+@twothousand,thousand=thousand+@thousand,fivehundred=fivehundred+@fivehundred,twohundred=twohundred+@twohundred,hundred=hundred+@hundred,fifty=fifty+@fifty,twenty=twenty+@twenty,ten=ten+@ten,five=five+@five,twos=twos+@twos,ones=ones+@ones where BranchID=@BranchID");
+                            cmd.Parameters.AddWithValue("@amount", Amount);
+                            cmd.Parameters.AddWithValue("@twothousand", twothousand);
+                            cmd.Parameters.AddWithValue("@thousand", thousand);
+                            cmd.Parameters.AddWithValue("@fivehundred", fivehundred);
+                            cmd.Parameters.AddWithValue("@twohundred", twohundred);
+                            cmd.Parameters.AddWithValue("@hundred", hundred);
+                            cmd.Parameters.AddWithValue("@fifty", fifty);
+                            cmd.Parameters.AddWithValue("@twenty", twenty);
+                            cmd.Parameters.AddWithValue("@ten", ten);
+                            cmd.Parameters.AddWithValue("@five", five);
+                            cmd.Parameters.AddWithValue("@twos", twos);
+                            cmd.Parameters.AddWithValue("@ones", ones);
+                            cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
+                            vdbmngr.Update(cmd);
+                            string return_twothousand = "0";
+                            string return_thousand = "0";
+                            string return_fivehundred = "0";
+                            string return_twohundred = "0";
+                            string return_hundred = "0";
+                            string return_fifty = "0";
+                            string return_twenty = "0";
+                            string return_ten = "0";
+                            string return_five = "0";
+                            string return_twos = "0";
+                            string return_ones = "0";
+                            ReturnDenominationString = ReturnDenominationString.Replace("+", " ");
+                            foreach (string str in ReturnDenominationString.Split(' '))
+                            {
+                                if (str != "")
+                                {
+                                    string[] price = str.Split('x');
+                                    string amountcount = price[0];
+                                    string notecount = price[1];
+                                    if (amountcount == "2000")
+                                    {
+                                        return_twothousand = notecount;
+                                    }
+                                    if (amountcount == "1000")
+                                    {
+                                        return_thousand = notecount;
+                                    }
+                                    if (amountcount == "500")
+                                    {
+                                        return_fivehundred = notecount;
+                                    }
+                                    if (amountcount == "200")
+                                    {
+                                        return_twohundred = notecount;
+                                    }
+                                    if (amountcount == "100")
+                                    {
+                                        return_hundred = notecount;
+                                    }
+                                    if (amountcount == "50")
+                                    {
+                                        return_fifty = notecount;
+                                    }
+                                    if (amountcount == "20")
+                                    {
+                                        return_twenty = notecount;
+                                    }
+                                    if (amountcount == "10")
+                                    {
+                                        return_ten = notecount;
+                                    }
+                                    if (amountcount == "5")
+                                    {
+                                        return_five = notecount;
+                                    }
+                                    if (amountcount == "2")
+                                    {
+                                        return_twos = notecount;
+                                    }
+                                    if (amountcount == "1")
+                                    {
+                                        return_ones = notecount;
+                                    }
+                                }
+                            }
+                            cmd = new MySqlCommand("Update branch_denomination set twothousand=twothousand-@twothousand,thousand=thousand-@thousand,fivehundred=fivehundred-@fivehundred,twohundred=twohundred-@twohundred,hundred=hundred-@hundred,fifty=fifty-@fifty,twenty=twenty-@twenty,ten=ten-@ten,five=five-@five,twos=twos-@twos,ones=ones-@ones where BranchID=@BranchID");
+                            cmd.Parameters.AddWithValue("@amount", Amount);
+                            cmd.Parameters.AddWithValue("@twothousand", return_twothousand);
+                            cmd.Parameters.AddWithValue("@thousand", return_thousand);
+                            cmd.Parameters.AddWithValue("@fivehundred", return_fivehundred);
+                            cmd.Parameters.AddWithValue("@twohundred", return_twohundred);
+                            cmd.Parameters.AddWithValue("@hundred", return_hundred);
+                            cmd.Parameters.AddWithValue("@fifty", return_fifty);
+                            cmd.Parameters.AddWithValue("@twenty", return_twenty);
+                            cmd.Parameters.AddWithValue("@ten", return_ten);
+                            cmd.Parameters.AddWithValue("@five", return_five);
+                            cmd.Parameters.AddWithValue("@twos", return_twos);
+                            cmd.Parameters.AddWithValue("@ones", return_ones);
+                            cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
+                            vdbmngr.Update(cmd);
+                        }
+                    }
+                    #endregion
+                    #region
+                    if (collectiontype == "SD Deposit")
+                    {
+                        string CashReceiptNo = "0";
+                        if (paymenttype == "Cash")
+                        {
+                            cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID AND (DOE BETWEEN @d1 AND @d2)");
+                            cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
+                            cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril));
+                            cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch));
+                            DataTable dtReceipt = vdbmngr.SelectQuery(cmd).Tables[0];
+                            CashReceiptNo = dtReceipt.Rows[0]["Sno"].ToString();
+                            cmd = new MySqlCommand("insert into cashreceipts (BranchId,ReceivedFrom,AmountPaid,DOE,Create_by,Remarks,Receipt,PaymentStatus) values (@BranchId,@ReceivedFrom,@AmountPaid,@DOE, @Create_by,@Remarks,@Receipt,@PaymentStatus)");
+                            cmd.Parameters.AddWithValue("@BranchId", context.Session["branch"].ToString());
+                            cmd.Parameters.AddWithValue("@ReceivedFrom", "Others");
+                            cmd.Parameters.AddWithValue("@AmountPaid", Amount);
+                            cmd.Parameters.AddWithValue("DOE", CurDate);
+                            cmd.Parameters.AddWithValue("@Create_by", context.Session["UserSno"].ToString());
+                            cmd.Parameters.AddWithValue("@Remarks", remarks);
+                            cmd.Parameters.AddWithValue("@Receipt", CashReceiptNo);
+                            cmd.Parameters.AddWithValue("@PaymentStatus", paymenttype);
+                            vdbmngr.insert(cmd);
+                        }
+                        if (paymenttype == "Cash" || paymenttype == "Bank Transfer" || paymenttype == "Journal Voucher")
+                        {
+                            cmd = new MySqlCommand("insert into cashcollections (BranchID,Name,Amount,Remarks,DOE,Receiptno,Agentid,PaymentType,CollectionType,CollectionFrom,freezertype,freezeramounttype,TransType) values(@BranchID,@Name,@Amount,@Remarks,@DOE,@Receiptno,@Agentid,@PaymentType,@CollectionType,@CollectionFrom,@freezertype,@freezeramounttype,@TransType)");
+                        }
+                        if (paymenttype == "Cheque" || paymenttype == "DD")
+                        {
+                            cmd = new MySqlCommand("insert into cashcollections (BranchID,Name,Amount,Remarks,DOE,Receiptno,Agentid,PaymentType,CollectionType,CollectionFrom,CheckStatus,ChequeNo,ChequeDate,BankName,freezertype,freezeramounttype,TransType) values(@BranchID,@Name,@Amount,@Remarks,@DOE,@Receiptno,@Agentid,@PaymentType,@CollectionType,@CollectionFrom,@CheckStatus,@ChequeNo,@ChequeDate,@BankName,@freezertype,@freezeramounttype,@TransType)");
+                        }
+                        cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"]);
+                        cmd.Parameters.AddWithValue("@Name", Name);
+                        cmd.Parameters.AddWithValue("@Amount", Amount);
+                        cmd.Parameters.AddWithValue("@Remarks", Remarks);
+                        cmd.Parameters.AddWithValue("@Receiptno", CashReceiptNo);
+                        cmd.Parameters.AddWithValue("@DOE", CurDate);
+                        cmd.Parameters.AddWithValue("@PaymentType", ddlAmountType);
+                        cmd.Parameters.AddWithValue("@CollectionType", paymenttype);
+                        cmd.Parameters.AddWithValue("@CollectionFrom", collectiontype);
+                        cmd.Parameters.AddWithValue("@Agentid", AgentID);
+                        cmd.Parameters.AddWithValue("@CheckStatus", 'P');
+                        cmd.Parameters.AddWithValue("@ChequeNo", ChequeNo);
+                        cmd.Parameters.AddWithValue("@ChequeDate", dtchequedate);
+                        cmd.Parameters.AddWithValue("@BankName", BankName);
+                        cmd.Parameters.AddWithValue("@freezertype", ddlfreezertype);
+                        cmd.Parameters.AddWithValue("@freezeramounttype", ddlfreezeramounttype);
+                        cmd.Parameters.AddWithValue("@TransType", ddlTransType);
+                        vdbmngr.insert(cmd);
+                        string twothousand = "0";
+                        string thousand = "0";
+                        string fivehundred = "0";
+                        string twohundred = "0";
+                        string hundred = "0";
+                        string fifty = "0";
+                        string twenty = "0";
+                        string ten = "0";
+                        string five = "0";
+                        string twos = "0";
+                        string ones = "0";
+                        DenominationString = context.Request["DenominationString"];
+                        DenominationString = DenominationString.Replace("+", " ");
+                        if (paymenttype == "Cash")
+                        {
+                            foreach (string str in DenominationString.Split(' '))
+                            {
+                                if (str != "")
+                                {
+                                    string[] price = str.Split('x');
+                                    string amountcount = price[0];
+                                    string notecount = price[1];
+                                    if (amountcount == "2000")
+                                    {
+                                        twothousand = notecount;
+                                    }
+                                    if (amountcount == "1000")
+                                    {
+                                        thousand = notecount;
+                                    }
+                                    if (amountcount == "500")
+                                    {
+                                        fivehundred = notecount;
+                                    }
+                                    if (amountcount == "200")
+                                    {
+                                        twohundred = notecount;
+                                    }
+                                    if (amountcount == "100")
+                                    {
+                                        hundred = notecount;
+                                    }
+                                    if (amountcount == "50")
+                                    {
+                                        fifty = notecount;
+                                    }
+                                    if (amountcount == "20")
+                                    {
+                                        twenty = notecount;
+                                    }
+                                    if (amountcount == "10")
+                                    {
+                                        ten = notecount;
+                                    }
+                                    if (amountcount == "5")
+                                    {
+                                        five = notecount;
+                                    }
+                                    if (amountcount == "2")
+                                    {
+                                        twos = notecount;
+                                    }
+                                    if (amountcount == "1")
+                                    {
+                                        ones = notecount;
+                                    }
+                                }
+                            }
+                            cmd = new MySqlCommand("Update branch_denomination set amount=amount+@amount,twothousand=twothousand+@twothousand,thousand=thousand+@thousand,fivehundred=fivehundred+@fivehundred,twohundred=twohundred+@twohundred,hundred=hundred+@hundred,fifty=fifty+@fifty,twenty=twenty+@twenty,ten=ten+@ten,five=five+@five,twos=twos+@twos,ones=ones+@ones where BranchID=@BranchID");
+                            cmd.Parameters.AddWithValue("@amount", Amount);
+                            cmd.Parameters.AddWithValue("@twothousand", twothousand);
+                            cmd.Parameters.AddWithValue("@thousand", thousand);
+                            cmd.Parameters.AddWithValue("@fivehundred", fivehundred);
+                            cmd.Parameters.AddWithValue("@twohundred", twohundred);
+                            cmd.Parameters.AddWithValue("@hundred", hundred);
+                            cmd.Parameters.AddWithValue("@fifty", fifty);
+                            cmd.Parameters.AddWithValue("@twenty", twenty);
+                            cmd.Parameters.AddWithValue("@ten", ten);
+                            cmd.Parameters.AddWithValue("@five", five);
+                            cmd.Parameters.AddWithValue("@twos", twos);
+                            cmd.Parameters.AddWithValue("@ones", ones);
+                            cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
+                            vdbmngr.Update(cmd);
+
+                            string return_twothousand = "0";
+                            string return_thousand = "0";
+                            string return_fivehundred = "0";
+                            string return_twohundred = "0";
+                            string return_hundred = "0";
+                            string return_fifty = "0";
+                            string return_twenty = "0";
+                            string return_ten = "0";
+                            string return_five = "0";
+                            string return_twos = "0";
+                            string return_ones = "0";
+                            ReturnDenominationString = ReturnDenominationString.Replace("+", " ");
+                            foreach (string str in ReturnDenominationString.Split(' '))
+                            {
+                                if (str != "")
+                                {
+                                    string[] price = str.Split('x');
+                                    string amountcount = price[0];
+                                    string notecount = price[1];
+                                    if (amountcount == "2000")
+                                    {
+                                        return_twothousand = notecount;
+                                    }
+                                    if (amountcount == "1000")
+                                    {
+                                        return_thousand = notecount;
+                                    }
+                                    if (amountcount == "500")
+                                    {
+                                        return_fivehundred = notecount;
+                                    }
+                                    if (amountcount == "200")
+                                    {
+                                        return_twohundred = notecount;
+                                    }
+                                    if (amountcount == "100")
+                                    {
+                                        return_hundred = notecount;
+                                    }
+                                    if (amountcount == "50")
+                                    {
+                                        return_fifty = notecount;
+                                    }
+                                    if (amountcount == "20")
+                                    {
+                                        return_twenty = notecount;
+                                    }
+                                    if (amountcount == "10")
+                                    {
+                                        return_ten = notecount;
+                                    }
+                                    if (amountcount == "5")
+                                    {
+                                        return_five = notecount;
+                                    }
+                                    if (amountcount == "2")
+                                    {
+                                        return_twos = notecount;
+                                    }
+                                    if (amountcount == "1")
+                                    {
+                                        return_ones = notecount;
+                                    }
+                                }
+                            }
+                            cmd = new MySqlCommand("Update branch_denomination set twothousand=twothousand-@twothousand,thousand=thousand-@thousand,fivehundred=fivehundred-@fivehundred,twohundred=twohundred-@twohundred,hundred=hundred-@hundred,fifty=fifty-@fifty,twenty=twenty-@twenty,ten=ten-@ten,five=five-@five,twos=twos-@twos,ones=ones-@ones where BranchID=@BranchID");
+                            cmd.Parameters.AddWithValue("@amount", Amount);
+                            cmd.Parameters.AddWithValue("@twothousand", return_twothousand);
+                            cmd.Parameters.AddWithValue("@thousand", return_thousand);
+                            cmd.Parameters.AddWithValue("@fivehundred", return_fivehundred);
+                            cmd.Parameters.AddWithValue("@twohundred", return_twohundred);
+                            cmd.Parameters.AddWithValue("@hundred", return_hundred);
+                            cmd.Parameters.AddWithValue("@fifty", return_fifty);
+                            cmd.Parameters.AddWithValue("@twenty", return_twenty);
+                            cmd.Parameters.AddWithValue("@ten", return_ten);
+                            cmd.Parameters.AddWithValue("@five", return_five);
+                            cmd.Parameters.AddWithValue("@twos", return_twos);
+                            cmd.Parameters.AddWithValue("@ones", return_ones);
+                            cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
+                            vdbmngr.Update(cmd);
+                        }
+                    }
+                    #endregion
+                    #region
+                    if (collectiontype == "SalesOfficeCollection")
+                    {
+
+                        double PaidAmount = 0;
+                        double.TryParse(Amount.ToString(), out PaidAmount);
+                        currentyear = ServerDateCurrentdate.Year;
+                        nextyear = ServerDateCurrentdate.Year + 1;
+                        string Branch = soid;
+                        if (soid == "572")
+                        {
+                            Branch = "158";
+                        }
+                        if (ServerDateCurrentdate.Month > 3)
+                        {
+                            string apr = "4/1/" + currentyear;
+                            dtapril = DateTime.Parse(apr);
+                            string march = "3/31/" + nextyear;
+                            dtmarch = DateTime.Parse(march);
+                        }
+                        if (ServerDateCurrentdate.Month <= 3)
+                        {
+                            string apr = "4/1/" + (currentyear - 1);
+                            dtapril = DateTime.Parse(apr);
+                            string march = "3/31/" + (nextyear - 1);
+                            dtmarch = DateTime.Parse(march);
+                        }
+                        if (Branch != "158")
+                        {
+                            if (Transactiontype == "Credit")
+                            {
+                                cmd = new MySqlCommand("SELECT Branchid, UserData_sno, AmountPaid, Denominations, Remarks, Sno, PaidDate FROM collections WHERE (Branchid = @BranchID) AND (PaidDate BETWEEN @d1 AND @d2)");
+                                cmd.Parameters.AddWithValue("@BranchID", Branch);
+                                cmd.Parameters.AddWithValue("@d1", GetLowDate(ServerDateCurrentdate));
+                                cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate));
+                                DataTable dtcashbookstatus1 = vdbmngr.SelectQuery(cmd).Tables[0];
+                                if (dtcashbookstatus1.Rows.Count > 0)
+                                {
+                                    ServerDateCurrentdate = ServerDateCurrentdate.AddDays(1);
+                                }
+                                cmd = new MySqlCommand("Select Amount from branchaccounts where BranchId=@BranchId");
+                                cmd.Parameters.AddWithValue("@BranchId", Branch);
+                                DataTable dtbrnchoppamt = vdbmngr.SelectQuery(cmd).Tables[0];
+                                string amount = "0";
+                                if (dtbrnchoppamt.Rows.Count > 0)
+                                {
+                                    amount = dtbrnchoppamt.Rows[0]["Amount"].ToString();
+                                }
+                                //string remarks = "Agent Collection";
+                                string CashReceiptNo = "0";
+                                if (paymenttype == "Cash")
+                                {
+                                    cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID AND (DOE BETWEEN @d1 AND @d2)");
+                                    cmd.Parameters.AddWithValue("@BranchID", Branch);
+                                    cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril));
+                                    cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch));
+                                    DataTable dtReceipt = vdbmngr.SelectQuery(cmd).Tables[0];
+                                    CashReceiptNo = dtReceipt.Rows[0]["Sno"].ToString();
+                                    // CashReceiptNo = "0";
+                                    if (paymenttype == "Cheque")
+                                    {
+                                        cmd = new MySqlCommand("insert into cashreceipts (BranchId,ReceivedFrom,AgentID,AmountPaid,DOE,Create_by,Remarks,OppBal,Receipt,Paymentstatus,ChequeNo) values (@BranchId,@ReceivedFrom,@AgentID,@AmountPaid,@DOE, @Create_by,@Remarks,@OppBal,@Receipt,@Paymentstatus,@ChequeNo)");
+                                        cmd.Parameters.AddWithValue("@ChequeNo", ChequeNo);
+                                        cmd.Parameters.AddWithValue("@Paymentstatus", "Cheque");
+                                    }
+                                    else
+                                    {
+                                        cmd = new MySqlCommand("insert into cashreceipts (BranchId,ReceivedFrom,AgentID,AmountPaid,DOE,Create_by,Remarks,OppBal,Receipt,PaymentStatus) values (@BranchId,@ReceivedFrom,@AgentID,@AmountPaid,@DOE, @Create_by,@Remarks,@OppBal,@Receipt,@PaymentStatus)");
+                                        cmd.Parameters.AddWithValue("@Paymentstatus", paymenttype);
+                                    }
+                                    cmd.Parameters.AddWithValue("@BranchId", Branch);
+                                    cmd.Parameters.AddWithValue("@ReceivedFrom", "Agent");
+                                    cmd.Parameters.AddWithValue("@AgentID", BranchID);
+                                    cmd.Parameters.AddWithValue("@AmountPaid", PaidAmount);
+                                    if (soid == "570")
+                                    {
+                                        cmd.Parameters.AddWithValue("DOE", PaidDate);
+                                    }
+                                    if (soid != "570")
+                                    {
+                                        cmd.Parameters.AddWithValue("DOE", ServerDateCurrentdate);
+                                    }
+                                    cmd.Parameters.AddWithValue("@Create_by", context.Session["UserSno"].ToString());
+                                    cmd.Parameters.AddWithValue("@Remarks", Remarks);
+                                    cmd.Parameters.AddWithValue("@OppBal", amount);
+                                    cmd.Parameters.AddWithValue("@Receipt", CashReceiptNo);
+                                    vdbmngr.insert(cmd);
+                                    string twothousand = "0";
+                                    string thousand = "0";
+                                    string fivehundred = "0";
+                                    string twohundred = "0";
+                                    string hundred = "0";
+                                    string fifty = "0";
+                                    string twenty = "0";
+                                    string ten = "0";
+                                    string five = "0";
+                                    string twos = "0";
+                                    string ones = "0";
+                                    DenominationString = DenominationString.Replace("+", " ");
+                                    foreach (string str in DenominationString.Split(' '))
+                                    {
+                                        if (str != "")
+                                        {
+                                            string[] price = str.Split('x');
+                                            string amountcount = price[0];
+                                            string notecount = price[1];
+                                            if (amountcount == "2000")
+                                            {
+                                                twothousand = notecount;
+                                            }
+                                            if (amountcount == "1000")
+                                            {
+                                                thousand = notecount;
+                                            }
+                                            if (amountcount == "500")
+                                            {
+                                                fivehundred = notecount;
+                                            }
+                                            if (amountcount == "200")
+                                            {
+                                                twohundred = notecount;
+                                            }
+                                            if (amountcount == "100")
+                                            {
+                                                hundred = notecount;
+                                            }
+                                            if (amountcount == "50")
+                                            {
+                                                fifty = notecount;
+                                            }
+                                            if (amountcount == "20")
+                                            {
+                                                twenty = notecount;
+                                            }
+                                            if (amountcount == "10")
+                                            {
+                                                ten = notecount;
+                                            }
+                                            if (amountcount == "5")
+                                            {
+                                                five = notecount;
+                                            }
+                                            if (amountcount == "2")
+                                            {
+                                                twos = notecount;
+                                            }
+                                            if (amountcount == "1")
+                                            {
+                                                ones = notecount;
+                                            }
+                                        }
+                                    }
+                                    cmd = new MySqlCommand("Update branch_denomination set amount=amount+@amount,twothousand=twothousand+@twothousand,thousand=thousand+@thousand,fivehundred=fivehundred+@fivehundred,twohundred=twohundred+@twohundred,hundred=hundred+@hundred,fifty=fifty+@fifty,twenty=twenty+@twenty,ten=ten+@ten,five=five+@five,twos=twos+@twos,ones=ones+@ones where BranchID=@BranchID");
+                                    cmd.Parameters.AddWithValue("@amount", Amount);
+                                    cmd.Parameters.AddWithValue("@twothousand", twothousand);
+                                    cmd.Parameters.AddWithValue("@thousand", thousand);
+                                    cmd.Parameters.AddWithValue("@fivehundred", fivehundred);
+                                    cmd.Parameters.AddWithValue("@twohundred", twohundred);
+                                    cmd.Parameters.AddWithValue("@hundred", hundred);
+                                    cmd.Parameters.AddWithValue("@fifty", fifty);
+                                    cmd.Parameters.AddWithValue("@twenty", twenty);
+                                    cmd.Parameters.AddWithValue("@ten", ten);
+                                    cmd.Parameters.AddWithValue("@five", five);
+                                    cmd.Parameters.AddWithValue("@twos", twos);
+                                    cmd.Parameters.AddWithValue("@ones", ones);
+                                    cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
+                                    vdbmngr.Update(cmd);
+
+                                    string return_twothousand = "0";
+                                    string return_thousand = "0";
+                                    string return_twohundred = "0";
+                                    string return_fivehundred = "0";
+                                    string return_hundred = "0";
+                                    string return_fifty = "0";
+                                    string return_twenty = "0";
+                                    string return_ten = "0";
+                                    string return_five = "0";
+                                    string return_twos = "0";
+                                    string return_ones = "0";
+                                    ReturnDenominationString = ReturnDenominationString.Replace("+", " ");
+                                    foreach (string str in ReturnDenominationString.Split(' '))
+                                    {
+                                        if (str != "")
+                                        {
+                                            string[] price = str.Split('x');
+                                            string amountcount = price[0];
+                                            string notecount = price[1];
+                                            if (amountcount == "2000")
+                                            {
+                                                return_twothousand = notecount;
+                                            }
+                                            if (amountcount == "1000")
+                                            {
+                                                return_thousand = notecount;
+                                            }
+                                            if (amountcount == "500")
+                                            {
+                                                return_fivehundred = notecount;
+                                            }
+                                            if (amountcount == "200")
+                                            {
+                                                return_twohundred = notecount;
+                                            }
+                                            if (amountcount == "100")
+                                            {
+                                                return_hundred = notecount;
+                                            }
+                                            if (amountcount == "50")
+                                            {
+                                                return_fifty = notecount;
+                                            }
+                                            if (amountcount == "20")
+                                            {
+                                                return_twenty = notecount;
+                                            }
+                                            if (amountcount == "10")
+                                            {
+                                                return_ten = notecount;
+                                            }
+                                            if (amountcount == "5")
+                                            {
+                                                return_five = notecount;
+                                            }
+                                            if (amountcount == "2")
+                                            {
+                                                return_twos = notecount;
+                                            }
+                                            if (amountcount == "1")
+                                            {
+                                                return_ones = notecount;
+                                            }
+                                        }
+                                    }
+                                    cmd = new MySqlCommand("Update branch_denomination set twothousand=twothousand-@twothousand,thousand=thousand-@thousand,fivehundred=fivehundred-@fivehundred,twohundred=twohundred+@twohundred,hundred=hundred-@hundred,fifty=fifty-@fifty,twenty=twenty-@twenty,ten=ten-@ten,five=five-@five,twos=twos-@twos,ones=ones-@ones where BranchID=@BranchID");
+                                    cmd.Parameters.AddWithValue("@amount", Amount);
+                                    cmd.Parameters.AddWithValue("@twothousand", return_twothousand);
+                                    cmd.Parameters.AddWithValue("@thousand", return_thousand);
+                                    cmd.Parameters.AddWithValue("@fivehundred", return_fivehundred);
+                                    cmd.Parameters.AddWithValue("@twohundred", return_twohundred);
+                                    cmd.Parameters.AddWithValue("@hundred", return_hundred);
+                                    cmd.Parameters.AddWithValue("@fifty", return_fifty);
+                                    cmd.Parameters.AddWithValue("@twenty", return_twenty);
+                                    cmd.Parameters.AddWithValue("@ten", return_ten);
+                                    cmd.Parameters.AddWithValue("@five", return_five);
+                                    cmd.Parameters.AddWithValue("@twos", return_twos);
+                                    cmd.Parameters.AddWithValue("@ones", return_ones);
+                                    cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
+                                    vdbmngr.Update(cmd);
+                                }
+                                string Username = "1";
+                                cmd = new MySqlCommand("select BranchName,phonenumber from BranchData where Sno=@sno");
+                                cmd.Parameters.AddWithValue("@sno", BranchID);
+                                DataTable dtBranchName = vdbmngr.SelectQuery(cmd).Tables[0];
+                                string BranchName = dtBranchName.Rows[0]["BranchName"].ToString();
+                                string phonenumber = dtBranchName.Rows[0]["phonenumber"].ToString();
+                                if (paymenttype == "Cheque" || paymenttype == "Bank Transfer")
+                                {
+                                    if (paymenttype == "Cheque")
+                                    {
+                                        cmd = new MySqlCommand("INSERT INTO collections (Branchid, AmountPaid, Denominations, Remarks, PaidDate, UserData_sno, PaymentType, ReturnDenomin, PayTime, EmpID, ChequeNo, CheckStatus, ReceiptNo,ChequeDate, BankName,headsno) VALUES (@Branchid, @AmountPaid, @Denominations, @Remarks, @PaidDate, @UserData_sno, @PaymentType, @ReturnDenomin, @PayTime, @EmpID, @ChequeNo,@CheckStatus, @ReceiptNo, @ChequeDate, @BankName,@headsno)");
+                                        cmd.Parameters.AddWithValue("@CheckStatus", "P");
+                                        cmd.Parameters.AddWithValue("@ChequeDate", dtchequedate);
+                                        cmd.Parameters.AddWithValue("@BankName", BankName);
+                                    }
+                                    else
+                                    {
+                                        //cmd = new MySqlCommand("insert into collections (Branchid,AmountPaid,Remarks,PaidDate,UserData_sno,PaymentType,PayTime,EmpID,ChequeNo,CheckStatus,ReceiptNo,ChequeDate,BankName)values(@Branchid,@AmountPaid,@Remarks,@PaidDate,@UserData_sno,@PaymentType,@PayTime,@EmpID,@ChequeNo,@CheckStatus,@ReceiptNo,@ChequeDate,@BankName)");
+                                        cmd = new MySqlCommand("INSERT INTO collections (Branchid, AmountPaid, Denominations, Remarks, PaidDate, UserData_sno, PaymentType, ReturnDenomin, PayTime, EmpID, ChequeNo, ReceiptNo, BankName,headsno,banktransferstatus,banktransferdate) VALUES (@Branchid, @AmountPaid, @Denominations, @Remarks, @PaidDate, @UserData_sno, @PaymentType, @ReturnDenomin, @PayTime, @EmpID, @ChequeNo,@ReceiptNo,@BankName,@headsno,@banktransferstatus,@banktransferdate)");
+                                        cmd.Parameters.AddWithValue("@BankName", BankName);
+                                        cmd.Parameters.AddWithValue("@banktransferstatus", "P");
+                                        cmd.Parameters.AddWithValue("@banktransferdate", PaidDate);
+                                    }
+                                }
+                                else
+                                {
+                                    //headsnocmd = new MySqlCommand("insert into collections (Branchid,AmountPaid,Remarks,PaidDate,UserData_sno,PaymentType,PayTime,EmpID,ChequeNo,ReceiptNo)values(@Branchid,@AmountPaid,@Remarks,@PaidDate,@UserData_sno,@PaymentType,@PayTime,@EmpID,@ChequeNo,@ReceiptNo)");
+                                    cmd = new MySqlCommand("INSERT INTO collections (Branchid, AmountPaid, Denominations, Remarks, PaidDate, UserData_sno, PaymentType, ReturnDenomin, PayTime, EmpID, ChequeNo, ReceiptNo,headsno) VALUES (@Branchid, @AmountPaid, @Denominations, @Remarks, @PaidDate, @UserData_sno, @PaymentType, @ReturnDenomin, @PayTime, @EmpID, @ChequeNo,@ReceiptNo,@headsno)");
+                                }
+                                cmd.Parameters.AddWithValue("@Branchid", BranchID);
+                                cmd.Parameters.AddWithValue("@AmountPaid", PaidAmount);
+                                cmd.Parameters.AddWithValue("@Remarks", Remarks);
+                                cmd.Parameters.AddWithValue("@headsno", HeadSno);
+                                if (soid == "570")
+                                {
+                                    cmd.Parameters.AddWithValue("@PaidDate", PaidDate);
+                                }
+                                if (soid != "570")
+                                {
+                                    cmd.Parameters.AddWithValue("@PaidDate", ServerDateCurrentdate);
+                                }
+                                cmd.Parameters.AddWithValue("@PayTime", ServerDateCurrentdate);
+                                cmd.Parameters.AddWithValue("@UserData_sno", Username);
+                                cmd.Parameters.AddWithValue("@PaymentType", paymenttype);
+                                cmd.Parameters.AddWithValue("@EmpID", context.Session["UserSno"].ToString());
+                                cmd.Parameters.AddWithValue("@ChequeNo", ChequeNo);
+                                cmd.Parameters.AddWithValue("@ReceiptNo", CashReceiptNo);
+                                cmd.Parameters.AddWithValue("@Denominations", DenominationString);
+                                cmd.Parameters.AddWithValue("@ReturnDenomin", ReturnDenominationString);
+                                vdbmngr.insert(cmd);
+                                if (paymenttype == "Cheque")
+                                {
+
+                                }
+                                if (paymenttype == "Cash" || paymenttype == "Bank Transfer")
+                                {
+                                    cmd = new MySqlCommand("Update branchaccounts set Amount=Amount-@PaidAmount where BranchId=@BranchId");
+                                    cmd.Parameters.AddWithValue("@PaidAmount", PaidAmount);
+                                    cmd.Parameters.AddWithValue("@BranchId", BranchID);
+                                    if (vdbmngr.Update(cmd) == 0)
+                                    {
+                                        double paidamt = PaidAmount * -1;
+                                        cmd = new MySqlCommand("insert into branchaccounts (BranchId,Amount) values (@BranchId,@Amount)");
+                                        cmd.Parameters.AddWithValue("@Amount", paidamt);
+                                        cmd.Parameters.AddWithValue("@BranchId", BranchID);
+                                        vdbmngr.insert(cmd);
+                                    }
+                                }
+                                if (phonenumber.Length == 10)
+                                {
+                                    if (paymenttype == "Incentive" || paymenttype == "Journal Voucher")
+                                    {
+                                        //if (PaymentType == "Incentive")
+                                        //{
+                                        string Date = PaidDate;
+                                        WebClient client = new WebClient();
+                                        DateTime dtmonth = Convert.ToDateTime(Date);
+                                        string strdate = dtmonth.ToString("dd/MMM");
+                                        string message = "";
+                                        if (context.Session["TitleName"].ToString() == "BMG Milk Dairy Farm")
+                                        {
+                                            //string baseurl = "http://103.225.76.43/blank/sms/user/urlsmstemp.php?username=vyshnavidairy&pass=vyshnavi@123&senderid=VYSHRM&dest_mobileno=" + phonenumber + "&message=Dear%20" + BranchName + "%20Your%20Incentive%20Amount%20Credeted%20for%20The%20Month%20Of%20%20" + strdate + "%20Amount%20is =" + PaidAmount + "&response=Y";
+                                            string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Incentive%20Amount%20Credeted%20for%20The%20Month%20Of%20%20" + strdate + "%20Amount%20is =" + PaidAmount + "&type=1";
+                                            message = "" + BranchName + "Your Incentive Amount Credeted for The Month Of" + strdate + "Amount is =" + PaidAmount + "";
+                                            Stream data = client.OpenRead(baseurl);
+                                            StreamReader reader = new StreamReader(data);
+                                            string ResponseID = reader.ReadToEnd();
+                                            data.Close();
+                                            reader.Close();
+                                        }
+                                        else
+                                        {
+                                            string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VFWYRA&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Incentive%20Amount%20Credeted%20for%20The%20Month%20Of%20%20" + strdate + "%20Amount%20is =" + PaidAmount + "&type=1";
+                                            message = "" + BranchName + "Your Incentive Amount Credeted for The Month Of" + strdate + "Amount is =" + PaidAmount + "";
+                                            Stream data = client.OpenRead(baseurl);
+                                            StreamReader reader = new StreamReader(data);
+                                            string ResponseID = reader.ReadToEnd();
+                                            data.Close();
+                                            reader.Close();
+                                        }
+                                        cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,agentname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@agentname,@doe)");
+                                        cmd.Parameters.AddWithValue("@agentid", BranchID);
+                                        cmd.Parameters.AddWithValue("@branchid", soid);
+                                        cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                                        cmd.Parameters.AddWithValue("@msg", message);
+                                        cmd.Parameters.AddWithValue("@mobileno", phonenumber);
+                                        cmd.Parameters.AddWithValue("@msgtype", "Collection");
+                                        cmd.Parameters.AddWithValue("@agentname", BranchName);
+                                        cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                                        vdbmngr.insert(cmd);
+                                        //}
+                                    }
+                                    else
+                                    {
+                                        ///////................Instruction By Raghu Kumar.............................../////////////
+                                        try
+                                        {
+                                            string Date = PaidDate;
+                                            if (context.Session["TitleName"].ToString() == "BMG Milk Dairy Farm")
+                                            {
+                                                WebClient client = new WebClient();
+                                                //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
+                                                string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Amount%20Collected%20for%20today%20ReceiptNo%20%20" + CashReceiptNo + "%20Date%20" + Date + "%20Amount%20is =" + PaidAmount + "&type=1";
+                                                Stream data = client.OpenRead(baseurl);
+                                                StreamReader reader = new StreamReader(data);
+                                                string ResponseID = reader.ReadToEnd();
+                                                data.Close();
+                                                reader.Close();
+                                            }
+                                            else
+                                            {
+                                                WebClient client = new WebClient();
+                                                //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
+                                                string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VFWYRA&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Amount%20Collected%20for%20today%20ReceiptNo%20%20" + CashReceiptNo + "%20Date%20" + Date + "%20Amount%20is =" + PaidAmount + "&type=1";
+                                                Stream data = client.OpenRead(baseurl);
+                                                StreamReader reader = new StreamReader(data);
+                                                string ResponseID = reader.ReadToEnd();
+                                                data.Close();
+                                                reader.Close();
+                                            }
+                                            string message = "Dear" + BranchName + "Your Amount Collected for today ReceiptNo" + CashReceiptNo + "Date" + Date + "Amount is =" + PaidAmount + "";
+                                            cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                                            cmd.Parameters.AddWithValue("@agentid", BranchID);
+                                            cmd.Parameters.AddWithValue("@branchid", soid);
+                                            cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                                            cmd.Parameters.AddWithValue("@msg", message);
+                                            cmd.Parameters.AddWithValue("@mobileno", phonenumber);
+                                            cmd.Parameters.AddWithValue("@msgtype", "Collection");
+                                            cmd.Parameters.AddWithValue("@branchname", BranchName);
+                                            cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                                            vdbmngr.insert(cmd);
+                                        }
+                                        catch
+                                        {
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (paymenttype == "Cash" || paymenttype == "Bank Transfer")
+                        {
+                            DateTime pdate = Convert.ToDateTime(PaidDate);
+
+                            cmd = new MySqlCommand("SELECT MAX(sno) as sno FROM agent_bal_trans WHERE agentid=@Branchid");
+                            cmd.Parameters.AddWithValue("@Branchid", BranchID);
+                            DataTable dtagenttrans = vdbmngr.SelectQuery(cmd).Tables[0];
+                            if (dtagenttrans.Rows.Count > 0)
+                            {
+                                string maxsno = dtagenttrans.Rows[0]["sno"].ToString();
+                                cmd = new MySqlCommand("Insert into agent_bal_trans_history(refno, paidamount, cashtype, createddate, entryby) values (@refno,@paidamount,@cashtype,@doe,@entryby)");
+                                cmd.Parameters.AddWithValue("@refno", maxsno);
+                                cmd.Parameters.AddWithValue("@paidamount", PaidAmount);
+                                cmd.Parameters.AddWithValue("@cashtype", collectiontype);
+                                cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                                cmd.Parameters.AddWithValue("@entryby", context.Session["UserSno"].ToString());
+                                vdbmngr.insert(cmd);
+                                cmd = new MySqlCommand("SELECT agentid, opp_balance,paidamount, inddate, salesvalue, clo_balance FROM agent_bal_trans WHERE sno=@sno");
+                                cmd.Parameters.AddWithValue("@sno", maxsno);
+                                DataTable dtmaxagenttrans = vdbmngr.SelectQuery(cmd).Tables[0];
+                                cmd = new MySqlCommand("SELECT agentid, opp_balance, inddate, salesvalue, clo_balance FROM agent_bal_trans WHERE agentid=@agentid AND inddate between @d1 and @d2");
+                                cmd.Parameters.AddWithValue("@agentid", BranchID);
+                                cmd.Parameters.AddWithValue("@d1", GetLowDate(pdate.AddDays(-1)));
+                                cmd.Parameters.AddWithValue("@d2", GetHighDate(pdate.AddDays(-1)));
+                                DataTable dtIndentbal = vdbmngr.SelectQuery(cmd).Tables[0];
+                                if (dtIndentbal.Rows.Count > 0)
+                                {
+                                    string oppbalance = dtmaxagenttrans.Rows[0]["opp_balance"].ToString();
+                                    string salesvalue = dtmaxagenttrans.Rows[0]["salesvalue"].ToString();
+                                    double Prev_amount = 0;
+                                    double.TryParse(dtmaxagenttrans.Rows[0]["paidamount"].ToString(), out Prev_amount);
+                                    if (Prev_amount > 0)
+                                    {
+                                        PaidAmount = PaidAmount + Prev_amount;
+                                    }
+
+                                    double total = Convert.ToDouble(oppbalance) + Convert.ToDouble(salesvalue);
+                                    string closingbalance = dtmaxagenttrans.Rows[0]["clo_balance"].ToString();
+                                    double clsvalue = Convert.ToDouble(closingbalance);
+                                    double closingvalue = total - PaidAmount;
+                                    string inddate = dtmaxagenttrans.Rows[0]["inddate"].ToString();
+                                    cmd = new MySqlCommand("UPDATE agent_bal_trans SET paidamount=@paidamount, clo_balance=@closing where sno=@refno");
+                                    cmd.Parameters.AddWithValue("@paidamount", PaidAmount);
+                                    cmd.Parameters.AddWithValue("@refno", maxsno);
+                                    cmd.Parameters.AddWithValue("@closing", closingvalue);
+                                    vdbmngr.Update(cmd);
+                                }
+                                else
+                                {
+                                    string closingbalance = dtmaxagenttrans.Rows[0]["clo_balance"].ToString();
+                                    double clsvalue = Convert.ToDouble(closingbalance);
+                                    double closingvalue = clsvalue - PaidAmount;
+                                    cmd = new MySqlCommand("UPDATE agent_bal_trans set  clo_balance=clo_balance-@clAmount  where agentid=@BranchId AND inddate=@inddate");
+                                    cmd.Parameters.AddWithValue("@BranchId", BranchID);
+                                    cmd.Parameters.AddWithValue("@inddate", pdate.AddDays(-1));
+                                    cmd.Parameters.AddWithValue("@clAmount", closingvalue);
+                                    if (vdbmngr.Update(cmd) == 0)
+                                    {
+                                        cmd = new MySqlCommand("Insert Into agent_bal_trans(agentid, opp_balance, inddate, salesvalue,  clo_balance, createdate, entryby,paidamount) values (@BranchId,@opp_balance,@inddate, @salesvalue, @clo_balance, @createdate, @entryby,@paidamount)");
+                                        cmd.Parameters.AddWithValue("@paidamount", PaidAmount);
+                                        cmd.Parameters.AddWithValue("@BranchId", BranchID);
+                                        cmd.Parameters.AddWithValue("@opp_balance", clsvalue);
+                                        cmd.Parameters.AddWithValue("@inddate", pdate.AddDays(-1));
+                                        cmd.Parameters.AddWithValue("@salesvalue", 0);
+                                        cmd.Parameters.AddWithValue("@clo_balance", closingvalue);
+                                        cmd.Parameters.AddWithValue("@createdate", ServerDateCurrentdate);
+                                        cmd.Parameters.AddWithValue("@entryby", context.Session["UserSno"].ToString());
+                                        vdbmngr.insert(cmd);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    #endregion
+                    string msg = "Cash Collection Saved Successfully";
+                    string response = GetJson(msg);
+                    context.Response.Write(response);
+                }
             }
         }
         catch (Exception ex)
@@ -37463,10 +38518,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string offerqty { get; set; }
         public string Tabletype { get; set; }
 
-        public string PrevLeakQty { get; set; }
-        public string PrevFreeQty { get; set; }
-        public string PrevReturnQty { get; set; }
-        public string PrevShortQty { get; set; }
+        public string Puff_L { get; set; }
+        public string PLQty { get; set; }
+        public string PFQty { get; set; }
+        public string PRQty { get; set; }
+        public string PSQty { get; set; }
+        public string PPufLQty { get; set; }
     }
 
     class offerorderdetails

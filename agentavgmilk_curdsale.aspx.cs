@@ -344,6 +344,8 @@ public partial class agentavgmilk_curdsale : System.Web.UI.Page
                 cmd.Parameters.AddWithValue("@endtime", GetHighDate(todate.AddDays(-1)));
                 DataTable dttotal = vdm.SelectQuery(cmd).Tables[0];
                 DataRow newvar2 = Report.NewRow();
+                 dtotalmilkSale = 0;
+                 dtotalcurdSale = 0;
                 newvar2["Agent Name"] = "Total";
                 foreach (DataRow dr in dttotal.Rows)
                 {
