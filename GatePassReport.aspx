@@ -131,7 +131,7 @@
                             <asp:Panel ID="pnlHide" runat="server" Visible="false">
                                 <div id="divPrint">
                                     <div style="width: 13%; float: left;">
-                                        <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="95px" height="90px" />
+                                        <img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="95px" height="90px" />
                                     </div>
                                     <div align="center">
                                         <asp:Label ID="lblTitle" runat="server" Font-Bold="true" Font-Size="20px" ForeColor="#0252aa"

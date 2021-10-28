@@ -435,7 +435,7 @@
    margin: 0;
 }
 </style><div align="center" style="color: #0252aa; font-weight: bold;font-size:x-large;top:50px;position:relative;">
-       VITA MILK DAIRY PRODUCTS TRIP ASSIGNMENT LAYOUT
+       Sri Vyshnavi Dairy Specialities (P) Ltd TRIP ASSIGNMENT LAYOUT
     </div>
     <div style="height:120px;width:100%;">
     

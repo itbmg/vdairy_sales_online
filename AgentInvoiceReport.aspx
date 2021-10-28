@@ -632,7 +632,7 @@
                             <div id="divPrint1">
                                 <div style="width: 100%;">
                                     <div style="width: 11%; float: left;">
-                                        <%--<img src="Images/Vyshnavilogo.png" alt="VT Milk" width="120px"
+                                        <%--<img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="120px"
                                             height="135px" />--%>
                                     </div>
                                     <div style="left: 0%; text-align: center;">
@@ -735,7 +735,7 @@
                                             <td style="width: 50%;">
                                                 <asp:Label ID="lbl1" runat="server" style="font-weight: bold;color: #0252aa;" Text="HEAD MARETING"></asp:Label>
                                                 <br />
-                                                <asp:Label ID="lbl2" runat="server" style="font-weight: bold;color: #0252aa;" Text="VITA MILK DAIRY PRODUCTS"></asp:Label>
+                                                <asp:Label ID="lbl2" runat="server" style="font-weight: bold;color: #0252aa;" Text="SRI VYSHNAVI DAIRY SPECIALITIES (P) LTD"></asp:Label>
                                                 <br/>
                                                 <asp:Label ID="lblbranch" runat="server" style="font-weight: bold;color: #0252aa;" Text=""></asp:Label>
                                             </td>
@@ -812,7 +812,7 @@
                     <div id="divPrint" style="display: none;height:50%;">
                     <div style="border:2px solid gray;">
                     <div style="width: 17%; float: left; padding-top:5px;">
-                        <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="100px" height="72px" />
+                        <img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="100px" height="72px" />
                         <br />
                     </div>
                     <div style="border:1px solid gray;text-align:  center;">

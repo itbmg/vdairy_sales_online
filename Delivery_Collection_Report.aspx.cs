@@ -180,7 +180,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                 string Date = DateTime.Now.ToString("dd/MM/yyyy");
                 WebClient client = new WebClient();
                 string SalesOfficeName = ddlSalesOffice.SelectedItem.Text;
-                if (Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
+                if (Session["TitleName"].ToString() == "Sri Vyshnavi Dairy Specialities (P) Ltd")
                 {
                     //string strUrl = " http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=" + no + "&msg=" + message1 + "&type=1 ";
                     string baseurl = "http://roundsms.com/api/sendhttp.php?authkey=Y2U3NGE2MGFkM2V&mobiles=" + MobNo + "&message=%20" + SalesOfficeName + "%20,%20 + NET SALES FOR TODAY" + "%20:%20" + fromdate + "%20%20" + ProductName + "TotalQty =" + TotalQty + "%20,%20" + "Sale Value =" + Totalsalevalue + "&sender=VYSNVI&type=1&route=2"; 
@@ -252,23 +252,28 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
         {
             var salesoffice = ddlSalesOffice.SelectedItem.Text;
             var salesoff = ddlSalesOffice.SelectedValue;
-            if (salesoff == "2")
+            if (salesoff == "8097" || salesoff == "174" || salesoff == "1801" || salesoff == "527" || salesoff == "306" || salesoff == "538" || salesoff == "2909" || salesoff == "2749" || salesoff == "3781" || salesoff == "3928" || salesoff == "4607")
             {
-                getnelloreReport();
+                GetReport();
             }
             else
             {
-                if (salesoff == "AGENT WISE")
+                if (salesoff == "159")
+                {
+                    //GetReport();
+                    getHYDReport();
+                }
+                if (salesoff == "5437" || salesoff == "271" || salesoff == "285" || salesoff == "2948" || salesoff == "4607" || salesoff == "457" || salesoff == "570" || salesoff == "572" || salesoff == "3559" || salesoff == "282" || salesoff == "458" || salesoff == "4609")
                 {
                     status = "Nellore";
 
-                    //getnelloreReport();
+                    getnelloreReport();
                 }
             }
             cmd = new MySqlCommand("SELECT clotrans.Sno, clotrans.BranchId, clotrans.EmpId, clotrans.IndDate, empmanage.EmpName FROM clotrans INNER JOIN empmanage ON clotrans.EmpId = empmanage.Sno WHERE (clotrans.BranchId = @branch) AND (clotrans.IndDate BETWEEN @d1 AND @d2)");
-            cmd.Parameters.AddWithValue("@branch", salesoff);
-            cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-            cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
+            cmd.Parameters.Add("@branch", salesoff);
+            cmd.Parameters.Add("@d1", GetLowDate(fromdate.AddDays(-1)));
+            cmd.Parameters.Add("@d2", GetHighDate(fromdate.AddDays(-1)));
             DataTable dtemp = vdm.SelectQuery(cmd).Tables[0];
             if (dtemp.Rows.Count > 0)
             {
@@ -278,9 +283,9 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
         else
         {
             var salesoff = Session["branch"].ToString();
-            if (salesoff == "2")
+            if (salesoff == "8097" || salesoff == "174" || salesoff == "527" || salesoff == "306" || salesoff == "4607" || salesoff == "538" || salesoff == "2909" || salesoff == "2749" || salesoff == "3781" || salesoff == "3928")
             {
-                getnelloreReport();
+                GetReport();
             }
             else
             {
@@ -288,16 +293,16 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                 {
                     getHYDReport();
                 }
-                if (salesoff == "AGENT WISE")
+                if (salesoff == "5437" || salesoff == "271" || salesoff == "285" || salesoff == "2948" || salesoff == "457" || salesoff == "570" || salesoff == "572" || salesoff == "3559" || salesoff == "282" || salesoff == "458" || salesoff == "4609")
                 {
                     status = "Nellore";
-                    //getnelloreReport();
+                    getnelloreReport();
                 }
             }//new
             cmd = new MySqlCommand("SELECT clotrans.Sno, clotrans.BranchId, clotrans.EmpId, clotrans.IndDate, empmanage.EmpName FROM clotrans INNER JOIN empmanage ON clotrans.EmpId = empmanage.Sno WHERE (clotrans.BranchId = @branch) AND (clotrans.IndDate BETWEEN @d1 AND @d2)");
-            cmd.Parameters.AddWithValue("@branch", salesoff);
-            cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-            cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
+            cmd.Parameters.Add("@branch", salesoff);
+            cmd.Parameters.Add("@d1", GetLowDate(fromdate.AddDays(-1)));
+            cmd.Parameters.Add("@d2", GetHighDate(fromdate.AddDays(-1)));
             DataTable dtemp = vdm.SelectQuery(cmd).Tables[0];
             if (dtemp.Rows.Count > 0)
             {

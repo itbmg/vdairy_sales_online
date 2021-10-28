@@ -372,11 +372,11 @@
                 </div>
                 <div style="width: 100%;display:none" id="div_print" >
                     <div style="width: 13%; float: left;">
-                        <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="100px" height="72px" />
+                        <img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="100px" height="72px" />
                     </div>
                     <div align="center">
                         <asp:Label ID="lblTitle" runat="server" Font-Bold="true" Font-Size="20px" ForeColor="#0252aa"
-                            Text="">VITA MILK DAIRY PRODUCTS </asp:Label>
+                            Text="">Sri Vyshnavi Dairy Specialities (P) Ltd </asp:Label>
                         <br />
                         <asp:Label ID="lblAddress" runat="server" Font-Bold="true" Font-Size="12px" ForeColor="#0252aa"
                             Text="">R.S.No:381/2, Punabaka village Post, Pellakuru Mandal, Nellore District -524129., Andhra Pradesh(State). Phone: 9440622077, Fax: 044 – 26177799. </asp:Label>

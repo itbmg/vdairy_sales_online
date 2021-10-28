@@ -105,12 +105,12 @@
                         <div id="divPrint">
                             <div style="width: 100%;">
                                 <div style="width: 11%; float: left;">
-                                    <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="95px" height="90px"/>
+                                    <img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="95px" height="90px"/>
                                 </div>
                                 <div style="left: 0%; text-align: center;">
-                                    <span style="font-size: 26px; font-weight: bold; color: #0252aa;">VITA MILK DAIRY PRODUCTS
+                                    <span style="font-size: 26px; font-weight: bold; color: #0252aa;">SRI VYSHNAVI DAIRY SPECIALITIES (P) LTD
                                           </span>
-                                    <br />
+                                    <br />Powered by Vyshnavi Dairy
                                 </div>
                                 <div style="width: 100%;">
                                     <span style="font-size: 18px; font-weight: bold; padding-left: 27%; text-decoration: underline;

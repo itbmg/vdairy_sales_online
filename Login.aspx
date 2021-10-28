@@ -3,8 +3,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <link rel="icon" href="Images/Vyshnavilogo.PNG" type="image/x-icon" title=BMG />
-    <title>VITA MILK DAIRY PRODUCTS </title>
+    <link rel="icon" href="Images/Vyshnavilogo.PNG" type="image/x-icon" title=Vyshnavi Dairy />
+    <title>Vyshnavi Dairy </title>
     <script type="text/javascript" src="js/jquery-1.4.4.js"></script>
     <link href="Styles/login.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
@@ -80,7 +80,7 @@
                 <div>
                     <%--<a href="ForgetPassWord.aspx">Forgot PassWord</a>--%>
                 </div>
-                <span style="font-size: 14px;">Powered by <strong>VT Milk Dairy</strong></span>
+                <span style="font-size: 14px;">Powered by <strong>Vyshnavi Dairy</strong></span>
 
                 <br />
                 <br />

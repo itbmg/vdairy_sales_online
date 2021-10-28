@@ -863,7 +863,7 @@ public partial class CashBook : System.Web.UI.Page
                             WebClient client = new WebClient();
                             string strdate = fromdate.ToString("dd/MMM");
                             string message = "";
-                            if (Session["TitleName"].ToString() == "VITA MILK DAIRY PRODUCTS")
+                            if (Session["TitleName"].ToString() == "Sri Vyshnavi Dairy Specialities (P) Ltd")
                             {
                                 string baseurl = "http://roundsms.com/api/sendhttp.php?authkey=Y2U3NGE2MGFkM2V&mobiles=" + phonenumber + "&message=%20" + ddlSalesOffice.SelectedItem.Text + "%20CashBook%20Cash In Hand%20Amount%20for%20The%20Date%20Of%20%20" + strdate + "%20Amount%20is =" + denominationtotal + "&sender=VYSNVI&type=1&route=2"; 
                                // string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=%20" + ddlSalesOffice.SelectedItem.Text + "%20CashBook%20Cash In Hand%20Amount%20for%20The%20Date%20Of%20%20" + strdate + "%20Amount%20is =" + denominationtotal + "&type=1";

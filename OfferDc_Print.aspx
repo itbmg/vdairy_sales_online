@@ -273,7 +273,7 @@
                <div id="divPrint" >
                 <div style="border: 2px solid gray;">
                     <div style="width: 17%; float: right;padding-top: 12px;">
-                        <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="100px" height="72px" />
+                        <img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="100px" height="72px" />
                         <br />
                     </div>
                     <div style="border: 1px solid gray;">

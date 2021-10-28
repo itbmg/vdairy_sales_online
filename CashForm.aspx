@@ -2572,7 +2572,7 @@
                                                 <table style="width: 100%;">
                                                     <tr>
                                                         <td rowspan="2">
-                                                            <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="55px" height="25px" />
+                                                            <img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="55px" height="25px" />
                                                         </td>
                                                         <td colspan="4">
                                                             <h4>

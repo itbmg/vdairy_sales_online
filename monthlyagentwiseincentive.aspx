@@ -131,7 +131,7 @@
             <div id="divPrint">
                 <div style="width: 100%;">
                     <div style="width: 11%; float: left;">
-                        <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="55px" height="25px" />
+                        <img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="55px" height="25px" />
                     </div>
                     <div style="left: 0%; text-align: center;">
                         <asp:Label ID="lblTitle" runat="server" Font-Bold="true" Font-Size="26px" ForeColor="#0252aa"

@@ -2086,9 +2086,9 @@ public partial class Dreport : System.Web.UI.Page
     protected void btnGenerate_Click(object sender, EventArgs e)
     {
         string TitleName = Session["TitleName"].ToString();
-        //if (TitleName == "VITA MILK DAIRY PRODUCTS")
+        //if (TitleName == "Sri Vyshnavi Dairy Specialities (P) Ltd")
         //{
-            GetReport();
+        GetReport();
         //}
         //else
         //{   

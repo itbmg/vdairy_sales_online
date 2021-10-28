@@ -23,33 +23,34 @@ public partial class Login : System.Web.UI.Page
     SqlCommand a_cmd;
     string ipaddress;
     AccessControldbmanger Accescontrol_db = new AccessControldbmanger();
-    public string username,pwd;
+    public string username, pwd;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Request.Headers["User-Agent"] != null && (Request.Browser["IsMobileDevice"] == "true" || Request.UserAgent.ToUpper().Contains("MIDP") || Request.UserAgent.ToUpper().Contains("CLDC") || Request.UserAgent.ToLower().Contains("iphone") || Request.UserAgent.ToLower().Contains("avant") || Request.UserAgent.ToLower().Contains("nokia") || Request.UserAgent.ToLower().Contains("pda") || Request.UserAgent.ToLower().Contains("moto") || Request.UserAgent.ToLower().Contains("windows ce") || Request.UserAgent.ToLower().Contains("hand") || Request.UserAgent.ToLower().Contains("mobi") || Request.UserAgent.ToUpper().Contains("HTC") || Request.UserAgent.ToLower().Contains("sony") || Request.UserAgent.ToLower().Contains("panasonic") || Request.UserAgent.ToLower().Contains("blackberry") || Request.UserAgent.ToLower().Contains("240x320") || Request.UserAgent.ToLower().Contains("voda")))
         {
+            Response.Redirect("http://m.vyshnavi.co.in/Login.aspx", false);
         }
         vdm = new VehicleDBMgr();
         var Empid = Request.QueryString["id"];
-         username=string.Empty;
-         pwd = string.Empty;
-         username = Request.QueryString["username"];
-         pwd = Request.QueryString["pwd"];
-         try
-         {
-             if (username.Length > 0 && username != null && username != "")
-             {
-                
-                     txtUserName.Text = username.Trim();
-                     txtPassword.Text = pwd.Trim();
-                     Loginfo();                 
-             }
-         }
-         catch (Exception ex)
-         {
-         }
+        username = string.Empty;
+        pwd = string.Empty;
+        username = Request.QueryString["username"];
+        pwd = Request.QueryString["pwd"];
+        try
+        {
+            if (username.Length > 0 && username != null && username != "")
+            {
 
-       
+                txtUserName.Text = username.Trim();
+                txtPassword.Text = pwd.Trim();
+                Loginfo();
+            }
+        }
+        catch (Exception ex)
+        {
+        }
+
+
     }
     protected void btnLogin_Click(object sender, EventArgs e)
     {
@@ -62,12 +63,44 @@ public partial class Login : System.Web.UI.Page
         {
             String UserName = txtUserName.Text, PassWord = txtPassword.Text;
             cmd = new MySqlCommand("SELECT empmanage.Sno, IFNULL(empmanage.otpstatus,0) otpstatus, empmanage.UserName,empmanage.grouplogin, empmanage.Password, empmanage.LevelType, empmanage.flag, empmanage.Userdata_sno, empmanage.Owner, empmanage.EmpName, empmanage.Address, empmanage.Mobno, empmanage.Email, empmanage.LWC, empmanage.RefName, empmanage.Dept_Sno, branchdata.BranchName,branchdata.Radius, empmanage.Branch, salestypemanagement.salestype FROM empmanage INNER JOIN branchdata ON empmanage.Branch = branchdata.sno INNER JOIN salestypemanagement ON branchdata.SalesType = salestypemanagement.sno WHERE (empmanage.UserName = @UN) AND (empmanage.Password = @Pwd) AND (empmanage.flag ='1')");
-            cmd.Parameters.AddWithValue("@UN", UserName);
-            cmd.Parameters.AddWithValue("@Pwd", PassWord);
-             dtemp = vdm.SelectQuery(cmd).Tables[0];
+            cmd.Parameters.Add("@UN", UserName);
+            cmd.Parameters.Add("@Pwd", PassWord);
+            dtemp = vdm.SelectQuery(cmd).Tables[0];
             string LevelType = "";
             if (dtemp.Rows.Count > 0)
             {
+                //cmd = new MySqlCommand("SELECT branchmappingtable.SuperBranch, branchdata.BranchName, branchdata.stateid, branchdata.gstno, branchdata.statename, statemastar.statename AS BranchState, statemastar.gststatecode FROM branchmappingtable INNER JOIN empmanage ON branchmappingtable.SubBranch = empmanage.Branch INNER JOIN branchdata ON empmanage.Branch = branchdata.sno INNER JOIN statemastar ON branchdata.stateid = statemastar.sno WHERE (empmanage.UserName = @UN)");
+                //cmd.Parameters.Add("@UN", UserName);
+                //DataTable dtBranch = vdm.SelectQuery(cmd).Tables[0];
+                //string PlantID = "";
+                //string Branch = dtemp.Rows[0]["Branch"].ToString();
+                //if (dtBranch.Rows.Count > 0)
+                //{
+                //    PlantID = dtBranch.Rows[0]["SuperBranch"].ToString();
+                //    Session["SuperBranch"] = dtBranch.Rows[0]["SuperBranch"].ToString();
+                //    if (PlantID == "172" || Branch == "172" || PlantID == "1801" || Branch == "1801" || PlantID == "3625" || Branch == "3625" || Branch == "3919")
+                //    {
+                //        Session["TitleName"] = "SRI VYSHNAVI DAIRY SPECIALITIES (P) LTD";
+                //        if (Branch == "3625")
+                //        {
+                //            Session["Address"] = "No : 170/1B, M.G.R Nagar,Manapakkam,Chennai,TamilNadu (State),PinCode: 600116,TIN No:33140842508,</n>Toll Free No:1800 270 8800 ";
+                //            Session["TinNo"] = "33140842508";
+                //        }
+                //        else
+                //        {
+                //            Session["Address"] = "R.S.No:381/2,Punabaka village Post,Pellakuru Mandal,Nellore District -524129., ANDRAPRADESH (State).Phone: 9440622077, Fax: 044 – 26177799.";
+                //            Session["TinNo"] = "37921042267";
+                //        }
+                //    }
+                //    else
+                //    {
+                //        Session["TitleName"] = "SRI VYSHNAVI FOODS (P) LTD";
+                //        Session["Address"] = " Near Ayyappa Swamy Temple, Shasta Nagar, WYRA-507165,KHAMMAM (District), TELANGANA (State).Phone: 08749 – 251326, Fax: 08749 – 252198.";
+                //        Session["TinNo"] = "36550160129";
+                //    }
+                //    Session["BranchName"] = dtBranch.Rows[0]["BranchName"].ToString();
+                //}
+                //Session["EmpSno"] = dtemp.Rows[0]["sno"].ToString();
                 DateTime Currentdate = VehicleDBMgr.GetTime(vdm.conn);
                 string hostName = Dns.GetHostName(); // Retrive the Name of HOST
                 //get ip address and device type
@@ -101,18 +134,40 @@ public partial class Login : System.Web.UI.Page
                     devicetype = "Desktop";
                 }
                 cmd = new MySqlCommand("INSERT INTO logininfo(UserId, UserName, Logintime, IpAddress,devicetype,status) values (@userid, @UserName, @logintime, @ipaddress,@devicetype,@status)");
-                cmd.Parameters.AddWithValue("@userid", dtemp.Rows[0]["sno"].ToString());
-                cmd.Parameters.AddWithValue("@UserName", dtemp.Rows[0]["EmpName"].ToString());
-                cmd.Parameters.AddWithValue("@logintime", Currentdate);
-                cmd.Parameters.AddWithValue("@ipaddress", ipaddress);
-                cmd.Parameters.AddWithValue("@devicetype", devicetype);
-                cmd.Parameters.AddWithValue("@status", "1");
+                cmd.Parameters.Add("@userid", dtemp.Rows[0]["sno"].ToString());
+                cmd.Parameters.Add("@UserName", dtemp.Rows[0]["EmpName"].ToString());
+                cmd.Parameters.Add("@logintime", Currentdate);
+                cmd.Parameters.Add("@ipaddress", ipaddress);
+                cmd.Parameters.Add("@devicetype", devicetype);
+                cmd.Parameters.Add("@status", "1");
                 vdm.insert(cmd);
                 //End
 
-                
+                //Session["gstin"] = dtBranch.Rows[0]["gstno"].ToString();
+                //Session["statename"] = dtBranch.Rows[0]["BranchState"].ToString();
+                //Session["statecode"] = dtBranch.Rows[0]["gststatecode"].ToString();
+                //Session["stateid"] = dtBranch.Rows[0]["stateid"].ToString();
                 Session["UserSno"] = dtemp.Rows[0]["Sno"].ToString();
-              
+                //Session["userdata_sno"] = dtemp.Rows[0]["UserData_sno"].ToString();
+                //Session["UserName"] = dtemp.Rows[0]["UserName"].ToString();
+                //Session["EmpName"] = dtemp.Rows[0]["EmpName"].ToString();
+                //if ("232" == dtemp.Rows[0]["Sno"].ToString())
+                //{
+                //    Session["branch"] = "172";
+                //    Session["salestype"] = "Plant";
+                //}
+                //else
+                //{
+
+                //    Session["branch"] = dtemp.Rows[0]["Branch"].ToString();
+                //    Session["salestype"] = dtemp.Rows[0]["salestype"].ToString();
+                //}
+                //Session["empid"] = dtemp.Rows[0]["Sno"].ToString();
+                //Session["LevelType"] = dtemp.Rows[0]["LevelType"].ToString();
+                //Session["GroupLogin"] = dtemp.Rows[0]["grouplogin"].ToString();
+                //Session["branchname"] = dtemp.Rows[0]["BranchName"].ToString();
+
+                //string ModuleId = "1";
                 string empid = dtemp.Rows[0]["Sno"].ToString();
                 //Session["moduleid"] = ModuleId;
                 LevelType = dtemp.Rows[0]["LevelType"].ToString();
@@ -204,7 +259,7 @@ public partial class Login : System.Web.UI.Page
                     Session["userdata_sno"] = dtemp.Rows[0]["UserData_sno"].ToString();
                     Session["empid"] = dtemp.Rows[0]["Sno"].ToString();
                     cmd = new MySqlCommand("SELECT sno, branchid, empid FROM branchmonitering WHERE  (empid = @empid)");
-                    cmd.Parameters.AddWithValue("@empid", dtemp.Rows[0]["Sno"].ToString());
+                    cmd.Parameters.Add("@empid", dtemp.Rows[0]["Sno"].ToString());
                     DataTable empmonitor = vdm.SelectQuery(cmd).Tables[0];
                     if (empmonitor.Rows.Count > 1)
                     {
@@ -213,7 +268,7 @@ public partial class Login : System.Web.UI.Page
                     else
                     {
                         cmd = new MySqlCommand("SELECT branchmappingtable.SuperBranch, branchdata.BranchName, branchdata.stateid, branchdata.gstno, branchdata.statename, statemastar.statename AS BranchState, statemastar.gststatecode FROM branchmappingtable INNER JOIN empmanage ON branchmappingtable.SubBranch = empmanage.Branch INNER JOIN branchdata ON empmanage.Branch = branchdata.sno INNER JOIN statemastar ON branchdata.stateid = statemastar.sno WHERE (empmanage.UserName = @UN)");
-                        cmd.Parameters.AddWithValue("@UN", UserName);
+                        cmd.Parameters.Add("@UN", UserName);
                         DataTable dtBranch = vdm.SelectQuery(cmd).Tables[0];
                         string PlantID = "";
                         string Branch = dtemp.Rows[0]["Branch"].ToString();
@@ -221,9 +276,26 @@ public partial class Login : System.Web.UI.Page
                         {
                             PlantID = dtBranch.Rows[0]["SuperBranch"].ToString();
                             Session["SuperBranch"] = dtBranch.Rows[0]["SuperBranch"].ToString();
-                            Session["TitleName"] = "VITA MILK DAIRY PRODUCTS";
-                            Session["Address"] = "Sy No.115/1,Mugalapalli Village,Bagalur To Berigai Main Road ,ThummanapalliPost, Hosur Tq,Krishnagiri Dist-635 124";
-                            Session["TinNo"] = "";
+                            if (PlantID == "172" || Branch == "172" || PlantID == "1801" || Branch == "1801" || PlantID == "3625" || Branch == "3625" || Branch == "3919")
+                            {
+                                Session["TitleName"] = "SRI VYSHNAVI DAIRY SPECIALITIES (P) LTD";
+                                if (Branch == "3625")
+                                {
+                                    Session["Address"] = "No : 170/1B, M.G.R Nagar,Manapakkam,Chennai,TamilNadu (State),PinCode: 600116,TIN No:33140842508,</n>Toll Free No:1800 270 8800 ";
+                                    Session["TinNo"] = "33140842508";
+                                }
+                                else
+                                {
+                                    Session["Address"] = "R.S.No:381/2,Punabaka village Post,Pellakuru Mandal,Nellore District -524129., ANDRAPRADESH (State).Phone: 9440622077, Fax: 044 – 26177799.";
+                                    Session["TinNo"] = "37921042267";
+                                }
+                            }
+                            else
+                            {
+                                Session["TitleName"] = "SRI VYSHNAVI FOODS (P) LTD";
+                                Session["Address"] = " Near Ayyappa Swamy Temple, Shasta Nagar, WYRA-507165,KHAMMAM (District), TELANGANA (State).Phone: 08749 – 251326, Fax: 08749 – 252198.";
+                                Session["TinNo"] = "36550160129";
+                            }
                             Session["BranchName"] = dtBranch.Rows[0]["BranchName"].ToString();
                         }
                         Session["EmpSno"] = dtemp.Rows[0]["sno"].ToString();
@@ -356,6 +428,45 @@ public partial class Login : System.Web.UI.Page
         }
     }
 
+    //protected void sessionsclick_click(object sender, EventArgs e)
+    //{
+    //    try
+    //    {
+    //        String UserName = txtUserName.Text, PassWord = txtPassword.Text;
+    //        string username = lbl_username.Text.ToString();
+    //        string password = lbl_passwords.Text.ToString();
+    //        cmd = new MySqlCommand("update employe_logins set loginstatus=@log where username=@username and password=@passward");
+    //        cmd.Parameters.Add("@log", "0");
+    //        cmd.Parameters.Add("@username", username);
+    //        cmd.Parameters.Add("@passward", password);
+    //        vdm.Update(cmd);
+    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdm.conn);
+    //        cmd = new MySqlCommand("SELECT loginid,empid FROM employe_logins where username=@username and password=@passward");
+    //        cmd.Parameters.Add("@username", username);
+    //        cmd.Parameters.Add("@passward", password);
+    //        DataTable dtEMP = vdm.SelectQuery(cmd).Tables[0];
+    //        if (dtEMP.Rows.Count > 0)
+    //        {
+    //            string empid = dtEMP.Rows[0]["empid"].ToString();
+    //            cmd = new MySqlCommand("Select max(sno) as transno from logininfo where empid=@userid");
+    //            cmd.Parameters.Add("@userid", empid);
+    //            DataTable dttime = vdm.SelectQuery(cmd).Tables[0];
+    //            if (dttime.Rows.Count > 0)
+    //            {
+    //                string transno = dttime.Rows[0]["transno"].ToString();
+    //                cmd = new MySqlCommand("UPDATE logininfo set logouttime=@logouttime where sno=@sno");
+    //                cmd.Parameters.Add("@logouttime", ServerDateCurrentdate);
+    //                cmd.Parameters.Add("@sno", transno);
+    //                vdm.Update(cmd);
+    //            }
+    //        }
+    //        //this.AlertBox.Visible = false;
+    //    }
+    //    catch
+    //    {
+
+    //    }
+    //}
     protected void sessionsclick_Close(object sender, EventArgs e)
     {
         //this.AlertBox.Visible = false;

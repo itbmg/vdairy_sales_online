@@ -98,7 +98,7 @@
                 <div id="divPrint">
                     <div style="width: 100%;">
                         <div style="width: 11%; float: left;">
-                            <img src="Images/Vyshnavilogo.png" alt="VT Milk" width="100px"
+                            <img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="100px"
                                             height="72px" />
                             <%--  <img src="Images/VLogo.png" width="100" height="80" />--%>
                         </div>
