@@ -252,7 +252,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
         {
             var salesoffice = ddlSalesOffice.SelectedItem.Text;
             var salesoff = ddlSalesOffice.SelectedValue;
-            if (salesoff == "8097" || salesoff == "174" || salesoff == "1801" || salesoff == "527" || salesoff == "306" || salesoff == "538" || salesoff == "2909" || salesoff == "2749" || salesoff == "3781" || salesoff == "3928" || salesoff == "4607")
+            if (salesoff == "8097" ||   salesoff == "174" || salesoff == "1801" || salesoff == "527" || salesoff == "306" || salesoff == "538" || salesoff == "2909" || salesoff == "2749" || salesoff == "3781" || salesoff == "3928" || salesoff == "4607")
             {
                 GetReport();
             }
@@ -263,7 +263,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                     //GetReport();
                     getHYDReport();
                 }
-                if (salesoff == "5437" || salesoff == "271" || salesoff == "285" || salesoff == "2948" || salesoff == "4607" || salesoff == "457" || salesoff == "570" || salesoff == "572" || salesoff == "3559" || salesoff == "282" || salesoff == "458" || salesoff == "4609")
+                if (salesoff == "5437" || salesoff == "12562" || salesoff == "271" || salesoff == "285" || salesoff == "2948" || salesoff == "4607" || salesoff == "457" || salesoff == "570" || salesoff == "572" || salesoff == "3559" || salesoff == "282" || salesoff == "458" || salesoff == "4609")
                 {
                     status = "Nellore";
 
@@ -283,7 +283,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
         else
         {
             var salesoff = Session["branch"].ToString();
-            if (salesoff == "8097" || salesoff == "174" || salesoff == "527" || salesoff == "306" || salesoff == "4607" || salesoff == "538" || salesoff == "2909" || salesoff == "2749" || salesoff == "3781" || salesoff == "3928")
+            if (salesoff == "8097" ||  salesoff == "174" || salesoff == "527" || salesoff == "306" || salesoff == "4607" || salesoff == "538" || salesoff == "2909" || salesoff == "2749" || salesoff == "3781" || salesoff == "3928")
             {
                 GetReport();
             }
@@ -293,7 +293,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                 {
                     getHYDReport();
                 }
-                if (salesoff == "5437" || salesoff == "271" || salesoff == "285" || salesoff == "2948" || salesoff == "457" || salesoff == "570" || salesoff == "572" || salesoff == "3559" || salesoff == "282" || salesoff == "458" || salesoff == "4609")
+                if (salesoff == "5437" || salesoff == "12562" || salesoff == "271" || salesoff == "285" || salesoff == "2948" || salesoff == "457" || salesoff == "570" || salesoff == "572" || salesoff == "3559" || salesoff == "282" || salesoff == "458" || salesoff == "4609")
                 {
                     status = "Nellore";
                     getnelloreReport();
@@ -375,7 +375,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                 }
             }
             Session["filename"] = ddlSalesOffice.SelectedItem.Text + " REPORT " + fromdate.AddDays(1).ToString("dd/MM/yyyy");
-            cmd = new MySqlCommand("SELECT modifiedroutes.Sno, modifiedroutes.RouteName, indents_subtable.Product_sno, productsdata.ProductName,productsdata.tempsubcatsno, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty), 2) AS Total, indents_subtable.UnitCost, ROUND(SUM(indents_subtable.LeakQty), 2) AS ILeakQty, products_category.Categoryname, ROUND(SUM(indents_subtable.LeakQty), 2) AS LeakQty,indents_subtable.DTripId, tripdata.RecieptNo FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN  products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN tripdata ON indents_subtable.DTripId = tripdata.Sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.CDate <= @starttime) OR (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime)  GROUP BY modifiedroutes.Sno, productsdata.sno");
+            cmd = new MySqlCommand("SELECT modifiedroutesubtable.BranchID,modifiedroutes.Sno, modifiedroutes.RouteName, indents_subtable.Product_sno, productsdata.ProductName,productsdata.tempsubcatsno, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty), 2) AS Total, indents_subtable.UnitCost, ROUND(SUM(indents_subtable.LeakQty), 2) AS ILeakQty, products_category.Categoryname, ROUND(SUM(indents_subtable.LeakQty), 2) AS LeakQty,indents_subtable.DTripId, tripdata.RecieptNo FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN  products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN tripdata ON indents_subtable.DTripId = tripdata.Sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.CDate <= @starttime) OR (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime)  GROUP BY modifiedroutes.Sno, productsdata.sno");
             cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
             cmd.Parameters.AddWithValue("@startime", GetLowDate(fromdate));
             cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));

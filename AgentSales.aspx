@@ -240,6 +240,7 @@
                 if (msg) {
                     GetProducts(msg);
                     GetBranchInventory(ddlBranchName);
+                    calcTot();
                 }
                 else {
                 }
@@ -251,9 +252,9 @@
         }
         function GetProducts(msg) {
             $('#divFillScreen').removeTemplate();
-            $('#divFillScreen').setTemplateURL('AgentProducts.htm');
+            $('#divFillScreen').setTemplateURL('AgentProducts1.htm');
             $('#divFillScreen').processTemplate(msg);
-            getTripValues();
+            //getTripValues();
         }
         function GetBranchInventory(ddlBranchNames) {
             var data = { 'operation': 'GetAgetntsaleInventory', 'BranchID': ddlBranchNames };
@@ -307,12 +308,12 @@
             var Orderdetails = new Array();
             var Offerdetails = new Array();
             $(rows).each(function (i, obj) {
-                if ($(this).find('#txtProductQty').val() != "") {
+                if ($(this).find('#txtUnitQty').val() != "") {
                     var Product = 0;
-                    var qty = $(this).find('#txtProductQty').val();
+                    var qty = $(this).find('#txtUnitQty').val();
                     qty = parseFloat(qty).toFixed(2);
                     if (qty > 0) {
-                        Orderdetails.push({ ProductSno: $(this).find('#hdnProductSno').val(), Product: Product, Qty: $(this).find('#txtProductQty').val(), offerqty: $(this).find('#txtOfferProductqty').val(), RemainingQty: $(this).find('#txtremainingqty').text() });
+                        Orderdetails.push({ SNo: $(this).find('#txtsno').text(), ProductSno: $(this).find('#hdnProductSno').val(), Product: $(this).find('#txtproduct').text(), Rate: $(this).find('#hdnRate').val(), Total: $(this).find('#txtOrderTotal').text(), Unitsqty: $(this).find('#txtUnitQty').val(), Qty: $(this).find('#hdnQty').val(), UnitCost: $(this).find('#txtOrderRate').text(), tubQty: $(this).find('#txtTubQty').val(), PktQty: $(this).find('#txtQtypkts').val(), Invqty: $(this).find('#hdninvQty').val(), UnitQty: $(this).find('#hdnUnitQty').val() });
                     }
                 }
             });
@@ -369,121 +370,164 @@
                 error: e
             });
         }
-        function gettubscans() {
-            var tottub = 0;
-            var totcan = 0;
-            var totcDecimal = 0;
-            $('.tottubsclass').each(function (i, obj) {
-                var tottubsclass = $(this).text();
-                if (tottubsclass == "" || tottubsclass == "0") {
-                }
-                else {
-                    var tubqtys = $(this).closest('tr').find('#txttubs').text();
-                    tottub += parseFloat(tubqtys);
-                }
-            });
-            document.getElementById('txt_tubs').innerHTML = tottub;
-            $('.totExtraltrs').each(function (i, obj) {
-                var totExtraltrs = $(this).text();
-                if (totExtraltrs == "" || totExtraltrs == "0") {
-                }
-                else {
-                    var ltrs = $(this).closest('tr').find('#txtExtraltrs').text();
-                    totextraltr += parseFloat(ltrs);
-                }
-            });
-            document.getElementById('txt_Extraltr').innerHTML = totextraltr;
-            $('.totcansclass').each(function (i, obj) {
-                var totcansclass = $(this).text();
-                if (totcansclass == "" || totcansclass == "0") {
-                }
-                else {
-                    var cansqtys = $(this).closest('tr').find('#txtcans').text();
-                    totcan += parseFloat(cansqtys);
-                }
-            });
-            document.getElementById('txt_cans').innerHTML = totcan;
+        function OrderTubQtyChange(TubQty) {
+            if (TubQty.value == "") {
+
+            }
+            else {
+                var invQty = $(TubQty).closest("tr").find("#hdninvQty").val();
+                var unitQty = $(TubQty).closest("tr").find("#hdnUnitQty").val();
+                var tubval = TubQty.value;
+                var totalpkts = parseFloat(tubval * invQty);
+                var totltr = parseFloat(totalpkts * unitQty);
+                var totltrvalue = parseFloat(totltr / 1000);
+
+                $(TubQty).closest("tr").find("#txtUnitQty").val(parseFloat(totltrvalue).toFixed(2));
+                $(TubQty).closest("tr").find("#txtDupUnitQty").text(parseFloat(totltrvalue).toFixed(2))
+                $(TubQty).closest("tr").find("#txtQtypkts").val(parseFloat(totalpkts).toFixed(2));
+                var val = parseFloat(totltrvalue).toFixed(2);
+                OrderUnitChange(TubQty);
+
+            }
         }
-        function getTripValues() {
-            var tot = 0;
-            var otot = 0;
-            var totc = 0;
-            var totcDecimal = 0;
-            $('.totqtyclass').each(function (i, obj) {
-                var totqtyclass = $(this).val();
-                var orderunits = $(this).closest('tr').find('#prdtunits').val();
-                var orderqty = $(this).closest('tr').find('#prdtinvqty').val();
-                if (orderunits == "ltr") {
-                    totc = parseFloat(totqtyclass / orderqty);
-                    $(this).closest('tr').find('#txtcans').text(totc);
-                }
-                if (orderunits == "kgs") {
-                    totc = parseFloat(totqtyclass / orderqty);
-                    $(this).closest('tr').find('#txtcans').text(totc);
-                }
-                if (orderunits == "ml") {
+        function OrderPktQtyChange(PktQty) {
+            if (PktQty.value == "") {
 
-                    totc = Math.floor(totqtyclass / orderqty);
-                    totcDecimal = (totqtyclass % orderqty);
-                    $(this).closest('tr').find('#txttubs').text(totc);
-                    $(this).closest('tr').find('#txtExtraltrs').text(totcDecimal);
-                }
-                if (orderunits == "gms") {
+            }
+            else {
+                var invQty = $(PktQty).closest("tr").find("#hdninvQty").val();
+                var unitQty = $(PktQty).closest("tr").find("#hdnUnitQty").val();
+                var pktval = PktQty.value;
+                var totltr = parseFloat(pktval * unitQty);
+                var totltrvalue = parseFloat(totltr / 1000);
+                var totaltub = parseFloat(pktval / invQty);
 
-                }
-                if (totqtyclass == "" || totqtyclass == "0") {
+                $(PktQty).closest("tr").find("#txtUnitQty").val(parseFloat(totltrvalue).toFixed(2));
+                $(PktQty).closest("tr").find("#txtDupUnitQty").text(parseFloat(totltrvalue).toFixed(2))
+                $(PktQty).closest("tr").find("#txtTubQty").val(parseFloat(totaltub).toFixed(2));
+                var val = parseFloat(totltrvalue).toFixed(2);
+                OrderUnitChange(PktQty);
+                
+            }
+        }
+        function OrderUnitChange(UnitQty) {
+            var totalqty;
+            var qty = 0.0;
+            var Rate = 0;
+            var rate = 0;
+            var total = 0;
+            var totalltr = 0;
+            var TotalRate = 0;
+            var cnt = 0;
+            if (UnitQty.value == "") {
+                $(UnitQty).closest("tr").find("#txtOrderTotal").text(parseFloat(total).toFixed(2));
+                $('.Unitqtyclass').each(function (i, obj) {
+                    // var qtyclass = $(this).val();
+                    var qtyclass = $(this).closest('tr').find('#txtUnitQty').val();
+
+                    if (qtyclass == "" || qtyclass == "0") {
+                    }
+                    else {
+                        totalltr += parseFloat(qtyclass);
+
+                        cnt++;
+                    }
+                });
+                //                var FloatQty = qty.toFixed(2)
+                //                alert(cnt);
+                document.getElementById('txt_totqty').innerHTML = parseFloat(totalltr).toFixed(2);
+                $('.rateclass').each(function (i, obj) {
+                    rate += parseFloat($(this).text());
+                });
+                var Floatrate = rate.toFixed(2)
+                document.getElementById('txt_totRate').innerHTML = parseFloat(Floatrate).toFixed(2);
+                $('.totalclass').each(function (i, obj) {
+                    total += parseFloat($(this).text());
+                });
+                document.getElementById('txt_total').innerHTML = parseFloat(total).toFixed(2);
+                return false;
+            }
+            var Qty = $(UnitQty).closest("tr").find("#hdnUnitQty").val();
+            var Units = $(UnitQty).closest("tr").find("#hdnUnits").val();
+            Rate = $(UnitQty).closest("tr").find("#txtOrderRate").text();
+            var Units = $(UnitQty).closest("tr").find("#hdnUnits").val();
+            var unitqty = $(UnitQty).closest("tr").find("#txtUnitQty").val();
+            if (Units == "ml") {
+
+                totalqty = parseFloat(unitqty);
+            }
+            if (Units == "ltr") {
+                totalqty = parseInt(unitqty);
+            }
+            if (Units == "gms") {
+                totalqty = parseFloat(unitqty);
+            }
+            if (Units == "kgs") {
+                totalqty = parseInt(unitqty);
+            }
+            if (Units == "Pkts") {
+                totalqty = parseInt(unitqty);
+            }
+            $(UnitQty).closest("tr").find("#hdnQty").val(totalqty)
+            var FinalRate = 0;
+            FinalRate = unitqty * Rate;
+            $(UnitQty).closest("tr").find("#txtOrderTotal").text(parseFloat(FinalRate).toFixed(2));
+            cnt = 0;
+            $('.Unitqtyclass').each(function (i, obj) {
+                // var qtyclass = $(this).val();
+                var qtyclass = $(this).closest('tr').find('#txtUnitQty').val();
+
+                if (qtyclass == "" || qtyclass == "0") {
                 }
                 else {
-                    var orderqtys = $(this).closest('tr').find('#txtProductQty').val();
-                    tot += parseInt(orderqtys);
+                    totalltr += parseInt(qtyclass);
+
+                    cnt++;
                 }
             });
-            $('.totofferqtyclass').each(function (i, obj) {
-                var totofferqtyclass = $(this).val();
-                var orderunits = $(this).closest('tr').find('#prdtunits').val();
-                var orderqty = $(this).closest('tr').find('#prdtinvqty').val();
-                if (totofferqtyclass == "" || totofferqtyclass == "0") {
+            //            alert(cnt);
+            //            var FloatQty = qty.toFixed(2)
+            document.getElementById('txt_totqty').innerHTML = parseFloat(totalltr).toFixed(2);
+            rate = 0;
+            $('.rateclass').each(function (i, obj) {
+                rate += parseFloat($(this).text());
+            });
+            document.getElementById('txt_totRate').innerHTML = parseFloat(rate).toFixed(2);
+            total = 0;
+            $('.totalclass').each(function (i, obj) {
+                total += parseFloat($(this).text());
+            });
+            document.getElementById('txt_total').innerHTML = parseFloat(total).toFixed(2);
+        }
+        var FinalAmount;
+        function calcTot() {
+            var qty = 0.0;
+            var rate = 0;
+            var total = 0;
+            var totalltr = 0;
+            var cnt = 0;
+            $('.Unitqtyclass').each(function (i, obj) {
+                //var qtyclass = $(this).next.next.next.text();
+                var qtyclass = $(this).closest('tr').find('#txtUnitQty').val();
+                if (qtyclass == "" || qtyclass == "0") {
                 }
                 else {
-                    var orderofferqtys = $(this).closest('tr').find('#txtOfferProductqty').val();
-                    otot += parseInt(orderofferqtys);
+                    totalltr += parseFloat(qtyclass);
+                    cnt++;
                 }
             });
-            document.getElementById('txt_OfferQty').innerHTML = otot;
-            document.getElementById('txt_RetunQty').innerHTML = tot;
-            var tottub = 0;
-            var totcan = 0;
-            var totextraltr = 0;
-            $('.tottubsclass').each(function (i, obj) {
-                var tottubsclass = $(this).text();
-                if (tottubsclass == "" || tottubsclass == "0") {
-                }
-                else {
-                    var tubqtys = $(this).closest('tr').find('#txttubs').text();
-                    tottub += parseFloat(tubqtys);
-                }
+
+            document.getElementById('txt_totqty').innerHTML = parseFloat(totalltr).toFixed(2);
+            $('.rateclass').each(function (i, obj) {
+                rate += parseFloat($(this).text());
             });
-            document.getElementById('txt_tubs').innerHTML = tottub;
-            $('.totExtraltrs').each(function (i, obj) {
-                var totExtraltrs = $(this).text();
-                if (totExtraltrs == "" || totExtraltrs == "0") {
-                }
-                else {
-                    var ltrs = $(this).closest('tr').find('#txtExtraltrs').text();
-                    totextraltr += parseFloat(ltrs);
-                }
+            document.getElementById('txt_totRate').innerHTML = parseFloat(rate).toFixed(2);
+            $('.totalclass').each(function (i, obj) {
+                total += parseFloat($(this).text());
             });
-            document.getElementById('txt_Extraltr').innerHTML = totextraltr;
-            $('.totcansclass').each(function (i, obj) {
-                var totcansclass = $(this).text();
-                if (totcansclass == "" || totcansclass == "0") {
-                }
-                else {
-                    var cansqtys = $(this).closest('tr').find('#txtcans').text();
-                    totcan += parseFloat(cansqtys);
-                }
-            });
-            document.getElementById('txt_cans').innerHTML = totcan;
+            document.getElementById('txt_total').innerHTML = parseFloat(total).toFixed(2);
+            FinalAmount = total;
+
         }
         function ddlBranchChange(Id) {
             var IndentDate = document.getElementById('datepicker').value;
@@ -537,9 +581,9 @@
 //        function GetPrintDetails() {
 //            window.location = "DeliveryChallanReport.aspx";
 //        }
-        function onchangeindentqty() {
-            getTripValues();
-        }
+        //function onchangeindentqty() {
+        //    getTripValues();
+        //}
         function callHandler(d, s, e) {
             $.ajax({
                 url: 'DairyFleet.axd',
