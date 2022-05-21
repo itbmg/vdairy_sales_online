@@ -317,7 +317,7 @@
             }
             var Total = "Total";
             results += '<tr>';
-            results += '<td style = "font-size: 12px;text-align:center;background:antiquewhite;" colspan="6"><label>' + Total + '</label></td>';
+            results += '<td style = "font-size: 12px;text-align:center;background:antiquewhite;" colspan="5"><label>' + Total + '</label></td>';
             results += '<td style = "font-size: 12px;text-align:center;"><label>' + parseFloat(tot_qty).toFixed(2) + '</label></td>';
             results += '<td style = "font-size: 12px;text-align:center;background:antiquewhite;" colspan="2"><label></label></td>';
             results += '<td style = "font-size: 12px;text-align:center;"><label>' + parseFloat(tot_taxablevalue).toFixed(2) + '</label></td>';
