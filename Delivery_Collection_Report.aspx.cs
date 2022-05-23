@@ -263,7 +263,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                     //GetReport();
                     getHYDReport();
                 }
-                if (salesoff == "5437" || salesoff == "12562" || salesoff == "271" || salesoff == "285" || salesoff == "2948" || salesoff == "4607" || salesoff == "457" || salesoff == "570" || salesoff == "572" || salesoff == "3559" || salesoff == "282" || salesoff == "458" || salesoff == "4609")
+                if (salesoff == "2" || salesoff == "12562" || salesoff == "271" || salesoff == "285" || salesoff == "2948" || salesoff == "4607" || salesoff == "457" || salesoff == "570" || salesoff == "572" || salesoff == "3559" || salesoff == "282" || salesoff == "458" || salesoff == "4609")
                 {
                     status = "Nellore";
 
@@ -293,7 +293,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                 {
                     getHYDReport();
                 }
-                if (salesoff == "5437" || salesoff == "12562" || salesoff == "271" || salesoff == "285" || salesoff == "2948" || salesoff == "457" || salesoff == "570" || salesoff == "572" || salesoff == "3559" || salesoff == "282" || salesoff == "458" || salesoff == "4609")
+                if (salesoff == "2" || salesoff == "12562" || salesoff == "271" || salesoff == "285" || salesoff == "2948" || salesoff == "457" || salesoff == "570" || salesoff == "572" || salesoff == "3559" || salesoff == "282" || salesoff == "458" || salesoff == "4609")
                 {
                     status = "Nellore";
                     getnelloreReport();
@@ -375,7 +375,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                 }
             }
             Session["filename"] = ddlSalesOffice.SelectedItem.Text + " REPORT " + fromdate.AddDays(1).ToString("dd/MM/yyyy");
-            cmd = new MySqlCommand("SELECT modifiedroutesubtable.BranchID,modifiedroutes.Sno, modifiedroutes.RouteName, indents_subtable.Product_sno, productsdata.ProductName,productsdata.tempsubcatsno, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty), 2) AS Total, indents_subtable.UnitCost, ROUND(SUM(indents_subtable.LeakQty), 2) AS ILeakQty, products_category.Categoryname, ROUND(SUM(indents_subtable.LeakQty), 2) AS LeakQty,indents_subtable.DTripId, tripdata.RecieptNo FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN  products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN tripdata ON indents_subtable.DTripId = tripdata.Sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.CDate <= @starttime) OR (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime)  GROUP BY modifiedroutes.Sno, productsdata.sno");
+            cmd = new MySqlCommand("SELECT modifiedroutesubtable.BranchID,modifiedroutes.Sno, modifiedroutes.RouteName, indents_subtable.Product_sno, productsdata.ProductName,productsdata.SubCat_sno, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty), 2) AS Total, indents_subtable.UnitCost, ROUND(SUM(indents_subtable.LeakQty), 2) AS ILeakQty, products_category.Categoryname, ROUND(SUM(indents_subtable.LeakQty), 2) AS LeakQty,indents_subtable.DTripId, tripdata.RecieptNo FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN  products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN tripdata ON indents_subtable.DTripId = tripdata.Sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.CDate <= @starttime) OR (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime)  GROUP BY modifiedroutes.Sno, productsdata.sno");
             cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
             cmd.Parameters.AddWithValue("@startime", GetLowDate(fromdate));
             cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
@@ -391,7 +391,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
             DataTable dttable = vdm.SelectQuery(cmd).Tables[0];
 
-            cmd = new MySqlCommand("SELECT    branchproducts.unitprice,branchproducts.branch_sno,products_subcategory.tempsub_catsno AS SubCatSno, products_category.description AS Categoryname, branchproducts.product_sno AS sno, productsdata.ProductName,productsdata.tempsubcatsno, branchproducts.Rank,products_subcategory.description AS SubCategoryName FROM  products_category INNER JOIN products_subcategory ON products_category.tempcatsno = products_subcategory.tempcatsno INNER JOIN productsdata ON products_subcategory.tempsub_catsno = productsdata.tempsubcatsno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno WHERE (branchproducts.branch_sno = @BranchID) ORDER BY products_subcategory.tempsub_catsno, branchproducts.Rank");
+            cmd = new MySqlCommand("SELECT    branchproducts.unitprice,branchproducts.branch_sno,products_subcategory.tempsub_catsno AS SubCatSno, products_category.description AS Categoryname, branchproducts.product_sno AS sno, productsdata.ProductName,productsdata.SubCat_sno, branchproducts.Rank,products_subcategory.description AS SubCategoryName FROM  products_category INNER JOIN products_subcategory ON products_category.sno = products_subcategory.category_sno INNER JOIN productsdata ON products_subcategory.tempsub_catsno = productsdata.SubCat_sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno WHERE (branchproducts.branch_sno = @BranchID) ORDER BY products_subcategory.tempsub_catsno, branchproducts.Rank");
             cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
             produtstbl1 = vdm.SelectQuery(cmd).Tables[0];
 
@@ -413,7 +413,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
             produtstbl.Columns.Add("ProductName");
             produtstbl.Columns.Add("unitprice");
             produtstbl.Columns.Add("Rank").DataType = typeof(int);
-            produtstbl.Columns.Add("tempsubcatsno").DataType = typeof(int);
+            produtstbl.Columns.Add("SubCat_sno").DataType = typeof(int);
 
 
 
@@ -425,7 +425,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                 newRow["sno"] = dr["sno"].ToString();
                 newRow["ProductName"] = dr["ProductName"].ToString();
                 newRow["unitprice"] = dr["unitprice"].ToString();
-                newRow["tempsubcatsno"] = dr["tempsubcatsno"].ToString();
+                newRow["SubCat_sno"] = dr["SubCat_sno"].ToString();
 
                 if (dr["Rank"].ToString() == "")
                 {
@@ -469,7 +469,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                 newRow["returnQty"] = "0";
                 dtalldelivery.Rows.Add(newRow);
             }
-            cmd = new MySqlCommand("SELECT productsdata.tempsubcatsno,productsdata.sno AS prodsno, productsdata.ProductName, indents_subtable.DeliveryQty, indents_subtable.UnitCost, branchdata.BranchName, indents_subtable.DTripId, indent.Branch_id FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON branchdata.sno = modifiedroutesubtable.BranchID INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) AND (branchdata.CollectionType = @CollectionType) OR (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) AND (branchdata.CollectionType = @CollectionType) GROUP BY branchdata.sno, productsdata.sno");
+            cmd = new MySqlCommand("SELECT productsdata.SubCat_sno,productsdata.sno AS prodsno, productsdata.ProductName, indents_subtable.DeliveryQty, indents_subtable.UnitCost, branchdata.BranchName, indents_subtable.DTripId, indent.Branch_id FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON branchdata.sno = modifiedroutesubtable.BranchID INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) AND (branchdata.CollectionType = @CollectionType) OR (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) AND (branchdata.CollectionType = @CollectionType) GROUP BY branchdata.sno, productsdata.sno");
             cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
             cmd.Parameters.AddWithValue("@CollectionType", "DUE");
             cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
@@ -540,7 +540,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                                 int m = 0;
                                 DataRow tempnewrow = dttempproducts.NewRow();
                                 tempnewrow["ProductName"] = dr["ProductName"].ToString();
-                                tempnewrow["SubCatSno"] = dr["tempsubcatsno"].ToString();
+                                tempnewrow["SubCatSno"] = dr["SubCat_sno"].ToString();
                                 dttempproducts.Rows.Add(tempnewrow);
                                 m++;
                             }
@@ -695,7 +695,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
 
                                 DataRow tempnewrow = dttempproducts.NewRow();
                                 tempnewrow["ProductName"] = branch["ProductName"].ToString();
-                                tempnewrow["SubCatSno"] = branch["tempsubcatsno"].ToString();
+                                tempnewrow["SubCatSno"] = branch["SubCat_sno"].ToString();
                                 dttempproducts.Rows.Add(tempnewrow);
                             }
                         }
@@ -784,7 +784,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                                     {
                                         DataRow tempnewrow = dttempproducts.NewRow();
                                         tempnewrow["ProductName"] = dr["ProductName"].ToString();
-                                        tempnewrow["SubCatSno"] = dr["tempsubcatsno"].ToString();
+                                        tempnewrow["SubCatSno"] = dr["SubCat_sno"].ToString();
                                         dttempproducts.Rows.Add(tempnewrow);
                                         newrow[dr["ProductName"].ToString()] = Qty;
                                         total += Qty;
@@ -815,7 +815,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                         }
                     }
                 }
-                cmd = new MySqlCommand("SELECT clotrans.BranchId,productsdata.tempsubcatsno,productsdata.ProductName, closubtranprodcts.StockQty, productsdata.sno FROM clotrans INNER JOIN closubtranprodcts ON clotrans.Sno = closubtranprodcts.RefNo INNER JOIN productsdata ON closubtranprodcts.ProductID = productsdata.sno WHERE (clotrans.BranchId = @BranchID) AND (clotrans.IndDate BETWEEN @d1 AND @d2) AND (clotrans.Transaction_Type = 0) GROUP BY productsdata.ProductName");
+                cmd = new MySqlCommand("SELECT clotrans.BranchId,productsdata.SubCat_sno,productsdata.ProductName, closubtranprodcts.StockQty, productsdata.sno FROM clotrans INNER JOIN closubtranprodcts ON clotrans.Sno = closubtranprodcts.RefNo INNER JOIN productsdata ON closubtranprodcts.ProductID = productsdata.sno WHERE (clotrans.BranchId = @BranchID) AND (clotrans.IndDate BETWEEN @d1 AND @d2) AND (clotrans.Transaction_Type = 0) GROUP BY productsdata.ProductName");
                 cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
                 cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-2)));
                 cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-2)));
@@ -846,7 +846,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
 
                                 DataRow tempnewrow = dttempproducts.NewRow();
                                 tempnewrow["ProductName"] = dr["ProductName"].ToString();
-                                tempnewrow["SubCatSno"] = dr["tempsubcatsno"].ToString();
+                                tempnewrow["SubCatSno"] = dr["SubCat_sno"].ToString();
                                 dttempproducts.Rows.Add(tempnewrow);
                             }
                         }
@@ -855,7 +855,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                     Report.Rows.Add(newrow);
                 }
 
-                cmd = new MySqlCommand("SELECT clotrans.BranchId,productsdata.ProductName,productsdata.tempsubcatsno, closubtranprodcts.StockQty, productsdata.sno FROM clotrans INNER JOIN closubtranprodcts ON clotrans.Sno = closubtranprodcts.RefNo INNER JOIN productsdata ON closubtranprodcts.ProductID = productsdata.sno WHERE (clotrans.BranchId = @BranchID) AND (clotrans.IndDate BETWEEN @d1 AND @d2) AND (clotrans.Transaction_Type = 0) GROUP BY productsdata.ProductName");
+                cmd = new MySqlCommand("SELECT clotrans.BranchId,productsdata.ProductName,productsdata.SubCat_sno, closubtranprodcts.StockQty, productsdata.sno FROM clotrans INNER JOIN closubtranprodcts ON clotrans.Sno = closubtranprodcts.RefNo INNER JOIN productsdata ON closubtranprodcts.ProductID = productsdata.sno WHERE (clotrans.BranchId = @BranchID) AND (clotrans.IndDate BETWEEN @d1 AND @d2) AND (clotrans.Transaction_Type = 0) GROUP BY productsdata.ProductName");
                 cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
                 cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
                 cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
@@ -887,7 +887,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
 
                                 DataRow tempnewrow = dttempproducts.NewRow();
                                 tempnewrow["ProductName"] = dr["ProductName"].ToString();
-                                tempnewrow["SubCatSno"] = dr["tempsubcatsno"].ToString();
+                                tempnewrow["SubCatSno"] = dr["SubCat_sno"].ToString();
                                 dttempproducts.Rows.Add(tempnewrow);
                             }
                         }
@@ -1578,7 +1578,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                                     newSo[drdt["ProductName"].ToString()] = drTripSub["Qty"].ToString();
                                     DataRow tempnewrow = dttempproducts.NewRow();
                                     tempnewrow["ProductName"] = drdt["ProductName"].ToString();
-                                    tempnewrow["SubCatSno"] = drdt["tempsubcatsno"].ToString();
+                                    tempnewrow["SubCatSno"] = drdt["SubCat_sno"].ToString();
                                     dttempproducts.Rows.Add(tempnewrow);
                                 }
                             }
@@ -1627,7 +1627,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                                 totaldispatch[dr["ProductName"].ToString()] = Math.Round(totalqty, 2);
                                 DataRow tempnewrow = dttempproducts.NewRow();
                                 tempnewrow["ProductName"] = dr["ProductName"].ToString();
-                                tempnewrow["SubCatSno"] = dr["tempsubcatsno"].ToString();
+                                tempnewrow["SubCatSno"] = dr["SubCat_sno"].ToString();
                                 dttempproducts.Rows.Add(tempnewrow);
                             }
                         }
@@ -1824,7 +1824,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
             }
             Session["filename"] = ddlSalesOffice.SelectedItem.Text + " REPORT " + fromdate.AddDays(1).ToString("dd/MM/yyyy");
             //cmd = new MySqlCommand("SELECT branchroutes.RouteName, indents_subtable.Product_sno, productsdata.ProductName, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty,ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty), 2) AS Total, indents_subtable.UnitCost, ROUND(SUM(indents_subtable.LeakQty), 2) AS ILeakQty, products_category.Categoryname, ROUND(SUM(indents_subtable.LeakQty), 2) AS LeakQty, indents_subtable.DTripId, tripdata.RecieptNo FROM branchroutes INNER JOIN branchroutesubtable ON branchroutes.Sno = branchroutesubtable.RefNo INNER JOIN branchdata ON branchroutesubtable.BranchID = branchdata.sno INNER JOIN indents ON branchdata.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN tripdata ON indents_subtable.DTripId = tripdata.Sno WHERE (branchroutes.BranchID = @BranchID) AND (branchdata.CollectionType <> 'DUE') AND (indents.I_date BETWEEN @starttime AND @endtime) GROUP BY branchroutes.RouteName, productsdata.ProductName");
-            cmd = new MySqlCommand("SELECT modifiedroutes.Sno, productsdata.tempsubcatsno,modifiedroutes.RouteName, indents_subtable.Product_sno, productsdata.ProductName, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty), 2) AS Total, indents_subtable.UnitCost, ROUND(SUM(indents_subtable.LeakQty), 2) AS ILeakQty, products_category.Categoryname, ROUND(SUM(indents_subtable.LeakQty), 2) AS LeakQty,indents_subtable.DTripId, tripdata.RecieptNo FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN  products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN tripdata ON indents_subtable.DTripId = tripdata.Sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.CDate <= @starttime) AND (indents_subtable.DeliveryQty <>'0') OR (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) AND (indents_subtable.DeliveryQty <>'0')  GROUP BY modifiedroutes.Sno,productsdata.sno");
+            cmd = new MySqlCommand("SELECT modifiedroutes.Sno, productsdata.SubCat_sno,modifiedroutes.RouteName, indents_subtable.Product_sno, productsdata.ProductName, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty), 2) AS Total, indents_subtable.UnitCost, ROUND(SUM(indents_subtable.LeakQty), 2) AS ILeakQty, products_category.Categoryname, ROUND(SUM(indents_subtable.LeakQty), 2) AS LeakQty,indents_subtable.DTripId, tripdata.RecieptNo FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN  products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN tripdata ON indents_subtable.DTripId = tripdata.Sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.CDate <= @starttime) AND (indents_subtable.DeliveryQty <>'0') OR (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) AND (indents_subtable.DeliveryQty <>'0')  GROUP BY modifiedroutes.Sno,productsdata.sno");
             cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
             cmd.Parameters.AddWithValue("@startime", GetLowDate(fromdate));
             cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
@@ -1842,7 +1842,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
 
 
 
-            cmd = new MySqlCommand("SELECT    branchproducts.unitprice,branchproducts.branch_sno,products_subcategory.tempsub_catsno AS SubCatSno, products_category.description AS Categoryname, branchproducts.product_sno AS sno, productsdata.ProductName,productsdata.tempsubcatsno, branchproducts.Rank,products_subcategory.description AS SubCategoryName FROM  products_category INNER JOIN products_subcategory ON products_category.tempcatsno = products_subcategory.tempcatsno INNER JOIN productsdata ON products_subcategory.tempsub_catsno = productsdata.tempsubcatsno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno WHERE (branchproducts.branch_sno = @BranchId) ORDER BY products_subcategory.tempsub_catsno, branchproducts.Rank");
+            cmd = new MySqlCommand("SELECT    branchproducts.unitprice,branchproducts.branch_sno,products_subcategory.tempsub_catsno AS SubCatSno, products_category.description AS Categoryname, branchproducts.product_sno AS sno, productsdata.ProductName,productsdata.SubCat_sno, branchproducts.Rank,products_subcategory.description AS SubCategoryName FROM  products_category INNER JOIN products_subcategory ON products_category.sno = products_subcategory.category_sno INNER JOIN productsdata ON products_subcategory.sno = productsdata.SubCat_sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno WHERE (branchproducts.branch_sno = @BranchId) ORDER BY products_subcategory.tempsub_catsno, branchproducts.Rank");
             cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
             produtstbl1 = vdm.SelectQuery(cmd).Tables[0];
 
@@ -1863,7 +1863,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
             produtstbl.Columns.Add("ProductName");
             produtstbl.Columns.Add("unitprice");
             produtstbl.Columns.Add("Rank").DataType = typeof(int);
-            produtstbl.Columns.Add("tempsubcatsno").DataType = typeof(int);
+            produtstbl.Columns.Add("SubCat_sno").DataType = typeof(int);
 
             foreach (DataRow dr in produtstbl1.Rows)
             {
@@ -1872,7 +1872,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                 newRow["sno"] = dr["Sno"].ToString();
                 newRow["ProductName"] = dr["ProductName"].ToString();
                 newRow["unitprice"] = dr["unitprice"].ToString();
-                newRow["tempsubcatsno"] = dr["tempsubcatsno"].ToString();
+                newRow["SubCat_sno"] = dr["SubCat_sno"].ToString();
 
                 if (dr["Rank"].ToString() == "")
                 {
@@ -1918,7 +1918,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
             }
             MySqlCommand cmd1 = new MySqlCommand();
             ////cmd = new MySqlCommand("SELECT productsdata.sno AS prodsno, productsdata.ProductName, indents_subtable.DeliveryQty, indents_subtable.UnitCost, branchdata.BranchName,collections.AmountPaid, indents_subtable.DTripId, indent.Branch_id FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno LEFT OUTER JOIN collections ON indent.Branch_id = collections.Branchid AND indents_subtable.DTripId = collections.tripId WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) AND (branchdata.CollectionType = @CollectionType) OR (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) AND (branchdata.CollectionType = @CollectionType) GROUP BY branchdata.sno, productsdata.sno");
-            cmd = new MySqlCommand("SELECT  productsdata.sno AS prodsno,productsdata.tempsubcatsno, productsdata.ProductName, ROUND(SUM(indents_subtable.DeliveryQty),2) As DeliveryQty, indents_subtable.UnitCost, branchdata.BranchName,indents_subtable.DTripId, indent.Branch_id, branchdata.SalesType FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON branchdata.sno = modifiedroutesubtable.BranchID INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE  (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) AND (branchdata.CollectionType = @CollectionType) AND (branchdata.SalesType NOT IN (35, 36, 37,41)) OR (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) AND  (branchdata.CollectionType = @CollectionType) AND (branchdata.SalesType NOT IN (35, 36, 37,41)) GROUP BY branchdata.sno, productsdata.sno, branchdata.SalesType");
+            cmd = new MySqlCommand("SELECT  productsdata.sno AS prodsno,productsdata.SubCat_sno, productsdata.ProductName, ROUND(SUM(indents_subtable.DeliveryQty),2) As DeliveryQty, indents_subtable.UnitCost, branchdata.BranchName,indents_subtable.DTripId, indent.Branch_id, branchdata.SalesType FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON branchdata.sno = modifiedroutesubtable.BranchID INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE  (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) AND (branchdata.CollectionType = @CollectionType) AND (branchdata.SalesType NOT IN (35, 36, 37,41)) OR (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) AND  (branchdata.CollectionType = @CollectionType) AND (branchdata.SalesType NOT IN (35, 36, 37,41)) GROUP BY branchdata.sno, productsdata.sno, branchdata.SalesType");
             cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
             cmd.Parameters.AddWithValue("@CollectionType", "DUE");
             cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
@@ -1927,7 +1927,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
             DataTable dtDue = vdm.SelectQuery(cmd).Tables[0];
 
             /////Ravindra---03/11/2017
-            cmd = new MySqlCommand("SELECT  productsdata.sno AS prodsno, productsdata.tempsubcatsno,productsdata.ProductName, SUM(indents_subtable.DeliveryQty) AS DeliveryQty, indents_subtable.UnitCost, indents_subtable.DTripId, branchdata.SalesType,  branchdata.CollectionType,salestypemanagement.salestype AS Expr1  FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON branchdata.sno = modifiedroutesubtable.BranchID INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN salestypemanagement ON branchdata.SalesType = salestypemanagement.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType = @CollectionType) AND (branchdata.SalesType = '35' OR branchdata.SalesType = '36' OR branchdata.SalesType = '37' OR branchdata.SalesType = '41' ) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) OR (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType = @CollectionType) AND (branchdata.SalesType = '35' OR branchdata.SalesType = '36' OR branchdata.SalesType = '37' OR branchdata.SalesType = '41') AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) GROUP BY productsdata.sno, branchdata.SalesType, productsdata.ProductName, salestypemanagement.salestype");
+            cmd = new MySqlCommand("SELECT  productsdata.sno AS prodsno, productsdata.SubCat_sno,productsdata.ProductName, SUM(indents_subtable.DeliveryQty) AS DeliveryQty, indents_subtable.UnitCost, indents_subtable.DTripId, branchdata.SalesType,  branchdata.CollectionType,salestypemanagement.salestype AS Expr1  FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON branchdata.sno = modifiedroutesubtable.BranchID INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN salestypemanagement ON branchdata.SalesType = salestypemanagement.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType = @CollectionType) AND (branchdata.SalesType = '35' OR branchdata.SalesType = '36' OR branchdata.SalesType = '37' OR branchdata.SalesType = '41' ) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) OR (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType = @CollectionType) AND (branchdata.SalesType = '35' OR branchdata.SalesType = '36' OR branchdata.SalesType = '37' OR branchdata.SalesType = '41') AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) GROUP BY productsdata.sno, branchdata.SalesType, productsdata.ProductName, salestypemanagement.salestype");
             //////cmd1 = new MySqlCommand("SELECT  productsdata.sno AS prodsno, productsdata.ProductName, SUM(indents_subtable.DeliveryQty) AS DeliveryQty, indents_subtable.UnitCost, indents_subtable.DTripId,branchdata.SalesType, branchdata.CollectionType, salestypemanagement.salestype AS Expr1 FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON branchdata.sno = modifiedroutesubtable.BranchID INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM  indents WHERE  (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN salestypemanagement ON branchdata.SalesType = salestypemanagement.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType = @CollectionType) AND ((branchdata.SalesType = '35') OR (branchdata.SalesType = '36') OR (branchdata.SalesType = '37') OR (branchdata.SalesType = '41') ) GROUP BY productsdata.sno, branchdata.SalesType, productsdata.ProductName, salestypemanagement.salestype");
             cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
             cmd.Parameters.AddWithValue("@CollectionType", "DUE");
@@ -1993,7 +1993,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
 
                                 DataRow tempnewrow = dttempproducts.NewRow();
                                 tempnewrow["ProductName"] = dr["ProductName"].ToString();
-                                tempnewrow["SubCatSno"] = dr["tempsubcatsno"].ToString();
+                                tempnewrow["SubCatSno"] = dr["SubCat_sno"].ToString();
                                 dttempproducts.Rows.Add(tempnewrow);
                                 m++;
                             }
@@ -2143,7 +2143,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                                 int m = 0;
                                 DataRow tempnewrow = dttempproducts.NewRow();
                                 tempnewrow["ProductName"] = branch["ProductName"].ToString();
-                                tempnewrow["SubCatSno"] = branch["tempsubcatsno"].ToString();
+                                tempnewrow["SubCatSno"] = branch["SubCat_sno"].ToString();
                                 dttempproducts.Rows.Add(tempnewrow);
                                 m++;
 
@@ -2217,7 +2217,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
 
                                 DataRow tempnewrow = dttempproducts.NewRow();
                                 tempnewrow["ProductName"] = branchhyd["ProductName"].ToString();
-                                tempnewrow["SubCatSno"] = branchhyd["tempsubcatsno"].ToString();
+                                tempnewrow["SubCatSno"] = branchhyd["SubCat_sno"].ToString();
                                 dttempproducts.Rows.Add(tempnewrow);
                             }
                         }
@@ -2322,7 +2322,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                         }
                     }
                 }
-                cmd = new MySqlCommand("SELECT clotrans.BranchId,productsdata.ProductName,productsdata.tempsubcatsno, closubtranprodcts.StockQty, productsdata.sno FROM clotrans INNER JOIN closubtranprodcts ON clotrans.Sno = closubtranprodcts.RefNo INNER JOIN productsdata ON closubtranprodcts.ProductID = productsdata.sno WHERE (clotrans.BranchId = @BranchID) AND (clotrans.IndDate BETWEEN @d1 AND @d2) AND (clotrans.Transaction_Type = 0) GROUP BY productsdata.ProductName");
+                cmd = new MySqlCommand("SELECT clotrans.BranchId,productsdata.ProductName,productsdata.SubCat_sno, closubtranprodcts.StockQty, productsdata.sno FROM clotrans INNER JOIN closubtranprodcts ON clotrans.Sno = closubtranprodcts.RefNo INNER JOIN productsdata ON closubtranprodcts.ProductID = productsdata.sno WHERE (clotrans.BranchId = @BranchID) AND (clotrans.IndDate BETWEEN @d1 AND @d2) AND (clotrans.Transaction_Type = 0) GROUP BY productsdata.ProductName");
                 cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
                 cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-2)));
                 cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-2)));
@@ -2350,7 +2350,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                             {
                                 DataRow tempnewrow = dttempproducts.NewRow();
                                 tempnewrow["ProductName"] = dr["ProductName"].ToString();
-                                tempnewrow["SubCatSno"] = dr["tempsubcatsno"].ToString();
+                                tempnewrow["SubCatSno"] = dr["SubCat_sno"].ToString();
                                 dttempproducts.Rows.Add(tempnewrow);
                                 newrow[dr["ProductName"].ToString()] = StockQty;
                             }
@@ -2381,7 +2381,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                         }
                     }
                 }
-                cmd = new MySqlCommand("SELECT clotrans.BranchId,productsdata.ProductName,productsdata.tempsubcatsno, closubtranprodcts.StockQty, productsdata.sno FROM clotrans INNER JOIN closubtranprodcts ON clotrans.Sno = closubtranprodcts.RefNo INNER JOIN productsdata ON closubtranprodcts.ProductID = productsdata.sno WHERE (clotrans.BranchId = @BranchID) AND (clotrans.IndDate BETWEEN @d1 AND @d2) AND (clotrans.Transaction_Type = 0) GROUP BY productsdata.ProductName");
+                cmd = new MySqlCommand("SELECT clotrans.BranchId,productsdata.ProductName,productsdata.SubCat_sno, closubtranprodcts.StockQty, productsdata.sno FROM clotrans INNER JOIN closubtranprodcts ON clotrans.Sno = closubtranprodcts.RefNo INNER JOIN productsdata ON closubtranprodcts.ProductID = productsdata.sno WHERE (clotrans.BranchId = @BranchID) AND (clotrans.IndDate BETWEEN @d1 AND @d2) AND (clotrans.Transaction_Type = 0) GROUP BY productsdata.ProductName");
                 cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
                 cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
                 cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
@@ -2409,7 +2409,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                             {
                                 DataRow tempnewrow = dttempproducts.NewRow();
                                 tempnewrow["ProductName"] = dr["ProductName"].ToString();
-                                tempnewrow["SubCatSno"] = dr["tempsubcatsno"].ToString();
+                                tempnewrow["SubCatSno"] = dr["SubCat_sno"].ToString();
                                 dttempproducts.Rows.Add(tempnewrow);
                                 newrow[dr["ProductName"].ToString()] = StockQty;
                             }
@@ -3063,7 +3063,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                                     newSo[drdt["ProductName"].ToString()] = drTripSub["Qty"].ToString();
                                     DataRow tempnewrow = dttempproducts.NewRow();
                                     tempnewrow["ProductName"] = drdt["ProductName"].ToString();
-                                    tempnewrow["SubCatSno"] = drdt["tempsubcatsno"].ToString();
+                                    tempnewrow["SubCatSno"] = drdt["SubCat_sno"].ToString();
                                     dttempproducts.Rows.Add(tempnewrow);
                                 }
                             }
@@ -3110,7 +3110,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
 
                                 DataRow tempnewrow = dttempproducts.NewRow();
                                 tempnewrow["ProductName"] = dr["ProductName"].ToString();
-                                tempnewrow["SubCatSno"] = dr["tempsubcatsno"].ToString();
+                                tempnewrow["SubCatSno"] = dr["SubCat_sno"].ToString();
                                 dttempproducts.Rows.Add(tempnewrow);
                             }
                         }
@@ -3295,7 +3295,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                 SalesOfficeID = "158";
             }
             //cmd = new MySqlCommand("SELECT SUM(indents_subtable.DeliveryQty) AS DeliveryQty, indents_subtable.UnitCost, branchdata.BranchName,branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName FROM branchroutes INNER JOIN branchroutesubtable ON branchroutes.Sno = branchroutesubtable.RefNo INNER JOIN branchdata ON branchroutesubtable.BranchID = branchdata.sno INNER JOIN indents ON branchdata.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (branchroutes.BranchID = @BranchID) AND (branchdata.CollectionType <> 'DUE') AND (indents.I_date BETWEEN @starttime AND @endtime) GROUP BY prodsno, branchdata.sno ORDER BY branchdata.sno, prodsno");
-            cmd = new MySqlCommand("SELECT  SUM(indents_subtable.DeliveryQty) AS DeliveryQty,productsdata.tempsubcatsno, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) OR (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) GROUP BY prodsno, branchdata.sno ORDER BY branchdata.sno, prodsno");
+            cmd = new MySqlCommand("SELECT  SUM(indents_subtable.DeliveryQty) AS DeliveryQty,productsdata.SubCat_sno, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) OR (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) GROUP BY prodsno, branchdata.sno ORDER BY branchdata.sno, prodsno");
             cmd.Parameters.AddWithValue("@BranchID", SalesOfficeID);
             cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
             cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
@@ -3307,7 +3307,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                 cmd.Parameters.AddWithValue("@BranchID", SalesOfficeID);
                 DataTable dttable = vdm.SelectQuery(cmd).Tables[0];
 
-                cmd = new MySqlCommand("SELECT    productsdata.tempsubcatsno,branchproducts.unitprice,branchproducts.branch_sno,products_subcategory.tempsub_catsno AS SubCatSno, products_category.description AS Categoryname, branchproducts.product_sno AS sno, productsdata.ProductName, branchproducts.Rank,products_subcategory.description AS SubCategoryName FROM  products_category INNER JOIN products_subcategory ON products_category.tempcatsno = products_subcategory.tempcatsno INNER JOIN productsdata ON products_subcategory.tempsub_catsno = productsdata.tempsubcatsno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno WHERE (branchproducts.branch_sno = @BranchId) AND (branchproducts.flag = @flag) ORDER BY products_subcategory.tempsub_catsno, branchproducts.Rank");
+                cmd = new MySqlCommand("SELECT    productsdata.SubCat_sno,branchproducts.unitprice,branchproducts.branch_sno,products_subcategory.tempsub_catsno AS SubCatSno, products_category.description AS Categoryname, branchproducts.product_sno AS sno, productsdata.ProductName, branchproducts.Rank,products_subcategory.description AS SubCategoryName FROM  products_category INNER JOIN products_subcategory ON products_category.sno = products_subcategory.category_sno INNER JOIN productsdata ON products_subcategory.sno = productsdata.SubCat_sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno WHERE (branchproducts.branch_sno = @BranchId) AND (branchproducts.flag = @flag) ORDER BY products_subcategory.tempsub_catsno, branchproducts.Rank");
                 cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
                 cmd.Parameters.AddWithValue("@flag", "1");
                 produtstbl1 = vdm.SelectQuery(cmd).Tables[0];
@@ -3323,7 +3323,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                 produtstbl.Columns.Add("SubCatName");
                 produtstbl.Columns.Add("ProductName");
                 produtstbl.Columns.Add("unitprice");
-                produtstbl.Columns.Add("tempsubcatsno").DataType = typeof(int);
+                produtstbl.Columns.Add("SubCat_sno").DataType = typeof(int);
                 produtstbl.Columns.Add("Rank").DataType = typeof(int);
 
                 foreach (DataRow dr in produtstbl1.Rows)
@@ -3333,7 +3333,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                     newRow["sno"] = dr["Sno"].ToString();
                     newRow["ProductName"] = dr["ProductName"].ToString();
                     newRow["unitprice"] = dr["unitprice"].ToString();
-                    newRow["tempsubcatsno"] = dr["tempsubcatsno"].ToString();
+                    newRow["SubCat_sno"] = dr["SubCat_sno"].ToString();
                     if (dr["Rank"].ToString() == "")
                     {
                     }
@@ -3376,7 +3376,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                     dtalldelivery.Rows.Add(newRow);
                 }
                 //cmd = new MySqlCommand("SELECT ROUND(Sum(indents_subtable.DeliveryQty),2) as DeliveryQty, indents_subtable.UnitCost, branchdata.BranchName,productsdata.sno as prodsno, productsdata.ProductName FROM branchroutes INNER JOIN branchroutesubtable ON branchroutes.Sno = branchroutesubtable.RefNo INNER JOIN branchdata ON branchroutesubtable.BranchID = branchdata.sno INNER JOIN indents ON branchdata.sno = indents.Branch_id INNER JOIN  indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (branchroutes.BranchID = @BranchID) AND (branchdata.CollectionType = 'DUE') AND (indents.I_date BETWEEN @starttime AND @endtime) Group by indents.Branch_id,indents_subtable.Product_sno");
-                cmd = new MySqlCommand("SELECT ROUND(SUM(indents_subtable.DeliveryQty),2) AS DeliveryQty, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno,productsdata.tempsubcatsno, productsdata.sno AS prodsno, productsdata.ProductName FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType = 'DUE') AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) OR (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType = 'DUE')  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) GROUP BY prodsno, branchdata.sno ORDER BY branchdata.sno, prodsno");
+                cmd = new MySqlCommand("SELECT ROUND(SUM(indents_subtable.DeliveryQty),2) AS DeliveryQty, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno,productsdata.SubCat_sno, productsdata.sno AS prodsno, productsdata.ProductName FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType = 'DUE') AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) OR (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType = 'DUE')  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) GROUP BY prodsno, branchdata.sno ORDER BY branchdata.sno, prodsno");
                 cmd.Parameters.AddWithValue("@BranchID", SalesOfficeID);
                 cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
                 cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
@@ -3438,7 +3438,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                                     newrow[dr["ProductName"].ToString()] = Math.Round(delqty, 2);
                                     DataRow tempnewrow = dttempproducts.NewRow();
                                     tempnewrow["ProductName"] = dr["ProductName"].ToString();
-                                    tempnewrow["SubCatSno"] = dr["tempsubcatsno"].ToString();
+                                    tempnewrow["SubCatSno"] = dr["SubCat_sno"].ToString();
                                     dttempproducts.Rows.Add(tempnewrow);
                                 }
 
@@ -3517,7 +3517,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                                 {
                                     DataRow tempnewrow = dttempproducts.NewRow();
                                     tempnewrow["ProductName"] = branch["ProductName"].ToString();
-                                    tempnewrow["SubCatSno"] = branch["tempsubcatsno"].ToString();
+                                    tempnewrow["SubCatSno"] = branch["SubCat_sno"].ToString();
                                     dttempproducts.Rows.Add(tempnewrow);
                                     newrow[branch["ProductName"].ToString()] = DeliveryQty;
                                 }
@@ -3611,7 +3611,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                             }
                         }
                     }
-                    cmd = new MySqlCommand("SELECT clotrans.BranchId,productsdata.ProductName,productsdata.tempsubcatsno, closubtranprodcts.StockQty, productsdata.sno FROM clotrans INNER JOIN closubtranprodcts ON clotrans.Sno = closubtranprodcts.RefNo INNER JOIN productsdata ON closubtranprodcts.ProductID = productsdata.sno WHERE (clotrans.BranchId = @BranchID) AND (clotrans.IndDate BETWEEN @d1 AND @d2) AND (clotrans.Transaction_Type = 0) GROUP BY productsdata.ProductName");
+                    cmd = new MySqlCommand("SELECT clotrans.BranchId,productsdata.ProductName,productsdata.SubCat_sno, closubtranprodcts.StockQty, productsdata.sno FROM clotrans INNER JOIN closubtranprodcts ON clotrans.Sno = closubtranprodcts.RefNo INNER JOIN productsdata ON closubtranprodcts.ProductID = productsdata.sno WHERE (clotrans.BranchId = @BranchID) AND (clotrans.IndDate BETWEEN @d1 AND @d2) AND (clotrans.Transaction_Type = 0) GROUP BY productsdata.ProductName");
                     cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
                     cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-2)));
                     cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-2)));
@@ -3639,7 +3639,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                                 {
                                     DataRow tempnewrow = dttempproducts.NewRow();
                                     tempnewrow["ProductName"] = dr["ProductName"].ToString();
-                                    tempnewrow["SubCatSno"] = dr["tempsubcatsno"].ToString();
+                                    tempnewrow["SubCatSno"] = dr["SubCat_sno"].ToString();
                                     dttempproducts.Rows.Add(tempnewrow);
                                     newrow[dr["ProductName"].ToString()] = StockQty;
                                 }
@@ -3651,7 +3651,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                         Report.Rows.Add(newrow);
                     }
 
-                    cmd = new MySqlCommand("SELECT clotrans.BranchId,productsdata.ProductName, productsdata.tempsubcatsno,closubtranprodcts.StockQty, productsdata.sno FROM clotrans INNER JOIN closubtranprodcts ON clotrans.Sno = closubtranprodcts.RefNo INNER JOIN productsdata ON closubtranprodcts.ProductID = productsdata.sno WHERE (clotrans.BranchId = @BranchID) AND (clotrans.IndDate BETWEEN @d1 AND @d2) AND (clotrans.Transaction_Type = 0) GROUP BY productsdata.ProductName");
+                    cmd = new MySqlCommand("SELECT clotrans.BranchId,productsdata.ProductName, productsdata.SubCat_sno,closubtranprodcts.StockQty, productsdata.sno FROM clotrans INNER JOIN closubtranprodcts ON clotrans.Sno = closubtranprodcts.RefNo INNER JOIN productsdata ON closubtranprodcts.ProductID = productsdata.sno WHERE (clotrans.BranchId = @BranchID) AND (clotrans.IndDate BETWEEN @d1 AND @d2) AND (clotrans.Transaction_Type = 0) GROUP BY productsdata.ProductName");
                     cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
                     cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
                     cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
@@ -3679,7 +3679,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                                 {
                                     DataRow tempnewrow = dttempproducts.NewRow();
                                     tempnewrow["ProductName"] = dr["ProductName"].ToString();
-                                    tempnewrow["SubCatSno"] = dr["tempsubcatsno"].ToString();
+                                    tempnewrow["SubCatSno"] = dr["SubCat_sno"].ToString();
                                     dttempproducts.Rows.Add(tempnewrow);
                                     newrow[dr["ProductName"].ToString()] = StockQty;
                                 }
@@ -4369,7 +4369,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                                         newSo[drdt["ProductName"].ToString()] = oferwithqty.ToString();
                                         DataRow tempnewrow = dttempproducts.NewRow();
                                         tempnewrow["ProductName"] = drdt["ProductName"].ToString();
-                                        tempnewrow["SubCatSno"] = drdt["tempsubcatsno"].ToString();
+                                        tempnewrow["SubCatSno"] = drdt["SubCat_sno"].ToString();
                                         dttempproducts.Rows.Add(tempnewrow);
                                     }
                                 }
@@ -4415,7 +4415,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                                     totaldispatch[dr["ProductName"].ToString()] = Math.Round(totalqty, 2);
                                     DataRow tempnewrow = dttempproducts.NewRow();
                                     tempnewrow["ProductName"] = dr["ProductName"].ToString();
-                                    tempnewrow["SubCatSno"] = dr["tempsubcatsno"].ToString();
+                                    tempnewrow["SubCatSno"] = dr["SubCat_sno"].ToString();
                                     dttempproducts.Rows.Add(tempnewrow);
                                 }
                             }
@@ -4699,79 +4699,79 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
     }
 
     int j = 0;
-    protected void grdReports_RowCreated(object sender, GridViewRowEventArgs e)
-    {
-        // Adding a column manually once the header created
-        if (e.Row.RowType == DataControlRowType.Header) // If header created
-        {
-            //j++;
-            //e.Row.Cells[1].Visible = false;
-            GridView ProductGrid = (GridView)sender;
-            GridViewRow HeaderRow = new GridViewRow(0, 0, DataControlRowType.Separator, DataControlRowState.Insert);
-            //   grdReports.HeaderRow.Cells[0].Text = "Header 1";
+    //protected void grdReports_RowCreated(object sender, GridViewRowEventArgs e)
+    //{
+    //    // Adding a column manually once the header created
+    //    if (e.Row.RowType == DataControlRowType.Header) // If header created
+    //    {
+    //        //j++;
+    //        //e.Row.Cells[1].Visible = false;
+    //        GridView ProductGrid = (GridView)sender;
+    //        GridViewRow HeaderRow = new GridViewRow(0, 0, DataControlRowType.Separator, DataControlRowState.Insert);
+    //        //   grdReports.HeaderRow.Cells[0].Text = "Header 1";
 
-            //if (e.Row.RowType == DataControlRowType.DataRow)
-            //{
-            //cell.VerticalAlign = VerticalAlign.Middle;
-            //string ItemName = cell.Text;
-            TableCell HeaderCell = new TableCell();
-            //if (j == 0)
-            //{
-            //if (ddlSalesOffice.SelectedValue == "ALL")
-            //{
-            HeaderCell = new TableCell();
-            HeaderCell.Text = "Net Sales Details";
-            HeaderCell.VerticalAlign = VerticalAlign.Middle;
+    //        //if (e.Row.RowType == DataControlRowType.DataRow)
+    //        //{
+    //        //cell.VerticalAlign = VerticalAlign.Middle;
+    //        //string ItemName = cell.Text;
+    //        TableCell HeaderCell = new TableCell();
+    //        //if (j == 0)
+    //        //{
+    //        //if (ddlSalesOffice.SelectedValue == "ALL")
+    //        //{
+    //        HeaderCell = new TableCell();
+    //        HeaderCell.Text = "Net Sales Details";
+    //        HeaderCell.VerticalAlign = VerticalAlign.Middle;
 
-            if (status == "Nellore")
-            {
-                HeaderCell.ColumnSpan = 3;
-            }
-            else
-            {
-                HeaderCell.ColumnSpan = 2;
-            }// For merging three columns (Direct, Referral, Total)
-            HeaderCell.CssClass = "HeaderStyle";
-            HeaderRow.Cells.Add(HeaderCell);
-            foreach (DataRow drsubcategory in dtSortedSubCategory.Rows)
-            {
-                DataTable distinctTable = dttempproducts.DefaultView.ToTable(true, "ProductName", "SubCatSno");
-                int k = 0;
-                foreach (DataRow dramount in distinctTable.Select("SubCatSno='" + drsubcategory["SubCatSno"].ToString() + "'"))
-                {
-                    //foreach (DataRow dramount in dtBranch.Select("ProductName='" + ItemName + "' AND SubCatSno='" + drsubcategory["SubCatSno"].ToString() + "'"))
-                    //{
-                    //    string Temp = dramount["ProductName"].ToString();
-                    //}
-                    //Adding Year Column
-                    k++;
-                }
-                HeaderCell = new TableCell();
-                if (k != 0)
-                {
-                    foreach (DataRow dramount in produtstbl1.Select("SubCatSno='" + drsubcategory["SubCatSno"].ToString() + "'"))
-                    {
-                        HeaderCell.Text = dramount["SubCategoryName"].ToString();
-                    }
-                }
-                HeaderCell.VerticalAlign = VerticalAlign.Middle;
-                HeaderCell.ColumnSpan = k; // For merging three columns (Direct, Referral, Total)
-                HeaderCell.CssClass = "HeaderStyle";
-                //HeaderCell.ForeColor = col
-                HeaderRow.Cells.Add(HeaderCell);
-            }
-            HeaderCell = new TableCell();
-            HeaderCell.Text = "Net Totals";
-            HeaderCell.VerticalAlign = VerticalAlign.Middle;
-            HeaderCell.ColumnSpan = 8;
-            HeaderCell.CssClass = "HeaderStyle";
-            HeaderRow.Cells.Add(HeaderCell);
-            // HeaderRow.Controls.Add(HeaderCell);
-            //(GridView2.HeaderRow.Cells[3].
-            ProductGrid.Controls[0].Controls.AddAt(0, HeaderRow);
-        }
-        // }
-        //}
-    }
+    //        if (status == "Nellore")
+    //        {
+    //            HeaderCell.ColumnSpan = 3;
+    //        }
+    //        else
+    //        {
+    //            HeaderCell.ColumnSpan = 2;
+    //        }// For merging three columns (Direct, Referral, Total)
+    //        HeaderCell.CssClass = "HeaderStyle";
+    //        HeaderRow.Cells.Add(HeaderCell);
+    //        foreach (DataRow drsubcategory in dtSortedSubCategory.Rows)
+    //        {
+    //            DataTable distinctTable = dttempproducts.DefaultView.ToTable(true, "ProductName", "SubCatSno");
+    //            int k = 0;
+    //            foreach (DataRow dramount in distinctTable.Select("SubCatSno='" + drsubcategory["SubCatSno"].ToString() + "'"))
+    //            {
+    //                //foreach (DataRow dramount in dtBranch.Select("ProductName='" + ItemName + "' AND SubCatSno='" + drsubcategory["SubCatSno"].ToString() + "'"))
+    //                //{
+    //                //    string Temp = dramount["ProductName"].ToString();
+    //                //}
+    //                //Adding Year Column
+    //                k++;
+    //            }
+    //            HeaderCell = new TableCell();
+    //            if (k != 0)
+    //            {
+    //                foreach (DataRow dramount in produtstbl1.Select("SubCatSno='" + drsubcategory["SubCatSno"].ToString() + "'"))
+    //                {
+    //                    HeaderCell.Text = dramount["SubCategoryName"].ToString();
+    //                }
+    //            }
+    //            HeaderCell.VerticalAlign = VerticalAlign.Middle;
+    //            HeaderCell.ColumnSpan = k; // For merging three columns (Direct, Referral, Total)
+    //            HeaderCell.CssClass = "HeaderStyle";
+    //            //HeaderCell.ForeColor = col
+    //            HeaderRow.Cells.Add(HeaderCell);
+    //        }
+    //        HeaderCell = new TableCell();
+    //        HeaderCell.Text = "Net Totals";
+    //        HeaderCell.VerticalAlign = VerticalAlign.Middle;
+    //        HeaderCell.ColumnSpan = 8;
+    //        HeaderCell.CssClass = "HeaderStyle";
+    //        HeaderRow.Cells.Add(HeaderCell);
+    //        // HeaderRow.Controls.Add(HeaderCell);
+    //        //(GridView2.HeaderRow.Cells[3].
+    //        ProductGrid.Controls[0].Controls.AddAt(0, HeaderRow);
+    //    }
+    //    // }
+    //    //}
+    //}
 
 }

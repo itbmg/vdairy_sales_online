@@ -137,7 +137,7 @@
                                     </div>
                                 </div>
                                 <asp:GridView ID="grdReports" runat="server" ForeColor="White" Width="100%"   CssClass="gridcls"
-                                    GridLines="Both" Font-Bold="true" Font-Size="Smaller" OnRowCreated="grdReports_RowCreated" OnRowDataBound="grdReports_RowDataBound">
+                                    GridLines="Both" Font-Bold="true" Font-Size="Smaller"  OnRowDataBound="grdReports_RowDataBound">
                                     <EditRowStyle BackColor="#999999" />
                                     <FooterStyle BackColor="Gray" Font-Bold="False" ForeColor="White" />
                                     <HeaderStyle BackColor="#f4f4f4" Font-Bold="False" ForeColor="Black" Font-Italic="False"

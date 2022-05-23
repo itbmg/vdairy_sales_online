@@ -1001,15 +1001,15 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                     <div class="drop3">
                                         <ul id="ul17">
                                             <li id="li96"><a href="Tally_BiproductsSales.aspx">Tally Sales</a></li>
-                                            <%--<li id="li181"><a href="TallyOthersSale.aspx">Tally Free Sales</a></li>
+                                            <li id="li181"><a href="TallyOthersSale.aspx">Tally Free Sales</a></li>
                                             <li id="li64"><a href="tallyscheemsales.aspx">Tally Scheme Sales</a></li>
-                                            <li id="li51"><a href="TallyCash_staffsales.aspx">Tally Cash & Staff Sales</a></li>--%>
+                                            <li id="li51"><a href="TallyCash_staffsales.aspx">Tally Cash & Staff Sales</a></li>
                                             <li id="li52"><a href="TallyReceipts.aspx">Tally Receipts</a></li>
                                             <li id="li54"><a href="TallyPayments.aspx">Tally Payments</a></li>
                                             <li id="li69"><a href="TallyInward.aspx">Tally Inward</a></li>
-                                           <%-- <li id="li27"><a href="Tally_AR_AP_Invoice.aspx">Tally AR&AP Invoice</a></li>
+                                            <li id="li27"><a href="Tally_AR_AP_Invoice.aspx">Tally AR&AP Invoice</a></li>
                                             <li id="li73"><a href="TallyLeaks.aspx">Tally Leaks</a></li>
-                                            <li id="li103"><a href="TallyIncenticeJv.aspx">Tally JV'S</a></li>--%>
+                                            <li id="li103"><a href="TallyIncenticeJv.aspx">Tally JV'S</a></li>
                                             
                                         </ul>
                                     </div>
