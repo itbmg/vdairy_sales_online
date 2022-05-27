@@ -263,7 +263,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                     //GetReport();
                     getHYDReport();
                 }
-                if (salesoff == "2" || salesoff == "4" || salesoff == "271" || salesoff == "285" || salesoff == "2948" || salesoff == "4607" || salesoff == "457" || salesoff == "570" || salesoff == "572" || salesoff == "3559" || salesoff == "282" || salesoff == "458" || salesoff == "4609")
+                if (salesoff == "1" || salesoff == "2" || salesoff == "3" || salesoff == "4" || salesoff == "5" || salesoff == "6" || salesoff == "7")
                 {
                     status = "Nellore";
 
@@ -293,7 +293,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                 {
                     getHYDReport();
                 }
-                if (salesoff == "2" || salesoff == "4" || salesoff == "271" || salesoff == "285" || salesoff == "2948" || salesoff == "457" || salesoff == "570" || salesoff == "572" || salesoff == "3559" || salesoff == "282" || salesoff == "458" || salesoff == "4609")
+                if (salesoff == "1" || salesoff == "2" || salesoff == "3" || salesoff == "4" || salesoff == "5" || salesoff == "6" || salesoff == "7" )
                 {
                     status = "Nellore";
                     getnelloreReport();
