@@ -296,7 +296,7 @@
                 results += '<td data-title="brandstatus" class="2">' + msg[i].hsncode + '</td>';
                 results += '<td data-title="brandstatus" class="2">' + msg[i].uom + '</td>';
                 results += '<td data-title="brandstatus" style="display:none;" class="2">' + parseFloat(msg[i].qty).toFixed(2) + '</td>';
-                results += '<td data-title="brandstatus"  class="2">' + msg[i].pktqty + '</td>';
+                results += '<td data-title="brandstatus"  class="2">' + parseFloat(msg[i].qty).toFixed(2) + '</td>';
                 results += '<td data-title="brandstatus" class="2">' + msg[i].rate + '</td>';
                 results += '<td data-title="brandstatus" class="2">' + msg[i].discount + '</td>';
                 results += '<td data-title="brandstatus" class="2">' + parseFloat(msg[i].taxablevalue).toFixed(2) + '</td>';
@@ -635,9 +635,9 @@
                              
 
                     <div style="font-family: Arial; font-weight: bold; color: Black; text-align:right; border:2px solid gray;">
-                        <label style="font-size: 14px;font-weight: bold;">
+                        <label style="font-size: 14px;font-weight: bold;display:none;">
                                         OppBalance: </label>
-                           <span id="spn_OPbalance" style="font-size: 11px;padding-right: 20px;"></span>
+                           <span id="spn_OPbalance" style="font-size: 11px;padding-right: 20px;display:none;"></span>
                       </div>
                    <div id="div_itemdetails">
                     </div>

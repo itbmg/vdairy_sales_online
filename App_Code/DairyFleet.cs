@@ -15038,10 +15038,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
                                 float prate = 0;
                                 float.TryParse(dr["Unitcost"].ToString(), out prate);
-                                float pktrate = 0;
-                                pktrate = (rawqty / 1000) * prate;
-                                double rate = Math.Round(pktrate, 2);
-                               
+                                //float pktrate = 0;
+                                //pktrate = (rawqty / 1000) * prate;
+                                //double rate = Math.Round(pktrate, 2);
+                                double rate = Math.Round(prate, 2);
+
                                 newrow["Discount"] = 0;
                                 double sgst = 0;
                                 double sgstamount = 0;
@@ -15059,7 +15060,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 double Vatrate = rate - totRate;
                                 Vatrate = Math.Round(Vatrate, 2);
                                 newrow["Rate"] = Vatrate.ToString();
-                                double PAmount = pktval * Vatrate;
+                                //double PAmount = pktval * Vatrate;
+                                double PAmount = qty * Vatrate; //changed by akbar
                                 newrow["Taxable Value"] = Math.Round(PAmount, 2);
 
                                 double tot_vatamount = (PAmount * Igst) / 100;
@@ -15132,7 +15134,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 double Vatrate = rate - totRate;
                                 Vatrate = Math.Round(Vatrate, 2);
                                 newrow["Rate"] = Vatrate.ToString();
-                                double PAmount = pktval * Vatrate;
+                                double PAmount = qty * Vatrate; //changed by akbar
                                 newrow["Taxable Value"] = Math.Round(PAmount, 2);
 
                                 double tot_vatamount = (PAmount * Igst) / 100;
@@ -31959,7 +31961,54 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 double.TryParse(dtmaxagentbal.Rows[0]["clo_balance"].ToString(), out clobalance);
 
                 double diff = salevalue - totsalevalue;
-                if (diff > 0)
+                if (diff == 0)
+                {
+                    cmd = new MySqlCommand("UPDATE agent_bal_trans set paidamount=paidamount+@Amount, clo_balance=clo_balance-@Amount  where agentid=@BranchId AND inddate between @d1 and @d2");
+                    cmd.Parameters.AddWithValue("@d1", GetLowDate(sindentdate));
+                    cmd.Parameters.AddWithValue("@d2", GetHighDate(sindentdate));
+                    cmd.Parameters.AddWithValue("@Amount", totsalevalue);
+                    cmd.Parameters.AddWithValue("@BranchId", BranchID);
+                    if (vdbmngr.Update(cmd) == 0)
+                    {
+                        cmd = new MySqlCommand("Insert Into agent_bal_trans(agentid, opp_balance, inddate, paidamount, clo_balance, createdate, entryby) values (@BranchId,@opp_balance,@inddate, @paidamount, @clo_balance, @createdate, @entryby)");
+                        cmd.Parameters.AddWithValue("@BranchId", BranchID);
+                        cmd.Parameters.AddWithValue("@opp_balance", clobalance);
+                        cmd.Parameters.AddWithValue("@inddate", sindentdate);
+                        cmd.Parameters.AddWithValue("@salesvalue", totsalevalue);
+                        cmd.Parameters.AddWithValue("@clo_balance", totsalevalue);
+                        cmd.Parameters.AddWithValue("@createdate", ServerDateCurrentdate);
+                        cmd.Parameters.AddWithValue("@entryby", "1");
+                        vdbmngr.insert(cmd);
+                    }
+                    cmd = new MySqlCommand("SELECT sno, agentid, opp_balance, inddate, salesvalue, clo_balance, paidamount FROM agent_bal_trans WHERE agentid=@agentid AND inddate between @d1 and @d2");
+                    cmd.Parameters.AddWithValue("@agentid", BranchID);
+                    cmd.Parameters.AddWithValue("@d1", GetLowDate(sindentdate));
+                    cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate));
+                    DataTable dtIndentbal = vdbmngr.SelectQuery(cmd).Tables[0];
+                    if (dtIndentbal.Rows.Count > 0)
+                    {
+                        foreach (DataRow dr in dtIndentbal.Rows)
+                        {
+                            string csno = dr["sno"].ToString();
+                            double existoppbal = 0;
+                            double opp_balance = 0;
+                            double.TryParse(dr["opp_balance"].ToString(), out opp_balance);
+                            existoppbal = opp_balance - totsalevalue;
+
+                            double existclovalue = 0;
+                            double clo_balance = 0;
+                            double.TryParse(dr["clo_balance"].ToString(), out clo_balance);
+                            existclovalue = clo_balance - totsalevalue;
+
+                            cmd = new MySqlCommand("UPDATE agent_bal_trans SET opp_balance=@oppbal, clo_balance=@closing where sno=@refno");
+                            cmd.Parameters.AddWithValue("@oppbal", existoppbal);
+                            cmd.Parameters.AddWithValue("@refno", csno);
+                            cmd.Parameters.AddWithValue("@closing", existclovalue);
+                            vdbmngr.Update(cmd);
+                        }
+                    }
+                }
+                else if (diff > 0)
                 {
                     cmd = new MySqlCommand("UPDATE agent_bal_trans set salesvalue=salesvalue-@Amount, clo_balance=clo_balance-@Amount  where agentid=@BranchId AND inddate between @d1 and @d2");
                     cmd.Parameters.AddWithValue("@d1", GetLowDate(sindentdate));
