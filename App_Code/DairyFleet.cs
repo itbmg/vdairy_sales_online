@@ -27031,7 +27031,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 /////end commented by akbar
                                 //// begin added by akbar
                                
-                                cmd = new MySqlCommand("SELECT MAX(sno) as sno FROM agent_bal_trans WHERE agentid=@agentid and inddate between @d1 and @d2");
+                                cmd = new MySqlCommand("SELECT * FROM agent_bal_trans WHERE agentid=@agentid and inddate between @d1 and @d2");
                                 cmd.Parameters.AddWithValue("@agentid", BranchID);
                                 cmd.Parameters.AddWithValue("@d1", GetLowDate(pdate).AddDays(-1));
                                 cmd.Parameters.AddWithValue("@d2", GetHighDate(pdate).AddDays(-1));
