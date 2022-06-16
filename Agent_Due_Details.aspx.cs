@@ -135,7 +135,7 @@ public partial class Agent_Due_Details : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
             DataTable dtagenttrans = vdm.SelectQuery(cmd).Tables[0];
 
-            cmd = new MySqlCommand("SELECT sum(AmountPaid) as AmountPaid,Branchid, PaymentType FROM collections WHERE PaidDate between @d1 and @d2 AND PaymentType <> 'Cash' group by Branchid, PaymentType");
+            cmd = new MySqlCommand("SELECT sum(AmountPaid) as AmountPaid,Branchid, PaymentType FROM collections WHERE PaidDate between @d1 and @d2  group by Branchid, PaymentType");
             cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
             cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate));
             DataTable dtcollections = vdm.SelectQuery(cmd).Tables[0];
@@ -371,8 +371,20 @@ public partial class Agent_Due_Details : System.Web.UI.Page
                             {
                                 double otheramount = banktransfervalue + jvvalue;
                                 paidamount = paidamount - otheramount;
+                                foreach (DataRow drcollections1 in dtcollections.Select("Branchid='" + dr["BranchID"].ToString() + "'"))
+                                {
+                                    string PaymentType = drcollections1["PaymentType"].ToString();
+                                    if(PaymentType == "Cash") 
+                                    {
+                                        double cashamt = 0;
+                                        double.TryParse(drcollections1["AmountPaid"].ToString(), out cashamt);
+                                       double tota = cashamt + paidamount;
+                                        paidamount = tota - paidamount;
+
+                                    }
+                                }
                             }
-                            if(banktransfervalue == 0)
+                            if (banktransfervalue == 0)
                             {
                                 newrow["Bank Transfer"] = banktransfervalue;
                             }

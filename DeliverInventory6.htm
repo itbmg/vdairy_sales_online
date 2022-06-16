@@ -1,0 +1,117 @@
+﻿   <div style="width: 100%; float: left; border: 1px solid #d6d6d6; border-radius: 5px 5px 5px 5px;
+            background-color: #FFFFEC">
+            <table align="left" cellpadding="0" cellspacing="0" style="float: left; width: 100%;"
+                id="tableInventory" class="mainText2" border="1">
+                <thead>
+                    <tr>
+                        <td style="width: 15%; height: 20px; color: #2f3293; font-size: 18px; font-weight: bold;
+                            text-align: center;">
+                            <b>SNo</b>
+                            <br />
+                        </td>
+                        <td style="width: 15%; text-align: center; height: 20px; font-size: 18px; font-weight: bold;
+                            color: #2f3293;">
+                            <b>Inventory Name</b>
+                            <br />
+                        </td>
+                        <td style="width: 10%; text-align: center; height: 20px; font-size: 18px; font-weight: bold;
+                            color: #2f3293; padding: 0px 0px 0px 2%;">
+                            <b>Qty</b>
+                            <br />
+                        </td>
+                        <td style="width: 10%; text-align: center; height: 20px; font-size: 18px; font-weight: bold;
+                            color: #2f3293; padding: 0px 0px 0px 2%;">
+                            <b>Given Qty</b>
+                            <br />
+                        </td>
+                          <td style="width: 10%; text-align: center; height: 20px; font-size: 18px; font-weight: bold;
+                            color: #2f3293; padding: 0px 0px 0px 2%;">
+                            <b>Balanced Qty</b>
+                            <br />
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+            {#foreach $T as data}
+            <tr class="tblrowcolor">
+                <td style="width: 15%; height: 40px; vertical-align: middle; font-size: 16px; font-weight: 500;
+                    text-align: center; padding: 0px 0px 0px 3px">
+                    <span id="txtSno" style="font-size: 14px; color: Red;font-weight:bold;"><b>{ $T.data.Sno }</b></span>
+                </td>
+                <td style="width: 15%; height: 40px; vertical-align: middle; font-size: 16px; text-align: center;
+                    color: Gray;">
+                    <span id="txtInvName" style="font-size: 16px; color: Red;font-weight:bold; " class="InventoryClass"><b>{ $T.data.InventoryName }</b></span>
+                     <input type="hidden" id="hdnInvSno" value="{ $T.data.InventorySno }"/>
+                </td>
+                <td style="width: 19%; height: 40px; font-size: 16px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                     <span id="txtInvqty" style="font-size: 16px; color: Red;font-weight:bold; " class="InvQtyClass"><b>{ $T.data.Qty }</b></span>
+                </td>
+                <td style="width: 20%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <input type="number" id="txtGivenQty" value="{ $T.data.ToadayQty }" class="GivenQtyclass" onkeyup="GivenQtyChange(this);" onkeypress="return numberOnlyExample(event);"   style="width:100%;height:34px;border:1px solid gray; border-radius:6px 6px 6px 6px;font-size:16px;" placeholder="Enter Qty" />
+                </td>
+                 <td style="width: 20%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center"> 
+                     <span id="txtbalanceQty" style="font-size: 16px; color: Red;font-weight:bold;" class="ClassbalanceQty"></span>  
+                </td>
+                </tr>
+                  {#/for}
+                  <tr>
+             <td style="width: 20%; height: 30px; vertical-align: top; font-size: 16px; font-weight: 500;
+                    text-align: center; padding: 0px 0px 0px 3px">
+                 <img src="Images/add.png" onclick="AddInventory();" style="cursor:pointer;" /> 
+                </td>
+                 <td style="width: 20%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
+                    color: Gray;">
+                </td>
+              
+                <td style="width: 20%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                </td> 
+                <td style="width: 20%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
+                    color: Gray;">
+                    </td>
+                <td style="width: 20%; font-size: 11px; height: 30px; color: Gray; vertical-align: middle;
+                    text-align: center;" align="center">
+                </td>
+                <td style="width: 20%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
+                    color: Gray;">
+                </td>
+                </tbody>
+            </table>
+        </div>
+         <div id="divMainAddNewRow" class="pickupclass" style="text-align: center; height: 100%;
+        width: 100%; position: absolute; display: none; left: 0%; top: 0%; z-index: 99999;
+        background: rgba(192, 192, 192, 0.7);">
+        <div id="divAddNewRow" style="border: 5px solid #A0A0A0; position: absolute; top: 30%;
+            background-color: White; left: 10%; right: 10%; width: 80%; height: 40%; -webkit-box-shadow: 1px 1px 10px rgba(50, 50, 50, 0.65);
+            -moz-box-shadow: 1px 1px 10px rgba(50, 50, 50, 0.65); box-shadow: 1px 1px 10px rgba(50, 50, 50, 0.65);
+            border-radius: 10px 10px 10px 10px;">
+            <table align="left" cellpadding="0" cellspacing="0" style="float: left; width: 100%;"
+                id="tableCollectionDetails" class="mainText2" border="1">
+               
+                <tr>
+                    <td style="width: 20%;float:left;">
+                        <label>
+                            Inventory Name</label>
+                    </td>
+                    <td style="width: 79%;float:left;">
+                        <select id="cmb_Inventory" class="ddlsize">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <input type="button" value="ADD" id="btnAdd" onclick="btnInventoryAddClick();" class="ContinueButton" style="width:100%;height:40px;font-size:16px;"/>
+                    </td>
+                </tr>
+            </table>
+    </div>
+  <div id="divclose" style="width: 35px; top: 24.5%; right: 9.5%; position: absolute;
+            z-index: 99999; cursor: pointer;">
+            <img src="Images/Odclose.png" alt="close" onclick="OrdersCloseClick();"/>
+        </div>
+</div>

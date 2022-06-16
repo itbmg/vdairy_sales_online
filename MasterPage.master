@@ -689,21 +689,22 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                               
                                 <li id="libranch"><a href="PlantManage.aspx">Agent/Branch Master</a></li>
                                 <li id="liroutemanage"><a href="Routes.aspx">Route Management</a></li>
+                                <li id="lidispatch"><a href="DispatchManagement.aspx">Dispatch Master</a></li>
+                                 <li id="li4"><a href="VehicleMaster.aspx">Vehicle Master</a></li>
+                                <li id="liemployee"><a href="EmployeeManagement.aspx">Employee Master</a></li>
                                <%-- <li id="liBranchWiseRatesManagement" style="display: none;"><a href="BranchWiseRatesManagement.aspx">
                                     BranchWise Rates Management</a></li>--%>
                              <%--   <li id="liRatesManage1"><a href="PriceListForm.aspx">Rate Sheet Upload</a></li>--%>
                               <%--  <li id="li170"><a href="AvgPriceSummary.aspx">AvgRateDetails</a></li>--%>
                                 <li id="liagentRatesManage"><a href="Agent_wise_rates.aspx">Agent Rate Sheets </a></li>
                                 <li id="liRatesManage"><a href="RatesManage.aspx">Rate Sheet Upload</a></li>
-                                <li id="liemployee"><a href="EmployeeManagement.aspx">Employee Master</a></li>
-                                <li id="lidispatch"><a href="DispatchManagement.aspx">Dispatch Master</a></li>
                                 <li id="li31"><a href="HeadOfAcMaster.aspx">Head Of Accounts</a></li>
                                
-                                <li id="Helpermaster"><a href="Helpermaster.aspx">Helper Master</a></li>
-                                <li id="liproductclubbing"><a href="ProductClubbing.aspx">Product Clubbing</a></li>
-                                <li id="liincentivestructure" style="display: none;"><a href="incentivestructure.aspx">
+                                <li id="Helpermaster" style="display: none;"><a href="Helpermaster.aspx">Helper Master</a></li>
+                                <li id="liproductclubbing" style="display: none;"><a href="ProductClubbing.aspx">Product Clubbing</a></li>
+                                <li id="liincentivestructure" style="display: none;" ><a href="incentivestructure.aspx">
                                     Incentive Structure</a></li>
-                                <li id="li178" class="more" style="min-height: 25px;"><a href="#">Incentive Master</a>
+                                <li id="li178" class="more" style="min-height: 25px;display: none;"><a href="#">Incentive Master</a>
                                     <div class="drop3">
                                         <ul id="ul23">
                                             <li id="li179"><a href="generalincentivestructure.aspx">General Incentive Management</a></li>
@@ -713,7 +714,7 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                     </div>
                                 </li>
 
-                                <li id="li55" class="more" style="min-height: 25px;"><a href="#">Offers Master</a>
+                                <li id="li55" class="more" style="min-height: 25px;display: none;"><a href="#">Offers Master</a>
                                     <div class="drop3">
                                         <ul id="ul10">
                                             <li id="li57"><a href="OffersManagement.aspx">Offers Management</a></li>
@@ -727,7 +728,6 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                <%-- <li id="liagentamounts" style="display: none;"><a href="AgentAmount.aspx">Agent Amounts</a></li>
                                 <li id="liagentinventory" style="display: none;"><a href="agentinventory.aspx">Agent
                                     Inventory</a></li>--%>
-                                 <li id="li4"><a href="VehicleMaster.aspx">Vehicle Master</a></li>
                                   <li id="lisales"><a href="SalesTypeManagement.aspx">Sales Type Master</a></li>
                                  <li id="liAddress"><a href="AddressMaster.aspx">Mini Master</a></li>
                                 <li id="liinventory"><a href="IventoryManagement.aspx">Inventory Master</a></li>
@@ -844,7 +844,7 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                                 <li id="licollection"><a href="Delivery_Collection_Report.aspx">Net Sales Report</a></li>
                                                 <li id="lidcvssale"><a href="dcvssale.aspx">Branch Day Wise Qty Summary</a></li>
                                                 <li id="li23"><a href="ClosingStock.aspx">Closing Stock</a></li>
-                                                <li id="lioffereport"><a href="OfferIndent.aspx">Offer Indent Delivery</a></li>
+                                                <%--<li id="lioffereport"><a href="OfferIndent.aspx">Offer Indent Delivery</a></li>--%>
                                                 <li id="li12"><a href="Routewisesaleqty.aspx">Route Wise Sale Qty</a></li>
                                                 <li id="lisalesofficecollection"><a href="SalesOfficeCollection.aspx">SalesOffice Collections</a></li>
                                                 <li id="liroutewisecollections"><a href="RouteWiseCollections.aspx">Route Wise Collections</a></li>
@@ -853,34 +853,34 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                                 <li id="liRouteWiseActivity"><a href="RouteWiseActivity.aspx">Route Wise Activity</a></li>
                                                 <li id="liSalesOfficewiseActivity"><a href="SalesOfficeWiseActivity.aspx">SalesOffice
                                                     Wise Activity</a></li>
-                                                <li id="li1"><a href="RouteWiseClassification.aspx">Route Wise Classification Report</a></li>
-                                                <li id="linewagentreport"><a href="NewAgentReport.aspx">New Agent Report</a></li>
+                                                <%--<li id="li1"><a href="RouteWiseClassification.aspx">Route Wise Classification Report</a></li>
+                                                <li id="linewagentreport"><a href="NewAgentReport.aspx">New Agent Report</a></li>--%>
                                               <%--  <li id="licompassinvoice"><a href="AgentInvoiceReport.aspx">CompassInvoiceReport</a></li>--%>
                                             </ul>
                                         </div>
                                         <div style="width: 50%; float: left; border: 0;">
                                             <ul id="ul7" style="border: 0px solid #B9BBBD;">
                                                 <li id="li15"><a href="BranchWiseDispatch.aspx">Branch Wise Despatch</a></li>
-                                                <li id="li14"><a href="NetSalesBranchWise.aspx">Net Sales Branch Wise</a></li>
+                                                <li id="li14" style="display: none;"><a href="NetSalesBranchWise.aspx">Net Sales Branch Wise</a></li>
                                                 <li id="li38"><a href="DaywiseMilkSales.aspx">Day Wise Milk And Curd Sales</a></li>
                                                 <li id="liAgentMonthlyProducts"><a href="AgentMonthlyProducts.aspx">Agent Monthly Transaction</a></li>
-                                                <li id="liSalesOfficeStock"><a href="SalesOfficeStock.aspx">Sales Office Stock</a></li>
-                                                <li id="HelperCharges"><a href="HelperCharges.aspx">Helper Charges</a></li>
-                                                <li id="liduereport"><a href="AgentDueReport.aspx">Due Report</a></li>
+                                                <li id="liSalesOfficeStock" style="display: none;"><a href="SalesOfficeStock.aspx">Sales Office Stock</a></li>
+                                                <li id="HelperCharges" style="display: none;"><a href="HelperCharges.aspx">Helper Charges</a></li>
+                                                <li id="liduereport" style="display: none;"><a href="AgentDueReport.aspx">Due Report</a></li>
                                                 <li id="liagentwisedue"><a href="AgentwiseDueReport.aspx">Agent Wise Due</a></li>
                                                 <li id="liroutewisedue"><a href="RouteWiseDue.aspx">Route Wise Due</a></li>
                                                 <li id="liagentinvoice"><a href="Agent_invoice.aspx">Agent Invoice</a></li>
                                                 <li id="li26"><a href="indent_invoice.aspx">Indent Invoice</a></li>
-                                                <li id="li95"><a href="New_agent_invoice.aspx">New Agent Invoice</a></li>
+                                                <li id="li95" style="display: none;"><a href="New_agent_invoice.aspx">New Agent Invoice</a></li>
                                                 <li id="litimingreport"><a href="PlantConsolidateSales.aspx">PlantWiseSaleSummary</a></li>
-                                                <%--<li id="litimingreport"><a href="TimingReport.aspx">Timing Report</a></li>--%>
-                                                <%-- <li id="liTimeline"><a href="TimeLine.aspx">Time Line</a></li>--%>
-                                              <%--  <li id="liagentdelivery"><a href="AgentDelivery.aspx">Agent Delivery</a></li>--%>
-                                                <li id="li66"><a href="RouteVerification.aspx">Trip Sheet</a></li>
+                                                <li id="litimingreport" style="display: none;"><a href="TimingReport.aspx">Timing Report</a></li>
+                                                 <li id="liTimeline" style="display: none;"><a href="TimeLine.aspx">Time Line</a></li>
+                                                <li id="liagentdelivery" style="display: none;"><a href="AgentDelivery.aspx">Agent Delivery</a></li>
+                                                <li id="li66" style="display: none;"><a href="RouteVerification.aspx">Trip Sheet</a></li>
                                                 <li id="liagentack" style="display: none;"><a href="AgentAcknoledgement.aspx">Agent
                                                     Acknoledgement</a></li>
-                                                <li id="li98"><a href="StoppedAgentReport.aspx">Stopped Agent Report</a></li>
-                                                <li id="li78"><a href="SalesRepresentative.aspx">SR Wise Report</a></li>
+                                                <li id="li98" style="display: none;"><a href="StoppedAgentReport.aspx">Stopped Agent Report</a></li>
+                                                <li id="li78" style="display: none;"><a href="SalesRepresentative.aspx">SR Wise Report</a></li>
                                             </ul>
                                         </div>
                                     </div>
