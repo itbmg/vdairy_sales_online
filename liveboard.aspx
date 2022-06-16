@@ -2830,7 +2830,7 @@
                                 <tr>
                                     <td style="width: 130px;">
                                         <asp:DropDownList ID="ddltype" runat="server" CssClass="form-control" onchange="bindplantdetails()">
-                                            <asp:ListItem Value="Vyshnavi Group" Text="BMG Group">BMG Group</asp:ListItem>
+                                            <asp:ListItem Value="Vyshnavi Group" Text="Vyshnavi Group">Vyshnavi Group</asp:ListItem>
                                         </asp:DropDownList>
                                     </td>
                                     <td style="width: 2%;">
