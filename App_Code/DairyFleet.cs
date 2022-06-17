@@ -1084,15 +1084,15 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     Getinsentivrdetails(context);
                     break;
 
-                case "get_sms_details":
-                    get_sms_details(context);
-                    break;
-                case "get_smsemp_details":
-                    get_smsemp_details(context);
-                    break;
-                case "get_smstype_details":
-                    get_smstype_details(context);
-                    break;
+                //case "get_sms_details":
+                //    get_sms_details(context);
+                //    break;
+                //case "get_smsemp_details":
+                //    get_smsemp_details(context);
+                //    break;
+                //case "get_smstype_details":
+                //    get_smstype_details(context);
+                //    break;
                 case "getincentivependingdetails":
                     getincentivependingdetails(context);
                     break;
@@ -1105,9 +1105,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "GetAgetntinformationagentwise":
                     GetAgetntinformationagentwise(context);
                     break;
-                case "get_smstransmsgtype_details":
-                    get_smstransmsgtype_details(context);
-                    break;
+                //case "get_smstransmsgtype_details":
+                //    get_smstransmsgtype_details(context);
+                //    break;
                 case "btnEditCashbookSaveClick":
                     btnEditCashbookSaveClick(context);
                     break;
@@ -1183,10 +1183,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         {
                             btnRoutesSaveClick(context);
                         }
-                        if (obj.operation == "btnSavesmsClick")
-                        {
-                            btnSavesmsClick(context);
-                        }
+                        //if (obj.operation == "btnSavesmsClick")
+                        //{
+                        //    btnSavesmsClick(context);
+                        //}
                         if (obj.operation == "save_Permissions")
                         {
                             save_Permissions(context);
@@ -1763,18 +1763,18 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     //////   data.Close();
                     //////   reader.Close();
 
-                    string message = " " + phonenumber + " Dear " + BranchName + " Your Collection" + TotPaidAmount + " for today Date " + Date + " if any changes please call ";
-                    // string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                    cmd = new MySqlCommand("insert into smsinfo (agentid,branchid, msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                    cmd.Parameters.AddWithValue("@agentid", Agentid);
-                    cmd.Parameters.AddWithValue("@branchid", context.Session["CsoNo"].ToString());
-                    //cmd.Parameters.AddWithValue("@mainbranch", Session["SuperBranch"].ToString());
-                    cmd.Parameters.AddWithValue("@msg", message);
-                    cmd.Parameters.AddWithValue("@mobileno", phonenumber);
-                    cmd.Parameters.AddWithValue("@msgtype", "OnlineCollections");
-                    cmd.Parameters.AddWithValue("@branchname", BranchName);
-                    cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                    vdbmngr.insert(cmd);
+                    //string message = " " + phonenumber + " Dear " + BranchName + " Your Collection" + TotPaidAmount + " for today Date " + Date + " if any changes please call ";
+                    //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
+                    //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid, msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                    //cmd.Parameters.AddWithValue("@agentid", Agentid);
+                    //cmd.Parameters.AddWithValue("@branchid", context.Session["CsoNo"].ToString());
+                    ////cmd.Parameters.AddWithValue("@mainbranch", Session["SuperBranch"].ToString());
+                    //cmd.Parameters.AddWithValue("@msg", message);
+                    //cmd.Parameters.AddWithValue("@mobileno", phonenumber);
+                    //cmd.Parameters.AddWithValue("@msgtype", "OnlineCollections");
+                    //cmd.Parameters.AddWithValue("@branchname", BranchName);
+                    //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                    //vdbmngr.insert(cmd);
                 }
             }
             List<string> msgStringlist = new List<string>();
@@ -3576,18 +3576,18 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 reader.Close();
                             }
 
-                            string message = "CashAgents:" + text + "";
-                            // string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                            cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                            cmd.Parameters.AddWithValue("@agentid", dtsalestype.Rows[0]["empid"].ToString());
-                            cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                            cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                            cmd.Parameters.AddWithValue("@msg", message);
-                            cmd.Parameters.AddWithValue("@mobileno", phonenumber);
-                            cmd.Parameters.AddWithValue("@msgtype", "RouteWiseClassification");
-                            cmd.Parameters.AddWithValue("@branchname", dtsalestype.Rows[0]["EmpName"].ToString());
-                            cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                            vdbmngr.insert(cmd);
+                            //string message = "CashAgents:" + text + "";
+                            //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
+                            //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                            //cmd.Parameters.AddWithValue("@agentid", dtsalestype.Rows[0]["empid"].ToString());
+                            //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
+                            //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                            //cmd.Parameters.AddWithValue("@msg", message);
+                            //cmd.Parameters.AddWithValue("@mobileno", phonenumber);
+                            //cmd.Parameters.AddWithValue("@msgtype", "RouteWiseClassification");
+                            //cmd.Parameters.AddWithValue("@branchname", dtsalestype.Rows[0]["EmpName"].ToString());
+                            //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                            //vdbmngr.insert(cmd);
                         }
                         catch
                         {
@@ -3653,18 +3653,18 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     reader.Close();
                                 }
 
-                                string message = "CashAgents:" + text + "";
-                                // string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                                cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                                cmd.Parameters.AddWithValue("@agentid", dtsalestype.Rows[0]["empid"].ToString());
-                                cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                                cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                                cmd.Parameters.AddWithValue("@msg", message);
-                                cmd.Parameters.AddWithValue("@mobileno", phonenumber);
-                                cmd.Parameters.AddWithValue("@msgtype", "RouteWiseClassification");
-                                cmd.Parameters.AddWithValue("@branchname", dtsalestype.Rows[0]["EmpName"].ToString());
-                                cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                vdbmngr.insert(cmd);
+                                //string message = "CashAgents:" + text + "";
+                                //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
+                                //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                                //cmd.Parameters.AddWithValue("@agentid", dtsalestype.Rows[0]["empid"].ToString());
+                                //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
+                                //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                                //cmd.Parameters.AddWithValue("@msg", message);
+                                //cmd.Parameters.AddWithValue("@mobileno", phonenumber);
+                                //cmd.Parameters.AddWithValue("@msgtype", "RouteWiseClassification");
+                                //cmd.Parameters.AddWithValue("@branchname", dtsalestype.Rows[0]["EmpName"].ToString());
+                                //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                                //vdbmngr.insert(cmd);
                             }
                             catch
                             {
@@ -26007,16 +26007,16 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         data.Close();
                                         reader.Close();
                                     }
-                                    cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,agentname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@agentname,@doe)");
-                                    cmd.Parameters.AddWithValue("@agentid", BranchID);
-                                    cmd.Parameters.AddWithValue("@branchid", soid);
-                                    cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                                    cmd.Parameters.AddWithValue("@msg", message);
-                                    cmd.Parameters.AddWithValue("@mobileno", phonenumber);
-                                    cmd.Parameters.AddWithValue("@msgtype", "Collection");
-                                    cmd.Parameters.AddWithValue("@agentname", BranchName);
-                                    cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                    vdbmngr.insert(cmd);
+                                    //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,agentname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@agentname,@doe)");
+                                    //cmd.Parameters.AddWithValue("@agentid", BranchID);
+                                    //cmd.Parameters.AddWithValue("@branchid", soid);
+                                    //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                                    //cmd.Parameters.AddWithValue("@msg", message);
+                                    //cmd.Parameters.AddWithValue("@mobileno", phonenumber);
+                                    //cmd.Parameters.AddWithValue("@msgtype", "Collection");
+                                    //cmd.Parameters.AddWithValue("@agentname", BranchName);
+                                    //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                                    //vdbmngr.insert(cmd);
                                     //}
                                 }
                                 else
@@ -26047,17 +26047,17 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                                 data.Close();
                                                 reader.Close();
                                             }
-                                            string message = "Dear" + BranchName + "Your Amount Collected for today ReceiptNo" + CashReceiptNo + "Date" + Date + "Amount is =" + PaidAmount + "";
-                                            cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                                            cmd.Parameters.AddWithValue("@agentid", BranchID);
-                                            cmd.Parameters.AddWithValue("@branchid", soid);
-                                            cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                                            cmd.Parameters.AddWithValue("@msg", message);
-                                            cmd.Parameters.AddWithValue("@mobileno", phonenumber);
-                                            cmd.Parameters.AddWithValue("@msgtype", "Collection");
-                                            cmd.Parameters.AddWithValue("@branchname", BranchName);
-                                            cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                            vdbmngr.insert(cmd);
+                                            //string message = "Dear" + BranchName + "Your Amount Collected for today ReceiptNo" + CashReceiptNo + "Date" + Date + "Amount is =" + PaidAmount + "";
+                                            //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                                            //cmd.Parameters.AddWithValue("@agentid", BranchID);
+                                            //cmd.Parameters.AddWithValue("@branchid", soid);
+                                            //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                                            //cmd.Parameters.AddWithValue("@msg", message);
+                                            //cmd.Parameters.AddWithValue("@mobileno", phonenumber);
+                                            //cmd.Parameters.AddWithValue("@msgtype", "Collection");
+                                            //cmd.Parameters.AddWithValue("@branchname", BranchName);
+                                            //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                                            //vdbmngr.insert(cmd);
                                         }
                                         catch
                                         {
@@ -26921,16 +26921,16 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             data.Close();
                                             reader.Close();
                                         }
-                                        cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,agentname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@agentname,@doe)");
-                                        cmd.Parameters.AddWithValue("@agentid", BranchID);
-                                        cmd.Parameters.AddWithValue("@branchid", soid);
-                                        cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                                        cmd.Parameters.AddWithValue("@msg", message);
-                                        cmd.Parameters.AddWithValue("@mobileno", phonenumber);
-                                        cmd.Parameters.AddWithValue("@msgtype", "Collection");
-                                        cmd.Parameters.AddWithValue("@agentname", BranchName);
-                                        cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                        vdbmngr.insert(cmd);
+                                        //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,agentname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@agentname,@doe)");
+                                        //cmd.Parameters.AddWithValue("@agentid", BranchID);
+                                        //cmd.Parameters.AddWithValue("@branchid", soid);
+                                        //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                                        //cmd.Parameters.AddWithValue("@msg", message);
+                                        //cmd.Parameters.AddWithValue("@mobileno", phonenumber);
+                                        //cmd.Parameters.AddWithValue("@msgtype", "Collection");
+                                        //cmd.Parameters.AddWithValue("@agentname", BranchName);
+                                        //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                                        //vdbmngr.insert(cmd);
                                         //}
                                     }
                                     else
@@ -26961,17 +26961,17 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                                 data.Close();
                                                 reader.Close();
                                             }
-                                            string message = "Dear" + BranchName + "Your Amount Collected for today ReceiptNo" + CashReceiptNo + "Date" + Date + "Amount is =" + PaidAmount + "";
-                                            cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                                            cmd.Parameters.AddWithValue("@agentid", BranchID);
-                                            cmd.Parameters.AddWithValue("@branchid", soid);
-                                            cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                                            cmd.Parameters.AddWithValue("@msg", message);
-                                            cmd.Parameters.AddWithValue("@mobileno", phonenumber);
-                                            cmd.Parameters.AddWithValue("@msgtype", "Collection");
-                                            cmd.Parameters.AddWithValue("@branchname", BranchName);
-                                            cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                            vdbmngr.insert(cmd);
+                                            //string message = "Dear" + BranchName + "Your Amount Collected for today ReceiptNo" + CashReceiptNo + "Date" + Date + "Amount is =" + PaidAmount + "";
+                                            //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                                            //cmd.Parameters.AddWithValue("@agentid", BranchID);
+                                            //cmd.Parameters.AddWithValue("@branchid", soid);
+                                            //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                                            //cmd.Parameters.AddWithValue("@msg", message);
+                                            //cmd.Parameters.AddWithValue("@mobileno", phonenumber);
+                                            //cmd.Parameters.AddWithValue("@msgtype", "Collection");
+                                            //cmd.Parameters.AddWithValue("@branchname", BranchName);
+                                            //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                                            //vdbmngr.insert(cmd);
                                         }
                                         catch
                                         {
@@ -41852,18 +41852,18 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             reader.Close();
                                         }
 
-                                        string message = "Dear " + EmpName + " Your Amount Collected for today ReceiptNo " + CashReceiptNo + " Date " + ServerDateCurrentdate + " Amount is ->" + recievedamt + "";
-                                        // string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                                        cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                                        cmd.Parameters.AddWithValue("@agentid", EmpName);
-                                        cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                                        cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                                        cmd.Parameters.AddWithValue("@msg", message);
-                                        cmd.Parameters.AddWithValue("@mobileno", phonenumber);
-                                        cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
-                                        cmd.Parameters.AddWithValue("@branchname", empid);
-                                        cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                        vdbmngr.insert(cmd);
+                                        //string message = "Dear " + EmpName + " Your Amount Collected for today ReceiptNo " + CashReceiptNo + " Date " + ServerDateCurrentdate + " Amount is ->" + recievedamt + "";
+                                        //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
+                                        //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                                        //cmd.Parameters.AddWithValue("@agentid", EmpName);
+                                        //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
+                                        //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                                        //cmd.Parameters.AddWithValue("@msg", message);
+                                        //cmd.Parameters.AddWithValue("@mobileno", phonenumber);
+                                        //cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
+                                        //cmd.Parameters.AddWithValue("@branchname", empid);
+                                        //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                                        //vdbmngr.insert(cmd);
                                     }
                                     catch
                                     {
@@ -42036,18 +42036,18 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
 
 
-                                    string message = "Dear " + EmpName + " Your Amount Collected for today ReceiptNo  " + CashReceiptNo + " Date " + ServerDateCurrentdate + " Amount is ->" + recievedamt + "";
-                                    // string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                                    cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                                    cmd.Parameters.AddWithValue("@agentid", EmpName);
-                                    cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                                    cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                                    cmd.Parameters.AddWithValue("@msg", message);
-                                    cmd.Parameters.AddWithValue("@mobileno", phonenumber);
-                                    cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
-                                    cmd.Parameters.AddWithValue("@branchname", empid);
-                                    cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                    vdbmngr.insert(cmd);
+                                    //string message = "Dear " + EmpName + " Your Amount Collected for today ReceiptNo  " + CashReceiptNo + " Date " + ServerDateCurrentdate + " Amount is ->" + recievedamt + "";
+                                    //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
+                                    //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                                    //cmd.Parameters.AddWithValue("@agentid", EmpName);
+                                    //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
+                                    //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                                    //cmd.Parameters.AddWithValue("@msg", message);
+                                    //cmd.Parameters.AddWithValue("@mobileno", phonenumber);
+                                    //cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
+                                    //cmd.Parameters.AddWithValue("@branchname", empid);
+                                    //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                                    //vdbmngr.insert(cmd);
                                 }
                                 catch
                                 {
@@ -43198,17 +43198,17 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         data.Close();
                                         reader.Close();
                                     }
-                                    string message = "" + ProductName + "";
-                                    cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                                    cmd.Parameters.AddWithValue("@agentid", BranchID);
-                                    cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                                    cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                                    cmd.Parameters.AddWithValue("@msg", message);
-                                    cmd.Parameters.AddWithValue("@mobileno", phonenumber);
-                                    cmd.Parameters.AddWithValue("@msgtype", "Dispatch");
-                                    cmd.Parameters.AddWithValue("@branchname", DispatchName);
-                                    cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                    vdbmngr.insert(cmd);
+                                    //string message = "" + ProductName + "";
+                                    //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                                    //cmd.Parameters.AddWithValue("@agentid", BranchID);
+                                    //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
+                                    //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                                    //cmd.Parameters.AddWithValue("@msg", message);
+                                    //cmd.Parameters.AddWithValue("@mobileno", phonenumber);
+                                    //cmd.Parameters.AddWithValue("@msgtype", "Dispatch");
+                                    //cmd.Parameters.AddWithValue("@branchname", DispatchName);
+                                    //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                                    //vdbmngr.insert(cmd);
                                 }
                                 catch
                                 {
@@ -43254,18 +43254,18 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
 
 
-                                        string message = "" + words[0] + "Despatch Completed for :" + dttime + "With\r\n" + "DCNo:" + tripid + "\r\n" + DetailProductName + "TotalQty =" + TotalQty + "";
-                                        string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                                        cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                                        cmd.Parameters.AddWithValue("@agentid", BranchID);
-                                        cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                                        cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                                        cmd.Parameters.AddWithValue("@msg", message);
-                                        cmd.Parameters.AddWithValue("@mobileno", phonenumber);
-                                        cmd.Parameters.AddWithValue("@msgtype", "Dispatch");
-                                        cmd.Parameters.AddWithValue("@branchname", DispatchName);
-                                        cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                        vdbmngr.insert(cmd);
+                                        //string message = "" + words[0] + "Despatch Completed for :" + dttime + "With\r\n" + "DCNo:" + tripid + "\r\n" + DetailProductName + "TotalQty =" + TotalQty + "";
+                                        //string text = message.Replace("\n", "\n" + System.Environment.NewLine);
+                                        //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                                        //cmd.Parameters.AddWithValue("@agentid", BranchID);
+                                        //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
+                                        //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                                        //cmd.Parameters.AddWithValue("@msg", message);
+                                        //cmd.Parameters.AddWithValue("@mobileno", phonenumber);
+                                        //cmd.Parameters.AddWithValue("@msgtype", "Dispatch");
+                                        //cmd.Parameters.AddWithValue("@branchname", DispatchName);
+                                        //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                                        //vdbmngr.insert(cmd);
                                     }
                                     catch
                                     {
@@ -47387,20 +47387,20 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
                 }
 
-                string content1 = "Dear " + employeename + " Your Userid " + loginusername + ", password is " + loginpassword + ", in vyshnavi.in ,please Change Your Userid and PassWord";
+                //string content1 = "Dear " + employeename + " Your Userid " + loginusername + ", password is " + loginpassword + ", in vyshnavi.in ,please Change Your Userid and PassWord";
 
-                string message = "" + mobileno + " " + content1 + "";
-                // string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                cmd.Parameters.AddWithValue("@agentid", empid);
-                cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                cmd.Parameters.AddWithValue("@msg", message);
-                cmd.Parameters.AddWithValue("@mobileno", mobileno);
-                cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
-                cmd.Parameters.AddWithValue("@branchname", employeename);
-                cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                vdbmngr.insert(cmd);
+                //string message = "" + mobileno + " " + content1 + "";
+                //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
+                //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                //cmd.Parameters.AddWithValue("@agentid", empid);
+                //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
+                //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                //cmd.Parameters.AddWithValue("@msg", message);
+                //cmd.Parameters.AddWithValue("@mobileno", mobileno);
+                //cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
+                //cmd.Parameters.AddWithValue("@branchname", employeename);
+                //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                //vdbmngr.insert(cmd);
             }
         }
         catch (Exception ex)
@@ -48296,18 +48296,18 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             reader.Close();
                         }
 
-                        string message = "" + MobNo + " " + ProductName + "TotalQty =" + TotalQty + "(" + diffproduct + ")" + "";
-                        // string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                        cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                        cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
-                        cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                        cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                        cmd.Parameters.AddWithValue("@msg", message);
-                        cmd.Parameters.AddWithValue("@mobileno", MobNo);
-                        cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
-                        cmd.Parameters.AddWithValue("@branchname", DispatchName);
-                        cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                        vdbmngr.insert(cmd);
+                        //string message = "" + MobNo + " " + ProductName + "TotalQty =" + TotalQty + "(" + diffproduct + ")" + "";
+                        //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
+                        //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                        //cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
+                        //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
+                        //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                        //cmd.Parameters.AddWithValue("@msg", message);
+                        //cmd.Parameters.AddWithValue("@mobileno", MobNo);
+                        //cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
+                        //cmd.Parameters.AddWithValue("@branchname", DispatchName);
+                        //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                        //vdbmngr.insert(cmd);
                     }
                     else
                     {
@@ -48347,19 +48347,19 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         reader.Close();
                                     }
 
-                                    string message = "" + MobNo + " " + ProductName + " TotalQty =" + TotalQty + "(" + diffproduct + ")" + " ";
+                                    //string message = "" + MobNo + " " + ProductName + " TotalQty =" + TotalQty + "(" + diffproduct + ")" + " ";
 
-                                    // string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                                    cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                                    cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
-                                    cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                                    cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                                    cmd.Parameters.AddWithValue("@msg", message);
-                                    cmd.Parameters.AddWithValue("@mobileno", MobNo);
-                                    cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
-                                    cmd.Parameters.AddWithValue("@branchname", DispatchName);
-                                    cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                    vdbmngr.insert(cmd);
+                                    //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
+                                    //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                                    //cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
+                                    //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
+                                    //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                                    //cmd.Parameters.AddWithValue("@msg", message);
+                                    //cmd.Parameters.AddWithValue("@mobileno", MobNo);
+                                    //cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
+                                    //cmd.Parameters.AddWithValue("@branchname", DispatchName);
+                                    //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                                    //vdbmngr.insert(cmd);
                                 }
                             }
                         }
@@ -48447,18 +48447,18 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             data1.Close();
                             reader1.Close();
                         }
-                        string message = " " + subcategoryName + " TotalQty =" + SubCategoryTotalQty + "(" + prevsubdiff + ")" + " ";
-                        // string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                        cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                        cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
-                        cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                        cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                        cmd.Parameters.AddWithValue("@msg", message);
-                        cmd.Parameters.AddWithValue("@mobileno", MobNo);
-                        cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
-                        cmd.Parameters.AddWithValue("@branchname", DispatchName);
-                        cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                        vdbmngr.insert(cmd);
+                        //string message = " " + subcategoryName + " TotalQty =" + SubCategoryTotalQty + "(" + prevsubdiff + ")" + " ";
+                        //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
+                        //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                        //cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
+                        //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
+                        //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                        //cmd.Parameters.AddWithValue("@msg", message);
+                        //cmd.Parameters.AddWithValue("@mobileno", MobNo);
+                        //cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
+                        //cmd.Parameters.AddWithValue("@branchname", DispatchName);
+                        //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                        //vdbmngr.insert(cmd);
                     }
                     else
                     {
@@ -48501,18 +48501,18 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         reader1.Close();
                                     }
 
-                                    string message = "" + subcategoryName + " TotalQty =" + SubCategoryTotalQty + "(" + prevsubdiff + ")" + " ";
-                                    // string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                                    cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                                    cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
-                                    cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                                    cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                                    cmd.Parameters.AddWithValue("@msg", message);
-                                    cmd.Parameters.AddWithValue("@mobileno", MobNo);
-                                    cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
-                                    cmd.Parameters.AddWithValue("@branchname", DispatchName);
-                                    cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                    vdbmngr.insert(cmd);
+                                    //string message = "" + subcategoryName + " TotalQty =" + SubCategoryTotalQty + "(" + prevsubdiff + ")" + " ";
+                                    //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
+                                    //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                                    //cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
+                                    //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
+                                    //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                                    //cmd.Parameters.AddWithValue("@msg", message);
+                                    //cmd.Parameters.AddWithValue("@mobileno", MobNo);
+                                    //cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
+                                    //cmd.Parameters.AddWithValue("@branchname", DispatchName);
+                                    //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                                    //vdbmngr.insert(cmd);
                                 }
                             }
                         }
@@ -49001,18 +49001,18 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             reader2.Close();
                         }
 
-                        string message = " " + subcategoryName1 + " ";
-                        // string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                        cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                        cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
-                        cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                        cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                        cmd.Parameters.AddWithValue("@msg", message);
-                        cmd.Parameters.AddWithValue("@mobileno", MobNo);
-                        cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
-                        cmd.Parameters.AddWithValue("@branchname", DispatchName);
-                        cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                        vdbmngr.insert(cmd);
+                        //string message = " " + subcategoryName1 + " ";
+                        //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
+                        //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                        //cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
+                        //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
+                        //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                        //cmd.Parameters.AddWithValue("@msg", message);
+                        //cmd.Parameters.AddWithValue("@mobileno", MobNo);
+                        //cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
+                        //cmd.Parameters.AddWithValue("@branchname", DispatchName);
+                        //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                        //vdbmngr.insert(cmd);
 
                     }
                     else
@@ -49050,18 +49050,18 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         reader2.Close();
                                     }
 
-                                    string message = " " + subcategoryName1 + " ";
-                                    // string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                                    cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                                    cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
-                                    cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                                    cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                                    cmd.Parameters.AddWithValue("@msg", message);
-                                    cmd.Parameters.AddWithValue("@mobileno", MobNo);
-                                    cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
-                                    cmd.Parameters.AddWithValue("@branchname", DispatchName);
-                                    cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                    vdbmngr.insert(cmd);
+                                    //string message = " " + subcategoryName1 + " ";
+                                    //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
+                                    //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
+                                    //cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
+                                    //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
+                                    //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
+                                    //cmd.Parameters.AddWithValue("@msg", message);
+                                    //cmd.Parameters.AddWithValue("@mobileno", MobNo);
+                                    //cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
+                                    //cmd.Parameters.AddWithValue("@branchname", DispatchName);
+                                    //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+                                    //vdbmngr.insert(cmd);
                                 }
                             }
                         }
@@ -53842,117 +53842,117 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
     }
 
-    private void get_sms_details(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            cmd = new MySqlCommand("SELECT DISTINCT (msgtype) as msgtype, mobileno FROM  smsinfo");
-            DataTable dtmsgtype = vdbmngr.SelectQuery(cmd).Tables[0];
-            cmd = new MySqlCommand("SELECT sno, agentid, branchid, mainbranch, msg, mobileno, msgtype, branchname, doe  FROM smsinfo WHERE (doe BETWEEN @d1 AND @d2)");
-            cmd.Parameters.AddWithValue("@d1", GetLowDate(ServerDateCurrentdate).AddDays(-1));
-            cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate).AddDays(-1));
-            DataTable dtmsgdata = vdbmngr.SelectQuery(cmd).Tables[0];
-            DataTable Report = new DataTable();
-            Report.Columns.Add("msgtype");
-            Report.Columns.Add("mobileno");
-            Report.Columns.Add("Empname");
-            cmd = new MySqlCommand("SELECT DISTINCT (EmpName) EmpName, Mobno  FROM empmanage WHERE  (Branch in ('172', '174', '271', '285', '306')) and (leveltype in ('MessageSend', 'MAdmin'))");
-            DataTable dtempdata = vdbmngr.SelectQuery(cmd).Tables[0];
+    //private void get_sms_details(HttpContext context)
+    //{
+    //    try
+    //    {
+    //        vdbmngr = new VehicleDBMgr();
+    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
+    //        cmd = new MySqlCommand("SELECT DISTINCT (msgtype) as msgtype, mobileno FROM  smsinfo");
+    //        DataTable dtmsgtype = vdbmngr.SelectQuery(cmd).Tables[0];
+    //        cmd = new MySqlCommand("SELECT sno, agentid, branchid, mainbranch, msg, mobileno, msgtype, branchname, doe  FROM smsinfo WHERE (doe BETWEEN @d1 AND @d2)");
+    //        cmd.Parameters.AddWithValue("@d1", GetLowDate(ServerDateCurrentdate).AddDays(-1));
+    //        cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate).AddDays(-1));
+    //        DataTable dtmsgdata = vdbmngr.SelectQuery(cmd).Tables[0];
+    //        DataTable Report = new DataTable();
+    //        Report.Columns.Add("msgtype");
+    //        Report.Columns.Add("mobileno");
+    //        Report.Columns.Add("Empname");
+    //        cmd = new MySqlCommand("SELECT DISTINCT (EmpName) EmpName, Mobno  FROM empmanage WHERE  (Branch in ('172', '174', '271', '285', '306')) and (leveltype in ('MessageSend', 'MAdmin'))");
+    //        DataTable dtempdata = vdbmngr.SelectQuery(cmd).Tables[0];
 
-            List<addressmaster> addresslist = new List<addressmaster>();
-            foreach (DataRow dr in dtempdata.Rows)
-            {
-                string mobileno = dr["Mobno"].ToString();
-                foreach (DataRow drm in dtmsgtype.Select("mobileno='" + mobileno + "'"))
-                {
-                    addressmaster obj1 = new addressmaster();
-                    obj1.msgtype = drm["msgtype"].ToString();
-                    obj1.mobileno = drm["mobileno"].ToString();
-                    obj1.Empname = dr["EmpName"].ToString();
-                    addresslist.Add(obj1);
-                }
-            }
-            string response = GetJson(addresslist);
-            context.Response.Write(response);
-        }
-        catch
-        {
-        }
-    }
+    //        List<addressmaster> addresslist = new List<addressmaster>();
+    //        foreach (DataRow dr in dtempdata.Rows)
+    //        {
+    //            string mobileno = dr["Mobno"].ToString();
+    //            foreach (DataRow drm in dtmsgtype.Select("mobileno='" + mobileno + "'"))
+    //            {
+    //                addressmaster obj1 = new addressmaster();
+    //                obj1.msgtype = drm["msgtype"].ToString();
+    //                obj1.mobileno = drm["mobileno"].ToString();
+    //                obj1.Empname = dr["EmpName"].ToString();
+    //                addresslist.Add(obj1);
+    //            }
+    //        }
+    //        string response = GetJson(addresslist);
+    //        context.Response.Write(response);
+    //    }
+    //    catch
+    //    {
+    //    }
+    //}
 
-    private void get_smsemp_details(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            DataTable Report = new DataTable();
-            Report.Columns.Add("mobileno");
-            Report.Columns.Add("Empname");
-            cmd = new MySqlCommand("SELECT  EmpName, Mobno, sno  FROM empmanage WHERE (sno IN ('679', '717', '52', '110', '832', '800', '232', '713', '716', '715', '803', '48', '268'))  ORDER BY sno");
-            DataTable dtempdata = vdbmngr.SelectQuery(cmd).Tables[0];
-            List<addressmaster> addresslist = new List<addressmaster>();
-            int i = 0;
-            foreach (DataRow dr in dtempdata.Rows)
-            {
-                i = i + 1;
-                string mobileno = dr["Mobno"].ToString();
-                addressmaster obj1 = new addressmaster();
-                obj1.sno = dr["sno"].ToString();
-                obj1.mobileno = dr["Mobno"].ToString();
-                obj1.Empname = dr["EmpName"].ToString();
-                addresslist.Add(obj1);
-            }
-            string response = GetJson(addresslist);
-            context.Response.Write(response);
-        }
-        catch
-        {
-        }
-    }
+    //private void get_smsemp_details(HttpContext context)
+    //{
+    //    try
+    //    {
+    //        vdbmngr = new VehicleDBMgr();
+    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
+    //        DataTable Report = new DataTable();
+    //        Report.Columns.Add("mobileno");
+    //        Report.Columns.Add("Empname");
+    //        cmd = new MySqlCommand("SELECT  EmpName, Mobno, sno  FROM empmanage WHERE (sno IN ('679', '717', '52', '110', '832', '800', '232', '713', '716', '715', '803', '48', '268'))  ORDER BY sno");
+    //        DataTable dtempdata = vdbmngr.SelectQuery(cmd).Tables[0];
+    //        List<addressmaster> addresslist = new List<addressmaster>();
+    //        int i = 0;
+    //        foreach (DataRow dr in dtempdata.Rows)
+    //        {
+    //            i = i + 1;
+    //            string mobileno = dr["Mobno"].ToString();
+    //            addressmaster obj1 = new addressmaster();
+    //            obj1.sno = dr["sno"].ToString();
+    //            obj1.mobileno = dr["Mobno"].ToString();
+    //            obj1.Empname = dr["EmpName"].ToString();
+    //            addresslist.Add(obj1);
+    //        }
+    //        string response = GetJson(addresslist);
+    //        context.Response.Write(response);
+    //    }
+    //    catch
+    //    {
+    //    }
+    //}
 
-    private void get_smstype_details(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            DataTable Report = new DataTable();
-            Report.Columns.Add("mobileno");
-            Report.Columns.Add("Empname");
-            cmd = new MySqlCommand("SELECT DISTINCT (msgtype) as msgtype FROM  smsinfo");
-            DataTable dtmsgtype = vdbmngr.SelectQuery(cmd).Tables[0];
-            List<addressmaster> addresslist = new List<addressmaster>();
-            int j = 0;
-            foreach (DataRow dr in dtmsgtype.Rows)
-            {
-                j = j + 1;
-               // string mobileno = dr["mobileno"].ToString();
-                addressmaster obj1 = new addressmaster();
-                obj1.mobileno = j.ToString();
-                obj1.msgtype = dr["msgtype"].ToString();
-                addresslist.Add(obj1);
-            }
-            string response = GetJson(addresslist);
-            context.Response.Write(response);
-        }
-        catch
-        {
-        }
-    }
+    //private void get_smstype_details(HttpContext context)
+    //{
+    //    try
+    //    {
+    //        vdbmngr = new VehicleDBMgr();
+    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
+    //        DataTable Report = new DataTable();
+    //        Report.Columns.Add("mobileno");
+    //        Report.Columns.Add("Empname");
+    //        cmd = new MySqlCommand("SELECT DISTINCT (msgtype) as msgtype FROM  smsinfo");
+    //        DataTable dtmsgtype = vdbmngr.SelectQuery(cmd).Tables[0];
+    //        List<addressmaster> addresslist = new List<addressmaster>();
+    //        int j = 0;
+    //        foreach (DataRow dr in dtmsgtype.Rows)
+    //        {
+    //            j = j + 1;
+    //           // string mobileno = dr["mobileno"].ToString();
+    //            addressmaster obj1 = new addressmaster();
+    //            obj1.mobileno = j.ToString();
+    //            obj1.msgtype = dr["msgtype"].ToString();
+    //            addresslist.Add(obj1);
+    //        }
+    //        string response = GetJson(addresslist);
+    //        context.Response.Write(response);
+    //    }
+    //    catch
+    //    {
+    //    }
+    //}
 
 
-    class sms
-    {
-        public string operation { set; get; }
-        public string BranchID { set; get; }
-        public string imagecode { set; get; }
-        public List<employelists> employelist { set; get; }
-        public List<msgtypelists> msgtypelist { set; get; }
-        public List<locationlists> locationlist { set; get; }
-    }
+    //class sms
+    //{
+    //    public string operation { set; get; }
+    //    public string BranchID { set; get; }
+    //    public string imagecode { set; get; }
+    //    public List<employelists> employelist { set; get; }
+    //    public List<msgtypelists> msgtypelist { set; get; }
+    //    public List<locationlists> locationlist { set; get; }
+    //}
     public class employelists
     {
         public string employee { set; get; }
@@ -53966,108 +53966,108 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string soid { set; get; }
         public string soidname { get; set; }
     }
-    private void btnSavesmsClick(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            var js = new JavaScriptSerializer();
-            var title1 = context.Request.Params[1];
-            sms obj = js.Deserialize<sms>(title1);
-            string btnSave = "Save";
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            if (btnSave == "Save")
-            {
-                cmd = new MySqlCommand("insert into smstransinfo (doe,smstype)values(@doe,@smstype)");
-                cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                cmd.Parameters.AddWithValue("@smstype", "MsgSend");
-                vdbmngr.insert(cmd);
-                string Sno = "";
-                cmd = new MySqlCommand("SELECT MAX(sno) as Sno FROM  smstransinfo");
-                DataTable dt = vdbmngr.SelectQuery(cmd).Tables[0];
-                if (dt.Rows.Count > 0)
-                {
-                    Sno = dt.Rows[0]["sno"].ToString();
-                }
+    //private void btnSavesmsClick(HttpContext context)
+    //{
+    //    try
+    //    {
+    //        vdbmngr = new VehicleDBMgr();
+    //        var js = new JavaScriptSerializer();
+    //        var title1 = context.Request.Params[1];
+    //        sms obj = js.Deserialize<sms>(title1);
+    //        string btnSave = "Save";
+    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
+    //        if (btnSave == "Save")
+    //        {
+    //            cmd = new MySqlCommand("insert into smstransinfo (doe,smstype)values(@doe,@smstype)");
+    //            cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
+    //            cmd.Parameters.AddWithValue("@smstype", "MsgSend");
+    //            vdbmngr.insert(cmd);
+    //            string Sno = "";
+    //            cmd = new MySqlCommand("SELECT MAX(sno) as Sno FROM  smstransinfo");
+    //            DataTable dt = vdbmngr.SelectQuery(cmd).Tables[0];
+    //            if (dt.Rows.Count > 0)
+    //            {
+    //                Sno = dt.Rows[0]["sno"].ToString();
+    //            }
 
-                foreach (employelists o in obj.employelist)
-                {
-                    string empid = o.employee;
-                    cmd = new MySqlCommand("insert into smsemp (refno,empid)values(@refno,@empid)");
-                    cmd.Parameters.AddWithValue("@refno", Sno);
-                    cmd.Parameters.AddWithValue("@empid", empid);
-                    vdbmngr.insert(cmd);
-                }
-                foreach (msgtypelists msgs in obj.msgtypelist)
-                {
-                    string msgtype = msgs.msgtype;
-                    cmd = new MySqlCommand("insert into smsmsgtype (refno,msgtype)values(@refno,@msgtype)");
-                    cmd.Parameters.AddWithValue("@refno", Sno);
-                    cmd.Parameters.AddWithValue("@msgtype", msgtype);
-                    vdbmngr.insert(cmd);
-                }
-                foreach (locationlists loc in obj.locationlist)
-                {
-                    string soid = loc.soid;
-                    cmd = new MySqlCommand("insert into smslocation (refno,soid, soidname)values(@refno,@soid, @soidname)");
-                    cmd.Parameters.AddWithValue("@refno", Sno);
-                    cmd.Parameters.AddWithValue("@soid", soid);
-                    cmd.Parameters.AddWithValue("@soidname", loc.soidname);
-                    vdbmngr.insert(cmd);
-                }
-                var jsonSerializer = new JavaScriptSerializer();
-                var jsonString = String.Empty;
-                context.Request.InputStream.Position = 0;
-                using (var inputStream = new StreamReader(context.Request.InputStream))
-                {
-                    jsonString = inputStream.ReadToEnd();
-                }
-                List<string> MsgList = new List<string>();
-                string msg = "Data Successfully Saved";
-                MsgList.Add(msg);
-                string response = GetJson(MsgList);
-                context.Response.Write(response);
-            }
-        }
-        catch (Exception ex)
-        {
-            List<string> MsgList = new List<string>();
-            string msg = ex.ToString();
-            MsgList.Add(msg);
-            string response = GetJson(MsgList);
-            context.Response.Write(response);
-        }
-    }
+    //            foreach (employelists o in obj.employelist)
+    //            {
+    //                string empid = o.employee;
+    //                cmd = new MySqlCommand("insert into smsemp (refno,empid)values(@refno,@empid)");
+    //                cmd.Parameters.AddWithValue("@refno", Sno);
+    //                cmd.Parameters.AddWithValue("@empid", empid);
+    //                vdbmngr.insert(cmd);
+    //            }
+    //            foreach (msgtypelists msgs in obj.msgtypelist)
+    //            {
+    //                string msgtype = msgs.msgtype;
+    //                cmd = new MySqlCommand("insert into smsmsgtype (refno,msgtype)values(@refno,@msgtype)");
+    //                cmd.Parameters.AddWithValue("@refno", Sno);
+    //                cmd.Parameters.AddWithValue("@msgtype", msgtype);
+    //                vdbmngr.insert(cmd);
+    //            }
+    //            foreach (locationlists loc in obj.locationlist)
+    //            {
+    //                string soid = loc.soid;
+    //                cmd = new MySqlCommand("insert into smslocation (refno,soid, soidname)values(@refno,@soid, @soidname)");
+    //                cmd.Parameters.AddWithValue("@refno", Sno);
+    //                cmd.Parameters.AddWithValue("@soid", soid);
+    //                cmd.Parameters.AddWithValue("@soidname", loc.soidname);
+    //                vdbmngr.insert(cmd);
+    //            }
+    //            var jsonSerializer = new JavaScriptSerializer();
+    //            var jsonString = String.Empty;
+    //            context.Request.InputStream.Position = 0;
+    //            using (var inputStream = new StreamReader(context.Request.InputStream))
+    //            {
+    //                jsonString = inputStream.ReadToEnd();
+    //            }
+    //            List<string> MsgList = new List<string>();
+    //            string msg = "Data Successfully Saved";
+    //            MsgList.Add(msg);
+    //            string response = GetJson(MsgList);
+    //            context.Response.Write(response);
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        List<string> MsgList = new List<string>();
+    //        string msg = ex.ToString();
+    //        MsgList.Add(msg);
+    //        string response = GetJson(MsgList);
+    //        context.Response.Write(response);
+    //    }
+    //}
 
-    private void get_smstransmsgtype_details(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            DataTable Report = new DataTable();
-            Report.Columns.Add("mobileno");
-            Report.Columns.Add("Empname");
-            cmd = new MySqlCommand("SELECT DISTINCT (msgtype) as msgtype FROM  smsinfo");
-            DataTable dtmsgtype = vdbmngr.SelectQuery(cmd).Tables[0];
-            List<addressmaster> addresslist = new List<addressmaster>();
-            int j = 0;
-            foreach (DataRow dr in dtmsgtype.Rows)
-            {
-                j = j + 1;
-                // string mobileno = dr["mobileno"].ToString();
-                addressmaster obj1 = new addressmaster();
-                obj1.mobileno = j.ToString();
-                obj1.msgtype = dr["msgtype"].ToString();
-                addresslist.Add(obj1);
-            }
-            string response = GetJson(addresslist);
-            context.Response.Write(response);
-        }
-        catch
-        {
-        }
-    }
+    //private void get_smstransmsgtype_details(HttpContext context)
+    //{
+    //    try
+    //    {
+    //        vdbmngr = new VehicleDBMgr();
+    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
+    //        DataTable Report = new DataTable();
+    //        Report.Columns.Add("mobileno");
+    //        Report.Columns.Add("Empname");
+    //        cmd = new MySqlCommand("SELECT DISTINCT (msgtype) as msgtype FROM  smsinfo");
+    //        DataTable dtmsgtype = vdbmngr.SelectQuery(cmd).Tables[0];
+    //        List<addressmaster> addresslist = new List<addressmaster>();
+    //        int j = 0;
+    //        foreach (DataRow dr in dtmsgtype.Rows)
+    //        {
+    //            j = j + 1;
+    //            // string mobileno = dr["mobileno"].ToString();
+    //            addressmaster obj1 = new addressmaster();
+    //            obj1.mobileno = j.ToString();
+    //            obj1.msgtype = dr["msgtype"].ToString();
+    //            addresslist.Add(obj1);
+    //        }
+    //        string response = GetJson(addresslist);
+    //        context.Response.Write(response);
+    //    }
+    //    catch
+    //    {
+    //    }
+    //}
     public class collectiontype
     {
         public string type { get; set; }
