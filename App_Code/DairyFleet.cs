@@ -786,6 +786,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "getLineChartforsubcategeoryReport":
                     getLineChartforsubcategeoryReport(context);
                     break;
+                case "getLineChartforsubcategeoryReport1":
+                    getLineChartforsubcategeoryReport1(context);
+                    break;
                 case "getLineForProduct":
                     getLineForProduct(context);
                     break;
@@ -22126,98 +22129,98 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
     }
 
-    //private void getLineChartforsubcategeoryReport(HttpContext context)
-    //{
-    //    try
-    //    {
-    //        vdbmngr = new VehicleDBMgr();
-    //        string SubcatSno = context.Request["SubcatSno"];
-    //        //string Fdate = context.Request["Fromdate"];
-    //        //string Tdate = context.Request["Todate"];
-    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-    //        //DateTime FromDate = Convert.ToDateTime(Fdate);
-    //        //DateTime ToDate = Convert.ToDateTime(Tdate);
+    private void getLineChartforsubcategeoryReport1(HttpContext context)
+    {
+        try
+        {
+            vdbmngr = new VehicleDBMgr();
+            string SubcatSno = context.Request["ProductName"];
+            //string Fdate = context.Request["Fromdate"];
+            //string Tdate = context.Request["Todate"];
+            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
+            //DateTime FromDate = Convert.ToDateTime(Fdate);
+            //DateTime ToDate = Convert.ToDateTime(Tdate);
 
 
 
-    //        string s = context.Request["FromDate"];
-    //        var dt = DateTime.ParseExact(s, "ddd MMM dd yyyy HH:mm:ss 'GMT'zzz", System.Globalization.CultureInfo.InvariantCulture);
-    //        string Fdate = dt.ToString("yyyy-MM-dd");
-    //        DateTime FromDate = Convert.ToDateTime(Fdate);
-    //        string e = context.Request["Todate"];
-    //        var edt = DateTime.ParseExact(e, "ddd MMM dd yyyy HH:mm:ss 'GMT'zzz", System.Globalization.CultureInfo.InvariantCulture);
-    //        string Tdate = edt.ToString("yyyy-MM-dd");
-    //        DateTime ToDate = Convert.ToDateTime(Tdate);
+            string s = context.Request["FromDate"];
+            //var dt = DateTime.ParseExact(s, "ddd MMM dd yyyy HH:mm:ss 'GMT'zzz", System.Globalization.CultureInfo.InvariantCulture);
+            //string Fdate = dt.ToString("yyyy-MM-dd");
+            DateTime FromDate = Convert.ToDateTime(s);
+            string e = context.Request["Todate"];
+            //var edt = DateTime.ParseExact(e, "ddd MMM dd yyyy HH:mm:ss 'GMT'zzz", System.Globalization.CultureInfo.InvariantCulture);
+            //string Tdate = edt.ToString("yyyy-MM-dd");
+            DateTime ToDate = Convert.ToDateTime(e);
 
 
 
-    //        cmd = new MySqlCommand("SELECT    ROUND(SUM(tripsubdata.Qty), 2) AS dispatchqty, tripdat.AssignDate, dispatch.BranchID, products_subcategory.SubCatName, branchdata.BranchName FROM  dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, EmpId, DATE_FORMAT(AssignDate, '%m %d %y') AS AssignDate FROM  tripdata WHERE (AssignDate BETWEEN @d1 AND @d2)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN tripsubdata ON tripdat.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN branchdata ON branchdata.sno = dispatch.BranchID WHERE (dispatch.Branch_Id = @BranchID) AND (products_subcategory.sno = @subcatSno) GROUP BY tripdat.AssignDate, dispatch.BranchID ORDER BY tripdat.AssignDate");
-    //        //cmd = new MySqlCommand("SELECT ROUND(SUM(tripsubdata.Qty), 2) AS dispatchqty, tripdat.AssignDate FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, EmpId, DATE_FORMAT(AssignDate, '%m %d %y') AS AssignDate FROM tripdata WHERE (AssignDate BETWEEN @d1 AND @d2)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN tripsubdata ON tripdat.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno WHERE (dispatch.Branch_Id = @BranchID) AND (products_subcategory.sno = @subcatSno) GROUP BY tripdat.AssignDate ORDER BY tripdat.AssignDate");
-    //        cmd.Parameters.AddWithValue("@subcatSno", SubcatSno);
-    //        cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"]);
-    //        cmd.Parameters.AddWithValue("@d1", GetLowDate(FromDate));
-    //        cmd.Parameters.AddWithValue("@d2", GetHighDate(ToDate));
-    //        DataTable dtble = vdbmngr.SelectQuery(cmd).Tables[0];
-    //        List<LineChartValuesclass> LineChartValuelist = new List<LineChartValuesclass>();
-    //        LineChartValuesclass getLineChart = new LineChartValuesclass();
-    //        List<string> unitlist = new List<string>();
-    //        List<string> Deliverlist = new List<string>();
-    //        List<string> Datelist = new List<string>();
-    //        List<string> Statuslist = new List<string>();
-    //        List<string> ActMillist = new List<string>();
-    //        string MainQty = "";
-    //        string DelQty = "";
-    //        string IndDate = "";
-    //        string AvgMileage = "";
-    //        double avgSaleQty = 0;
-    //        int count = 0;
-    //        foreach (DataRow dr in dtble.Rows)
-    //        {
-    //            string DeliveryQty = dr["dispatchqty"].ToString();
-    //            DelQty += DeliveryQty + ",";
-    //            double milltr = 0;
-    //            double.TryParse(dr["dispatchqty"].ToString(), out milltr);
-    //            avgSaleQty += milltr;
-    //            //unitlist.Add(dr["unitQty"].ToString());
-    //            //Deliverlist.Add(dr["DeliveryQty"].ToString());
-    //            string IndentDate = dr["AssignDate"].ToString();
-    //            DateTime dtIndentDate = Convert.ToDateTime(IndentDate).AddDays(1);
-    //            string ChangedTime = dtIndentDate.ToString("dd");
-    //            IndDate += ChangedTime + ",";
-    //            count++;
-    //            //Datelist.Add(ChangedTime);
-    //        }
-    //        double avg = 0;
-    //        avg = (avgSaleQty / count);
-    //        avg = Math.Round(avg, 2);
-    //        foreach (DataRow dr in dtble.Rows)
-    //        {
-    //            string TodayMileage = dr["dispatchqty"].ToString();
-    //            if (TodayMileage != "0")
-    //            {
-    //                AvgMileage += avg.ToString() + ",";
-    //            }
-    //        }
-    //        AvgMileage = AvgMileage.Substring(0, AvgMileage.Length - 1);
-    //        IndDate = IndDate.Substring(0, IndDate.Length - 1);
-    //        DelQty = DelQty.Substring(0, DelQty.Length - 1);
-    //        Deliverlist.Add(DelQty);
-    //        Deliverlist.Add(AvgMileage);
-    //        Statuslist.Add("Saels");
-    //        Statuslist.Add("Avg Sales");
-    //        getLineChart.IndentDate = IndDate;
-    //        getLineChart.DeliveryQty = Deliverlist;
-    //        getLineChart.UnitQty = MainQty;
-    //        getLineChart.Status = Statuslist;
-    //        getLineChart.ActMileage = ActMillist;
-    //        LineChartValuelist.Add(getLineChart);
-    //        string respnceString = GetJson(LineChartValuelist);
-    //        context.Response.Write(respnceString);
-    //    }
-    //    catch
-    //    {
-    //    }
-    //}
+            cmd = new MySqlCommand("SELECT    ROUND(SUM(tripsubdata.Qty), 2) AS dispatchqty, tripdat.AssignDate, dispatch.BranchID, products_subcategory.SubCatName, branchdata.BranchName FROM  dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, EmpId, DATE_FORMAT(AssignDate, '%m %d %y') AS AssignDate FROM  tripdata WHERE (AssignDate BETWEEN @d1 AND @d2)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN tripsubdata ON tripdat.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN branchdata ON branchdata.sno = dispatch.BranchID WHERE (dispatch.Branch_Id = @BranchID) AND (products_subcategory.sno = @subcatSno) GROUP BY tripdat.AssignDate, dispatch.BranchID ORDER BY tripdat.AssignDate");
+            //cmd = new MySqlCommand("SELECT ROUND(SUM(tripsubdata.Qty), 2) AS dispatchqty, tripdat.AssignDate FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, EmpId, DATE_FORMAT(AssignDate, '%m %d %y') AS AssignDate FROM tripdata WHERE (AssignDate BETWEEN @d1 AND @d2)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN tripsubdata ON tripdat.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno WHERE (dispatch.Branch_Id = @BranchID) AND (products_subcategory.sno = @subcatSno) GROUP BY tripdat.AssignDate ORDER BY tripdat.AssignDate");
+            cmd.Parameters.AddWithValue("@subcatSno", SubcatSno);
+            cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"]);
+            cmd.Parameters.AddWithValue("@d1", GetLowDate(FromDate));
+            cmd.Parameters.AddWithValue("@d2", GetHighDate(ToDate));
+            DataTable dtble = vdbmngr.SelectQuery(cmd).Tables[0];
+            List<LineChartValuesclass> LineChartValuelist = new List<LineChartValuesclass>();
+            LineChartValuesclass getLineChart = new LineChartValuesclass();
+            List<string> unitlist = new List<string>();
+            List<string> Deliverlist = new List<string>();
+            List<string> Datelist = new List<string>();
+            List<string> Statuslist = new List<string>();
+            List<string> ActMillist = new List<string>();
+            string MainQty = "";
+            string DelQty = "";
+            string IndDate = "";
+            string AvgMileage = "";
+            double avgSaleQty = 0;
+            int count = 0;
+            foreach (DataRow dr in dtble.Rows)
+            {
+                string DeliveryQty = dr["dispatchqty"].ToString();
+                DelQty += DeliveryQty + ",";
+                double milltr = 0;
+                double.TryParse(dr["dispatchqty"].ToString(), out milltr);
+                avgSaleQty += milltr;
+                //unitlist.Add(dr["unitQty"].ToString());
+                //Deliverlist.Add(dr["DeliveryQty"].ToString());
+                string IndentDate = dr["AssignDate"].ToString();
+                DateTime dtIndentDate = Convert.ToDateTime(IndentDate).AddDays(1);
+                string ChangedTime = dtIndentDate.ToString("dd");
+                IndDate += ChangedTime + ",";
+                count++;
+                //Datelist.Add(ChangedTime);
+            }
+            double avg = 0;
+            avg = (avgSaleQty / count);
+            avg = Math.Round(avg, 2);
+            foreach (DataRow dr in dtble.Rows)
+            {
+                string TodayMileage = dr["dispatchqty"].ToString();
+                if (TodayMileage != "0")
+                {
+                    AvgMileage += avg.ToString() + ",";
+                }
+            }
+            AvgMileage = AvgMileage.Substring(0, AvgMileage.Length - 1);
+            IndDate = IndDate.Substring(0, IndDate.Length - 1);
+            DelQty = DelQty.Substring(0, DelQty.Length - 1);
+            Deliverlist.Add(DelQty);
+            Deliverlist.Add(AvgMileage);
+            Statuslist.Add("Saels");
+            Statuslist.Add("Avg Sales");
+            getLineChart.IndentDate = IndDate;
+            getLineChart.DeliveryQty = Deliverlist;
+            getLineChart.UnitQty = MainQty;
+            getLineChart.Status = Statuslist;
+            getLineChart.ActMileage = ActMillist;
+            LineChartValuelist.Add(getLineChart);
+            string respnceString = GetJson(LineChartValuelist);
+            context.Response.Write(respnceString);
+        }
+        catch
+        {
+        }
+    }
 
 
     private void GetAgentPrdtInformation(HttpContext context)

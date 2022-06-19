@@ -103,7 +103,7 @@
                 $("#chart").empty();
                 $('#chart').css('display', 'block');
                 $('#divtable').css('display', 'none');
-                var data = { 'operation': 'getLineChartforsubcategeoryReport', 'Fromdate': Fromdate,'Todate':Todate,'ProductName':ProductName };
+                var data = { 'operation': 'getLineChartforsubcategeoryReport1', 'Fromdate': Fromdate,'Todate':Todate,'ProductName':ProductName };
                 var s = function (msg) {
                     if (msg) {
                         if (msg == "Time Out Expired") {
