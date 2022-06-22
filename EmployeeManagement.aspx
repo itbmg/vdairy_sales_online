@@ -60,24 +60,6 @@
             });
         }
 
-//        function ddlBranchProductNameChange() {
-//            var data = { 'operation': 'get_BranchData' };
-//            var s = function (msg) {
-//                if (msg) {
-//                    if (msg == "Session Expired") {
-//                        alert(msg);
-//                        window.location = "Login.aspx";
-//                    }
-//                    fillBranch(msg);
-//                }
-//                else {
-//                }
-//            };
-//            var e = function (x, h, e) {
-//            };
-//            $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
-//            callHandler(data, s, e);
-//        }
         var fillBranchDataArr = [];
 //        function fillBranch(msg) {
 //            fillBranchDataArr = msg;
