@@ -184,51 +184,51 @@ table#tableaProductdetails {
             document.getElementById('hduevalue').innerHTML = '₹ ' + dueamount;
         }
 
-        function branchwisedispqty() {
-            var FromDate = $('#reportrange').data('daterangepicker').startDate.toString();
-            var Todate = $('#reportrange').data('daterangepicker').endDate.toString();
-            var PlantName = document.getElementById('ddlPlant').value;
-            $('#divHide').css('display', 'block');
-            var data = { 'operation': 'branchwise_Dispatch_qty', 'BranchId': PlantName, 'FromDate': FromDate, 'Todate': Todate };
-            var s = function (msg) {
-                if (msg) {
-                    if (msg == "Session Expired") {
-                        alert(msg);
-                        window.location = "Login.aspx";
-                    }
-                    fillbranchwisedispqty(msg);
-                    //                    fillbranchwisesalevalue(msg);
-                }
-                else {
-                }
-            };
-            var e = function (x, h, e) {
-            };
-            $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
-            callHandler(data, s, e);
-        }
+        //function branchwisedispqty() {
+        //    var FromDate = $('#reportrange').data('daterangepicker').startDate.toString();
+        //    var Todate = $('#reportrange').data('daterangepicker').endDate.toString();
+        //    var PlantName = document.getElementById('ddlPlant').value;
+        //    $('#divHide').css('display', 'block');
+        //    var data = { 'operation': 'branchwise_Dispatch_qty', 'BranchId': PlantName, 'FromDate': FromDate, 'Todate': Todate };
+        //    var s = function (msg) {
+        //        if (msg) {
+        //            if (msg == "Session Expired") {
+        //                alert(msg);
+        //                window.location = "Login.aspx";
+        //            }
+        //            fillbranchwisedispqty(msg);
+        //            //                    fillbranchwisesalevalue(msg);
+        //        }
+        //        else {
+        //        }
+        //    };
+        //    var e = function (x, h, e) {
+        //    };
+        //    $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+        //    callHandler(data, s, e);
+        //}
 
-        function fillbranchwisedispqty(msg) {
-            scrollTo(0, 0);
-            $('#divMainAddNewRow1').focus();
-            $('#divMainAddNewRow1').css('display', 'block');
-            j = 1;
-            var results = '<div  style="overflow:auto;"><table class="table table-bordered table-hover dataTable no-footer" border="1" role="grid" aria-describedby="example2_info">';
-            results += '<thead><tr style="background-color: #abbed2;"><th style="text-align: center; ">Branch Name</th><th style="text-align: center; ">Dispatch Qty</th></tr></thead></tbody>';
-            var k = 1;
-            var l = 0;
-            for (var i = 0; i < msg.length; i++) {
-                results += '<tr style="background-color: antiquewhite;">';
-                results += '<td style="text-align: center"  class="2"><div id="txtamount" style="font-size: 12px; font-weight: bold;cursor:pointer;" title="view Product in Line Chart"  onclick="btnRoute_Wise_SaleQty(\'' + msg[i].BranchID + '\');"  class="subCategeoryClass"><b>' + msg[i].BranchName + '<b></td>';
-                results += '<td  class="2"><div id="Span1" style="font-size: 12px;font-weight: bold;" class="QtyClass"><b>' + msg[i].dispatchqty + '</b></td></tr>';
-                l = l + 1;
-                if (l == 30) {
-                    l = 0;
-                }
-            }
-            results += '</table></div>';
-            $("#divChart").html(results);
-        }
+        //function fillbranchwisedispqty(msg) {
+        //    scrollTo(0, 0);
+        //    $('#divMainAddNewRow1').focus();
+        //    $('#divMainAddNewRow1').css('display', 'block');
+        //    j = 1;
+        //    var results = '<div  style="overflow:auto;"><table class="table table-bordered table-hover dataTable no-footer" border="1" role="grid" aria-describedby="example2_info">';
+        //    results += '<thead><tr style="background-color: #abbed2;"><th style="text-align: center; ">Branch Name</th><th style="text-align: center; ">Dispatch Qty</th></tr></thead></tbody>';
+        //    var k = 1;
+        //    var l = 0;
+        //    for (var i = 0; i < msg.length; i++) {
+        //        results += '<tr style="background-color: antiquewhite;">';
+        //        results += '<td style="text-align: center"  class="2"><div id="txtamount" style="font-size: 12px; font-weight: bold;cursor:pointer;" title="view Product in Line Chart"  onclick="btnRoute_Wise_SaleQty(\'' + msg[i].BranchID + '\');"  class="subCategeoryClass"><b>' + msg[i].BranchName + '<b></td>';
+        //        results += '<td  class="2"><div id="Span1" style="font-size: 12px;font-weight: bold;" class="QtyClass"><b>' + msg[i].dispatchqty + '</b></td></tr>';
+        //        l = l + 1;
+        //        if (l == 30) {
+        //            l = 0;
+        //        }
+        //    }
+        //    results += '</table></div>';
+        //    $("#divChart").html(results);
+        //}
         function btnRoute_Wise_SaleQty(BranchId) {
             
             var BranchId;

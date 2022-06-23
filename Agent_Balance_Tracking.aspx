@@ -12,18 +12,7 @@
             newWin.document.write('<html><body   onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
             newWin.document.close();
         }
-        <%--function OrderValidate() {
-            var fromDate = document.getElementById('<%=txtFromdate.ClientID %>').value;
-            var txtTodate = document.getElementById('<%=txtTodate.ClientID %>').value;
-            if (fromDate == "") {
-                alert("Select From Date");
-                return false;
-            }
-            if (txtTodate == "") {
-                alert("Select To Date");
-                return false;
-            }
-        }--%>
+        
     </script>
     <script type="text/javascript">
         $(function () {

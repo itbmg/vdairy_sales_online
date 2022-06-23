@@ -181,9 +181,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "btnAgentInvoice_click":
                     btnAgentInvoice_click(context);
                     break;
-                //case "btn_IFD_AgentInvoice_click":
-                //    btn_IFD_AgentInvoice_click(context);
-                //    break;
                 case "get_disp_sale_qty_productwise":
                     get_disp_sale_qty_productwise(context);
                     break;
@@ -371,9 +368,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "get_employees_department":
                     get_employees_department(context);
                     break;
-                //case "get_BranchData":
-                //    get_BranchData(context);
-                //    break;
                 case "GetTripEnd_Details":
                     GetTripEnd_Details(context);
                     break;
@@ -672,9 +666,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "GetApproveEmployeeNames":
                     GetApproveEmployeeNames(context);
                     break;
-                //case "GetGheeSaleDespatches":
-                //    GetGheeSaleDespatches(context);
-                //    break;
                 case "GetRaisedVouchers":
                     GetRaisedVouchers(context);
                     break;
@@ -912,9 +903,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "Get_Dispatch_Sale_CategoryWise":
                     Get_Dispatch_Sale_CategoryWise(context);
                     break;
-                //case "branchwise_Dispatch_qty":
-                //    branchwise_Dispatch_qty(context);
-                //    break;
                 case "branchwise_Dispatch_milk_qty":
                     branchwise_Dispatch_milk_qty(context);
                     break;
@@ -1086,16 +1074,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "Getinsentivrdetails":
                     Getinsentivrdetails(context);
                     break;
-
-                //case "get_sms_details":
-                //    get_sms_details(context);
-                //    break;
-                //case "get_smsemp_details":
-                //    get_smsemp_details(context);
-                //    break;
-                //case "get_smstype_details":
-                //    get_smstype_details(context);
-                //    break;
                 case "getincentivependingdetails":
                     getincentivependingdetails(context);
                     break;
@@ -1108,9 +1086,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "GetAgetntinformationagentwise":
                     GetAgetntinformationagentwise(context);
                     break;
-                //case "get_smstransmsgtype_details":
-                //    get_smstransmsgtype_details(context);
-                //    break;
                 case "btnEditCashbookSaveClick":
                     btnEditCashbookSaveClick(context);
                     break;
@@ -6004,188 +5979,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
     }
 
-    //private void branchwise_Dispatch_qty(HttpContext context)
-    //{
-    //    try
-    //    {
-    //        vdbmngr = new VehicleDBMgr();
-    //        string BranchId = context.Request["BranchId"];
-    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-    //        string s = context.Request["FromDate"];
-    //        var dt = DateTime.ParseExact(s, "ddd MMM dd yyyy HH:mm:ss 'GMT'zzz", System.Globalization.CultureInfo.InvariantCulture);
-    //        string Fdate = dt.ToString("yyyy-MM-dd");
-    //        DateTime FromDate = Convert.ToDateTime(Fdate);
-    //        string e = context.Request["Todate"];
-    //        var edt = DateTime.ParseExact(e, "ddd MMM dd yyyy HH:mm:ss 'GMT'zzz", System.Globalization.CultureInfo.InvariantCulture);
-    //        string Tdate = edt.ToString("yyyy-MM-dd");
-    //        DateTime ToDate = Convert.ToDateTime(Tdate);
-    //        string SalesType = context.Session["salestype"].ToString();
-    //        DataTable dtble = new DataTable();
-    //        //string GroupUnderPlantClickBranchid = context.Request["GroupUnderPlantClickBranchid"];
-    //        //if (GroupUnderPlantClickBranchid == "")
-    //        //{
-    //        //}
-    //        DataTable dtYesterDay = new DataTable();
-    //        DataTable dtLastWeak = new DataTable();
-    //        DataTable dtLastMonth = new DataTable();
-    //        DataTable dtLastYear = new DataTable();
-
-    //        string type = "";
-    //        if (BranchId == "8009")
-    //        {
-    //            cmd = new MySqlCommand("SELECT    TripInfo.Sno, TripInfo.DCNo, ROUND(SUM(ProductInfo.Qty), 2) AS DeliveryQty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode, TripInfo.BranchID As Branch_id, TripInfo.BranchName, TripInfo.Branch_Id As BranchID FROM (SELECT  tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode, dispatch.BranchID, branchdata_1.BranchName, dispatch.Branch_Id FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno INNER JOIN branchdata branchdata_1 ON dispatch.Branch_Id = branchdata_1.sno WHERE  (dispatch.GroupId = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Qty, Sno FROM (SELECT tripdata_1.Sno, tripsubdata.Qty FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno GROUP BY TripInfo.Branch_Id");
-    //            cmd.Parameters.AddWithValue("@branch", BranchId);
-    //            cmd.Parameters.AddWithValue("@d1", GetLowDate(FromDate).AddDays(-1));
-    //            cmd.Parameters.AddWithValue("@d2", GetHighDate(ToDate).AddDays(-1));
-    //            dtYesterDay = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //            cmd = new MySqlCommand("SELECT    TripInfo.Sno, TripInfo.DCNo, ROUND(SUM(ProductInfo.Qty), 2) AS DeliveryQty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode, TripInfo.BranchID As Branch_id, TripInfo.BranchName, TripInfo.Branch_Id As BranchID FROM (SELECT  tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode, dispatch.BranchID, branchdata_1.BranchName, dispatch.Branch_Id FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno INNER JOIN branchdata branchdata_1 ON dispatch.Branch_Id = branchdata_1.sno WHERE  (dispatch.GroupId = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Qty, Sno FROM (SELECT tripdata_1.Sno, tripsubdata.Qty FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno GROUP BY TripInfo.Branch_Id");
-    //            cmd.Parameters.AddWithValue("@branch", BranchId);
-    //            cmd.Parameters.AddWithValue("@d1", GetLowDate(FromDate).AddDays(-8));
-    //            cmd.Parameters.AddWithValue("@d2", GetHighDate(ToDate).AddDays(-8));
-    //            dtLastWeak = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //            cmd = new MySqlCommand("SELECT    TripInfo.Sno, TripInfo.DCNo, ROUND(SUM(ProductInfo.Qty), 2) AS DeliveryQty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode, TripInfo.BranchID As Branch_id, TripInfo.BranchName, TripInfo.Branch_Id As BranchID FROM (SELECT  tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode, dispatch.BranchID, branchdata_1.BranchName, dispatch.Branch_Id FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno INNER JOIN branchdata branchdata_1 ON dispatch.Branch_Id = branchdata_1.sno WHERE  (dispatch.GroupId = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Qty, Sno FROM (SELECT tripdata_1.Sno, tripsubdata.Qty FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno GROUP BY TripInfo.Branch_Id");
-    //            cmd.Parameters.AddWithValue("@branch", BranchId);
-    //            cmd.Parameters.AddWithValue("@d1", GetLowDate(FromDate).AddDays(-31));
-    //            cmd.Parameters.AddWithValue("@d2", GetHighDate(ToDate).AddDays(-31));
-    //            dtLastMonth = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //            cmd = new MySqlCommand("SELECT    TripInfo.Sno, TripInfo.DCNo, ROUND(SUM(ProductInfo.Qty), 2) AS DeliveryQty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode, TripInfo.BranchID As Branch_id, TripInfo.BranchName, TripInfo.Branch_Id As BranchID FROM (SELECT  tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode, dispatch.BranchID, branchdata_1.BranchName, dispatch.Branch_Id FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno INNER JOIN branchdata branchdata_1 ON dispatch.Branch_Id = branchdata_1.sno WHERE  (dispatch.GroupId = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Qty, Sno FROM (SELECT tripdata_1.Sno, tripsubdata.Qty FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno GROUP BY TripInfo.Branch_Id");
-    //            cmd.Parameters.AddWithValue("@branch", BranchId);
-    //            cmd.Parameters.AddWithValue("@d1", GetLowDate(FromDate).AddDays(-366));
-    //            cmd.Parameters.AddWithValue("@d2", GetHighDate(ToDate).AddDays(-366));
-    //            dtLastYear = vdbmngr.SelectQuery(cmd).Tables[0];
-
-
-    //            type = "GroupWise";
-    //        }
-    //        else if (BranchId == "8012" || BranchId == "8013")
-    //        {
-    //            cmd = new MySqlCommand("SELECT    TripInfo.Sno, TripInfo.DCNo, ROUND(SUM(ProductInfo.Qty), 2) AS DeliveryQty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode, TripInfo.BranchID As Branch_id, TripInfo.BranchName, TripInfo.Branch_Id As BranchID FROM (SELECT  tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode, dispatch.BranchID, branchdata_1.BranchName, dispatch.Branch_Id FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno INNER JOIN branchdata branchdata_1 ON dispatch.Branch_Id = branchdata_1.sno WHERE  (dispatch.CompanyId = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Qty, Sno FROM (SELECT tripdata_1.Sno, tripsubdata.Qty FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno GROUP BY TripInfo.Branch_Id");
-    //            cmd.Parameters.AddWithValue("@branch", BranchId);
-    //            cmd.Parameters.AddWithValue("@d1", GetLowDate(FromDate).AddDays(-2));
-    //            cmd.Parameters.AddWithValue("@d2", GetHighDate(ToDate).AddDays(-2));
-    //            dtYesterDay = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //            cmd = new MySqlCommand("SELECT    TripInfo.Sno, TripInfo.DCNo, ROUND(SUM(ProductInfo.Qty), 2) AS DeliveryQty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode, TripInfo.BranchID As Branch_id, TripInfo.BranchName, TripInfo.Branch_Id As BranchID FROM (SELECT  tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode, dispatch.BranchID, branchdata_1.BranchName, dispatch.Branch_Id FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno INNER JOIN branchdata branchdata_1 ON dispatch.Branch_Id = branchdata_1.sno WHERE  (dispatch.CompanyId = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Qty, Sno FROM (SELECT tripdata_1.Sno, tripsubdata.Qty FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno GROUP BY TripInfo.Branch_Id");
-    //            cmd.Parameters.AddWithValue("@branch", BranchId);
-    //            cmd.Parameters.AddWithValue("@d1", GetLowDate(FromDate).AddDays(-8));
-    //            cmd.Parameters.AddWithValue("@d2", GetHighDate(ToDate).AddDays(-8));
-    //            dtLastWeak = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //            cmd = new MySqlCommand("SELECT    TripInfo.Sno, TripInfo.DCNo, ROUND(SUM(ProductInfo.Qty), 2) AS DeliveryQty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode, TripInfo.BranchID As Branch_id, TripInfo.BranchName, TripInfo.Branch_Id As BranchID FROM (SELECT  tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode, dispatch.BranchID, branchdata_1.BranchName, dispatch.Branch_Id FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno INNER JOIN branchdata branchdata_1 ON dispatch.Branch_Id = branchdata_1.sno WHERE  (dispatch.CompanyId = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Qty, Sno FROM (SELECT tripdata_1.Sno, tripsubdata.Qty FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno GROUP BY TripInfo.Branch_Id");
-    //            cmd.Parameters.AddWithValue("@branch", BranchId);
-    //            cmd.Parameters.AddWithValue("@d1", GetLowDate(FromDate).AddDays(-31));
-    //            cmd.Parameters.AddWithValue("@d2", GetHighDate(ToDate).AddDays(-31));
-    //            dtLastMonth = vdbmngr.SelectQuery(cmd).Tables[0];
-
-
-
-    //            cmd = new MySqlCommand("SELECT    TripInfo.Sno, TripInfo.DCNo, ROUND(SUM(ProductInfo.Qty), 2) AS DeliveryQty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode, TripInfo.BranchID As Branch_id, TripInfo.BranchName, TripInfo.Branch_Id As BranchID FROM (SELECT  tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode, dispatch.BranchID, branchdata_1.BranchName, dispatch.Branch_Id FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno INNER JOIN branchdata branchdata_1 ON dispatch.Branch_Id = branchdata_1.sno WHERE  (dispatch.CompanyId = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Qty, Sno FROM (SELECT tripdata_1.Sno, tripsubdata.Qty FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno GROUP BY TripInfo.Branch_Id");
-    //            cmd.Parameters.AddWithValue("@branch", BranchId);
-    //            cmd.Parameters.AddWithValue("@d1", GetLowDate(FromDate).AddDays(-366));
-    //            cmd.Parameters.AddWithValue("@d2", GetHighDate(ToDate).AddDays(-366));
-    //            dtLastYear = vdbmngr.SelectQuery(cmd).Tables[0];
-
-
-
-    //            type = "CompanyWise";
-    //        }
-    //        else if (SalesType == "Plant")
-    //        {
-    //            cmd = new MySqlCommand("SELECT   TripInfo.Sno, TripInfo.DCNo, ProductInfo.productid, Round(SUM(ProductInfo.Qty),2) AS DeliveryQty, SUM(ProductInfo.UnitPrice * ProductInfo.Qty) AS salevalue, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode, TripInfo.BranchID, TripInfo.BranchName FROM (SELECT tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode, dispatch.BranchID, branchdata_1.BranchName FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno INNER JOIN branchdata branchdata_1 ON dispatch.BranchID = branchdata_1.sno WHERE (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT  ProductName, UnitPrice, Sno, Qty, productid FROM  (SELECT  productsdata.UnitPrice, productsdata.sno AS productid, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno WHERE  (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno GROUP BY TripInfo.BranchID");
-    //            cmd.Parameters.AddWithValue("@branch", BranchId);
-    //            cmd.Parameters.AddWithValue("@d1", GetLowDate(FromDate).AddDays(-1));
-    //            cmd.Parameters.AddWithValue("@d2", GetHighDate(ToDate).AddDays(-1));
-    //            dtYesterDay = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //            cmd = new MySqlCommand("SELECT   TripInfo.Sno, TripInfo.DCNo, ProductInfo.productid, Round(SUM(ProductInfo.Qty),2) AS DeliveryQty, SUM(ProductInfo.UnitPrice * ProductInfo.Qty) AS salevalue, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode, TripInfo.BranchID, TripInfo.BranchName FROM (SELECT tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode, dispatch.BranchID, branchdata_1.BranchName FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno INNER JOIN branchdata branchdata_1 ON dispatch.BranchID = branchdata_1.sno WHERE (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT  ProductName, UnitPrice, Sno, Qty, productid FROM  (SELECT  productsdata.UnitPrice, productsdata.sno AS productid, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno WHERE  (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno GROUP BY TripInfo.BranchID");
-    //            cmd.Parameters.AddWithValue("@branch", BranchId);
-    //            cmd.Parameters.AddWithValue("@d1", GetLowDate(FromDate).AddDays(-1));
-    //            cmd.Parameters.AddWithValue("@d2", GetHighDate(ToDate).AddDays(-1));
-    //            dtLastWeak = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //            cmd = new MySqlCommand("SELECT   TripInfo.Sno, TripInfo.DCNo, ProductInfo.productid, Round(SUM(ProductInfo.Qty),2) AS DeliveryQty, SUM(ProductInfo.UnitPrice * ProductInfo.Qty) AS salevalue, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode, TripInfo.BranchID, TripInfo.BranchName FROM (SELECT tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode, dispatch.BranchID, branchdata_1.BranchName FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno INNER JOIN branchdata branchdata_1 ON dispatch.BranchID = branchdata_1.sno WHERE (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT  ProductName, UnitPrice, Sno, Qty, productid FROM  (SELECT  productsdata.UnitPrice, productsdata.sno AS productid, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno WHERE  (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno GROUP BY TripInfo.BranchID");
-    //            cmd.Parameters.AddWithValue("@branch", BranchId);
-    //            cmd.Parameters.AddWithValue("@d1", GetLowDate(FromDate).AddDays(-1));
-    //            cmd.Parameters.AddWithValue("@d2", GetHighDate(ToDate).AddDays(-1));
-    //            dtLastMonth = vdbmngr.SelectQuery(cmd).Tables[0];
-
-
-
-    //            cmd = new MySqlCommand("SELECT   TripInfo.Sno, TripInfo.DCNo, ProductInfo.productid, Round(SUM(ProductInfo.Qty),2) AS DeliveryQty, SUM(ProductInfo.UnitPrice * ProductInfo.Qty) AS salevalue, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode, TripInfo.BranchID, TripInfo.BranchName FROM (SELECT tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode, dispatch.BranchID, branchdata_1.BranchName FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno INNER JOIN branchdata branchdata_1 ON dispatch.BranchID = branchdata_1.sno WHERE (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT  ProductName, UnitPrice, Sno, Qty, productid FROM  (SELECT  productsdata.UnitPrice, productsdata.sno AS productid, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno WHERE  (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno GROUP BY TripInfo.BranchID");
-    //            cmd.Parameters.AddWithValue("@branch", BranchId);
-    //            cmd.Parameters.AddWithValue("@d1", GetLowDate(FromDate).AddDays(-1));
-    //            cmd.Parameters.AddWithValue("@d2", GetHighDate(ToDate).AddDays(-1));
-    //            dtLastYear = vdbmngr.SelectQuery(cmd).Tables[0];
-    //        }
-    //        else
-    //        {
-    //            cmd = new MySqlCommand("SELECT    modifiedroutes.RouteName As BranchName, Round(SUM(indents_subtable.DeliveryQty),0) AS DeliveryQty, Round(SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost),2) AS salevalue, modifiedroutes.Sno AS BranchID, modifidroutssubtab.BranchID AS bid, branchdata_1.sno AS BranchID, branchdata_2.SalesType AS SalesTypeId FROM  branchdata branchdata_2 RIGHT OUTER JOIN branchdata INNER JOIN branchdata branchdata_1 ON branchdata.sno = branchdata_1.sno INNER JOIN modifiedroutes ON branchdata.sno = modifiedroutes.BranchID INNER JOIN (SELECT  RefNo, Rank, LevelType, BranchID, CDate, EDate FROM  modifiedroutesubtable WHERE  (EDate IS NULL) AND (CDate <= @starttime) OR (EDate > @starttime) AND (CDate <= @starttime)) modifidroutssubtab ON modifiedroutes.Sno = modifidroutssubtab.RefNo ON  branchdata_2.sno = modifidroutssubtab.BranchID LEFT OUTER JOIN indents_subtable INNER JOIN (SELECT  IndentNo, I_date, Branch_id FROM  indents WHERE  (I_date BETWEEN @starttime AND @endtime)) indt ON indents_subtable.IndentNo = indt.IndentNo ON  modifidroutssubtab.BranchID = indt.Branch_id INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE  (branchdata.SalesType IS NOT NULL) AND (indents_subtable.DeliveryQty <> 0) AND (modifiedroutes.BranchID = @BranchID) GROUP BY modifiedroutes.Sno ORDER BY branchdata_2.RouteID, branchdata_2.RouteID");
-    //            cmd.Parameters.AddWithValue("@BranchID", BranchId);
-    //            cmd.Parameters.AddWithValue("@starttime", GetLowDate(FromDate).AddDays(-1));
-    //            cmd.Parameters.AddWithValue("@endtime", GetHighDate(ToDate).AddDays(-1));
-    //            dtYesterDay = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //            cmd = new MySqlCommand("SELECT    modifiedroutes.RouteName As BranchName, Round(SUM(indents_subtable.DeliveryQty),0) AS DeliveryQty, Round(SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost),2) AS salevalue, modifiedroutes.Sno AS BranchID, modifidroutssubtab.BranchID AS bid, branchdata_1.sno AS BranchID, branchdata_2.SalesType AS SalesTypeId FROM  branchdata branchdata_2 RIGHT OUTER JOIN branchdata INNER JOIN branchdata branchdata_1 ON branchdata.sno = branchdata_1.sno INNER JOIN modifiedroutes ON branchdata.sno = modifiedroutes.BranchID INNER JOIN (SELECT  RefNo, Rank, LevelType, BranchID, CDate, EDate FROM  modifiedroutesubtable WHERE  (EDate IS NULL) AND (CDate <= @starttime) OR (EDate > @starttime) AND (CDate <= @starttime)) modifidroutssubtab ON modifiedroutes.Sno = modifidroutssubtab.RefNo ON  branchdata_2.sno = modifidroutssubtab.BranchID LEFT OUTER JOIN indents_subtable INNER JOIN (SELECT  IndentNo, I_date, Branch_id FROM  indents WHERE  (I_date BETWEEN @starttime AND @endtime)) indt ON indents_subtable.IndentNo = indt.IndentNo ON  modifidroutssubtab.BranchID = indt.Branch_id INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE  (branchdata.SalesType IS NOT NULL) AND (indents_subtable.DeliveryQty <> 0) AND (modifiedroutes.BranchID = @BranchID) GROUP BY modifiedroutes.Sno ORDER BY branchdata_2.RouteID, branchdata_2.RouteID");
-    //            cmd.Parameters.AddWithValue("@BranchID", BranchId);
-    //            cmd.Parameters.AddWithValue("@starttime", GetLowDate(FromDate).AddDays(-1));
-    //            cmd.Parameters.AddWithValue("@endtime", GetHighDate(ToDate).AddDays(-1));
-    //            dtLastWeak = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //            cmd = new MySqlCommand("SELECT    modifiedroutes.RouteName As BranchName, Round(SUM(indents_subtable.DeliveryQty),0) AS DeliveryQty, Round(SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost),2) AS salevalue, modifiedroutes.Sno AS BranchID, modifidroutssubtab.BranchID AS bid, branchdata_1.sno AS BranchID, branchdata_2.SalesType AS SalesTypeId FROM  branchdata branchdata_2 RIGHT OUTER JOIN branchdata INNER JOIN branchdata branchdata_1 ON branchdata.sno = branchdata_1.sno INNER JOIN modifiedroutes ON branchdata.sno = modifiedroutes.BranchID INNER JOIN (SELECT  RefNo, Rank, LevelType, BranchID, CDate, EDate FROM  modifiedroutesubtable WHERE  (EDate IS NULL) AND (CDate <= @starttime) OR (EDate > @starttime) AND (CDate <= @starttime)) modifidroutssubtab ON modifiedroutes.Sno = modifidroutssubtab.RefNo ON  branchdata_2.sno = modifidroutssubtab.BranchID LEFT OUTER JOIN indents_subtable INNER JOIN (SELECT  IndentNo, I_date, Branch_id FROM  indents WHERE  (I_date BETWEEN @starttime AND @endtime)) indt ON indents_subtable.IndentNo = indt.IndentNo ON  modifidroutssubtab.BranchID = indt.Branch_id INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE  (branchdata.SalesType IS NOT NULL) AND (indents_subtable.DeliveryQty <> 0) AND (modifiedroutes.BranchID = @BranchID) GROUP BY modifiedroutes.Sno ORDER BY branchdata_2.RouteID, branchdata_2.RouteID");
-    //            cmd.Parameters.AddWithValue("@BranchID", BranchId);
-    //            cmd.Parameters.AddWithValue("@starttime", GetLowDate(FromDate).AddDays(-1));
-    //            cmd.Parameters.AddWithValue("@endtime", GetHighDate(ToDate).AddDays(-1));
-    //            dtLastMonth = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //            cmd = new MySqlCommand("SELECT    modifiedroutes.RouteName As BranchName, Round(SUM(indents_subtable.DeliveryQty),0) AS DeliveryQty, Round(SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost),2) AS salevalue, modifiedroutes.Sno AS BranchID, modifidroutssubtab.BranchID AS bid, branchdata_1.sno AS BranchID, branchdata_2.SalesType AS SalesTypeId FROM  branchdata branchdata_2 RIGHT OUTER JOIN branchdata INNER JOIN branchdata branchdata_1 ON branchdata.sno = branchdata_1.sno INNER JOIN modifiedroutes ON branchdata.sno = modifiedroutes.BranchID INNER JOIN (SELECT  RefNo, Rank, LevelType, BranchID, CDate, EDate FROM  modifiedroutesubtable WHERE  (EDate IS NULL) AND (CDate <= @starttime) OR (EDate > @starttime) AND (CDate <= @starttime)) modifidroutssubtab ON modifiedroutes.Sno = modifidroutssubtab.RefNo ON  branchdata_2.sno = modifidroutssubtab.BranchID LEFT OUTER JOIN indents_subtable INNER JOIN (SELECT  IndentNo, I_date, Branch_id FROM  indents WHERE  (I_date BETWEEN @starttime AND @endtime)) indt ON indents_subtable.IndentNo = indt.IndentNo ON  modifidroutssubtab.BranchID = indt.Branch_id INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE  (branchdata.SalesType IS NOT NULL) AND (indents_subtable.DeliveryQty <> 0) AND (modifiedroutes.BranchID = @BranchID) GROUP BY modifiedroutes.Sno ORDER BY branchdata_2.RouteID, branchdata_2.RouteID");
-    //            cmd.Parameters.AddWithValue("@BranchID", BranchId);
-    //            cmd.Parameters.AddWithValue("@starttime", GetLowDate(FromDate).AddDays(-1));
-    //            cmd.Parameters.AddWithValue("@endtime", GetHighDate(ToDate).AddDays(-1));
-    //            dtLastYear = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //        }
-    //        List<LineChartValuesclass> LineChartValuelist = new List<LineChartValuesclass>();
-
-    //        dtble.Merge(dtYesterDay);
-    //        dtble.Merge(dtLastWeak);
-    //        dtble.Merge(dtLastMonth);
-    //        dtble.Merge(dtLastYear);
-
-
-
-
-    //        foreach (DataRow dr in dtble.Rows)
-    //        {
-    //            LineChartValuesclass getLineChart = new LineChartValuesclass();
-    //            //double tempqty = 0;
-    //            //double.TryParse(dr["DeliveryQty"].ToString(), out tempqty); ;
-    //            //double DeliveryQty = Math.Round(tempqty, 2);
-    //            //getLineChart.dispatchqty = DeliveryQty.ToString(); ;
-    //            getLineChart.BranchName = dr["BranchName"].ToString(); ;
-    //            getLineChart.BranchID = dr["BranchID"].ToString();
-    //            getLineChart.type = type;
-    //            if (dr["DeliveryQty"].ToString() != "")
-    //            {
-    //                CultureInfo hindi = new CultureInfo("hi-IN");
-    //                decimal DeliveryQty = decimal.Parse(dr["DeliveryQty"].ToString(), CultureInfo.InvariantCulture);
-    //                getLineChart.dispatchqty = string.Format(hindi, "{0:#,#}", DeliveryQty);
-    //            }
-    //            else
-    //            {
-    //                getLineChart.dispatchqty = "0";
-    //            }
-    //            LineChartValuelist.Add(getLineChart);
-    //        }
-    //        string respnceString = GetJson(LineChartValuelist);
-    //        context.Response.Write(respnceString);
-    //    }
-    //    catch
-    //    {
-    //    }
-    //}
+    
     private void branchwise_Dispatch_milk_qty(HttpContext context)
     {
         try
@@ -53070,45 +52864,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(Response);
         }
     }
-    //public class datewisesalevaluedashboard
-    //{
-    //    public string parlorid { get; set; }
-    //    public string parlorname { get; set; }
-    //    public string cmpid { get; set; }
-    //    public string LogDate { get; set; }
-    //    public string salevalue { get; set; }
-    //    public string week1 { get; set; }
-    //    public string week2 { get; set; }
-    //    public string week3 { get; set; }
-    //    public string week4 { get; set; }
-    //    public string week5 { get; set; }
-
-    //    public string linkval1 { get; set; }
-    //    public string linkval2 { get; set; }
-    //    public string linkval3 { get; set; }
-    //    public string linkval4 { get; set; }
-
-    //    public string linkval5 { get; set; }
-
-
-    //    public string doe { get; set; }
-    //    public string Time_diff { get; set; }
-    //}
-    //public class Allbiomertcdates
-    //{
-    //    public string Betweendates { get; set; }
-    //    public string Empid { get; set; }
-    //    public string Employeename { get; set; }
-    //    public string designation { get; set; }
-    //    public string branchname { get; set; }
-    //}
-    //public class Employeebiomtericattendencedates 
-    //{
-    //    public List<Allbiomertcdates> Allbiomertcdates { get; set; }
-    //    public List<datewisesalevaluedashboard> salevalue { get; set; }
-
-    //}
-
+    
 
     public string indent_date { get; set; }
     public string fromdate { get; set; }
@@ -54001,118 +53757,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         }
     }
-
-    //private void get_sms_details(HttpContext context)
-    //{
-    //    try
-    //    {
-    //        vdbmngr = new VehicleDBMgr();
-    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-    //        cmd = new MySqlCommand("SELECT DISTINCT (msgtype) as msgtype, mobileno FROM  smsinfo");
-    //        DataTable dtmsgtype = vdbmngr.SelectQuery(cmd).Tables[0];
-    //        cmd = new MySqlCommand("SELECT sno, agentid, branchid, mainbranch, msg, mobileno, msgtype, branchname, doe  FROM smsinfo WHERE (doe BETWEEN @d1 AND @d2)");
-    //        cmd.Parameters.AddWithValue("@d1", GetLowDate(ServerDateCurrentdate).AddDays(-1));
-    //        cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate).AddDays(-1));
-    //        DataTable dtmsgdata = vdbmngr.SelectQuery(cmd).Tables[0];
-    //        DataTable Report = new DataTable();
-    //        Report.Columns.Add("msgtype");
-    //        Report.Columns.Add("mobileno");
-    //        Report.Columns.Add("Empname");
-    //        cmd = new MySqlCommand("SELECT DISTINCT (EmpName) EmpName, Mobno  FROM empmanage WHERE  (Branch in ('172', '174', '271', '285', '306')) and (leveltype in ('MessageSend', 'MAdmin'))");
-    //        DataTable dtempdata = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //        List<addressmaster> addresslist = new List<addressmaster>();
-    //        foreach (DataRow dr in dtempdata.Rows)
-    //        {
-    //            string mobileno = dr["Mobno"].ToString();
-    //            foreach (DataRow drm in dtmsgtype.Select("mobileno='" + mobileno + "'"))
-    //            {
-    //                addressmaster obj1 = new addressmaster();
-    //                obj1.msgtype = drm["msgtype"].ToString();
-    //                obj1.mobileno = drm["mobileno"].ToString();
-    //                obj1.Empname = dr["EmpName"].ToString();
-    //                addresslist.Add(obj1);
-    //            }
-    //        }
-    //        string response = GetJson(addresslist);
-    //        context.Response.Write(response);
-    //    }
-    //    catch
-    //    {
-    //    }
-    //}
-
-    //private void get_smsemp_details(HttpContext context)
-    //{
-    //    try
-    //    {
-    //        vdbmngr = new VehicleDBMgr();
-    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-    //        DataTable Report = new DataTable();
-    //        Report.Columns.Add("mobileno");
-    //        Report.Columns.Add("Empname");
-    //        cmd = new MySqlCommand("SELECT  EmpName, Mobno, sno  FROM empmanage WHERE (sno IN ('679', '717', '52', '110', '832', '800', '232', '713', '716', '715', '803', '48', '268'))  ORDER BY sno");
-    //        DataTable dtempdata = vdbmngr.SelectQuery(cmd).Tables[0];
-    //        List<addressmaster> addresslist = new List<addressmaster>();
-    //        int i = 0;
-    //        foreach (DataRow dr in dtempdata.Rows)
-    //        {
-    //            i = i + 1;
-    //            string mobileno = dr["Mobno"].ToString();
-    //            addressmaster obj1 = new addressmaster();
-    //            obj1.sno = dr["sno"].ToString();
-    //            obj1.mobileno = dr["Mobno"].ToString();
-    //            obj1.Empname = dr["EmpName"].ToString();
-    //            addresslist.Add(obj1);
-    //        }
-    //        string response = GetJson(addresslist);
-    //        context.Response.Write(response);
-    //    }
-    //    catch
-    //    {
-    //    }
-    //}
-
-    //private void get_smstype_details(HttpContext context)
-    //{
-    //    try
-    //    {
-    //        vdbmngr = new VehicleDBMgr();
-    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-    //        DataTable Report = new DataTable();
-    //        Report.Columns.Add("mobileno");
-    //        Report.Columns.Add("Empname");
-    //        cmd = new MySqlCommand("SELECT DISTINCT (msgtype) as msgtype FROM  smsinfo");
-    //        DataTable dtmsgtype = vdbmngr.SelectQuery(cmd).Tables[0];
-    //        List<addressmaster> addresslist = new List<addressmaster>();
-    //        int j = 0;
-    //        foreach (DataRow dr in dtmsgtype.Rows)
-    //        {
-    //            j = j + 1;
-    //           // string mobileno = dr["mobileno"].ToString();
-    //            addressmaster obj1 = new addressmaster();
-    //            obj1.mobileno = j.ToString();
-    //            obj1.msgtype = dr["msgtype"].ToString();
-    //            addresslist.Add(obj1);
-    //        }
-    //        string response = GetJson(addresslist);
-    //        context.Response.Write(response);
-    //    }
-    //    catch
-    //    {
-    //    }
-    //}
-
-
-    //class sms
-    //{
-    //    public string operation { set; get; }
-    //    public string BranchID { set; get; }
-    //    public string imagecode { set; get; }
-    //    public List<employelists> employelist { set; get; }
-    //    public List<msgtypelists> msgtypelist { set; get; }
-    //    public List<locationlists> locationlist { set; get; }
-    //}
+    
     public class employelists
     {
         public string employee { set; get; }
@@ -54126,108 +53771,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string soid { set; get; }
         public string soidname { get; set; }
     }
-    //private void btnSavesmsClick(HttpContext context)
-    //{
-    //    try
-    //    {
-    //        vdbmngr = new VehicleDBMgr();
-    //        var js = new JavaScriptSerializer();
-    //        var title1 = context.Request.Params[1];
-    //        sms obj = js.Deserialize<sms>(title1);
-    //        string btnSave = "Save";
-    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-    //        if (btnSave == "Save")
-    //        {
-    //            cmd = new MySqlCommand("insert into smstransinfo (doe,smstype)values(@doe,@smstype)");
-    //            cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-    //            cmd.Parameters.AddWithValue("@smstype", "MsgSend");
-    //            vdbmngr.insert(cmd);
-    //            string Sno = "";
-    //            cmd = new MySqlCommand("SELECT MAX(sno) as Sno FROM  smstransinfo");
-    //            DataTable dt = vdbmngr.SelectQuery(cmd).Tables[0];
-    //            if (dt.Rows.Count > 0)
-    //            {
-    //                Sno = dt.Rows[0]["sno"].ToString();
-    //            }
-
-    //            foreach (employelists o in obj.employelist)
-    //            {
-    //                string empid = o.employee;
-    //                cmd = new MySqlCommand("insert into smsemp (refno,empid)values(@refno,@empid)");
-    //                cmd.Parameters.AddWithValue("@refno", Sno);
-    //                cmd.Parameters.AddWithValue("@empid", empid);
-    //                vdbmngr.insert(cmd);
-    //            }
-    //            foreach (msgtypelists msgs in obj.msgtypelist)
-    //            {
-    //                string msgtype = msgs.msgtype;
-    //                cmd = new MySqlCommand("insert into smsmsgtype (refno,msgtype)values(@refno,@msgtype)");
-    //                cmd.Parameters.AddWithValue("@refno", Sno);
-    //                cmd.Parameters.AddWithValue("@msgtype", msgtype);
-    //                vdbmngr.insert(cmd);
-    //            }
-    //            foreach (locationlists loc in obj.locationlist)
-    //            {
-    //                string soid = loc.soid;
-    //                cmd = new MySqlCommand("insert into smslocation (refno,soid, soidname)values(@refno,@soid, @soidname)");
-    //                cmd.Parameters.AddWithValue("@refno", Sno);
-    //                cmd.Parameters.AddWithValue("@soid", soid);
-    //                cmd.Parameters.AddWithValue("@soidname", loc.soidname);
-    //                vdbmngr.insert(cmd);
-    //            }
-    //            var jsonSerializer = new JavaScriptSerializer();
-    //            var jsonString = String.Empty;
-    //            context.Request.InputStream.Position = 0;
-    //            using (var inputStream = new StreamReader(context.Request.InputStream))
-    //            {
-    //                jsonString = inputStream.ReadToEnd();
-    //            }
-    //            List<string> MsgList = new List<string>();
-    //            string msg = "Data Successfully Saved";
-    //            MsgList.Add(msg);
-    //            string response = GetJson(MsgList);
-    //            context.Response.Write(response);
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        List<string> MsgList = new List<string>();
-    //        string msg = ex.ToString();
-    //        MsgList.Add(msg);
-    //        string response = GetJson(MsgList);
-    //        context.Response.Write(response);
-    //    }
-    //}
-
-    //private void get_smstransmsgtype_details(HttpContext context)
-    //{
-    //    try
-    //    {
-    //        vdbmngr = new VehicleDBMgr();
-    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-    //        DataTable Report = new DataTable();
-    //        Report.Columns.Add("mobileno");
-    //        Report.Columns.Add("Empname");
-    //        cmd = new MySqlCommand("SELECT DISTINCT (msgtype) as msgtype FROM  smsinfo");
-    //        DataTable dtmsgtype = vdbmngr.SelectQuery(cmd).Tables[0];
-    //        List<addressmaster> addresslist = new List<addressmaster>();
-    //        int j = 0;
-    //        foreach (DataRow dr in dtmsgtype.Rows)
-    //        {
-    //            j = j + 1;
-    //            // string mobileno = dr["mobileno"].ToString();
-    //            addressmaster obj1 = new addressmaster();
-    //            obj1.mobileno = j.ToString();
-    //            obj1.msgtype = dr["msgtype"].ToString();
-    //            addresslist.Add(obj1);
-    //        }
-    //        string response = GetJson(addresslist);
-    //        context.Response.Write(response);
-    //    }
-    //    catch
-    //    {
-    //    }
-    //}
+   
     public class collectiontype
     {
         public string type { get; set; }
