@@ -231,7 +231,7 @@
                 return false;
             }
 
-            GetBranchProducts(ddlSalesOffice);
+            GetBranchProducts(ddlBranchName);
             GetBranchInventory(ddlSalesOffice);
         }
         function GetBranchProducts(ddlBranchName) {

@@ -3728,7 +3728,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                     cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
                     cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
                     DataTable dtAgentDesp = vdm.SelectQuery(cmd).Tables[0];
-                    if (SalesOfficeID == "158" || SalesOfficeID == "1801")
+                    if (SalesOfficeID == "7" || SalesOfficeID == "1801")
                     {
                         cmd = new MySqlCommand("SELECT dispatch.DispName, dispatch.sno, dispatch.BranchID, tripdata.I_Date,tripdata.sno as TripSno, dispatch.DispMode FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (tripdata.I_Date BETWEEN @d1 AND @d2) AND (dispatch.DispType = @Agent OR dispatch.DispType = @SM) AND (dispatch.Branch_Id = @BranchID) and (tripdata.Status<>'C')  GROUP BY tripdata.sno");
                         cmd.Parameters.AddWithValue("@Agent", "AGENT");
