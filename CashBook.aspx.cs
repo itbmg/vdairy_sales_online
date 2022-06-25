@@ -219,7 +219,7 @@ public partial class CashBook : System.Web.UI.Page
             RouteReport.Columns.Add("DispName");
             RouteReport.Columns.Add("Reciept No");
             RouteReport.Columns.Add("Received Amount").DataType = typeof(Double);
-            if (BranchID == "172" || BranchID == "158")
+            if (BranchID == "172" || BranchID == "7")
             {
             }
             else
@@ -312,7 +312,7 @@ public partial class CashBook : System.Web.UI.Page
             {
                 cmd = new MySqlCommand("SELECT branchdata.BranchName, collections.AmountPaid, collections.ReceiptNo FROM collections INNER JOIN branchdata ON collections.Branchid = branchdata.sno INNER JOIN empmanage ON collections.EmpID = empmanage.Sno WHERE (collections.tripId IS NULL) AND (collections.PaidDate BETWEEN @d1 AND @d2) AND (collections.PaymentType = 'Cash') AND (branchdata.SalesType <> 21) AND (branchdata.SalesType <> 21) AND  (empmanage.Branch = @BranchID)");
             }
-            else if (BranchID == "158")
+            else if (BranchID == "7")
             {
                 cmd = new MySqlCommand("SELECT branchdata.BranchName, cashreceipts.AmountPaid,cashreceipts.PaymentStatus, cashreceipts.Receipt AS ReceiptNo FROM branchdata INNER JOIN cashreceipts ON branchdata.sno = cashreceipts.AgentID WHERE (branchdata.SalesType <> 21) AND (branchdata.SalesType <> 21) AND (cashreceipts.DOE BETWEEN @d1 AND @d2) AND (cashreceipts.BranchId = @BranchID)  order by ReceiptNo");
             }
@@ -338,7 +338,7 @@ public partial class CashBook : System.Web.UI.Page
                     newrow["DispName"] = dr["BranchName"].ToString();
                     newrow["Reciept No"] = dr["ReceiptNo"].ToString();
                     string Amount = dr["AmountPaid"].ToString();
-                    if (BranchID == "158")
+                    if (BranchID == "7")
                     {
                         string PaymentStatus = dr["PaymentStatus"].ToString();
 
@@ -595,7 +595,7 @@ public partial class CashBook : System.Web.UI.Page
             Session["IOUReport"] = IOUReport;
 
             double TotNetAmount = 0;
-            if (BranchID == "158")
+            if (BranchID == "7")
             {
                 DiffPanel.Visible = false;
                 hidePanel.Visible = false;
