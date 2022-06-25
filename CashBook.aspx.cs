@@ -595,7 +595,7 @@ public partial class CashBook : System.Web.UI.Page
             Session["IOUReport"] = IOUReport;
 
             double TotNetAmount = 0;
-            if (BranchID == "7")
+            if (BranchID == "158")
             {
                 DiffPanel.Visible = false;
                 hidePanel.Visible = false;
