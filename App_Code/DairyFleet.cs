@@ -43890,7 +43890,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     }
                     else
                     {
-                        BID = "660";
+                        BID = "702";
                         cmd.Parameters.AddWithValue("@BranchID", BID);
                     }
                     RouteID = vdbmngr.insertScalar(cmd);
