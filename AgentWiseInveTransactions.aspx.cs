@@ -122,7 +122,7 @@ public partial class AgentWiseInveTransactions : System.Web.UI.Page
             string BranchID = ddlSalesOffice.SelectedValue;
             if (BranchID == "572")
             {
-                BranchID = "158";
+                BranchID = "7";
             }
             cmd = new MySqlCommand("SELECT branchdata.sno, branchdata.BranchName, branchroutes.RouteName,branchroutes.sno as RouteSno FROM branchdata INNER JOIN branchroutesubtable ON branchdata.sno = branchroutesubtable.BranchID INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchroutes ON branchroutesubtable.RefNo = branchroutes.Sno WHERE (branchmappingtable.SuperBranch = @bid) AND (branchdata.SalesType <> '21') AND (branchdata.flag = 1)");
             cmd.Parameters.AddWithValue("@bid", BranchID);
@@ -704,7 +704,7 @@ public partial class AgentWiseInveTransactions : System.Web.UI.Page
             string SalesOfficeId = ddlSalesOffice.SelectedValue;
             if (SalesOfficeId == "572")
             {
-                SalesOfficeId = "158";
+                SalesOfficeId = "7";
             }
             DateTime fromdate = new DateTime();
             string[] datestrig = txtdate.Text.Split(' ');

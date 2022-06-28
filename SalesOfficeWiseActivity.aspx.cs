@@ -142,7 +142,7 @@ public partial class SalesOfficeWiseActivity : System.Web.UI.Page
             string BranchID = ddlSalesOffice.SelectedValue;
             if (BranchID == "572")
             {
-                BranchID = "158";
+                BranchID = "7";
             }
             cmd = new MySqlCommand("SELECT ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, ROUND(SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost), 2) AS salevalue, products_category.Categoryname, productsdata.ProductName, DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate FROM indents INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchmappingtable ON indents.Branch_id = branchmappingtable.SubBranch WHERE (indents.I_date BETWEEN @d1 AND @d2) AND (branchmappingtable.SuperBranch = @brnchid) GROUP BY productsdata.ProductName, products_category.Categoryname, IndentDate ORDER BY indents.I_date");
             cmd.Parameters.AddWithValue("@brnchid", BranchID);

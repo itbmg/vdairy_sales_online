@@ -222,7 +222,7 @@ public partial class GatePassReport : System.Web.UI.Page
                 {
                     DcNo = "K" + DcNo;
                 }
-                else if (BranchId == "158")
+                else if (BranchId == "7")
                 {
                     DcNo = "W" + DcNo;
                 }

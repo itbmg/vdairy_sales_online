@@ -117,7 +117,7 @@ public partial class StockClosing : System.Web.UI.Page
             string SalesOfficeId = ddlSalesOffice.SelectedValue;
             if (SalesOfficeId == "472")
             {
-                SalesOfficeId = "158";
+                SalesOfficeId = "7";
             }
             cmd = new MySqlCommand("SELECT  branchroutes.Sno as RouteID,branchroutes.RouteName,branchdata.Sno as AgentCode,  branchdata.BranchName, branchaccounts.Amount, branchdata.SalesType, branchdata.CollectionType, inventory_monitor.Inv_Sno,invmaster.InvName, inventory_monitor.Qty FROM  branchroutes INNER JOIN branchroutesubtable ON branchroutes.Sno = branchroutesubtable.RefNo INNER JOIN branchdata ON branchroutesubtable.BranchID = branchdata.sno INNER JOIN branchaccounts ON branchdata.sno = branchaccounts.BranchId INNER JOIN inventory_monitor ON branchaccounts.BranchId = inventory_monitor.BranchId INNER JOIN invmaster ON inventory_monitor.Inv_Sno = invmaster.sno WHERE (branchroutes.BranchID = @BranchID) GROUP BY branchroutes.RouteName, branchdata.BranchName,inventory_monitor.Inv_Sno");
             cmd.Parameters.AddWithValue("@BranchID", SalesOfficeId);
@@ -249,7 +249,7 @@ public partial class StockClosing : System.Web.UI.Page
                 string SalesOfficeId = ddlSalesOffice.SelectedValue;
                 if (SalesOfficeId == "472")
                 {
-                    SalesOfficeId = "158";
+                    SalesOfficeId = "7";
                 }
                 DataTable dtInvReport = (DataTable)Session["DtStockInv"];
                 //DataTable dtProReport = (DataTable)Session["DtStockPro"];

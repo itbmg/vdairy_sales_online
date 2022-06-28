@@ -136,7 +136,7 @@ public partial class SalesOfficeCollection : System.Web.UI.Page
             string BranchID = ddlSalesOffice.SelectedValue;
             if (BranchID == "572")
             {
-                BranchID = "158";
+                BranchID = "7";
             }
             string Status = ddlStatus.SelectedValue;
             DataTable dtroutecollection = new DataTable();

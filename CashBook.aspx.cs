@@ -595,65 +595,65 @@ public partial class CashBook : System.Web.UI.Page
             Session["IOUReport"] = IOUReport;
 
             double TotNetAmount = 0;
-            if (BranchID == "158")
+            if (BranchID == "7")
             {
-                DiffPanel.Visible = false;
-                hidePanel.Visible = false;
+                //DiffPanel.Visible = false;
+                //hidePanel.Visible = false;
 
-                cmd = new MySqlCommand("  SELECT  sno,DATE_FORMAT(doe, '%d %b %y') AS EntryDate, paymenttype, receiptno, voucherid, branchid, amount,  remarks FROM  zerocashpaybles WHERE (branchid = @BranchID)  AND (doe BETWEEN @d1 AND @d2) AND (paymenttype is NULL)  ORDER BY DOE");
-                cmd.Parameters.AddWithValue("@BranchID", Session["branch"].ToString());
-                cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-                cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
-                DataTable dtZeroOpp = vdm.SelectQuery(cmd).Tables[0];
-                double TotalZeroOpp = 0;
-                double ZeroOpp = 0;
-                if (dtZeroOpp.Rows.Count > 0)
-                {
-                    string OppAmount = dtZeroOpp.Rows[0]["amount"].ToString();
-                    double.TryParse(OppAmount, out ZeroOpp);
-                }
-                TotalZeroOpp = OppBal + ZeroOpp;
-                TotalZeroOpp = Math.Round(TotalZeroOpp, 0);
-                lblZeroOppBal.Text = TotalZeroOpp.ToString();
-                cmd = new MySqlCommand("  SELECT  sno,DATE_FORMAT(doe, '%d %b %y') AS EntryDate, paymenttype, receiptno, voucherid, branchid, Sum(amount) as amount,  remarks,Name FROM  zerocashpaybles WHERE (branchid = @BranchID) AND (paymenttype = @Type) AND (doe BETWEEN @d1 AND @d2) Group By DATE(doe) ORDER BY DOE");
-                cmd.Parameters.AddWithValue("@Type", "Receipt");
-                cmd.Parameters.AddWithValue("@BranchID", Session["branch"].ToString());
-                cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
-                cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate));
-                DataTable dtReceipt = vdm.SelectQuery(cmd).Tables[0];
-                double TotalReceipt = 0;
-                double ZeroReceipt = 0;
-                if (dtReceipt.Rows.Count > 0)
-                {
-                    string ReceiptAmount = dtReceipt.Rows[0]["amount"].ToString();
-                    double.TryParse(ReceiptAmount, out ZeroReceipt);
-                }
-                TotalReceipt = val + ZeroReceipt;
-                TotalReceipt = Math.Round(TotalReceipt, 0);
-                lblZeroReceipts.Text = TotalReceipt.ToString();
+                //cmd = new MySqlCommand("  SELECT  sno,DATE_FORMAT(doe, '%d %b %y') AS EntryDate, paymenttype, receiptno, voucherid, branchid, amount,  remarks FROM  zerocashpaybles WHERE (branchid = @BranchID)  AND (doe BETWEEN @d1 AND @d2) AND (paymenttype is NULL)  ORDER BY DOE");
+                //cmd.Parameters.AddWithValue("@BranchID", Session["branch"].ToString());
+                //cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+                //cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
+                //DataTable dtZeroOpp = vdm.SelectQuery(cmd).Tables[0];
+                //double TotalZeroOpp = 0;
+                //double ZeroOpp = 0;
+                //if (dtZeroOpp.Rows.Count > 0)
+                //{
+                //    string OppAmount = dtZeroOpp.Rows[0]["amount"].ToString();
+                //    double.TryParse(OppAmount, out ZeroOpp);
+                //}
+                //TotalZeroOpp = OppBal + ZeroOpp;
+                //TotalZeroOpp = Math.Round(TotalZeroOpp, 0);
+                //lblZeroOppBal.Text = TotalZeroOpp.ToString();
+                //cmd = new MySqlCommand("  SELECT  sno,DATE_FORMAT(doe, '%d %b %y') AS EntryDate, paymenttype, receiptno, voucherid, branchid, Sum(amount) as amount,  remarks,Name FROM  zerocashpaybles WHERE (branchid = @BranchID) AND (paymenttype = @Type) AND (doe BETWEEN @d1 AND @d2) Group By DATE(doe) ORDER BY DOE");
+                //cmd.Parameters.AddWithValue("@Type", "Receipt");
+                //cmd.Parameters.AddWithValue("@BranchID", Session["branch"].ToString());
+                //cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
+                //cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate));
+                //DataTable dtReceipt = vdm.SelectQuery(cmd).Tables[0];
+                //double TotalReceipt = 0;
+                //double ZeroReceipt = 0;
+                //if (dtReceipt.Rows.Count > 0)
+                //{
+                //    string ReceiptAmount = dtReceipt.Rows[0]["amount"].ToString();
+                //    double.TryParse(ReceiptAmount, out ZeroReceipt);
+                //}
+                //TotalReceipt = val + ZeroReceipt;
+                //TotalReceipt = Math.Round(TotalReceipt, 0);
+                //lblZeroReceipts.Text = TotalReceipt.ToString();
 
-                cmd = new MySqlCommand("  SELECT  sno,DATE_FORMAT(doe, '%d %b %y') AS EntryDate, paymenttype, receiptno, voucherid, branchid, Sum(amount) as amount,  remarks,Name FROM  zerocashpaybles WHERE (branchid = @BranchID) AND (paymenttype = @Type) AND (doe BETWEEN @d1 AND @d2) Group By DATE(doe) ORDER BY DOE");
-                cmd.Parameters.AddWithValue("@Type", "Payment");
-                cmd.Parameters.AddWithValue("@BranchID", Session["branch"].ToString());
-                cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
-                cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate));
-                DataTable dtPayment = vdm.SelectQuery(cmd).Tables[0];
-                double TotalPayMent = 0;
-                double ZeroPayMent = 0;
-                if (dtPayment.Rows.Count > 0)
-                {
-                    string PayMentAmount = dtPayment.Rows[0]["amount"].ToString();
-                    double.TryParse(PayMentAmount, out ZeroPayMent);
-                }
-                TotalPayMent = valnewCash + ZeroPayMent;
-                TotalPayMent = Math.Round(TotalPayMent, 0);
-                lblZeroPayments.Text = TotalPayMent.ToString();
-                double TotAmount = 0;
-                TotAmount = TotalZeroOpp + TotalReceipt;
-                double TotCashAmount = 0;
-                TotCashAmount = TotAmount - TotalPayMent;
+                //cmd = new MySqlCommand("  SELECT  sno,DATE_FORMAT(doe, '%d %b %y') AS EntryDate, paymenttype, receiptno, voucherid, branchid, Sum(amount) as amount,  remarks,Name FROM  zerocashpaybles WHERE (branchid = @BranchID) AND (paymenttype = @Type) AND (doe BETWEEN @d1 AND @d2) Group By DATE(doe) ORDER BY DOE");
+                //cmd.Parameters.AddWithValue("@Type", "Payment");
+                //cmd.Parameters.AddWithValue("@BranchID", Session["branch"].ToString());
+                //cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
+                //cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate));
+                //DataTable dtPayment = vdm.SelectQuery(cmd).Tables[0];
+                //double TotalPayMent = 0;
+                //double ZeroPayMent = 0;
+                //if (dtPayment.Rows.Count > 0)
+                //{
+                //    string PayMentAmount = dtPayment.Rows[0]["amount"].ToString();
+                //    double.TryParse(PayMentAmount, out ZeroPayMent);
+                //}
+                //TotalPayMent = valnewCash + ZeroPayMent;
+                //TotalPayMent = Math.Round(TotalPayMent, 0);
+                //lblZeroPayments.Text = TotalPayMent.ToString();
+                //double TotAmount = 0;
+                //TotAmount = TotalZeroOpp + TotalReceipt;
+                //double TotCashAmount = 0;
+                //TotCashAmount = TotAmount - TotalPayMent;
 
-                TotNetAmount = TotCashAmount - valIOUCash;
+                //TotNetAmount = TotCashAmount - valIOUCash;
             }
             //cmd = new MySqlCommand("SELECT Branchid, AmountPaid,Denominations,EmpID FROM collections WHERE (Branchid = @BranchID) AND (PaidDate BETWEEN @d1 AND @d2)");
             cmd = new MySqlCommand("SELECT collections.Branchid, collections.AmountPaid, collections.Denominations, collections.VEmpID, collections.EmpID, empmanage.EmpName FROM collections INNER JOIN empmanage ON collections.EmpID = empmanage.Sno WHERE (collections.Branchid = @BranchID) AND (collections.PaidDate BETWEEN @d1 AND @d2)");

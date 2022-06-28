@@ -155,7 +155,7 @@ public partial class Tally_BiproductsSales : System.Web.UI.Page
                 string BranchID = ddlSalesOffice.SelectedValue;
                 if (BranchID == "572")
                 {
-                    BranchID = "158";
+                    BranchID = "7";
                 }
                 cmd.Parameters.AddWithValue("@BranchID", BranchID);
                 cmd.Parameters.AddWithValue("@SOID", BranchID);
@@ -270,7 +270,7 @@ public partial class Tally_BiproductsSales : System.Web.UI.Page
                                 //{
                                 if (ddlSalesOffice.SelectedValue == "572" || ddlSalesOffice.SelectedValue == "3")
                                 {
-                                    ddlSalesOffice.SelectedValue = "158";
+                                    ddlSalesOffice.SelectedValue = "7";
                                 }
                                 else if (ddlSalesOffice.SelectedValue == "4626")
                                 {
@@ -565,7 +565,7 @@ public partial class Tally_BiproductsSales : System.Web.UI.Page
                             {
                                 if (ddlSalesOffice.SelectedValue == "572" || ddlSalesOffice.SelectedValue == "3")
                                 {
-                                    ddlSalesOffice.SelectedValue = "158";
+                                    ddlSalesOffice.SelectedValue = "7";
                                 }
                                 else if (ddlSalesOffice.SelectedValue == "4626")
                                 {

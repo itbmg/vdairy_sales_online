@@ -129,7 +129,7 @@ public partial class CratesReport : System.Web.UI.Page
             string BranchID = ddlSalesOffice.SelectedValue;
             if (BranchID == "572")
             {
-                BranchID = "158";
+                BranchID = "7";
             }
             cmd = new MySqlCommand("SELECT branchdata.sno, branchdata.BranchName, branchroutes.RouteName FROM branchdata INNER JOIN branchroutesubtable ON branchdata.sno = branchroutesubtable.BranchID INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchroutes ON branchroutesubtable.RefNo = branchroutes.Sno WHERE (branchmappingtable.SuperBranch = @bid) AND (branchdata.SalesType <> '21') AND (branchdata.flag = 1)");
             cmd.Parameters.AddWithValue("@bid", BranchID);

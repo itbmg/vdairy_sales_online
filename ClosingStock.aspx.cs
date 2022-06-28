@@ -141,7 +141,7 @@ public partial class Test : System.Web.UI.Page
             string BranchID = ddlSalesOffice.SelectedValue;
             if (BranchID == "572")
             {
-                BranchID = "158";
+                BranchID = "7";
             }
             cmd = new MySqlCommand("SELECT productsdata.ProductName, products_category.Categoryname, productsdata.Units, productsdata.Qty FROM branchproducts INNER JOIN productsdata ON branchproducts.product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (branchproducts.branch_sno = @BranchID) ORDER BY branchproducts.Rank");
             cmd.Parameters.AddWithValue("@BranchID", BranchID);
@@ -693,7 +693,7 @@ public partial class Test : System.Web.UI.Page
             string BranchID = ddlSalesOffice.SelectedValue;
             if (BranchID == "572")
             {
-                BranchID = "158";
+                BranchID = "7";
             }
             cmd = new MySqlCommand("SELECT InvName, sno, Userdata_sno, flag, Qty FROM invmaster ORDER BY sno");
             cmd.Parameters.AddWithValue("@BranchID", BranchID);
@@ -1108,7 +1108,7 @@ public partial class Test : System.Web.UI.Page
             string BranchID = ddlSalesOffice.SelectedValue;
             if (BranchID == "572")
             {
-                BranchID = "158";
+                BranchID = "7";
             }
             imgShowHide.CommandArgument = "Hide";
             imgShowHide.ImageUrl = "~/images/minus.png";
@@ -2192,7 +2192,7 @@ public partial class Test : System.Web.UI.Page
             string SalesOfficeId = ddlSalesOffice.SelectedValue;
             if (SalesOfficeId == "572")
             {
-                SalesOfficeId = "158";
+                SalesOfficeId = "7";
             }
             string[] datestrig = txtdate.Text.Split(' ');
             if (datestrig.Length > 1)

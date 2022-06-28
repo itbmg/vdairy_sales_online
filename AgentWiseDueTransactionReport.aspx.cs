@@ -143,7 +143,7 @@ public partial class AgentWiseDueTransactionReport : System.Web.UI.Page
             string BranchID = ddlSalesOffice.SelectedValue;
             if (BranchID == "572")
             {
-                BranchID = "158";
+                BranchID = "7";
             }
             cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno, branchroutes.Sno AS routesno, branchroutes.RouteName FROM branchdata INNER JOIN branchdata branchdata_1 ON branchdata.sno = branchdata_1.sno INNER JOIN branchroutes ON branchdata.sno = branchroutes.BranchID WHERE (branchdata_1.SalesOfficeID = @SOID) AND (branchdata.SalesType IS NOT NULL) AND (branchroutes.flag <> 0) OR (branchdata.SalesType IS NOT NULL) AND (branchdata.sno = @BranchID) AND (branchroutes.flag <> 0) ORDER BY branchdata.sno");
             cmd.Parameters.AddWithValue("@SOID", BranchID);
@@ -530,7 +530,7 @@ public partial class AgentWiseDueTransactionReport : System.Web.UI.Page
                 string SalesOfficeId = ddlSalesOffice.SelectedValue;
                 if (SalesOfficeId == "572")
                 {
-                    SalesOfficeId = "158";
+                    SalesOfficeId = "7";
                 }
                 string[] datestrig = txtdate.Text.Split(' ');
                 if (datestrig.Length > 1)

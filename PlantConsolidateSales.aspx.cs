@@ -148,7 +148,7 @@ public partial class PlantConsolidateSales : System.Web.UI.Page
                 cmd.Parameters.AddWithValue("@d2", GetHighDate(todate.AddDays(-1)));
                 tempbranchindentsale = vdm.SelectQuery(cmd).Tables[0];
             }
-            else if (Session["branch"].ToString() == "158")
+            else if (Session["branch"].ToString() == "7")
             {
                 cmd = new MySqlCommand("SELECT   DATE_FORMAT(indents.I_date, '%d %b %y') AS I_date,branchdata.BranchName, ROUND(SUM(indents_subtable.DeliveryQty) ) AS DeliveryQty, ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty) ) AS salevalue, branchmappingtable.SuperBranch FROM branchmappingtable INNER JOIN branchdata ON branchmappingtable.SubBranch = branchdata.sno INNER JOIN branchmappingtable branchmappingtable_1 ON branchdata.sno = branchmappingtable_1.SuperBranch INNER JOIN branchdata branchdata_1 ON branchmappingtable_1.SubBranch = branchdata_1.sno INNER JOIN indents ON branchdata_1.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo WHERE  (indents.I_date BETWEEN @d1 AND @d2) AND (branchmappingtable.SuperBranch = @BranchID) AND (branchmappingtable.SubBranch NOT IN (159,4626)) GROUP BY branchmappingtable.SuperBranch,DATE(indents.I_date) ORDER BY I_date");
                 cmd.Parameters.AddWithValue("@BranchID", Session["branch"].ToString());

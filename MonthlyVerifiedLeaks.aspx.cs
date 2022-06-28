@@ -146,7 +146,7 @@ public partial class MonthlyVerifiedLeaks : System.Web.UI.Page
             string BranchID = ddlSalesOffice.SelectedValue;
             if (BranchID == "572")
             {
-                BranchID = "158";
+                BranchID = "7";
             }
 
             //cmd = new MySqlCommand("SELECT SUM(leakages.VLeaks) AS vleaks, SUM(leakages.VReturns) AS vreturns, SUM(leakages.TotalLeaks) AS totleaks, SUM(leakages.ReturnQty) AS returnqty,tripdata.Sno AS tripsno, tripdata.AssignDate AS AssignDate, tripdata.ReturnDCTime FROM triproutes INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno INNER JOIN leakages ON tripdata.Sno = leakages.TripID INNER JOIN productsdata ON leakages.ProductID = productsdata.sno INNER JOIN branchdata ON dispatch.BranchID = branchdata.sno WHERE (tripdata.AssignDate BETWEEN @d1 AND @d2) AND (branchdata.sno = @brnchid) GROUP BY tripdata.AssignDate ORDER BY AssignDate");

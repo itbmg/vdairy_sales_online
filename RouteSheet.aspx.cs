@@ -341,7 +341,7 @@ public partial class RouteSheet : System.Web.UI.Page
                             if (dr["Units"].ToString() == "gms")
                             {
                                 string branchid = Session["branch"].ToString();
-                                if (branchid == "158")
+                                if (branchid == "7")
                                 {
                                     if (dr["ProductName"].ToString() == "C-CURD100")
                                     {
@@ -359,7 +359,7 @@ public partial class RouteSheet : System.Web.UI.Page
                             if (dr["Units"].ToString() == "ml")
                             {
                                 string branchid = Session["branch"].ToString();
-                                if (branchid == "158")
+                                if (branchid == "7")
                                 {
                                     if (dr["ProductName"].ToString() == "CURD200")
                                     {

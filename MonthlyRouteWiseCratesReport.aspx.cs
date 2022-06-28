@@ -141,7 +141,7 @@ public partial class MonthlyRouteWiseCratesReport : System.Web.UI.Page
             string BranchID = ddlSalesOffice.SelectedValue;
             if (BranchID == "572")
             {
-                BranchID = "158";
+                BranchID = "7";
             }
             //cmd = new MySqlCommand("SELECT SUM(tripinvdata.Qty) AS issued, SUM(tripinvdata.Remaining) AS returnqty, invmaster.InvName, invmaster.sno, dispatch.sno AS dispatchsno, dispatch.DispName FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate FROM tripdata WHERE (I_Date BETWEEN @d1 AND @d2)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN tripinvdata ON tripdat.Sno = tripinvdata.Tripdata_sno INNER JOIN invmaster ON tripinvdata.invid = invmaster.sno WHERE (dispatch.Branch_Id = @brnchid) GROUP BY dispatch.sno, invmaster.sno");
             //cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));

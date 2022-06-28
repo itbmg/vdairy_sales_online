@@ -140,7 +140,7 @@ public partial class PlantSales : System.Web.UI.Page
             string BranchID = ddlSalesOffice.SelectedValue;
             if (BranchID == "572")
             {
-                BranchID = "158";
+                BranchID = "7";
             }
             if (ddlType.SelectedValue == "All")
             {

@@ -125,7 +125,7 @@ else
         if (PlantName == "172") {
             MaxSale = 100;
         }
-        if (PlantName == "158" || PlantName == "") {
+        if (PlantName == "7" || PlantName == "") {
             MaxSale = 80;
         }
         //            Getgauge();

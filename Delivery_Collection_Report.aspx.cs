@@ -3292,7 +3292,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
             string SalesOfficeID = ddlSalesOffice.SelectedValue;
             if (SalesOfficeID == "572")
             {
-                SalesOfficeID = "158";
+                SalesOfficeID = "7";
             }
             //cmd = new MySqlCommand("SELECT SUM(indents_subtable.DeliveryQty) AS DeliveryQty, indents_subtable.UnitCost, branchdata.BranchName,branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName FROM branchroutes INNER JOIN branchroutesubtable ON branchroutes.Sno = branchroutesubtable.RefNo INNER JOIN branchdata ON branchroutesubtable.BranchID = branchdata.sno INNER JOIN indents ON branchdata.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (branchroutes.BranchID = @BranchID) AND (branchdata.CollectionType <> 'DUE') AND (indents.I_date BETWEEN @starttime AND @endtime) GROUP BY prodsno, branchdata.sno ORDER BY branchdata.sno, prodsno");
             cmd = new MySqlCommand("SELECT  SUM(indents_subtable.DeliveryQty) AS DeliveryQty,productsdata.SubCat_sno, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) OR (modifiedroutes.BranchID = @BranchID) AND (branchdata.CollectionType <> 'DUE') AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) GROUP BY prodsno, branchdata.sno ORDER BY branchdata.sno, prodsno");
@@ -3750,7 +3750,7 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                     dtNEWDESP.Merge(dtDispnames);
                     dtDispnames = dtNEWDESP.Copy();
                     //old
-                    //if (SalesOfficeID == "158" || SalesOfficeID == "1801")
+                    //if (SalesOfficeID == "7" || SalesOfficeID == "1801")
                     //{
                     //    cmd = new MySqlCommand("SELECT dispatch.DispName, dispatch.sno, dispatch.BranchID, tripdata.I_Date,tripdata.sno as TripSno, dispatch.DispMode FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (tripdata.I_Date BETWEEN @d1 AND @d2) AND (dispatch.DispType = @Agent OR dispatch.DispType = @SM) AND (dispatch.Branch_Id = @BranchID) and (tripdata.Status<>'C')  GROUP BY tripdata.sno");
                     //    cmd.Parameters.AddWithValue("@Agent", "AGENT");
