@@ -268,7 +268,7 @@ public partial class Tally_BiproductsSales : System.Web.UI.Page
                             {
                                 //if (NoOfdays < 2)
                                 //{
-                                if (ddlSalesOffice.SelectedValue == "572" || ddlSalesOffice.SelectedValue == "458")
+                                if (ddlSalesOffice.SelectedValue == "572" || ddlSalesOffice.SelectedValue == "3")
                                 {
                                     ddlSalesOffice.SelectedValue = "158";
                                 }
@@ -563,7 +563,7 @@ public partial class Tally_BiproductsSales : System.Web.UI.Page
                             }
                             else
                             {
-                                if (ddlSalesOffice.SelectedValue == "572" || ddlSalesOffice.SelectedValue == "458")
+                                if (ddlSalesOffice.SelectedValue == "572" || ddlSalesOffice.SelectedValue == "3")
                                 {
                                     ddlSalesOffice.SelectedValue = "158";
                                 }

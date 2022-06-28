@@ -974,7 +974,7 @@ public partial class TotalDCReport : System.Web.UI.Page
                         {
                             DcNo = "VJD" + DcNo;
                         }
-                        else if (BranchId == "458")
+                        else if (BranchId == "3")
                         {
                             DcNo = "KHM" + DcNo;
                         }

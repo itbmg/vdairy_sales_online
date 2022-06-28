@@ -14517,7 +14517,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             string titlename = context.Session["TitleName"].ToString();
             string SOID = context.Request["SOID"]; 
 
-            if (SOID == "572" || SOID == "458")
+            if (SOID == "572" || SOID == "3")
             {
                 SOID = "158";
             }
@@ -15462,7 +15462,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             Report = new DataTable();
             string titlename = context.Session["TitleName"].ToString();
             string SOID = context.Request["SOID"];
-            if (SOID == "572" || SOID == "458")
+            if (SOID == "572" || SOID == "3")
             {
                 SOID = "158";
             }
@@ -38146,7 +38146,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 {
                     DcNo = "VJD" + DcNo;
                 }
-                else if (BranchId == "458")
+                else if (BranchId == "3")
                 {
                     DcNo = "KHM" + DcNo;
                 }
