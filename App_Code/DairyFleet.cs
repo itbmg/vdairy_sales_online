@@ -14519,7 +14519,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
             if (SOID == "572" || SOID == "3")
             {
-                SOID = "158";
+                SOID = "7";
             }
 
             string DcType = context.Request["DcType"];
