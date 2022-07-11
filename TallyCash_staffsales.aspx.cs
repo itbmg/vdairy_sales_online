@@ -185,7 +185,7 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
 
                         if (Session["branch"].ToString() == "7")
                         {
-                            string barnch = "660";
+                            string barnch = "702";
                             cmd.Parameters.AddWithValue("@BranchID", barnch);
                         }
                         else
