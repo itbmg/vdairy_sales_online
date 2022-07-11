@@ -22203,7 +22203,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             List<SoClass> Solist = new List<SoClass>();
             if (salestype == "Plant")
             {
-                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType) or (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType1) ");
+                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType) and (branchdata.flag<>0) or (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType1) and (branchdata.flag<>0) ");
                 cmd.Parameters.AddWithValue("@SuperBranch", BranchID);
                 cmd.Parameters.AddWithValue("@SalesType", "21");
                 cmd.Parameters.AddWithValue("@SalesType1", "26");
@@ -22215,7 +22215,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     GetSoClass.BranchName = dr["BranchName"].ToString();
                     Solist.Add(GetSoClass);
                 }
-                cmd = new MySqlCommand("SELECT BranchName, sno FROM  branchdata WHERE (sno = @BranchID)");
+                cmd = new MySqlCommand("SELECT BranchName, sno FROM  branchdata WHERE (sno = @BranchID) and (flag<>0)");
                 cmd.Parameters.AddWithValue("@BranchID", BranchID);
                 DataTable dtPlant = vdbmngr.SelectQuery(cmd).Tables[0];
                 foreach (DataRow dr in dtPlant.Rows)
@@ -22229,7 +22229,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             else
             {
                 //cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM  branchdata INNER JOIN branchdata branchdata_1 ON branchdata.sno = branchdata_1.sno WHERE (branchdata_1.SalesOfficeID = @SOID) OR (branchdata.sno = @BranchID)");
-                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno, branchdata.SalesType FROM branchdata INNER JOIN branchdata branchdata_1 ON branchdata.sno = branchdata_1.sno WHERE (branchdata_1.SalesOfficeID = @SOID) AND (branchdata.SalesType IS NOT NULL) OR (branchdata.sno = @BranchID) AND (branchdata.SalesType IS NOT NULL)");
+                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno, branchdata.SalesType FROM branchdata INNER JOIN branchdata branchdata_1 ON branchdata.sno = branchdata_1.sno WHERE (branchdata_1.SalesOfficeID = @SOID) AND (branchdata.SalesType IS NOT NULL) and (branchdata.flag<>0) OR (branchdata.sno = @BranchID) AND (branchdata.SalesType IS NOT NULL) and (branchdata.flag<>0)");
                 cmd.Parameters.AddWithValue("@SOID", BranchID);
                 cmd.Parameters.AddWithValue("@BranchID", BranchID);
                 DataTable dtRoutedata = vdbmngr.SelectQuery(cmd).Tables[0];
@@ -49098,7 +49098,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 dtBranch.Columns.Add("BranchName");
                 dtBranch.Columns.Add("sno");
 
-                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType)  ");
+                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType) and (branchdata.flag<>0) ");
                 cmd.Parameters.AddWithValue("@SuperBranch", context.Session["branch"]);
                 cmd.Parameters.AddWithValue("@SalesType", "21");
                 cmd.Parameters.AddWithValue("@SalesType1", "26");
@@ -49110,7 +49110,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     newrow["sno"] = dr["sno"].ToString();
                     dtBranch.Rows.Add(newrow);
                 }
-                cmd = new MySqlCommand("SELECT BranchName, sno FROM  branchdata WHERE (sno = @BranchID)");
+                cmd = new MySqlCommand("SELECT BranchName, sno FROM  branchdata WHERE (sno = @BranchID) and (flag<>0)");
                 cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"]);
                 DataTable dtPlant = vdbmngr.SelectQuery(cmd).Tables[0];
                 foreach (DataRow dr in dtPlant.Rows)
@@ -49120,7 +49120,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     newrow["sno"] = dr["sno"].ToString();
                     dtBranch.Rows.Add(newrow);
                 }
-                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType)  ");
+                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType) and (branchdata.flag<>0) ");
                 cmd.Parameters.AddWithValue("@SuperBranch", context.Session["branch"]);
                 cmd.Parameters.AddWithValue("@SalesType", "23");
                 DataTable dtNewPlant = vdbmngr.SelectQuery(cmd).Tables[0];

@@ -45,7 +45,7 @@ public partial class Order_Report : System.Web.UI.Page
                 DataTable dtBranch = new DataTable();
                 dtBranch.Columns.Add("BranchName");
                 dtBranch.Columns.Add("sno");
-                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType)  ");
+                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType) and (branchdata.flag<>0) ");
                 cmd.Parameters.AddWithValue("@SuperBranch", Session["branch"]);
                 cmd.Parameters.AddWithValue("@SalesType", "21");
                 cmd.Parameters.AddWithValue("@SalesType1", "26");
@@ -57,7 +57,7 @@ public partial class Order_Report : System.Web.UI.Page
                     newrow["sno"] = dr["sno"].ToString();
                     dtBranch.Rows.Add(newrow);
                 }
-                cmd = new MySqlCommand("SELECT BranchName, sno FROM  branchdata WHERE (sno = @BranchID)");
+                cmd = new MySqlCommand("SELECT BranchName, sno FROM  branchdata WHERE (sno = @BranchID) and (flag<>0)");
                 cmd.Parameters.AddWithValue("@BranchID", Session["branch"]);
                 DataTable dtPlant = vdm.SelectQuery(cmd).Tables[0];
                 foreach (DataRow dr in dtPlant.Rows)
@@ -67,7 +67,7 @@ public partial class Order_Report : System.Web.UI.Page
                     newrow["sno"] = dr["sno"].ToString();
                     dtBranch.Rows.Add(newrow);
                 }
-                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType)  ");
+                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType) and (branchdata.flag<>0) ");
                 cmd.Parameters.AddWithValue("@SuperBranch", Session["branch"]);
                 cmd.Parameters.AddWithValue("@SalesType", "23");
                 DataTable dtNewPlant = vdm.SelectQuery(cmd).Tables[0];
@@ -87,7 +87,7 @@ public partial class Order_Report : System.Web.UI.Page
             {
                 PBranch.Visible = false;
 
-                cmd = new MySqlCommand("SELECT dispatch.DispName, dispatch.sno FROM dispatch INNER JOIN branchdata ON dispatch.Branch_Id = branchdata.sno INNER JOIN branchdata branchdata_1 ON dispatch.Branch_Id = branchdata_1.sno WHERE ((branchdata.sno = @BranchID) and (dispatch.flag=@flag)) OR ((branchdata_1.SalesOfficeID = @SOID) and (dispatch.flag=@flag))");
+                cmd = new MySqlCommand("SELECT dispatch.DispName, dispatch.sno FROM dispatch INNER JOIN branchdata ON dispatch.Branch_Id = branchdata.sno INNER JOIN branchdata branchdata_1 ON dispatch.Branch_Id = branchdata_1.sno WHERE ((branchdata.sno = @BranchID) and (dispatch.flag=@flag) and (branchdata.flag<>0)) OR ((branchdata_1.SalesOfficeID = @SOID) and (dispatch.flag=@flag) and (branchdata_1.flag<>0))");
                 cmd.Parameters.AddWithValue("@BranchID", Session["branch"].ToString());
                 cmd.Parameters.AddWithValue("@SOID", Session["branch"].ToString());
                 cmd.Parameters.AddWithValue("@flag", "1");
@@ -105,7 +105,7 @@ public partial class Order_Report : System.Web.UI.Page
     protected void ddlSalesOffice_SelectedIndexChanged(object sender, EventArgs e)
     {
         vdm = new VehicleDBMgr();
-        cmd = new MySqlCommand("SELECT dispatch.DispName, dispatch.sno FROM dispatch INNER JOIN branchdata ON dispatch.Branch_Id = branchdata.sno INNER JOIN branchdata branchdata_1 ON dispatch.Branch_Id = branchdata_1.sno WHERE ((branchdata.sno = @BranchID) and (dispatch.flag=@flag)) OR ((branchdata_1.SalesOfficeID = @SOID) and (dispatch.flag=@flag))");
+        cmd = new MySqlCommand("SELECT dispatch.DispName, dispatch.sno FROM dispatch INNER JOIN branchdata ON dispatch.Branch_Id = branchdata.sno INNER JOIN branchdata branchdata_1 ON dispatch.Branch_Id = branchdata_1.sno WHERE ((branchdata.sno = @BranchID) and (dispatch.flag=@flag) and (branchdata.flag<>0)) OR ((branchdata_1.SalesOfficeID = @SOID) and (dispatch.flag=@flag) and (branchdata_1.flag<>0))");
         cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
         cmd.Parameters.AddWithValue("@SOID", ddlSalesOffice.SelectedValue);
         cmd.Parameters.AddWithValue("@flag", "1");

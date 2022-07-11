@@ -40,7 +40,7 @@ public partial class BranchWiseIndent : System.Web.UI.Page
         {
             if (Session["salestype"].ToString() == "Plant")
             {
-                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType) or (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType1) ");
+                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType) and (branchdata.flag<>0) or (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType1) and (branchdata.flag<>0) ");
                 cmd.Parameters.AddWithValue("@SuperBranch", Session["branch"]);
                 cmd.Parameters.AddWithValue("@SalesType", "21");
                 cmd.Parameters.AddWithValue("@SalesType1", "26");
@@ -53,7 +53,7 @@ public partial class BranchWiseIndent : System.Web.UI.Page
             }
             else
             {
-                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM  branchdata INNER JOIN branchdata branchdata_1 ON branchdata.sno = branchdata_1.sno WHERE (branchdata_1.SalesOfficeID = @SOID) AND (branchdata.SalesType IS NOT NULL) OR (branchdata.sno = @BranchID) AND (branchdata.SalesType IS NOT NULL)");
+                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM  branchdata INNER JOIN branchdata branchdata_1 ON branchdata.sno = branchdata_1.sno WHERE (branchdata_1.SalesOfficeID = @SOID) AND (branchdata.SalesType IS NOT NULL) and (branchdata.flag<>0) OR (branchdata.sno = @BranchID) AND (branchdata.SalesType IS NOT NULL) and (branchdata.flag<>0)");
                 cmd.Parameters.AddWithValue("@SOID", Session["branch"]);
                 cmd.Parameters.AddWithValue("@BranchID", Session["branch"]);
                 DataTable dtRoutedata = vdm.SelectQuery(cmd).Tables[0];
