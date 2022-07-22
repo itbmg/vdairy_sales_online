@@ -875,7 +875,9 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                                 <li id="litimingreport"><a href="PlantConsolidateSales.aspx">PlantWiseSaleSummary</a></li>
                                                 <li id="litimingreport" style="display: none;"><a href="TimingReport.aspx">Timing Report</a></li>
                                                  <li id="liTimeline" style="display: none;"><a href="TimeLine.aspx">Time Line</a></li>
-                                                <li id="liagentdelivery" style="display: none;"><a href="AgentDelivery.aspx">Agent Delivery</a></li>
+                                                <li id="liagentdelivery" ><a href="AgentDelivery.aspx">Agent Delivery</a></li>
+                                                <li id="liSalesOfficeWiseDue" ><a href="SalesOfficeWiseDue.aspx">SalesOfficeWiseDue</a></li>
+                                                <li id="liAgentWiseDueTransaction" ><a href="AgentWiseDueTransactionReport.aspx">AgentWiseDueTransaction</a></li>
                                                 <li id="li66" style="display: none;"><a href="RouteVerification.aspx">Trip Sheet</a></li>
                                                 <li id="liagentack" style="display: none;"><a href="AgentAcknoledgement.aspx">Agent
                                                     Acknoledgement</a></li>

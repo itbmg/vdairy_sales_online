@@ -1121,7 +1121,7 @@ public partial class Tally_BiproductsSales : System.Web.UI.Page
                                     cmd.Parameters.AddWithValue("@doe", ReportDate);
                                     cmd.Parameters.AddWithValue("@moduleid", Session["moduleid"].ToString());
                                     cmd.Parameters.AddWithValue("@invoicetype", "TSales");
-                                    //DcNo = vdm.insertScalar(cmd);
+                                    DcNo = vdm.insertScalar(cmd);
                                     cmd = new MySqlCommand("SELECT agentdcno FROM  agenttaxdc WHERE (BranchID = @BranchID) AND (IndDate BETWEEN @d1 AND @d2)");
                                     cmd.Parameters.AddWithValue("@BranchID", branch["BSno"].ToString());
                                     cmd.Parameters.AddWithValue("@soid", ddlSalesOffice.SelectedValue);
