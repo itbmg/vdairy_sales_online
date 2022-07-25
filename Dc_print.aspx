@@ -301,7 +301,7 @@
             results += '<td colspan="2" style="text-align:center;font-size: 12px;"><label>' + parseFloat(tot_sgstamount).toFixed(2) + '</label></td>';
             results += '<td colspan="2" style="text-align:center;font-size: 12px;"><label>' + parseFloat(tot_cgstamount).toFixed(2) + '</label></td>';
             results += '<td colspan="2" style="text-align:center;font-size: 12px;"><label>' + parseFloat(tot_igstamount).toFixed(2) + '</label></td>';
-            results += '<td style="font-size: 12px;"><label>' + parseFloat(tot_totalamount).toFixed(2) + '</label></td>';
+            results += '<td style="font-size: 12px;"><label>' + Math.round(tot_totalamount) + '</label></td>';
             var invname = "Inventory Details";
             results += '<tr >'
             results += '<td data-title="brandstatus" class="2"></td>';
@@ -320,6 +320,53 @@
             results += '</tr></table></div>';
             results += '</table></div>';
             $("#div_products").html(results);
+            var roundoff = Math.round(tot_totalamount);
+            document.getElementById('recevied').innerHTML = toWords(parseInt(roundoff)) + " only/-";
+        }
+        var th = ['', 'thousand', 'million', 'billion', 'trillion'];
+
+        var dg = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+
+        var tn = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+
+        var tw = ['Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+        function toWords(s) {
+            s = s.toString();
+            s = s.replace(/[\, ]/g, '');
+            if (s != parseFloat(s)) return 'not a number';
+            var x = s.indexOf('.');
+            if (x == -1) x = s.length;
+            if (x > 15) return 'too big';
+            var n = s.split('');
+            var str = '';
+            var sk = 0;
+            for (var i = 0; i < x; i++) {
+                if ((x - i) % 3 == 2) {
+                    if (n[i] == '1') {
+                        str += tn[Number(n[i + 1])] + ' ';
+                        i++;
+                        sk = 1;
+                    } else if (n[i] != 0) {
+                        str += tw[n[i] - 2] + ' ';
+                        sk = 1;
+                    }
+                } else if (n[i] != 0) {
+                    str += dg[n[i]] + ' ';
+                    if ((x - i) % 3 == 0) str += 'hundred ';
+                    sk = 1;
+                }
+                if ((x - i) % 3 == 1) {
+                    if (sk) str += th[(x - i - 1) / 3] + ' ';
+                    sk = 0;
+                }
+            }
+            if (x != s.length) {
+                var y = s.length;
+                str += 'point ';
+                for (var i = x + 1; i < y; i++) str += dg[n[i]] + ' ';
+            }
+            return str.replace(/\s+/g, ' ');
+
         }
         function callHandler(d, s, e) {
             $.ajax({
@@ -429,7 +476,7 @@
                                         GSTIN :</label>
                                     <span id="spngstnum" style="font-size: 11px; font-weight: bold !important;"></span>
                                     <br />
-                                 <%--   <span id="Span1" style="font-size: 11px; font-weight: bold;">Website: www.vyshnavi.in</span>--%>
+                                    <%--   <span id="Span1" style="font-size: 11px; font-weight: bold;">Website: www.vyshnavi.in</span>--%>
                                     <br />
                                 </div>
 
@@ -580,6 +627,14 @@
                                 </div>
                                 <div id="div_products">
                                 </div>
+                                <table>
+                                    <label style="font-size: 16px; font-weight: bold;">
+                                        Towards:
+                                    </label>
+                                    <label>Rs.</label>
+                                    <span id="recevied" onclick="test.rnum.value = toWords(test.inum.value);" value="To Words"></span>
+
+                                </table>
                                 <br />
                                 <br />
                                 <table style="width: 100%;">
@@ -613,7 +668,7 @@
                                 <div>
                                     <span style="font-weight: bold; font-size: 13px;">Decleration:</span>
                                     <br />
-                                    <span style="font-size: 11px;">We declare that this invioce shows the actual price of the goods decribe and that all particulars are ture and correct</span>
+                                    <span style="font-size: 11px;">We declare that this invoice shows the actual price of the goods decribe and that all particulars are ture and correct</span>
                                     <br />
                                 </div>
 

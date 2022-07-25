@@ -682,7 +682,7 @@
                                       <div>
                                         <span style="font-weight: bold; font-size: 13px;">Decleration:</span>
                         <br />
-                                    <span style="font-size: 11px;">We declare that this invioce shows the actual price of the goods decribe and that all particulars are ture and correct</span>
+                                    <span style="font-size: 11px;">We declare that this invoice shows the actual price of the goods decribe and that all particulars are ture and correct</span>
                                     <br />
                                     </div>
                 </div>

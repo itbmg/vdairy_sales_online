@@ -2522,6 +2522,38 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                         Report.Rows.Add(newLeakages);
                     }
                 }
+                if (dtsalesofficeLeaks.Rows.Count > 0)
+                {
+                    DataRow newLeakages = Report.NewRow();
+                    //newLeakages["Route Name"] = "PuffLeakages" + " " + Disp;
+                    newLeakages["Route Name"] = "Puff_Shorts";
+                    float totShorts = 0;
+                    //float totLeakAmount = 0;
+                    foreach (DataRow drNewRowLeaks in dtsalesofficeLeaks.Rows)
+                    {
+                        foreach (DataRow drdt in produtstbl.Rows)
+                        {
+                            if (drNewRowLeaks["ProdId"].ToString() == drdt["sno"].ToString())
+                            {
+                                float ShortQty = 0;
+                                float.TryParse(drNewRowLeaks["ShortQty"].ToString(), out ShortQty);
+                                newLeakages[drdt["ProductName"].ToString()] = Math.Round(ShortQty, 2);
+                                float UnitCost = 0;
+                                float.TryParse(drdt["unitprice"].ToString(), out UnitCost);
+                                // float Total = LeakQty * UnitCost;
+                                totShorts += ShortQty;
+                                //totLeakAmount += Total;
+                            }
+
+                        }
+                    }
+                    newLeakages["Total Qty"] = Math.Round(totShorts, 2);
+                    //newLeakages["Total Amount"] = Math.Round(totLeakAmount, 2);
+                    if (totShorts > 0)
+                    {
+                        Report.Rows.Add(newLeakages);
+                    }
+                }
                 if (dtDispnames.Rows.Count > 0)
                 {
                     foreach (DataRow dr in dtDispnames.Rows)
