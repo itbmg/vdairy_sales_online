@@ -409,12 +409,19 @@
                 alert("Please Select Agent Name");
                 return false;
             }
+            var soid = document.getElementById('ddlSalesOffice').value;
+            if (BranchName == "select" || BranchName == "") {
+                alert("Please Select Sales Office");
+                return false;
+            }
+            
             var txtDate = document.getElementById('datepicker').value;
             if (txtDate == "") {
                 alert("Please Select Date");
                 return false;
             }
-            var data = { 'operation': 'GetEditIndentValuesClick', 'RouteID': ddlRouteName, 'BranchID': BranchName, 'IndDate': txtDate };
+            var data = {
+                'operation': 'GetEditIndentValuesClick', 'RouteID': ddlRouteName, 'BranchID': BranchName, 'IndDate': txtDate, 'soid': soid};
             var s = function (msg) {
                 if (msg) {
                     $('#divFillScreen').removeTemplate();

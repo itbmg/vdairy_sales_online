@@ -20227,14 +20227,14 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             string br = context.Session["branch"].ToString();
             if (context.Session["salestype"].ToString() == "Plant")
             {
-                cmd = new MySqlCommand(" SELECT tripdata.Sno AS TripId, DATE_FORMAT(tripdata.AssignDate, '%d %b %y') AS AssignDate, tripdata.Permissions, tripdata.VehicleNo, dispatch.DispName AS DispatchName,dispatch.DispMode,dispatch.DispType, empmanage.EmpName AS Employee FROM tripdata INNER JOIN empmanage ON tripdata.EmpId = empmanage.Sno INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno WHERE (tripdata.Status <> 'c') and (tripdata.DespatchStatus=@DespatchStatus) AND (tripdata.AssignDate BETWEEN @Adt AND @Adt1) AND (tripdata.Permissions LIKE '%D%') AND (dispatch.Branch_Id = @brnch)");
+                cmd = new MySqlCommand(" SELECT tripdata.Sno AS TripId, DATE_FORMAT(tripdata.AssignDate, '%d %b %y') AS AssignDate, tripdata.Permissions, tripdata.VehicleNo, dispatch.DispName AS DispatchName,dispatch.DispMode,dispatch.DispType, empmanage.EmpName AS Employee FROM tripdata INNER JOIN empmanage ON tripdata.EmpId = empmanage.Sno INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno WHERE (tripdata.Status <> 'c') and (tripdata.DespatchStatus=@DespatchStatus) AND (tripdata.AssignDate BETWEEN @Adt AND @Adt1) AND (tripdata.Permissions LIKE '%D%') AND (dispatch.Branch_Id = @brnch) order by TripId");
                 cmd.Parameters.AddWithValue("@UserName", context.Session["UserName"]);
                 cmd.Parameters.AddWithValue("@DespatchStatus", "Yes");
                 cmd.Parameters.AddWithValue("@brnch", context.Session["branch"]);
             }
             else
             {
-                cmd = new MySqlCommand("SELECT tripdata.Sno AS TripId, DATE_FORMAT(tripdata.AssignDate, '%d %b %y') AS AssignDate, tripdata.Permissions, tripdata.VehicleNo,dispatch.DispName AS DispatchName, dispatch.DispMode,dispatch.DispType,empmanage.EmpName AS Employee FROM tripdata INNER JOIN empmanage ON tripdata.EmpId = empmanage.Sno INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno INNER JOIN branchdata ON empmanage.Branch = branchdata.sno WHERE (tripdata.Status <> 'c') AND (tripdata.AssignDate BETWEEN @Adt AND @Adt1) AND (tripdata.Permissions LIKE '%D%') AND (empmanage.Branch = @brnch) OR (tripdata.Status <> 'c') AND (tripdata.AssignDate BETWEEN @Adt AND @Adt1) AND (tripdata.Permissions LIKE '%D%') AND (branchdata.SalesOfficeID = @SOID)");
+                cmd = new MySqlCommand("SELECT tripdata.Sno AS TripId, DATE_FORMAT(tripdata.AssignDate, '%d %b %y') AS AssignDate, tripdata.Permissions, tripdata.VehicleNo,dispatch.DispName AS DispatchName, dispatch.DispMode,dispatch.DispType,empmanage.EmpName AS Employee FROM tripdata INNER JOIN empmanage ON tripdata.EmpId = empmanage.Sno INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno INNER JOIN branchdata ON empmanage.Branch = branchdata.sno WHERE (tripdata.Status <> 'c') AND (tripdata.AssignDate BETWEEN @Adt AND @Adt1) AND (tripdata.Permissions LIKE '%D%') AND (empmanage.Branch = @brnch) OR (tripdata.Status <> 'c') AND (tripdata.AssignDate BETWEEN @Adt AND @Adt1) AND (tripdata.Permissions LIKE '%D%') AND (branchdata.SalesOfficeID = @SOID) order by TripId");
                 cmd.Parameters.AddWithValue("@brnch", context.Session["branch"]);
                 cmd.Parameters.AddWithValue("@SOID", context.Session["branch"]);
             }
@@ -33348,6 +33348,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             string RouteID = context.Request["RouteID"];
             string BranchID = context.Request["BranchID"];
             string IndDate = context.Request["IndDate"];
+            string soid = context.Request["soid"];
             DateTime dtinddate = Convert.ToDateTime(IndDate);
             string indtype = "Indent1";
             cmd = new MySqlCommand("SELECT dispatch.sno, dispatch.DispName, dispatch_sub.IndentType FROM dispatch INNER JOIN dispatch_sub ON dispatch.sno = dispatch_sub.dispatch_sno WHERE (dispatch.sno = @dispsno)");
@@ -33363,59 +33364,62 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             cmd.Parameters.AddWithValue("@d2", GetHighDate(dtinddate));
             cmd.Parameters.AddWithValue("@indtype", indtype);
             DataTable dtBranch = vdbmngr.SelectQuery(cmd).Tables[0];
-            if (dtBranch.Rows.Count > 0)
+            if (soid != "7")
             {
-                foreach (DataRow dr in dtBranch.Rows)
+                if (dtBranch.Rows.Count > 0)
                 {
-                    IndClass GetRoutes = new IndClass();
-                    GetRoutes.ProductName = dr["ProductName"].ToString();
-                    GetRoutes.Product_sno = dr["Product_sno"].ToString();
-                    string DeliveryQty = dr["DeliveryQty"].ToString();
-                    if (DeliveryQty == "")
+                    foreach (DataRow dr in dtBranch.Rows)
                     {
-                        GetRoutes.DeliveryQty = dr["unitQty"].ToString();
+                        IndClass GetRoutes = new IndClass();
+                        GetRoutes.ProductName = dr["ProductName"].ToString();
+                        GetRoutes.Product_sno = dr["Product_sno"].ToString();
+                        string DeliveryQty = dr["DeliveryQty"].ToString();
+                        if (DeliveryQty == "")
+                        {
+                            GetRoutes.DeliveryQty = dr["unitQty"].ToString();
+                        }
+                        else
+                        {
+                            GetRoutes.DeliveryQty = dr["DeliveryQty"].ToString();
+                        }
+                        GetRoutes.UnitCost = dr["UnitCost"].ToString();
+                        GetRoutes.IndentNo = dr["IndentNo"].ToString();
+                        GetRoutes.unitQty = dr["unitQty"].ToString();
+                        IndentList.Add(GetRoutes);
                     }
-                    else
-                    {
-                        GetRoutes.DeliveryQty = dr["DeliveryQty"].ToString();
-                    }
-                    GetRoutes.UnitCost = dr["UnitCost"].ToString();
-                    GetRoutes.IndentNo = dr["IndentNo"].ToString();
-                    GetRoutes.unitQty = dr["unitQty"].ToString();
-                    IndentList.Add(GetRoutes);
                 }
-            }
-            else
-            {
-                cmd = new MySqlCommand("SELECT productsdata.UnitPrice,branchproducts.Rank, productsdata.ProductName, productsdata.Units, productsdata.Qty, branchproducts.unitprice AS BUnitPrice, branchproducts_1.unitprice AS Aunitprice, productsdata.sno FROM branchproducts INNER JOIN branchmappingtable ON branchproducts.branch_sno = branchmappingtable.SuperBranch INNER JOIN productsdata ON branchproducts.product_sno = productsdata.sno INNER JOIN branchproducts branchproducts_1 ON branchmappingtable.SubBranch = branchproducts_1.branch_sno AND  productsdata.sno = branchproducts_1.product_sno WHERE (branchproducts_1.branch_sno = @bsno) AND (branchproducts_1.flag = @flag)GROUP BY branchproducts_1.branch_sno, branchproducts_1.unitprice, productsdata.sno, branchproducts_1.flag ORDER BY branchproducts.Rank");
-                cmd.Parameters.AddWithValue("@flag", 1);
-                cmd.Parameters.AddWithValue("@bsno", context.Request["BranchID"].ToString());
-                dtBranch = vdbmngr.SelectQuery(cmd).Tables[0];
-                foreach (DataRow dr in dtBranch.Rows)
+                else
                 {
-                    IndClass GetRoutes = new IndClass();
-                    GetRoutes.ProductName = dr["ProductName"].ToString();
-                    GetRoutes.Product_sno = dr["sno"].ToString();
-                    GetRoutes.DeliveryQty = "0";
-                    string AgentUnitPrice = dr["Aunitprice"].ToString();
-                    string BranchUnitPrice = dr["BUnitPrice"].ToString();
-                    float Rate = 0;
-                    if (AgentUnitPrice != "0")
+                    cmd = new MySqlCommand("SELECT productsdata.UnitPrice,branchproducts.Rank, productsdata.ProductName, productsdata.Units, productsdata.Qty, branchproducts.unitprice AS BUnitPrice, branchproducts_1.unitprice AS Aunitprice, productsdata.sno FROM branchproducts INNER JOIN branchmappingtable ON branchproducts.branch_sno = branchmappingtable.SuperBranch INNER JOIN productsdata ON branchproducts.product_sno = productsdata.sno INNER JOIN branchproducts branchproducts_1 ON branchmappingtable.SubBranch = branchproducts_1.branch_sno AND  productsdata.sno = branchproducts_1.product_sno WHERE (branchproducts_1.branch_sno = @bsno) AND (branchproducts_1.flag = @flag)GROUP BY branchproducts_1.branch_sno, branchproducts_1.unitprice, productsdata.sno, branchproducts_1.flag ORDER BY branchproducts.Rank");
+                    cmd.Parameters.AddWithValue("@flag", 1);
+                    cmd.Parameters.AddWithValue("@bsno", context.Request["BranchID"].ToString());
+                    dtBranch = vdbmngr.SelectQuery(cmd).Tables[0];
+                    foreach (DataRow dr in dtBranch.Rows)
                     {
-                        Rate = (float)dr["Aunitprice"];
+                        IndClass GetRoutes = new IndClass();
+                        GetRoutes.ProductName = dr["ProductName"].ToString();
+                        GetRoutes.Product_sno = dr["sno"].ToString();
+                        GetRoutes.DeliveryQty = "0";
+                        string AgentUnitPrice = dr["Aunitprice"].ToString();
+                        string BranchUnitPrice = dr["BUnitPrice"].ToString();
+                        float Rate = 0;
+                        if (AgentUnitPrice != "0")
+                        {
+                            Rate = (float)dr["Aunitprice"];
+                        }
+                        if (Rate == 0)
+                        {
+                            Rate = (float)dr["BUnitPrice"];
+                        }
+                        if (Rate == 0)
+                        {
+                            Rate = (float)dr["unitprice"];
+                        }
+                        GetRoutes.UnitCost = Rate.ToString();
+                        GetRoutes.IndentNo = "0";
+                        GetRoutes.unitQty = "0";
+                        IndentList.Add(GetRoutes);
                     }
-                    if (Rate == 0)
-                    {
-                        Rate = (float)dr["BUnitPrice"];
-                    }
-                    if (Rate == 0)
-                    {
-                        Rate = (float)dr["unitprice"];
-                    }
-                    GetRoutes.UnitCost = Rate.ToString();
-                    GetRoutes.IndentNo = "0";
-                    GetRoutes.unitQty = "0";
-                    IndentList.Add(GetRoutes);
                 }
             }
             string response = GetJson(IndentList);

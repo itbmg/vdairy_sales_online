@@ -160,15 +160,15 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                     }
                     if (ddlSalesOffice.SelectedItem.Text == "Cash Sale")
                     {
-                        cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct,ProductInfo.hsncode,ProductInfo.igst,ProductInfo.cgst,ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname, ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'LOCAL') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, ProductName, Sno, Qty, tproduct,Prodsno,hsncode,igst,sgst,cgst FROM  (SELECT products_category.Categoryname, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.tproduct,productsdata.sno as Prodsno FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
+                        cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct,ProductInfo.hsncode,ProductInfo.igst,ProductInfo.cgst,ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname,ProductInfo.categoryid, ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'LOCAL') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname,categoryid, ProductName, Sno, Qty, tproduct,Prodsno,hsncode,igst,sgst,cgst FROM  (SELECT products_category.Categoryname,products_category.sno as categoryid, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.tproduct,productsdata.sno as Prodsno FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
                     }
                     else if (ddlSalesOffice.SelectedItem.Text == "Staff Sale")
                     {
-                        cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct,ProductInfo.hsncode,ProductInfo.igst,ProductInfo.cgst,ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname, ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'Staff') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, ProductName, Sno, Qty, tproduct,Prodsno,hsncode,igst,sgst,cgst FROM  (SELECT products_category.Categoryname, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.tproduct,productsdata.sno as Prodsno FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
+                        cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct,ProductInfo.hsncode,ProductInfo.igst,ProductInfo.cgst,ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname,ProductInfo.categoryid, ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'Staff') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname,categoryid, ProductName, Sno, Qty, tproduct,Prodsno,hsncode,igst,sgst,cgst FROM  (SELECT products_category.Categoryname,products_category.sno as categoryid, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.tproduct,productsdata.sno as Prodsno FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
                     }
                     else if (ddlSalesOffice.SelectedItem.Text == "Free Sale")
                     {
-                        cmd = new MySqlCommand("SELECT  TripInfo.Sno, TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct, ProductInfo.hsncode, ProductInfo.igst, ProductInfo.cgst, ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname, ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'Free') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, ProductName, Sno, Qty, tproduct, Prodsno, hsncode, igst, sgst, cgst FROM (SELECT products_category.Categoryname, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty, productsdata.hsncode, productsdata.igst,productsdata.cgst, productsdata.sgst, productsdata.tproduct, productsdata.sno AS Prodsno FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
+                        cmd = new MySqlCommand("SELECT  TripInfo.Sno, TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct, ProductInfo.hsncode, ProductInfo.igst, ProductInfo.cgst, ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname,ProductInfo.categoryid, ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'Free') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname,categoryid, ProductName, Sno, Qty, tproduct, Prodsno, hsncode, igst, sgst, cgst FROM (SELECT products_category.Categoryname, products_category.sno as categoryid,productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty, productsdata.hsncode, productsdata.igst,productsdata.cgst, productsdata.sgst, productsdata.tproduct, productsdata.sno AS Prodsno FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
                     }
                     cmd.Parameters.AddWithValue("@branch", Session["branch"]);
                     cmd.Parameters.AddWithValue("@SOID", Session["branch"]);
@@ -259,17 +259,6 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                                 }
                             }
 
-
-
-
-                            //if (fromdate.Month > 3)
-                            //{
-                            //    newrow["Invoce No."] = branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DCNO;
-                            //}
-                            //else
-                            //{
-                            //    newrow["Invoce No."] = branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "N/" + DCNO;
-                            //}
                             newrow["Invoice Date"] = fromdate.AddDays(-1).ToString("dd-MMM-yyyy");
                             newrow["Item Name"] = branch["tproduct"].ToString();
                             newrow["Qty"] = branch["qty"].ToString();
@@ -365,6 +354,172 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                             Report.Rows.Add(newrow);
                             i++;
                         }
+                        else
+                        {
+                            DateTime dtjuly = new DateTime();
+                            string jul = "7/18/" + currentyear;
+                            dtjuly = DateTime.Parse(jul);
+                            if (dtjuly > fromdate)
+                            {
+                                string[] catarr = { "2", "12", "39", "47", "48" };
+                                if (catarr.Contains(branch["categoryid"].ToString()))
+                                {
+                                    DataRow newrow = Report.NewRow();
+                                    if (ddlSalesOffice.SelectedItem.Text == "Staff Sale")
+                                    {
+                                        newrow["Customer Name"] = branch["DispName"].ToString();
+                                    }
+                                    else if (ddlSalesOffice.SelectedItem.Text == "Free Sale")
+                                    {
+                                        newrow["Customer Name"] = branch["DispName"].ToString();
+                                    }
+                                    else if (ddlSalesOffice.SelectedItem.Text == "Others")
+                                    {
+                                        newrow["Customer Name"] = branch["DispName"].ToString();
+                                    }
+                                    else
+                                    {
+                                        newrow["Customer Name"] = "Cash sales-" + branchcode;
+                                    }
+                                    newrow["HSN CODE"] = branch["hsncode"].ToString();
+                                    string DCNO = "0";
+                                    int countdc = 0;
+                                    int.TryParse(branch["DCNo"].ToString(), out countdc);
+                                    if (countdc <= 10)
+                                    {
+                                        DCNO = "0000" + countdc;
+                                    }
+                                    if (countdc >= 10 && countdc <= 99)
+                                    {
+                                        DCNO = "000" + countdc;
+                                    }
+                                    if (countdc >= 99 && countdc <= 999)
+                                    {
+                                        DCNO = "00" + countdc;
+                                    }
+                                    if (countdc > 999 && countdc <= 9999)
+                                    {
+                                        DCNO = "0" + countdc;
+                                    }
+                                    if (countdc > 9999)
+                                    {
+                                        DCNO = "" + countdc;
+                                    }
+
+
+                                    if (fromdate.Month > 3)
+                                    {
+                                        newrow["Invoce No."] = branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DCNO;
+                                    }
+                                    else
+                                    {
+                                        if (fromdate.Month < 3)
+                                        {
+                                            newrow["Invoce No."] = branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DCNO;
+                                        }
+                                        else
+                                        {
+                                            newrow["Invoce No."] = branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "N/" + DCNO;
+                                        }
+                                    }
+
+                                    newrow["Invoice Date"] = fromdate.AddDays(-1).ToString("dd-MMM-yyyy");
+                                    newrow["Item Name"] = branch["tproduct"].ToString();
+                                    newrow["Qty"] = branch["qty"].ToString();
+                                    double UnitCost = 0;
+                                    double Unitprice = 0;
+                                    string tcategory = "";
+                                    double igst = 0;
+                                    double.TryParse(branch["igst"].ToString(), out igst);
+                                    double cgst = 0;
+                                    double.TryParse(branch["cgst"].ToString(), out cgst);
+                                    double sgst = 0;
+                                    double.TryParse(branch["sgst"].ToString(), out sgst);
+                                    foreach (DataRow dr in dtprodcts.Select("product_sno='" + branch["Prodsno"].ToString() + "'"))
+                                    {
+                                        double.TryParse(dr["unitprice"].ToString(), out UnitCost);
+                                        if (igst == null || igst == 0.0)
+                                        {
+                                            tcategory = dr["tcategory"].ToString();
+                                        }
+                                        else
+                                        {
+                                            string category = dr["tcategory"].ToString();
+                                            if (category == "Sale Of Milk" || category == "Sale Of Curd " || category == "Sale Of Buttermilk" || category == "Sale Of Lassi")
+                                            {
+                                                tcategory = dr["tcategory"].ToString();
+                                            }
+                                            else
+                                            {
+                                                tcategory = dr["tcategory"].ToString() + "-CGST/SGST";
+                                            }
+                                        }
+                                    }
+                                    newrow["Ledger Type"] = tcategory.ToString();
+                                    Unitprice = UnitCost;
+                                    double percent = 0;
+                                    double.TryParse(branch["igst"].ToString(), out igst);
+                                    double invval = 0;
+                                    double qty = 0;
+                                    double.TryParse(branch["qty"].ToString(), out qty);
+                                    double taxval = 0;
+                                    double netvalue = 0;
+                                    netvalue = invval + taxval;
+                                    netvalue = Math.Round(netvalue, 2);
+                                    newrow["Taxable Value"] = invval;
+                                    double sgstamount = 0;
+                                    double cgstamount = 0;
+                                    double Igst = 0;
+                                    double Igstamount = 0;
+                                    double totRate = 0;
+                                    double.TryParse(branch["Igst"].ToString(), out Igst);
+                                    double Igstcon = 100 + Igst;
+                                    float rate = 0;
+                                    double tot_vatamount = 0;
+                                    double PAmount = 0;
+                                    float.TryParse(UnitCost.ToString(), out rate);
+                                    Igstamount = (rate / Igstcon) * Igst;
+                                    Igstamount = Math.Round(Igstamount, 2);
+                                    totRate = Igstamount;
+                                    newrow["Ledger Type"] = tcategory.ToString();
+                                    double Vatrate = rate - totRate;
+                                    Vatrate = Math.Round(Vatrate, 2);
+                                    Vatrate = Math.Round(Vatrate, 2);
+                                    newrow["Rate"] = Vatrate.ToString();
+                                    PAmount = qty * Vatrate;
+                                    newrow["Taxable Value"] = Math.Round(PAmount, 2);
+                                    tot_vatamount = (PAmount * Igst) / 100;
+
+                                    sgstamount = (tot_vatamount / 2);
+                                    sgstamount = Math.Round(sgstamount, 2);
+                                    newrow["sgst%"] = "'" + branch["sgst"].ToString();
+                                    newrow["sgst amount"] = sgstamount.ToString();
+                                    cgstamount = (tot_vatamount / 2);
+                                    cgstamount = Math.Round(cgstamount, 2);
+                                    newrow["cgst%"] = "'" + branch["cgst"].ToString();
+                                    newrow["cgst amount"] = cgstamount.ToString();
+                                    newrow["Igst%"] = "'" + 0;
+                                    newrow["Igst amount"] = 0;
+                                    invval = Math.Round(invval, 2);
+                                    netvalue = invval + taxval;
+                                    netvalue = Math.Round(netvalue, 2);
+                                    double tot_amount = PAmount;
+                                    tot_amount = Math.Round(tot_amount, 2);
+                                    newrow["Net Value"] = tot_amount;
+                                    if (ddlSalesOffice.SelectedItem.Text == "Cash Sale")
+                                    {
+                                        newrow["Narration"] = "Being the stock transfer to  " + ddlSalesOffice.SelectedItem.Text + " vide dc No " + branch["sno"].ToString() + ",DC Date " + fromdate.AddDays(-1).ToString("dd/MM/yyyy") + ",Emp Name " + Session["EmpName"].ToString();
+                                    }
+                                    else
+                                    {
+                                        newrow["Narration"] = "Being the stock transfer to  " + branch["DispName"].ToString() + " from " + ddlSalesOffice.SelectedItem.Text + " vide dc No " + branch["sno"].ToString() + ",DC Date " + fromdate.AddDays(-1).ToString("dd/MM/yyyy") + ",Emp Name " + Session["EmpName"].ToString();
+
+                                    }
+                                    Report.Rows.Add(newrow);
+                                    i++;
+                                }
+                            }
+                        }
                     }
                     grdReports.DataSource = Report;
                     grdReports.DataBind();
@@ -395,15 +550,15 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                     }
                     if (ddlSalesOffice.SelectedItem.Text == "Cash Sale")
                     {
-                        cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct,ProductInfo.hsncode,ProductInfo.igst,ProductInfo.cgst,ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname, ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'LOCAL') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, ProductName, Sno, Qty, tproduct,Prodsno,hsncode,igst,sgst,cgst FROM  (SELECT products_category.Categoryname, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.tproduct,productsdata.sno as Prodsno FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
+                        cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct,ProductInfo.hsncode,ProductInfo.igst,ProductInfo.cgst,ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname, ProductInfo.categoryid,ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'LOCAL') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, categoryid,ProductName, Sno, Qty, tproduct,Prodsno,hsncode,igst,sgst,cgst FROM  (SELECT products_category.Categoryname, productsdata.ProductName,products_category.sno as categoryid, tripdata_1.Sno, tripsubdata.Qty,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.tproduct,productsdata.sno as Prodsno FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
                     }
                     else if (ddlSalesOffice.SelectedItem.Text == "Staff Sale")
                     {
-                        cmd = new MySqlCommand("SELECT TripInfo.Sno,TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct,ProductInfo.hsncode,ProductInfo.igst,ProductInfo.cgst,ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname, ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'Staff') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, ProductName, Sno, Qty, tproduct,Prodsno,hsncode,igst,sgst,cgst FROM  (SELECT products_category.Categoryname, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.tproduct,productsdata.sno as Prodsno FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
+                        cmd = new MySqlCommand("SELECT TripInfo.Sno,TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct,ProductInfo.hsncode,ProductInfo.igst,ProductInfo.cgst,ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname, ProductInfo.categoryid,ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'Staff') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, categoryid,ProductName, Sno, Qty, tproduct,Prodsno,hsncode,igst,sgst,cgst FROM  (SELECT products_category.Categoryname, productsdata.ProductName,products_category.sno as categoryid, tripdata_1.Sno, tripsubdata.Qty,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.tproduct,productsdata.sno as Prodsno FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
                     }
                     else if (ddlSalesOffice.SelectedItem.Text == "Free Sale")
                     {
-                        cmd = new MySqlCommand("SELECT  TripInfo.Sno,TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct, ProductInfo.hsncode, ProductInfo.igst, ProductInfo.cgst, ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname, ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'Free') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, ProductName, Sno, Qty, tproduct, Prodsno, hsncode, igst, sgst, cgst FROM (SELECT products_category.Categoryname, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty, productsdata.hsncode, productsdata.igst,productsdata.cgst, productsdata.sgst, productsdata.tproduct, productsdata.sno AS Prodsno FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
+                        cmd = new MySqlCommand("SELECT  TripInfo.Sno,TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct, ProductInfo.hsncode, ProductInfo.igst, ProductInfo.cgst, ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname,ProductInfo.categoryid, ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'Free') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname,categoryid, ProductName, Sno, Qty, tproduct, Prodsno, hsncode, igst, sgst, cgst FROM (SELECT products_category.Categoryname,products_category.sno as categoryid, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty, productsdata.hsncode, productsdata.igst,productsdata.cgst, productsdata.sgst, productsdata.tproduct, productsdata.sno AS Prodsno FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
                     }
                     //else
                     //{
@@ -421,172 +576,352 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                     }
                     else
                     {
-                        string barnch = "760";
-                        cmd.Parameters.AddWithValue("@BranchID", barnch);
+                        if (Session["branch"].ToString() == "7")
+                        {
+                            string barnch = "702";
+                            cmd.Parameters.AddWithValue("@BranchID", barnch);
+                        }
+                        else
+                        {
+                            string barnch = "760";
+                            cmd.Parameters.AddWithValue("@BranchID", barnch);
+                        }
                     }
                     DataTable dtprodcts = vdm.SelectQuery(cmd).Tables[0];
                     int i = 1;
                     string DCNO = "0";
                     foreach (DataRow branch in dtble.Rows)
                     {
-                        if (branch["igst"].ToString() != "0")
+                        DateTime dtjuly = new DateTime();
+                        string jul = "7/18/" + currentyear;
+                        dtjuly = DateTime.Parse(jul);
+                        if (dtjuly > fromdate)
                         {
-                            DataRow newrow = Report.NewRow();
-                            if (ddlSalesOffice.SelectedItem.Text == "Staff Sale")
+                            string[] catarr = { "2", "12", "39", "47", "48" };
+                            if (catarr.Contains(branch["categoryid"].ToString()))
                             {
-                                newrow["Customer Name"] = branch["DispName"].ToString();
-                            }
-                            else if (ddlSalesOffice.SelectedItem.Text == "Free Sale")
-                            {
-                                newrow["Customer Name"] = branch["DispName"].ToString();
-                            }
-                            else if (ddlSalesOffice.SelectedItem.Text == "Others")
-                            {
-                                newrow["Customer Name"] = branch["DispName"].ToString();
+
                             }
                             else
                             {
-                                newrow["Customer Name"] = "Cash sales-" + branchcode;
+                                if (branch["igst"].ToString() != "0")
+                                {
+                                    DataRow newrow = Report.NewRow();
+                                    if (ddlSalesOffice.SelectedItem.Text == "Staff Sale")
+                                    {
+                                        newrow["Customer Name"] = branch["DispName"].ToString();
+                                    }
+                                    else if (ddlSalesOffice.SelectedItem.Text == "Free Sale")
+                                    {
+                                        newrow["Customer Name"] = branch["DispName"].ToString();
+                                    }
+                                    else if (ddlSalesOffice.SelectedItem.Text == "Others")
+                                    {
+                                        newrow["Customer Name"] = branch["DispName"].ToString();
+                                    }
+                                    else
+                                    {
+                                        newrow["Customer Name"] = "Cash sales-" + branchcode;
+                                    }
+                                    newrow["HSN CODE"] = branch["hsncode"].ToString();
+                                    //string DCNO = "0";
+                                    int countdc = 0;
+                                    int.TryParse(branch["taxdcno"].ToString(), out countdc);
+                                    if (countdc <= 10)
+                                    {
+                                        DCNO = "0000" + countdc;
+                                    }
+                                    if (countdc >= 10 && countdc <= 99)
+                                    {
+                                        DCNO = "000" + countdc;
+                                    }
+                                    if (countdc >= 99 && countdc <= 999)
+                                    {
+                                        DCNO = "00" + countdc;
+                                    }
+                                    if (countdc > 999 && countdc <= 9999)
+                                    {
+                                        DCNO = "0" + countdc;
+                                    }
+                                    if (countdc > 9999)
+                                    {
+                                        DCNO = "" + countdc;
+                                    }
+                                    if (fromdate.Month > 3)
+                                    {
+                                        newrow["Invoce No."] = branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
+                                    }
+                                    else
+                                    {
+                                        if (fromdate.Month < 3)
+                                        {
+                                            newrow["Invoce No."] = branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
+                                        }
+                                        else
+                                        {
+                                            newrow["Invoce No."] = branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "T/" + DCNO;
+                                        }
+                                    }
+
+
+                                    newrow["Invoice Date"] = fromdate.AddDays(-1).ToString("dd-MMM-yyyy");
+                                    newrow["Item Name"] = branch["tproduct"].ToString();
+                                    newrow["Qty"] = branch["qty"].ToString();
+                                    double UnitCost = 0;
+                                    double Unitprice = 0;
+                                    string tcategory = "";
+                                    double igst = 0;
+                                    double.TryParse(branch["igst"].ToString(), out igst);
+                                    double cgst = 0;
+                                    double.TryParse(branch["cgst"].ToString(), out cgst);
+                                    double sgst = 0;
+                                    double.TryParse(branch["sgst"].ToString(), out sgst);
+                                    foreach (DataRow dr in dtprodcts.Select("product_sno='" + branch["Prodsno"].ToString() + "'"))
+                                    {
+                                        double.TryParse(dr["unitprice"].ToString(), out UnitCost);
+                                        if (igst == null || igst == 0.0)
+                                        {
+                                            tcategory = dr["tcategory"].ToString();
+                                        }
+                                        else
+                                        {
+                                            string category = dr["tcategory"].ToString();
+                                            if (category == "Sale Of Milk" || category == "Sale Of Curd " || category == "Sale Of Buttermilk" || category == "Sale Of Lassi")
+                                            {
+                                                tcategory = dr["tcategory"].ToString();
+                                            }
+                                            else
+                                            {
+                                                tcategory = dr["tcategory"].ToString() + "-CGST/SGST";
+                                            }
+                                        }
+                                        newrow["Ledger Type"] = tcategory.ToString();
+                                        Unitprice = UnitCost;
+                                        double percent = 0;
+                                        double.TryParse(branch["igst"].ToString(), out igst);
+                                        double invval = 0;
+                                        double qty = 0;
+                                        double.TryParse(branch["qty"].ToString(), out qty);
+                                        double taxval = 0;
+                                        double netvalue = 0;
+                                        netvalue = invval + taxval;
+                                        netvalue = Math.Round(netvalue, 2);
+                                        newrow["Taxable Value"] = invval;
+                                        double sgstamount = 0;
+                                        double cgstamount = 0;
+                                        double Igst = 0;
+                                        double Igstamount = 0;
+                                        double totRate = 0;
+                                        double.TryParse(branch["Igst"].ToString(), out Igst);
+                                        double Igstcon = 100 + Igst;
+                                        float rate = 0;
+                                        double tot_vatamount = 0;
+                                        double PAmount = 0;
+                                        float.TryParse(UnitCost.ToString(), out rate);
+                                        Igstamount = (rate / Igstcon) * Igst;
+                                        Igstamount = Math.Round(Igstamount, 2);
+                                        totRate = Igstamount;
+                                        newrow["Ledger Type"] = tcategory.ToString();
+                                        double Vatrate = rate - totRate;
+                                        Vatrate = Math.Round(Vatrate, 2);
+                                        Vatrate = Math.Round(Vatrate, 2);
+                                        newrow["Rate"] = Vatrate.ToString();
+                                        PAmount = qty * Vatrate;
+                                        newrow["Taxable Value"] = Math.Round(PAmount, 2);
+                                        tot_vatamount = (PAmount * Igst) / 100;
+                                        sgstamount = (tot_vatamount / 2);
+                                        sgstamount = Math.Round(sgstamount, 2);
+                                        newrow["sgst%"] = "'" + branch["sgst"].ToString();
+                                        newrow["sgst amount"] = sgstamount.ToString();
+                                        cgstamount = (tot_vatamount / 2);
+                                        cgstamount = Math.Round(cgstamount, 2);
+                                        newrow["cgst%"] = "'" + branch["cgst"].ToString();
+                                        newrow["cgst amount"] = cgstamount.ToString();
+                                        newrow["Igst%"] = "'" + 0;
+                                        newrow["Igst amount"] = 0;
+                                        invval = Math.Round(invval, 2);
+                                        netvalue = invval + taxval;
+                                        netvalue = Math.Round(netvalue, 2);
+                                        double tot_amount = PAmount + tot_vatamount;
+                                        tot_amount = Math.Round(tot_amount, 2);
+                                        newrow["Net Value"] = tot_amount;
+                                        if (ddlSalesOffice.SelectedItem.Text == "Cash Sale")
+                                        {
+                                            newrow["Narration"] = "Being the stock transfer to  " + ddlSalesOffice.SelectedItem.Text + " vide dc No " + branch["sno"].ToString() + ",DC Date " + fromdate.AddDays(-1).ToString("dd/MM/yyyy") + ",Emp Name " + Session["EmpName"].ToString();
+                                        }
+                                        else
+                                        {
+                                            newrow["Narration"] = "Being the stock transfer to  " + branch["DispName"].ToString() + " from " + ddlSalesOffice.SelectedItem.Text + " vide dc No " + branch["sno"].ToString() + ",DC Date " + fromdate.AddDays(-1).ToString("dd/MM/yyyy") + ",Emp Name " + Session["EmpName"].ToString();
+
+                                        }
+                                        Report.Rows.Add(newrow);
+                                        i++;
+                                    }
+                                    
+                                }
                             }
-                            newrow["HSN CODE"] = branch["hsncode"].ToString();
-                            //string DCNO = "0";
-                            int countdc = 0;
-                            int.TryParse(branch["taxdcno"].ToString(), out countdc);
-                            if (countdc <= 10)
+                        }
+                        else
+                        {
+                            if (branch["igst"].ToString() != "0")
                             {
-                                DCNO = "0000" + countdc;
-                            }
-                            if (countdc >= 10 && countdc <= 99)
-                            {
-                                DCNO = "000" + countdc;
-                            }
-                            if (countdc >= 99 && countdc <= 999)
-                            {
-                                DCNO = "00" + countdc;
-                            }
-                            if (countdc > 999 && countdc <= 9999)
-                            {
-                                DCNO = "0" + countdc;
-                            }
-                            if (countdc > 9999)
-                            {
-                                DCNO = "" + countdc;
-                            }
-                            if (fromdate.Month > 3)
-                            {
-                                newrow["Invoce No."] = branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
-                            }
-                            else
-                            {
-                                if (fromdate.Month < 3)
+                                DataRow newrow = Report.NewRow();
+                                if (ddlSalesOffice.SelectedItem.Text == "Staff Sale")
+                                {
+                                    newrow["Customer Name"] = branch["DispName"].ToString();
+                                }
+                                else if (ddlSalesOffice.SelectedItem.Text == "Free Sale")
+                                {
+                                    newrow["Customer Name"] = branch["DispName"].ToString();
+                                }
+                                else if (ddlSalesOffice.SelectedItem.Text == "Others")
+                                {
+                                    newrow["Customer Name"] = branch["DispName"].ToString();
+                                }
+                                else
+                                {
+                                    newrow["Customer Name"] = "Cash sales-" + branchcode;
+                                }
+                                newrow["HSN CODE"] = branch["hsncode"].ToString();
+                                //string DCNO = "0";
+                                int countdc = 0;
+                                int.TryParse(branch["taxdcno"].ToString(), out countdc);
+                                if (countdc <= 10)
+                                {
+                                    DCNO = "0000" + countdc;
+                                }
+                                if (countdc >= 10 && countdc <= 99)
+                                {
+                                    DCNO = "000" + countdc;
+                                }
+                                if (countdc >= 99 && countdc <= 999)
+                                {
+                                    DCNO = "00" + countdc;
+                                }
+                                if (countdc > 999 && countdc <= 9999)
+                                {
+                                    DCNO = "0" + countdc;
+                                }
+                                if (countdc > 9999)
+                                {
+                                    DCNO = "" + countdc;
+                                }
+                                if (fromdate.Month > 3)
                                 {
                                     newrow["Invoce No."] = branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
                                 }
                                 else
                                 {
-                                    newrow["Invoce No."] = branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "T/" + DCNO;
+                                    if (fromdate.Month < 3)
+                                    {
+                                        newrow["Invoce No."] = branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
+                                    }
+                                    else
+                                    {
+                                        newrow["Invoce No."] = branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "T/" + DCNO;
+                                    }
                                 }
-                            }
 
 
-                            newrow["Invoice Date"] = fromdate.AddDays(-1).ToString("dd-MMM-yyyy");
-                            newrow["Item Name"] = branch["tproduct"].ToString();
-                            newrow["Qty"] = branch["qty"].ToString();
-                            double UnitCost = 0;
-                            double Unitprice = 0;
-                            string tcategory = "";
-                            double igst = 0;
-                            double.TryParse(branch["igst"].ToString(), out igst);
-                            double cgst = 0;
-                            double.TryParse(branch["cgst"].ToString(), out cgst);
-                            double sgst = 0;
-                            double.TryParse(branch["sgst"].ToString(), out sgst);
-                            foreach (DataRow dr in dtprodcts.Select("product_sno='" + branch["Prodsno"].ToString() + "'"))
-                            {
-                                double.TryParse(dr["unitprice"].ToString(), out UnitCost);
-                                if (igst == null || igst == 0.0)
+                                newrow["Invoice Date"] = fromdate.AddDays(-1).ToString("dd-MMM-yyyy");
+                                newrow["Item Name"] = branch["tproduct"].ToString();
+                                newrow["Qty"] = branch["qty"].ToString();
+                                double UnitCost = 0;
+                                double Unitprice = 0;
+                                string tcategory = "";
+                                double igst = 0;
+                                double.TryParse(branch["igst"].ToString(), out igst);
+                                double cgst = 0;
+                                double.TryParse(branch["cgst"].ToString(), out cgst);
+                                double sgst = 0;
+                                double.TryParse(branch["sgst"].ToString(), out sgst);
+                                foreach (DataRow dr in dtprodcts.Select("product_sno='" + branch["Prodsno"].ToString() + "'"))
                                 {
-                                    tcategory = dr["tcategory"].ToString();
-                                }
-                                else
-                                {
-                                    string category = dr["tcategory"].ToString();
-                                    if (category == "Sale Of Milk" || category == "Sale Of Curd " || category == "Sale Of Buttermilk" || category == "Sale Of Lassi")
+                                    double.TryParse(dr["unitprice"].ToString(), out UnitCost);
+                                    if (igst == null || igst == 0.0)
                                     {
                                         tcategory = dr["tcategory"].ToString();
                                     }
                                     else
                                     {
-                                        tcategory = dr["tcategory"].ToString() + "-CGST/SGST";
+                                        string category = dr["tcategory"].ToString();
+                                        if (category == "Sale Of Milk" || category == "Sale Of Curd " || category == "Sale Of Buttermilk" || category == "Sale Of Lassi")
+                                        {
+                                            tcategory = dr["tcategory"].ToString();
+                                        }
+                                        else
+                                        {
+                                            tcategory = dr["tcategory"].ToString() + "-CGST/SGST";
+                                        }
                                     }
-                                }
-                                newrow["Ledger Type"] = tcategory.ToString();
-                                Unitprice = UnitCost;
-                                double percent = 0;
-                                double.TryParse(branch["igst"].ToString(), out igst);
-                                double invval = 0;
-                                double qty = 0;
-                                double.TryParse(branch["qty"].ToString(), out qty);
-                                double taxval = 0;
-                                double netvalue = 0;
-                                netvalue = invval + taxval;
-                                netvalue = Math.Round(netvalue, 2);
-                                newrow["Taxable Value"] = invval;
-                                double sgstamount = 0;
-                                double cgstamount = 0;
-                                double Igst = 0;
-                                double Igstamount = 0;
-                                double totRate = 0;
-                                double.TryParse(branch["Igst"].ToString(), out Igst);
-                                double Igstcon = 100 + Igst;
-                                float rate = 0;
-                                double tot_vatamount = 0;
-                                double PAmount = 0;
-                                float.TryParse(UnitCost.ToString(), out rate);
-                                Igstamount = (rate / Igstcon) * Igst;
-                                Igstamount = Math.Round(Igstamount, 2);
-                                totRate = Igstamount;
-                                newrow["Ledger Type"] = tcategory.ToString();
-                                double Vatrate = rate - totRate;
-                                Vatrate = Math.Round(Vatrate, 2);
-                                Vatrate = Math.Round(Vatrate, 2);
-                                newrow["Rate"] = Vatrate.ToString();
-                                PAmount = qty * Vatrate;
-                                newrow["Taxable Value"] = Math.Round(PAmount, 2);
-                                tot_vatamount = (PAmount * Igst) / 100;
-                                sgstamount = (tot_vatamount / 2);
-                                sgstamount = Math.Round(sgstamount, 2);
-                                newrow["sgst%"] = "'" + branch["sgst"].ToString();
-                                newrow["sgst amount"] = sgstamount.ToString();
-                                cgstamount = (tot_vatamount / 2);
-                                cgstamount = Math.Round(cgstamount, 2);
-                                newrow["cgst%"] = "'" + branch["cgst"].ToString();
-                                newrow["cgst amount"] = cgstamount.ToString();
-                                newrow["Igst%"] = "'" + 0;
-                                newrow["Igst amount"] = 0;
-                                invval = Math.Round(invval, 2);
-                                netvalue = invval + taxval;
-                                netvalue = Math.Round(netvalue, 2);
-                                double tot_amount = PAmount + tot_vatamount;
-                                tot_amount = Math.Round(tot_amount, 2);
-                                newrow["Net Value"] = tot_amount;
-                                if (ddlSalesOffice.SelectedItem.Text == "Cash Sale")
-                                {
-                                    newrow["Narration"] = "Being the stock transfer to  " + ddlSalesOffice.SelectedItem.Text + " vide dc No " + branch["sno"].ToString() + ",DC Date " + fromdate.AddDays(-1).ToString("dd/MM/yyyy") + ",Emp Name " + Session["EmpName"].ToString();
-                                }
-                                else
-                                {
-                                    newrow["Narration"] = "Being the stock transfer to  " + branch["DispName"].ToString() + " from " + ddlSalesOffice.SelectedItem.Text + " vide dc No " + branch["sno"].ToString() + ",DC Date " + fromdate.AddDays(-1).ToString("dd/MM/yyyy") + ",Emp Name " + Session["EmpName"].ToString();
+                                    newrow["Ledger Type"] = tcategory.ToString();
+                                    Unitprice = UnitCost;
+                                    double percent = 0;
+                                    double.TryParse(branch["igst"].ToString(), out igst);
+                                    double invval = 0;
+                                    double qty = 0;
+                                    double.TryParse(branch["qty"].ToString(), out qty);
+                                    double taxval = 0;
+                                    double netvalue = 0;
+                                    netvalue = invval + taxval;
+                                    netvalue = Math.Round(netvalue, 2);
+                                    newrow["Taxable Value"] = invval;
+                                    double sgstamount = 0;
+                                    double cgstamount = 0;
+                                    double Igst = 0;
+                                    double Igstamount = 0;
+                                    double totRate = 0;
+                                    double.TryParse(branch["Igst"].ToString(), out Igst);
+                                    double Igstcon = 100 + Igst;
+                                    float rate = 0;
+                                    double tot_vatamount = 0;
+                                    double PAmount = 0;
+                                    float.TryParse(UnitCost.ToString(), out rate);
+                                    Igstamount = (rate / Igstcon) * Igst;
+                                    Igstamount = Math.Round(Igstamount, 2);
+                                    totRate = Igstamount;
+                                    newrow["Ledger Type"] = tcategory.ToString();
+                                    double Vatrate = rate - totRate;
+                                    Vatrate = Math.Round(Vatrate, 2);
+                                    Vatrate = Math.Round(Vatrate, 2);
+                                    newrow["Rate"] = Vatrate.ToString();
+                                    PAmount = qty * Vatrate;
+                                    newrow["Taxable Value"] = Math.Round(PAmount, 2);
+                                    tot_vatamount = (PAmount * Igst) / 100;
+                                    sgstamount = (tot_vatamount / 2);
+                                    sgstamount = Math.Round(sgstamount, 2);
+                                    newrow["sgst%"] = "'" + branch["sgst"].ToString();
+                                    newrow["sgst amount"] = sgstamount.ToString();
+                                    cgstamount = (tot_vatamount / 2);
+                                    cgstamount = Math.Round(cgstamount, 2);
+                                    newrow["cgst%"] = "'" + branch["cgst"].ToString();
+                                    newrow["cgst amount"] = cgstamount.ToString();
+                                    newrow["Igst%"] = "'" + 0;
+                                    newrow["Igst amount"] = 0;
+                                    invval = Math.Round(invval, 2);
+                                    netvalue = invval + taxval;
+                                    netvalue = Math.Round(netvalue, 2);
+                                    double tot_amount = PAmount + tot_vatamount;
+                                    tot_amount = Math.Round(tot_amount, 2);
+                                    newrow["Net Value"] = tot_amount;
+                                    if (ddlSalesOffice.SelectedItem.Text == "Cash Sale")
+                                    {
+                                        newrow["Narration"] = "Being the stock transfer to  " + ddlSalesOffice.SelectedItem.Text + " vide dc No " + branch["sno"].ToString() + ",DC Date " + fromdate.AddDays(-1).ToString("dd/MM/yyyy") + ",Emp Name " + Session["EmpName"].ToString();
+                                    }
+                                    else
+                                    {
+                                        newrow["Narration"] = "Being the stock transfer to  " + branch["DispName"].ToString() + " from " + ddlSalesOffice.SelectedItem.Text + " vide dc No " + branch["sno"].ToString() + ",DC Date " + fromdate.AddDays(-1).ToString("dd/MM/yyyy") + ",Emp Name " + Session["EmpName"].ToString();
 
+                                    }
+                                    Report.Rows.Add(newrow);
+                                    i++;
                                 }
-                                Report.Rows.Add(newrow);
-                                i++;
                             }
-                            grdReports.DataSource = Report;
-                            grdReports.DataBind();
-                            Session["xportdata"] = Report;
                         }
                     }
+                    grdReports.DataSource = Report;
+                    grdReports.DataBind();
+                    Session["xportdata"] = Report;
                 }
             }
             else
@@ -653,48 +988,48 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                     {
                         //if (ReportDate.ToString("dd/MM/yyyy") == fromdate.ToString("dd/MM/yyyy"))
                         //{
-                            cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM agentdc WHERE (soid = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
-                            cmd.Parameters.AddWithValue("@BranchId", ddlSalesOffice.SelectedValue);
-                            cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril).AddDays(-1));
-                            cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch).AddDays(-1));
-                            DataTable dtadcno = vdm.SelectQuery(cmd).Tables[0];
-                            string agentdcNo = dtadcno.Rows[0]["Sno"].ToString();
-                            cmd = new MySqlCommand("Insert Into Agentdc (BranchId,IndDate,soid,agentdcno,stateid,companycode,moduleid,doe) Values(@BranchId,@IndDate,@soid,@agentdcno,@stateid,@companycode,@moduleid,@doe)");
-                            cmd.Parameters.AddWithValue("@BranchId", branch["BSno"].ToString());
-                            cmd.Parameters.AddWithValue("@IndDate", GetLowDate(fromdate.AddDays(-1)));
-                            cmd.Parameters.AddWithValue("@soid", ddlSalesOffice.SelectedValue);
-                            cmd.Parameters.AddWithValue("@agentdcno", agentdcNo);
-                            cmd.Parameters.AddWithValue("@stateid", gststatecode);
-                            cmd.Parameters.AddWithValue("@companycode", companycode);
-                            cmd.Parameters.AddWithValue("@doe", ReportDate);
-                            cmd.Parameters.AddWithValue("@moduleid", Session["moduleid"].ToString());
-                            DcNo = vdm.insertScalar(cmd);
-                            cmd = new MySqlCommand("SELECT IndentNo FROM indents WHERE (Branch_id = @BranchId) AND (I_date BETWEEN @d1 AND @d2)");
-                            cmd.Parameters.AddWithValue("@BranchId", branch["BSno"].ToString());
-                            cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-                            cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
-                            DataTable dtindentno = vdm.SelectQuery(cmd).Tables[0];
-                            if (dtindentno.Rows.Count > 0)
+                        cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM agentdc WHERE (soid = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
+                        cmd.Parameters.AddWithValue("@BranchId", ddlSalesOffice.SelectedValue);
+                        cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril).AddDays(-1));
+                        cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch).AddDays(-1));
+                        DataTable dtadcno = vdm.SelectQuery(cmd).Tables[0];
+                        string agentdcNo = dtadcno.Rows[0]["Sno"].ToString();
+                        cmd = new MySqlCommand("Insert Into Agentdc (BranchId,IndDate,soid,agentdcno,stateid,companycode,moduleid,doe) Values(@BranchId,@IndDate,@soid,@agentdcno,@stateid,@companycode,@moduleid,@doe)");
+                        cmd.Parameters.AddWithValue("@BranchId", branch["BSno"].ToString());
+                        cmd.Parameters.AddWithValue("@IndDate", GetLowDate(fromdate.AddDays(-1)));
+                        cmd.Parameters.AddWithValue("@soid", ddlSalesOffice.SelectedValue);
+                        cmd.Parameters.AddWithValue("@agentdcno", agentdcNo);
+                        cmd.Parameters.AddWithValue("@stateid", gststatecode);
+                        cmd.Parameters.AddWithValue("@companycode", companycode);
+                        cmd.Parameters.AddWithValue("@doe", ReportDate);
+                        cmd.Parameters.AddWithValue("@moduleid", Session["moduleid"].ToString());
+                        DcNo = vdm.insertScalar(cmd);
+                        cmd = new MySqlCommand("SELECT IndentNo FROM indents WHERE (Branch_id = @BranchId) AND (I_date BETWEEN @d1 AND @d2)");
+                        cmd.Parameters.AddWithValue("@BranchId", branch["BSno"].ToString());
+                        cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+                        cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
+                        DataTable dtindentno = vdm.SelectQuery(cmd).Tables[0];
+                        if (dtindentno.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in dtindentno.Rows)
                             {
-                                foreach (DataRow dr in dtindentno.Rows)
-                                {
-                                    cmd = new MySqlCommand("Insert Into dcsubTable (DcNo,IndentNo) Values(@DcNo,@IndentNo)");
-                                    cmd.Parameters.AddWithValue("@DcNo", DcNo);
-                                    cmd.Parameters.AddWithValue("@IndentNo", dr["IndentNo"].ToString());
-                                    vdm.insert(cmd);
-                                }
+                                cmd = new MySqlCommand("Insert Into dcsubTable (DcNo,IndentNo) Values(@DcNo,@IndentNo)");
+                                cmd.Parameters.AddWithValue("@DcNo", DcNo);
+                                cmd.Parameters.AddWithValue("@IndentNo", dr["IndentNo"].ToString());
+                                vdm.insert(cmd);
                             }
-                            cmd = new MySqlCommand("SELECT agentdcno FROM  agentdc WHERE (BranchID = @BranchID) AND (IndDate BETWEEN @d1 AND @d2)");
-                            cmd.Parameters.AddWithValue("@BranchID", branch["BSno"].ToString());
-                            cmd.Parameters.AddWithValue("@soid", ddlSalesOffice.SelectedValue);
-                            cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-                            cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
-                            DataTable dtsubDc = vdm.SelectQuery(cmd).Tables[0];
-                            if (dtsubDc.Rows.Count > 0)
-                            {
-                                DCNO = dtsubDc.Rows[0]["agentdcno"].ToString();
-                            }
-                            DCNO = DCNO.ToString();
+                        }
+                        cmd = new MySqlCommand("SELECT agentdcno FROM  agentdc WHERE (BranchID = @BranchID) AND (IndDate BETWEEN @d1 AND @d2)");
+                        cmd.Parameters.AddWithValue("@BranchID", branch["BSno"].ToString());
+                        cmd.Parameters.AddWithValue("@soid", ddlSalesOffice.SelectedValue);
+                        cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+                        cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
+                        DataTable dtsubDc = vdm.SelectQuery(cmd).Tables[0];
+                        if (dtsubDc.Rows.Count > 0)
+                        {
+                            DCNO = dtsubDc.Rows[0]["agentdcno"].ToString();
+                        }
+                        DCNO = DCNO.ToString();
                         //}
                     }
                     newrow["Customer Name"] = branch["tbranchname"].ToString();
