@@ -2522,38 +2522,92 @@ public partial class Delivery_Collection_Report : System.Web.UI.Page
                         Report.Rows.Add(newLeakages);
                     }
                 }
-                if (dtsalesofficeLeaks.Rows.Count > 0)
-                {
-                    DataRow newLeakages = Report.NewRow();
-                    //newLeakages["Route Name"] = "PuffLeakages" + " " + Disp;
-                    newLeakages["Route Name"] = "Puff_Shorts";
-                    float totShorts = 0;
-                    //float totLeakAmount = 0;
-                    foreach (DataRow drNewRowLeaks in dtsalesofficeLeaks.Rows)
-                    {
-                        foreach (DataRow drdt in produtstbl.Rows)
-                        {
-                            if (drNewRowLeaks["ProdId"].ToString() == drdt["sno"].ToString())
-                            {
-                                float ShortQty = 0;
-                                float.TryParse(drNewRowLeaks["ShortQty"].ToString(), out ShortQty);
-                                newLeakages[drdt["ProductName"].ToString()] = Math.Round(ShortQty, 2);
-                                float UnitCost = 0;
-                                float.TryParse(drdt["unitprice"].ToString(), out UnitCost);
-                                // float Total = LeakQty * UnitCost;
-                                totShorts += ShortQty;
-                                //totLeakAmount += Total;
-                            }
 
+
+
+                
+                //newLeakages["Total Qty"] = Math.Round(totLeakQty, 2);
+                //grnd_tot_qty += totLeakQty;
+
+
+
+
+
+
+
+                //if (dtsalesofficeLeaks.Rows.Count > 0)
+                //{
+                //    DataRow newLeakages = Report.NewRow();
+                //    //newLeakages["Route Name"] = "PuffLeakages" + " " + Disp;
+                //    newLeakages["Route Name"] = "Puff_Shorts";
+                //    float totShorts = 0;
+                //    //float totLeakAmount = 0;
+                //    foreach (DataRow drNewRowLeaks in dtsalesofficeLeaks.Rows)
+                //    {
+                //        foreach (DataRow drdt in produtstbl.Rows)
+                //        {
+                //            if (drNewRowLeaks["ProdId"].ToString() == drdt["sno"].ToString())
+                //            {
+                //                float ShortQty = 0;
+                //                float.TryParse(drNewRowLeaks["ShortQty"].ToString(), out ShortQty);
+                //                newLeakages[drdt["ProductName"].ToString()] = Math.Round(ShortQty, 2);
+                //                float UnitCost = 0;
+                //                float.TryParse(drdt["unitprice"].ToString(), out UnitCost);
+                //                // float Total = LeakQty * UnitCost;
+                //                totShorts += ShortQty;
+                //                //totLeakAmount += Total;
+                //            }
+
+                //        }
+                //    }
+                //    newLeakages["Total Qty"] = Math.Round(totShorts, 2);
+                //    //newLeakages["Total Amount"] = Math.Round(totLeakAmount, 2);
+                //    if (totShorts > 0)
+                //    {
+                //        Report.Rows.Add(newLeakages);
+                //    }
+                //}
+
+
+                foreach (DataRow drpuffLeaks in dtsalesofficeLeaks.Rows)
+                {
+                    foreach (DataRow drNew in dtAllLeaks.Rows)
+                    {
+                        if (drpuffLeaks["ProdId"].ToString() == drNew["ProductID"].ToString())
+                        {
+                            float LeakQty = 0;
+                            float.TryParse(drpuffLeaks["LeakQty"].ToString(), out LeakQty);
+                            float ShortQty = 0;
+                            float.TryParse(drpuffLeaks["ShortQty"].ToString(), out ShortQty);
+                            float AllLeaks = 0;
+                            float.TryParse(drNew["LeakQty"].ToString(), out AllLeaks);
+                            float AllShorts = 0;
+                            float.TryParse(drNew["ShortQty"].ToString(), out AllShorts);
+                            float TotalLeakQty = LeakQty + AllLeaks;
+                            float TotalShortQty = ShortQty + AllShorts;
+                            drNew["LeakQty"] = TotalLeakQty;
+                            drNew["ShortQty"] = TotalShortQty;
                         }
                     }
-                    newLeakages["Total Qty"] = Math.Round(totShorts, 2);
-                    //newLeakages["Total Amount"] = Math.Round(totLeakAmount, 2);
-                    if (totShorts > 0)
+                }
+                foreach (DataRow drdelivery in dtalldelivery.Rows)
+                {
+                    foreach (DataRow drpuff in dtAllLeaks.Rows)
                     {
-                        Report.Rows.Add(newLeakages);
+                        if (drdelivery["sno"].ToString() == drpuff["ProductID"].ToString())
+                        {
+                            float shortQty = 0;
+                            float.TryParse(drpuff["ShortQty"].ToString(), out shortQty);
+                            drdelivery["ShortQty"] = Math.Round(shortQty, 2);
+                            float LeakQty = 0;
+                            float.TryParse(drpuff["LeakQty"].ToString(), out LeakQty);
+                            drdelivery["LeakQty"] = Math.Round(LeakQty, 2);
+                        }
                     }
                 }
+
+
+
                 if (dtDispnames.Rows.Count > 0)
                 {
                     foreach (DataRow dr in dtDispnames.Rows)
