@@ -154,11 +154,22 @@ public partial class Agent_Due_Details : System.Web.UI.Page
             lblDate.Text = fromdate.ToString("dd/MMM/yyyy");
             Session["filename"] = "AGENT WISE DUE REPORT";
             string BranchID = ddlSalesOffice.SelectedValue;
-            cmd = new MySqlCommand("SELECT  modifiedroutes.RouteName, modifiedroutes.sno as routeid,  modifiedroutesubtable.BranchID,       branchdata.BranchName  FROM    modifiedroutes        INNER JOIN    modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo        INNER JOIN    branchdata ON modifiedroutesubtable.BranchID = branchdata.sno  WHERE      (modifiedroutes.BranchID = @BranchID)         AND(modifiedroutesubtable.EDate IS NULL)         AND(modifiedroutesubtable.CDate <= @starttime) AND (branchdata.flag=@flag) OR (modifiedroutes.BranchID = @BranchID)AND(modifiedroutesubtable.EDate > @starttime)         AND(modifiedroutesubtable.CDate <= @starttime) AND (branchdata.flag=@flag) GROUP BY branchdata.BranchName  ORDER BY modifiedroutes.RouteName");
-            cmd.Parameters.AddWithValue("@branchid", BranchID);
-            cmd.Parameters.AddWithValue("@flag", "1");
-            cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
-            cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
+            if (BranchID == "7")
+            {
+                cmd = new MySqlCommand("SELECT  modifiedroutes.RouteName, modifiedroutes.sno as routeid,  modifiedroutesubtable.BranchID,       branchdata.BranchName  FROM    modifiedroutes        INNER JOIN    modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo        INNER JOIN    branchdata ON modifiedroutesubtable.BranchID = branchdata.sno  WHERE      (modifiedroutes.BranchID = @BranchID)AND(modifiedroutesubtable.EDate IS NULL)AND(modifiedroutesubtable.CDate <= @starttime) AND (branchdata.flag=@flag) and modifiedroutes.sno not in('42','28','41','33','32','31','34','25','36','5')  OR (modifiedroutes.BranchID = @BranchID)AND(modifiedroutesubtable.EDate > @starttime)AND(modifiedroutesubtable.CDate <= @starttime) AND (branchdata.flag=@flag) and modifiedroutes.sno not in('42','28','41','33','32','31','34','25','36','5') GROUP BY branchdata.BranchName  ORDER BY modifiedroutes.RouteName");
+                cmd.Parameters.AddWithValue("@branchid", BranchID);
+                cmd.Parameters.AddWithValue("@flag", "1");
+                cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
+                cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
+            }
+            else
+            {
+                cmd = new MySqlCommand("SELECT  modifiedroutes.RouteName, modifiedroutes.sno as routeid,  modifiedroutesubtable.BranchID,       branchdata.BranchName  FROM    modifiedroutes        INNER JOIN    modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo        INNER JOIN    branchdata ON modifiedroutesubtable.BranchID = branchdata.sno  WHERE      (modifiedroutes.BranchID = @BranchID)AND(modifiedroutesubtable.EDate IS NULL)AND(modifiedroutesubtable.CDate <= @starttime) AND (branchdata.flag=@flag)  OR (modifiedroutes.BranchID = @BranchID)AND(modifiedroutesubtable.EDate > @starttime)AND(modifiedroutesubtable.CDate <= @starttime) AND (branchdata.flag=@flag) GROUP BY branchdata.BranchName  ORDER BY modifiedroutes.RouteName");
+                cmd.Parameters.AddWithValue("@branchid", BranchID);
+                cmd.Parameters.AddWithValue("@flag", "1");
+                cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
+                cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
+            }
             DataTable dtble = vdm.SelectQuery(cmd).Tables[0];
 
             cmd = new MySqlCommand("SELECT * FROM agent_bal_trans WHERE inddate between @d1 and @d2");
