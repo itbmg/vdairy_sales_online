@@ -7,6 +7,7 @@
     <script src="js/jquery-1.4.4.js" type="text/javascript"></script>
     <script src="Kendo/jquery.min.js" type="text/javascript"></script>
     <script src="Kendo/kendo.all.min.js" type="text/javascript"></script>
+    <script src="Kendo/kendo.all.min.js" type="text/javascript"></script>
     <link href="Kendo/kendo.common.min.css" rel="stylesheet" type="text/css" />
     <link href="Kendo/kendo.default.min.css" rel="stylesheet" type="text/css" />
     <script src="js/jquery.blockUI.js?v=3005" type="text/javascript"></script>

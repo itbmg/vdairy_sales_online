@@ -257,17 +257,17 @@ public partial class EinoviceTemplate : System.Web.UI.Page
             int NoOfdays = datespan.Days;
 
             //cmd = new MySqlCommand("SELECT SUM(indents_subtable.DeliveryQty) AS DeliveryQty, indents_subtable.UnitCost, branchdata.BranchName,branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName FROM branchroutes INNER JOIN branchroutesubtable ON branchroutes.Sno = branchroutesubtable.RefNo INNER JOIN branchdata ON branchroutesubtable.BranchID = branchdata.sno INNER JOIN indents ON branchdata.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (branchroutes.BranchID = @BranchID) AND (branchdata.CollectionType <> 'DUE') AND (indents.I_date BETWEEN @starttime AND @endtime) GROUP BY prodsno, branchdata.sno ORDER BY branchdata.sno, prodsno");
-            cmd = new MySqlCommand("SELECT  SUM(indents_subtable.DeliveryQty) AS DeliveryQty,productsdata.SubCat_sno, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) OR (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) GROUP BY prodsno, branchdata.sno ORDER BY branchdata.sno, prodsno");
+            cmd = new MySqlCommand("SELECT  SUM(indents_subtable.DeliveryQty) AS DeliveryQty,productsdata.SubCat_sno, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno<>'' and branchdata.gstno is not null) OR (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno<>'' and branchdata.gstno is not null) GROUP BY prodsno, branchdata.sno ORDER BY branchdata.sno, prodsno");
             cmd.Parameters.AddWithValue("@BranchID", SalesOfficeID);
             cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
             cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
             DataTable dtble = vdm.SelectQuery(cmd).Tables[0];
 
-            cmd = new MySqlCommand("SELECT  SUM(indents_subtable.DeliveryQty) AS DeliveryQty, ROUND(SUM(indents_subtable.DeliveryQty*indents_subtable.UnitCost),2) as salevalue, branchdata.sno FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) OR (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) GROUP BY branchdata.sno ORDER BY branchdata.sno");
-            cmd.Parameters.AddWithValue("@BranchID", SalesOfficeID);
-            cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
-            cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
-            DataTable dtble1 = vdm.SelectQuery(cmd).Tables[0];
+            //cmd = new MySqlCommand("SELECT  SUM(indents_subtable.DeliveryQty) AS DeliveryQty, ROUND(SUM(indents_subtable.DeliveryQty*indents_subtable.UnitCost),2) as salevalue, branchdata.sno FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) OR (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) GROUP BY branchdata.sno ORDER BY branchdata.sno");
+            //cmd.Parameters.AddWithValue("@BranchID", SalesOfficeID);
+            //cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
+            //cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
+            //DataTable dtble1 = vdm.SelectQuery(cmd).Tables[0];
             cmd = new MySqlCommand("select products_category.sno as catsno,products_subcategory.sno as subcatsno from products_category inner join products_subcategory on products_category.sno = products_subcategory.category_sno");
             DataTable dtcategory = vdm.SelectQuery(cmd).Tables[0];
             if (dtble.Rows.Count > 0)
@@ -380,7 +380,7 @@ public partial class EinoviceTemplate : System.Web.UI.Page
                 cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
                 DataTable dtDue = vdm.SelectQuery(cmd).Tables[0];
                 Report = new DataTable();
-                if (dtble1.Rows.Count > 0)
+                if (dtble.Rows.Count > 0)
                 {
 
                     if (sortedProductDT.Rows.Count > 0)
@@ -411,122 +411,120 @@ public partial class EinoviceTemplate : System.Web.UI.Page
                         double grnd_tot_cashamount = 0;
                         double grnd_tot_dueamount = 0;
                         double grnd_tot_amount = 0;
-                        foreach (DataRow dragesalevalue in dtble1.Rows)
+                        //foreach (DataRow dragesalevalue in dtble1.Rows)
+                        //{
+                        //if (Convert.ToDouble(dragesalevalue["salevalue"].ToString()) >= 0)
+                        //{
+                        foreach (DataRow branch in distincttable.Rows)
                         {
-                            if (Convert.ToDouble(dragesalevalue["salevalue"].ToString()) >= 50000)
+                            DataRow newrow = Report.NewRow();
+                            newrow["SNo"] = i;
+                            string bn = branch["BranchName"].ToString();
+                            if (bn == "Gunnala Praveen -Garepalli Distb")
                             {
-                                foreach (DataRow branch in distincttable.Select("sno='" + dragesalevalue["sno"].ToString() + "'"))
+
+                            }
+                            newrow["AgentName"] = branch["BranchName"].ToString();
+                            newrow["StateName"] = statename;
+                            newrow["GstNo"] = gstno;
+
+                            double total = 0;
+                            double Amount = 0;
+
+                            foreach (DataRow dr in dtble.Rows)
+                            {
+                                string categoryid = "";
+                                foreach (DataRow drcate in dtcategory.Select("subcatsno='" + dr["SubCat_sno"].ToString() + "'"))
                                 {
-                                    DataRow newrow = Report.NewRow();
-                                    newrow["SNo"] = i;
-                                    string bn = branch["BranchName"].ToString();
-                                    if (bn == "Gunnala Praveen -Garepalli Distb")
+                                    categoryid = drcate["catsno"].ToString();
+                                }
+                                string[] catarr = { "1" };
+                                if (catarr.Contains(categoryid) == false)
+                                {
+                                    string brnachname = dr["BranchName"].ToString();
+                                    if (branch["BranchName"].ToString() == dr["BranchName"].ToString())
                                     {
-
-                                    }
-                                    newrow["AgentName"] = branch["BranchName"].ToString();
-                                    newrow["StateName"] = statename;
-                                    newrow["GstNo"] = gstno;
-                                    
-                                    double total = 0;
-                                    double Amount = 0;
-
-
-
-
-                                    foreach (DataRow dr in dtble.Select("sno='" + dragesalevalue["sno"].ToString() + "'"))
-                                    {
-                                        string categoryid = "";
-                                        foreach (DataRow drcate in dtcategory.Select("subcatsno='" + dr["SubCat_sno"].ToString() + "'"))
+                                        double qtyvalue = 0;
+                                        double delqty = 0;
+                                        string pname = dr["ProductName"].ToString();
+                                        double.TryParse(dr["DeliveryQty"].ToString(), out delqty);
+                                        if (delqty == 0.0)
                                         {
-                                            categoryid = drcate["catsno"].ToString();
-                                        }
-                                        string[] catarr = { "2","7","11","12","14","15","16","26","34","35","39","40","47","48" };
-                                        if (catarr.Contains(categoryid))
-                                        {
-                                            string brnachname = dr["BranchName"].ToString();
-                                            if (branch["BranchName"].ToString() == dr["BranchName"].ToString())
-                                            {
-                                                double qtyvalue = 0;
-                                                double delqty = 0;
-                                                string pname = dr["ProductName"].ToString();
-                                                double.TryParse(dr["DeliveryQty"].ToString(), out delqty);
-                                                if (delqty == 0.0)
-                                                {
 
-                                                }
-                                                else
-                                                {
-                                                    newrow[dr["ProductName"].ToString()] = Math.Round(delqty, 2);
-                                                    DataRow tempnewrow = dttempproducts.NewRow();
-                                                    tempnewrow["ProductName"] = dr["ProductName"].ToString();
-                                                    tempnewrow["SubCatSno"] = dr["SubCat_sno"].ToString();
-                                                    dttempproducts.Rows.Add(tempnewrow);
-                                                }
+                                        }
+                                        else
+                                        {
+                                            newrow[dr["ProductName"].ToString()] = Math.Round(delqty, 2);
+                                            DataRow tempnewrow = dttempproducts.NewRow();
+                                            tempnewrow["ProductName"] = dr["ProductName"].ToString();
+                                            tempnewrow["SubCatSno"] = dr["SubCat_sno"].ToString();
+                                            dttempproducts.Rows.Add(tempnewrow);
+                                        }
 
-                                                double.TryParse(dr["DeliveryQty"].ToString(), out qtyvalue);
-                                                double UnitCost = 0;
-                                                double.TryParse(dr["UnitCost"].ToString(), out UnitCost);
-                                                Amount += qtyvalue * UnitCost;
-                                                total += qtyvalue;
-                                            }
-                                        }
+                                        double.TryParse(dr["DeliveryQty"].ToString(), out qtyvalue);
+                                        double UnitCost = 0;
+                                        double.TryParse(dr["UnitCost"].ToString(), out UnitCost);
+                                        Amount += qtyvalue * UnitCost;
+                                        total += qtyvalue;
                                     }
-                                    cmd = new MySqlCommand("SELECT invoiceno, agentid, invoicedate FROM e_invoice WHERE (invoicedate BETWEEN @d1 AND @d2) and agentid=@brncid");
-                                    cmd.Parameters.AddWithValue("@brncid", branch["sno"].ToString());
-                                    cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-                                    cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
-                                    DataTable dtagentdcno = vdm.SelectQuery(cmd).Tables[0];
-                                    string dcno = "";
-                                    long DcNo = 0;
-                                    if (dtagentdcno.Rows.Count > 0)
-                                    {
-                                        dcno = dtagentdcno.Rows[0]["invoiceno"].ToString();
-                                        newrow["InvoiceNo"] = dcno;
-                                    }
-                                    else
-                                    {
-                                        cmd = new MySqlCommand("SELECT IFNULL(MAX(invoiceno), 0) + 1 AS Sno FROM e_invoice WHERE (soid = @soid) AND (invoicedate BETWEEN @d1 AND @d2)");
-                                        cmd.Parameters.AddWithValue("@soid", ddlSalesOffice.SelectedValue);
-                                        cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril).AddDays(-1));
-                                        cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch).AddDays(-1));
-                                        DataTable dtadcno = vdm.SelectQuery(cmd).Tables[0];
-                                        string agentdcNo = dtadcno.Rows[0]["Sno"].ToString();
-                                        cmd = new MySqlCommand("Insert Into e_invoice (agentid,invoicedate,soid,invoiceno,stateid,doe) Values(@agentid,@invoicedate,@soid,@einvoiceno,@stateid,@doe)");
-                                        cmd.Parameters.AddWithValue("@agentid", branch["sno"].ToString());
-                                        cmd.Parameters.AddWithValue("@invoicedate", GetLowDate(fromdate.AddDays(-1)));
-                                        cmd.Parameters.AddWithValue("@soid", ddlSalesOffice.SelectedValue);
-                                        cmd.Parameters.AddWithValue("@einvoiceno", agentdcNo);
-                                        cmd.Parameters.AddWithValue("@stateid", gststatecode);
-                                        cmd.Parameters.AddWithValue("@doe", ReportDate);
-                                        if (Amount >= 50000)
-                                        {
-                                            //DcNo = vdm.insertScalar(cmd);
-                                        }
-                                        cmd = new MySqlCommand("SELECT invoiceno FROM  e_invoice WHERE (agentid = @agentid) AND (invoicedate BETWEEN @d1 AND @d2)");
-                                        cmd.Parameters.AddWithValue("@agentid", branch["sno"].ToString());
-                                        cmd.Parameters.AddWithValue("@soid", ddlSalesOffice.SelectedValue);
-                                        cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-                                        cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
-                                        DataTable dtsubDc = vdm.SelectQuery(cmd).Tables[0];
-                                        if (dtsubDc.Rows.Count > 0)
-                                        {
-                                            dcno = dtsubDc.Rows[0]["invoiceno"].ToString();
-                                        }
-                                        dcno = dcno.ToString();
-                                    }
-                                    newrow["Total Qty"] = Math.Round(total, 2);
-                                    grnd_tot_qty += total;
-                                    newrow["Total Amount"] = Math.Round(Amount, 2);
-                                    grnd_tot_amount += Amount;
-                                    if(Amount >= 50000)
-                                    {
-                                        Report.Rows.Add(newrow);
-                                    }
-                                    i++;
                                 }
                             }
+                            cmd = new MySqlCommand("SELECT invoiceno, agentid, invoicedate FROM e_invoice WHERE (invoicedate BETWEEN @d1 AND @d2) and agentid=@brncid");
+                            cmd.Parameters.AddWithValue("@brncid", branch["sno"].ToString());
+                            cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+                            cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
+                            DataTable dtagentdcno = vdm.SelectQuery(cmd).Tables[0];
+                            string dcno = "";
+                            long DcNo = 0;
+                            if (dtagentdcno.Rows.Count > 0)
+                            {
+                                dcno = dtagentdcno.Rows[0]["invoiceno"].ToString();
+                                newrow["InvoiceNo"] = dcno;
+                            }
+                            else
+                            {
+                                cmd = new MySqlCommand("SELECT IFNULL(MAX(invoiceno), 0) + 1 AS Sno FROM e_invoice WHERE (soid = @soid) AND (invoicedate BETWEEN @d1 AND @d2)");
+                                cmd.Parameters.AddWithValue("@soid", ddlSalesOffice.SelectedValue);
+                                cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril).AddDays(-1));
+                                cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch).AddDays(-1));
+                                DataTable dtadcno = vdm.SelectQuery(cmd).Tables[0];
+                                string agentdcNo = dtadcno.Rows[0]["Sno"].ToString();
+                                cmd = new MySqlCommand("Insert Into e_invoice (agentid,invoicedate,soid,invoiceno,stateid,doe) Values(@agentid,@invoicedate,@soid,@einvoiceno,@stateid,@doe)");
+                                cmd.Parameters.AddWithValue("@agentid", branch["sno"].ToString());
+                                cmd.Parameters.AddWithValue("@invoicedate", GetLowDate(fromdate.AddDays(-1)));
+                                cmd.Parameters.AddWithValue("@soid", ddlSalesOffice.SelectedValue);
+                                cmd.Parameters.AddWithValue("@einvoiceno", agentdcNo);
+                                cmd.Parameters.AddWithValue("@stateid", gststatecode);
+                                cmd.Parameters.AddWithValue("@doe", ReportDate);
+                                if (Amount >= 0)
+                                {
+                                    DcNo = vdm.insertScalar(cmd);
+                                }
+                                //cmd = new MySqlCommand("SELECT invoiceno FROM  e_invoice WHERE (agentid = @agentid) AND (invoicedate BETWEEN @d1 AND @d2)");
+                                //cmd.Parameters.AddWithValue("@agentid", branch["sno"].ToString());
+                                //cmd.Parameters.AddWithValue("@soid", ddlSalesOffice.SelectedValue);
+                                //cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+                                //cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
+                                //DataTable dtsubDc = vdm.SelectQuery(cmd).Tables[0];
+                                //if (dtsubDc.Rows.Count > 0)
+                                //{
+                                //    dcno = dtsubDc.Rows[0]["invoiceno"].ToString();
+                                //}
+                                //dcno = dcno.ToString();
+                                newrow["InvoiceNo"] = DcNo;
+                            }
+                            newrow["Total Qty"] = Math.Round(total, 2);
+                            grnd_tot_qty += total;
+                            newrow["Total Amount"] = Math.Round(Amount, 2);
+                            grnd_tot_amount += Amount;
+                            if (Amount >= 0)
+                            {
+                                Report.Rows.Add(newrow);
+                            }
+                            i++;
                         }
+                        //}
+                        //}
                     }
 
                     foreach (var column in Report.Columns.Cast<DataColumn>().ToArray())
