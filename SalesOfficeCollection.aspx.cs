@@ -200,6 +200,17 @@ public partial class SalesOfficeCollection : System.Web.UI.Page
                 dtroutecollection = vdm.SelectQuery(cmd).Tables[0];
 
             }
+            if (Status == "PhonePay")
+            {
+                cmd = new MySqlCommand("SELECT 'PhonePay' as collectiotype,branchdata.BranchName, branchdata.sno, collections.AmountPaid, collections.PaidDate, collections.PaymentType, collections.CheckStatus, collections.PayTime,collections.ChequeNo,collections.Remarks, collections.tripId, collections.ReceiptNo, dispatch.DispName FROM dispatch INNER JOIN branchroutes ON dispatch.Route_id = branchroutes.Sno INNER JOIN branchroutesubtable ON branchroutes.Sno = branchroutesubtable.RefNo INNER JOIN branchdata ON branchroutesubtable.BranchID = branchdata.sno INNER JOIN collections ON branchdata.sno = collections.Branchid WHERE (collections.PaidDate BETWEEN @d1 AND @d2) AND (collections.tripId IS NULL) AND (dispatch.Branch_Id = @brnchid) AND (collections.TransactionType IS NULL) AND (collections.PaymentType = @pt) GROUP BY collections.PaidDate");
+                cmd.Parameters.AddWithValue("@brnchid", BranchID);
+                cmd.Parameters.AddWithValue("@pt", "PhonePay");
+                cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
+                cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate));
+                dtroutecollection = vdm.SelectQuery(cmd).Tables[0];
+
+            }
+
             if (Status == "Cheque")
             {
                 cmd = new MySqlCommand("SELECT 'Cheque' as collectiotype,branchdata.BranchName, branchdata.sno, collections.AmountPaid, collections.PaidDate, collections.PaymentType, collections.CheckStatus, collections.PayTime,collections.ChequeNo,collections.Remarks, collections.tripId, collections.ReceiptNo, dispatch.DispName FROM dispatch INNER JOIN branchroutes ON dispatch.Route_id = branchroutes.Sno INNER JOIN branchroutesubtable ON branchroutes.Sno = branchroutesubtable.RefNo INNER JOIN branchdata ON branchroutesubtable.BranchID = branchdata.sno INNER JOIN collections ON branchdata.sno = collections.Branchid WHERE (collections.PaidDate BETWEEN @d1 AND @d2) AND (collections.tripId IS NULL) AND (dispatch.Branch_Id = @brnchid) AND (collections.TransactionType IS NULL) AND (collections.PaymentType = @pt) GROUP BY collections.PaidDate");

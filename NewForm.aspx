@@ -255,7 +255,7 @@
                 if (!confirm("Do you want to save this transaction")) {
                     return false;
                 }
-                if (paymenttype == "Cash") {
+                if (paymenttype == "Cash" || paymenttype == "PhonePay") {
                     var txt_Total = document.getElementById("txtCTotAmount").innerHTML;
                     var rowsdenominations = $("#tableCollectionDetails tr:gt(0)");
                     var DenominationString = "";
@@ -478,7 +478,7 @@
                     HeadSno = Head.options[Head.selectedIndex].value;
                     var HeadOfAccount = Head.options[Head.selectedIndex].text;
                 }
-                if (paymenttype == "Cash") {
+                if (paymenttype == "Cash" || paymenttype == "PhonePay") {
                     var rowsdenominations = $("#tableCollectionDetails tr:gt(0)");
                     var DenominationString = "";
                     var ReturnDenominationString = "";
@@ -671,7 +671,7 @@
         var PaymentType = "";
         function ddlPaymentTypeChange(Payment) {
             PaymentType = Payment.options[Payment.selectedIndex].text;
-            if (PaymentType == "Cash") {
+            if (PaymentType == "Cash" || paymenttype == "PhonePay" ) {
                 $('.divChequeclass').css('display', 'none');
                 $('.divChequeDateclass').css('display', 'none');
                 $('.divBankclass').css('display', 'none');
@@ -1117,6 +1117,7 @@
                                         <select id="ddlPaymentType" class="form-control" onchange="ddlPaymentTypeChange(this);">
                                             <option>Select</option>
                                             <option>Cash</option>
+                                            <option>PhonePay</option>
                                             <option>Cheque</option>
                                             <option>DD</option>
                                             <option>Bank Transfer</option>

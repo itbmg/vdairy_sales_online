@@ -192,6 +192,7 @@ public partial class Agent_Due_Details : System.Web.UI.Page
             Report.Columns.Add("Oppening Balance");
             Report.Columns.Add("Sale Value").DataType = typeof(Double);
             Report.Columns.Add("Paid Amount").DataType = typeof(Double);
+            Report.Columns.Add("PhonePay").DataType = typeof(Double);
             Report.Columns.Add("Bank Transfer").DataType = typeof(Double);
             Report.Columns.Add("JV/Incentive").DataType = typeof(Double);
             Report.Columns.Add("Closing Balance").DataType = typeof(Double);
@@ -208,6 +209,7 @@ public partial class Agent_Due_Details : System.Web.UI.Page
             double ftotalpaidamount = 0;
             double ftotalbankTransfer = 0;
             double ftotaljv = 0;
+            double ftotalPhonePay = 0;
 
             double grand_totaloppbal = 0;
             double grand_totalClosingbal = 0;
@@ -215,6 +217,7 @@ public partial class Agent_Due_Details : System.Web.UI.Page
             double grand_totalpaidamount = 0;
             double grand_totalbankTransfer = 0;
             double grand_totaljv = 0;
+            double grand_totalPhonepay = 0;
             
             foreach (DataRow branch in distincttable.Rows)
             {
@@ -248,6 +251,14 @@ public partial class Agent_Due_Details : System.Web.UI.Page
                                         newrow["Bank Transfer"] = banktransfervalue;
                                         ftotalbankTransfer += banktransfervalue;
                                         grand_totalbankTransfer += banktransfervalue;
+                                    }
+                                    if (PaymentType == "PhonePay")
+                                    {
+                                        double Phonepayvalue = 0;
+                                        double.TryParse(drcollections["AmountPaid"].ToString(), out Phonepayvalue);
+                                        newrow["PhonePay"] = Phonepayvalue;
+                                        ftotalPhonePay += Phonepayvalue;
+                                        grand_totalPhonepay += Phonepayvalue;
                                     }
                                     if (PaymentType == "Journal Voucher" || PaymentType == "Incentive")
                                     {
@@ -284,6 +295,7 @@ public partial class Agent_Due_Details : System.Web.UI.Page
                         newvar["Sale Value"] = Math.Round(ftotalsalesvalue, 2);
                         newvar["Paid Amount"] = Math.Round(ftotalpaidamount, 2);
                         newvar["Bank Transfer"] = Math.Round(ftotalbankTransfer, 2);
+                        newvar["PhonePay"] = Math.Round(ftotalPhonePay, 2);
                         newvar["JV/Incentive"] = Math.Round(ftotaljv, 2);
                         newvar["Closing Balance"] = Math.Round(ftotalClosingbal, 2);
                         double totCurdavg = 0;
@@ -293,6 +305,8 @@ public partial class Agent_Due_Details : System.Web.UI.Page
                         ftotalsalesvalue = 0;
                         ftotalpaidamount = 0;
                         ftotalbankTransfer = 0;
+                        ftotalPhonePay = 0;
+
                         ftotalClosingbal = 0;
                         ftotaljv = 0;
                         newrow["Route Name"] = branch["RouteName"].ToString();
@@ -375,6 +389,7 @@ public partial class Agent_Due_Details : System.Web.UI.Page
                         }
                         double banktransfervalue = 0;
                         double jvvalue = 0;
+                        double PhonePayValue = 0;
                         foreach (DataRow drcollections in dtcollections.Select("Branchid='" + dr["BranchID"].ToString() + "'"))
                         {
                             //JV/Incentive
@@ -385,6 +400,13 @@ public partial class Agent_Due_Details : System.Web.UI.Page
                                 newrow["Bank Transfer"] = banktransfervalue;
                                 ftotalbankTransfer += banktransfervalue;
                                 grand_totalbankTransfer += banktransfervalue;
+                            }
+                            if (PaymentType == "PhonePay")
+                            {
+                                double.TryParse(drcollections["AmountPaid"].ToString(), out PhonePayValue);
+                                newrow["PhonePay"] = PhonePayValue;
+                                ftotalPhonePay += PhonePayValue;
+                                grand_totalPhonepay += PhonePayValue;
                             }
                             if (PaymentType == "Journal Voucher" || PaymentType == "Incentive")
                             {
@@ -411,7 +433,7 @@ public partial class Agent_Due_Details : System.Web.UI.Page
                             double.TryParse(drtrans["paidamount"].ToString(), out paidamount);
                             if (paidamount > 0)
                             {
-                                double otheramount = banktransfervalue + jvvalue;
+                                double otheramount = banktransfervalue + jvvalue + PhonePayValue;
                                 paidamount = paidamount - otheramount;
                                 foreach (DataRow drcollections1 in dtcollections.Select("Branchid='" + dr["BranchID"].ToString() + "'"))
                                 {
@@ -429,6 +451,10 @@ public partial class Agent_Due_Details : System.Web.UI.Page
                             if (banktransfervalue == 0)
                             {
                                 newrow["Bank Transfer"] = banktransfervalue;
+                            }
+                            if (PhonePayValue == 0)
+                            {
+                                newrow["PhonePay"] = PhonePayValue;
                             }
                             if (jvvalue == 0)
                             {
@@ -455,6 +481,7 @@ public partial class Agent_Due_Details : System.Web.UI.Page
             TotRow["Sale Value"] = Math.Round(ftotalsalesvalue, 2);
             TotRow["Paid Amount"] = Math.Round(ftotalpaidamount, 2);
             TotRow["Bank Transfer"] = Math.Round(ftotalbankTransfer, 2);
+            TotRow["PhonePay"] = Math.Round(ftotalPhonePay, 2);
             TotRow["JV/Incentive"] = Math.Round(ftotaljv, 2);
             TotRow["Closing Balance"] = Math.Round(ftotalClosingbal, 2);
             Report.Rows.Add(TotRow);
@@ -468,6 +495,7 @@ public partial class Agent_Due_Details : System.Web.UI.Page
             grandtotal["Sale Value"] = Math.Round(grand_totalsalesvalue, 2);
             grandtotal["Paid Amount"] = Math.Round(grand_totalpaidamount, 2);
             grandtotal["Bank Transfer"] = Math.Round(grand_totalbankTransfer, 2);
+            grandtotal["PhonePay"] = Math.Round(grand_totalPhonepay, 2);
             grandtotal["JV/Incentive"] = Math.Round(grand_totaljv, 2);
             grandtotal["Closing Balance"] = Math.Round(grand_totalClosingbal,2);
             Report.Rows.Add(grandtotal);

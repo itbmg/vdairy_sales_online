@@ -94,6 +94,7 @@
                                     <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-control">
                                         <asp:ListItem>ALL</asp:ListItem>
                                         <asp:ListItem>Cash</asp:ListItem>
+                                        <asp:ListItem>PhonePay</asp:ListItem>
                                         <asp:ListItem>Cheque</asp:ListItem>
                                         <asp:ListItem>DD</asp:ListItem>
                                         <asp:ListItem>Bank Transfer</asp:ListItem>

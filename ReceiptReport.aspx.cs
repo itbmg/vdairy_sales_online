@@ -155,7 +155,7 @@ public partial class ReceiptReport : System.Web.UI.Page
                 Report.Columns.Add("Type");
                 Report.Columns.Add("Name");
                 Report.Columns.Add("Amount").DataType = typeof(Double);
-                cmd = new MySqlCommand("SELECT branchdata.BranchName,DATE_FORMAT(collections.PaidDate, '%d %b %y') AS DOE , collections.PaymentType, collections.AmountPaid, collections.Sno, collections.ReceiptNo FROM collections INNER JOIN branchmappingtable ON collections.Branchid = branchmappingtable.SubBranch INNER JOIN branchdata ON collections.Branchid = branchdata.sno WHERE (collections.PaymentType <> 'Cash') AND (collections.PaidDate BETWEEN @d1 AND @d2) AND (branchmappingtable.SuperBranch = @BranchID) ORDER BY branchdata.BranchName");
+                cmd = new MySqlCommand("SELECT branchdata.BranchName,DATE_FORMAT(collections.PaidDate, '%d %b %y') AS DOE , collections.PaymentType, collections.AmountPaid, collections.Sno, collections.ReceiptNo FROM collections INNER JOIN branchmappingtable ON collections.Branchid = branchmappingtable.SubBranch INNER JOIN branchdata ON collections.Branchid = branchdata.sno WHERE (collections.PaymentType <> 'Cash') AND (collections.PaymentType <> 'PhonePay') AND (collections.PaidDate BETWEEN @d1 AND @d2) AND (branchmappingtable.SuperBranch = @BranchID) ORDER BY branchdata.BranchName");
                 cmd.Parameters.AddWithValue("@BranchID", Session["branch"]);
                 cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
                 cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate));

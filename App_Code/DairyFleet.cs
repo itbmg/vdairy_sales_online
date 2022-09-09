@@ -26084,7 +26084,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 {
                     //cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID");
                     string CashReceiptNo = "0";
-                    if (paymenttype == "Cash")
+                    if (paymenttype == "Cash" || paymenttype == "PhonePay")
                     {
                         cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID AND (DOE BETWEEN @d1 AND @d2)");
                         cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
@@ -26102,7 +26102,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         cmd.Parameters.AddWithValue("@Receipt", CashReceiptNo);
                         vdbmngr.insert(cmd);
                     }
-                    if (paymenttype == "Cash" || paymenttype == "Bank Transfer")
+                    if (paymenttype == "Cash" || paymenttype == "Bank Transfer" || paymenttype == "PhonePay")
                     {
                         cmd = new MySqlCommand("insert into cashcollections (BranchID,Name,Amount,Remarks,DOE,Receiptno,PaymentType,CollectionType,CollectionFrom,freezertype,freezeramounttype,TransType,ledger_code) values(@BranchID,@Name,@Amount,@Remarks,@DOE,@Receiptno,@PaymentType,@CollectionType,@CollectionFrom,@freezertype,@freezeramounttype,@TransType,@ledger_code)");
                     }
@@ -26299,7 +26299,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 if (collectiontype == "SD Deposit")
                 {
                     string CashReceiptNo = "0";
-                    if (paymenttype == "Cash")
+                    if (paymenttype == "Cash" || paymenttype == "PhonePay")
                     {
                         cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID AND (DOE BETWEEN @d1 AND @d2)");
                         cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
@@ -26318,7 +26318,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         cmd.Parameters.AddWithValue("@PaymentStatus", paymenttype);
                         vdbmngr.insert(cmd);
                     }
-                    if (paymenttype == "Cash" || paymenttype == "Bank Transfer" || paymenttype == "Journal Voucher")
+                    if (paymenttype == "Cash" || paymenttype == "Bank Transfer" || paymenttype == "Journal Voucher" || paymenttype == "PhonePay")
                     {
                         cmd = new MySqlCommand("insert into cashcollections (BranchID,Name,Amount,Remarks,DOE,Receiptno,Agentid,PaymentType,CollectionType,CollectionFrom,freezertype,freezeramounttype,TransType) values(@BranchID,@Name,@Amount,@Remarks,@DOE,@Receiptno,@Agentid,@PaymentType,@CollectionType,@CollectionFrom,@freezertype,@freezeramounttype,@TransType)");
                     }
@@ -26561,7 +26561,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             }
                             //string remarks = "Agent Collection";
                             string CashReceiptNo = "0";
-                            if (paymenttype == "Cash")
+                            if (paymenttype == "Cash" || paymenttype == "PhonePay")
                             {
                                 cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID AND (DOE BETWEEN @d1 AND @d2)");
                                 cmd.Parameters.AddWithValue("@BranchID", Branch);
@@ -26814,7 +26814,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             {
 
                             }
-                            if (paymenttype == "Cash" || paymenttype == "Bank Transfer")
+                            if (paymenttype == "Cash" || paymenttype == "Bank Transfer" || paymenttype == "PhonePay")
                             {
                                 cmd = new MySqlCommand("Update branchaccounts set Amount=Amount-@PaidAmount where BranchId=@BranchId");
                                 cmd.Parameters.AddWithValue("@PaidAmount", PaidAmount);
@@ -26919,7 +26919,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             }
                         }
                     }
-                    if (paymenttype == "Cash" || paymenttype == "Bank Transfer")
+                    if (paymenttype == "Cash" || paymenttype == "Bank Transfer" || paymenttype == "PhonePay")
                     {
                         DateTime pdate = Convert.ToDateTime(PaidDate);
 
@@ -27012,7 +27012,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     {
                         //cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID");
                         string CashReceiptNo = "0";
-                        if (paymenttype == "Cash")
+                        if (paymenttype == "Cash" || paymenttype == "PhonePay")
                         {
                             cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID AND (DOE BETWEEN @d1 AND @d2)");
                             cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
@@ -27030,7 +27030,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             cmd.Parameters.AddWithValue("@Receipt", CashReceiptNo);
                             vdbmngr.insert(cmd);
                         }
-                        if (paymenttype == "Cash" || paymenttype == "Bank Transfer")
+                        if (paymenttype == "Cash" || paymenttype == "Bank Transfer" || paymenttype == "PhonePay")
                         {
                             cmd = new MySqlCommand("insert into cashcollections (BranchID,Name,Amount,Remarks,DOE,Receiptno,PaymentType,CollectionType,CollectionFrom,freezertype,freezeramounttype,TransType,ledger_code) values(@BranchID,@Name,@Amount,@Remarks,@DOE,@Receiptno,@PaymentType,@CollectionType,@CollectionFrom,@freezertype,@freezeramounttype,@TransType,@ledger_code)");
                         }
@@ -27227,7 +27227,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     if (collectiontype == "SD Deposit")
                     {
                         string CashReceiptNo = "0";
-                        if (paymenttype == "Cash")
+                        if (paymenttype == "Cash" || paymenttype == "PhonePay")
                         {
                             cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID AND (DOE BETWEEN @d1 AND @d2)");
                             cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
@@ -27246,7 +27246,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             cmd.Parameters.AddWithValue("@PaymentStatus", paymenttype);
                             vdbmngr.insert(cmd);
                         }
-                        if (paymenttype == "Cash" || paymenttype == "Bank Transfer" || paymenttype == "Journal Voucher")
+                        if (paymenttype == "Cash" || paymenttype == "Bank Transfer" || paymenttype == "Journal Voucher" || paymenttype == "PhonePay")
                         {
                             cmd = new MySqlCommand("insert into cashcollections (BranchID,Name,Amount,Remarks,DOE,Receiptno,Agentid,PaymentType,CollectionType,CollectionFrom,freezertype,freezeramounttype,TransType) values(@BranchID,@Name,@Amount,@Remarks,@DOE,@Receiptno,@Agentid,@PaymentType,@CollectionType,@CollectionFrom,@freezertype,@freezeramounttype,@TransType)");
                         }
@@ -27489,7 +27489,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 }
                                 //string remarks = "Agent Collection";
                                 string CashReceiptNo = "0";
-                                if (paymenttype == "Cash")
+                                if (paymenttype == "Cash" || paymenttype == "PhonePay")
                                 {
                                     cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID AND (DOE BETWEEN @d1 AND @d2)");
                                     cmd.Parameters.AddWithValue("@BranchID", Branch);
@@ -27728,7 +27728,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 {
 
                                 }
-                                if (paymenttype == "Cash" || paymenttype == "Bank Transfer")
+                                if (paymenttype == "Cash" || paymenttype == "Bank Transfer" || paymenttype == "PhonePay")
                                 {
                                     cmd = new MySqlCommand("Update branchaccounts set Amount=Amount-@PaidAmount where BranchId=@BranchId");
                                     cmd.Parameters.AddWithValue("@PaidAmount", PaidAmount);
@@ -27833,7 +27833,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 }
                             }
                         }
-                        if (paymenttype == "Cash" || paymenttype == "Bank Transfer")
+                        if (paymenttype == "Cash" || paymenttype == "Bank Transfer" || paymenttype == "PhonePay")
                         {
                             DateTime pdate = Convert.ToDateTime(PaidDate);
 
