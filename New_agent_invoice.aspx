@@ -439,7 +439,7 @@
                      <br />
                     <div id="divPrint" style="display: none;height:50%;">
                    <div class="content">
-                <p id="bg-text"><image width="100%;" src="http://www.vyshnavi.co.in/Images/original.jpg"></image> </p>
+                <%--<p id="bg-text"><image width="100%;" src="http://www.vyshnavi.co.in/Images/original.jpg"></image> </p>--%>
                     <div style="border:2px solid gray;">
                     <div style="width: 17%; float: right; padding-top:5px;">
                         <img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="100px" height="72px" />

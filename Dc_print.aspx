@@ -676,9 +676,7 @@
                         </div>
                     </div>
                 </div>
-
                 <button type="button" class="btn btn-primary" style="margin-right: 5px;" onclick="javascript:CallPrint('divPrint');"><i class="fa fa-print"></i>Print </button>
-
             </div>
         </div>
     </section>

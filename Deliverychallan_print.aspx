@@ -413,7 +413,8 @@ Ref No
               
               <div id="divPrint" class="watermark">
               <div class="content">
-                <p id="bg-text"><image width="100%;" src="http://www.vyshnavi.co.in/Images/original.jpg"></image> </p>
+                <%--<%--<--%>p id="bg-text">--%>
+                    <%--<image width="100%;" src="http://www.vyshnavi.co.in/Images/original.jpg"></image> </p>--%>
                 
                 <div style="border: 2px solid gray;" class="col-md-12">
                     <div style="width: 17%; float: right;padding-top: 12px;">

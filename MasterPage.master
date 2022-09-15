@@ -778,8 +778,8 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                     class="fa fa-leanpub"></i>&nbsp Edit Tools</a>
                                     <div class="drop3">
                                         <ul id="ultools">
-                                            <li id="liSalesEdit"><a href="EditIndent.aspx">Sales Edit</a></li>
-                                            <li id="LiCollectionsedit"><a href="EditCollections.aspx">Amount Collections Edit</a></li>
+                                            <li id="liSalesEdit" style="display:none"><a href="EditIndent.aspx">Sales Edit</a></li>
+                                            <li id="LiCollectionsedit" style="display:none"><a href="EditCollections.aspx">Amount Collections Edit</a></li>
                                             <li id="LiLeaksEdit"><a href="NewEditLeaks.aspx">Leakage Edit</a></li>
                                             <li id="LiDcEdit"><a href="EditDC.aspx">DC Edit</a></li>
                                             <li id="LiCahsbookEdit"><a href="EditCashBook.aspx">CashBook Edit</a></li>
