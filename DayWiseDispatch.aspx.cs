@@ -96,7 +96,7 @@ public partial class DayWiseDispatch : System.Web.UI.Page
             lbl_selttodate.Text = Todate.ToString("dd/MM/yyyy");
             Session["filename"] = "TOTAL DC REPORT";
             //cmd = new MySqlCommand("SELECT SUM(tripsubdata.Qty) AS assignedqty,productsdata.ProductName, products_category.Categoryname,DATE_FORMAT(tripdata.AssignDate, '%d %b %y') as AssignDate FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno INNER JOIN branchroutes ON dispatch.Route_id = branchroutes.Sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2) GROUP BY productsdata.ProductName, tripdata.AssignDate ORDER BY tripdata.AssignDate"); 
-            cmd = new MySqlCommand("SELECT result.AssignDate, SUM(tripsubdata.Qty) AS assignedqty, tripsubdata.ProductId, products_category.Categoryname,productsdata.ProductName FROM (SELECT dispatch.sno AS dissno, tripdat.Sno, tripdat.AssignDate FROM dispatch INNER JOIN  triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, EmpId, DATE_FORMAT(AssignDate, '%d %b %y') AS AssignDate,Status FROM tripdata WHERE (AssignDate BETWEEN @d1 AND @d2) AND (Status <> 'C')) tripdat ON triproutes.Tripdata_sno = tripdat.Sno WHERE (dispatch.Branch_Id = @BranchID)) result INNER JOIN tripsubdata ON result.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno GROUP BY result.AssignDate, tripsubdata.ProductId");
+            cmd = new MySqlCommand("SELECT result.AssignDate, SUM(tripsubdata.Qty) AS assignedqty, tripsubdata.ProductId, products_category.Categoryname,productsdata.ProductName,productsdata.Qty as uomqty FROM (SELECT dispatch.sno AS dissno, tripdat.Sno, tripdat.AssignDate FROM dispatch INNER JOIN  triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, EmpId, DATE_FORMAT(AssignDate, '%d %b %y') AS AssignDate,Status FROM tripdata WHERE (AssignDate BETWEEN @d1 AND @d2) AND (Status <> 'C')) tripdat ON triproutes.Tripdata_sno = tripdat.Sno WHERE (dispatch.Branch_Id = @BranchID)) result INNER JOIN tripsubdata ON result.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno GROUP BY result.AssignDate, tripsubdata.ProductId");
             //cmd = new MySqlCommand("SELECT SUM(tripsubdata.Qty) AS assignedqty, productsdata.ProductName, products_category.Categoryname, DATE_FORMAT(tripdata.AssignDate, '%d %b %y') AS AssignDate FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchdata ON dispatch.Branch_Id = branchdata.sno WHERE (((dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) OR ((tripdata.AssignDate BETWEEN @d1 AND @d2) AND (branchdata.SalesOfficeID = @SOID))) GROUP BY productsdata.ProductName, products_category.Categoryname,AssignDate ORDER BY AssignDate");
             cmd.Parameters.AddWithValue("@BranchID", Session["branch"]);
             cmd.Parameters.AddWithValue("@SOID", Session["branch"]);
@@ -160,22 +160,29 @@ public partial class DayWiseDispatch : System.Web.UI.Page
                             double Buttermilk = 0;
                             double AssignQty = 0;
                             double qtyvalue = 0;
+                            double uom = 0;
                             double.TryParse(drdisp["assignedqty"].ToString(), out AssignQty);
                             newrow[drdisp["ProductName"].ToString()] =Math.Round(AssignQty,2);
                             if (drdisp["Categoryname"].ToString() == "MILK")
                             {
                                 double.TryParse(drdisp["assignedqty"].ToString(), out assqty);
-                                total += assqty;
+                                double.TryParse(drdisp["uomqty"].ToString(), out uom);
+                                double milkqty = assqty * uom / 1000;
+                                total += milkqty;
                             }
-                            if (drdisp["Categoryname"].ToString() == "CURD")
+                            if (drdisp["Categoryname"].ToString() == "CURD" || drdisp["Categoryname"].ToString() == "Curd Buckets" || drdisp["Categoryname"].ToString() == "Curd Cups")
                             {
                                 double.TryParse(drdisp["assignedqty"].ToString(), out curdBm);
-                                totalcurdandBM += curdBm;
+                                double.TryParse(drdisp["uomqty"].ToString(), out uom);
+                                double curdqty = curdBm * uom / 1000;
+                                totalcurdandBM += curdqty;
                             }
                             if (drdisp["Categoryname"].ToString() == "ButterMilk")
                             {
                                 double.TryParse(drdisp["assignedqty"].ToString(), out Buttermilk);
-                                totalcurdandBM += Buttermilk;
+                                double.TryParse(drdisp["uomqty"].ToString(), out uom);
+                                double buttermilkqty = Buttermilk * uom / 1000;
+                                totalcurdandBM += buttermilkqty;
                             }
                         }
                     }

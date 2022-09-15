@@ -181,7 +181,7 @@ public partial class RouteSheet : System.Web.UI.Page
                 routeitype = drrouteitype["IndentType"].ToString();
             }
             // cmd = new MySqlCommand("SELECT branchroutes.RouteName, branchproducts.Rank, indents_subtable.UnitCost, indents_subtable.unitQty, indents.IndentType, productsdata.ProductName, branchdata.BranchName, productsdata.Units, productsdata.sno, products_category.Categoryname, invmaster.Qty, inventory_monitor.Qty AS invopening FROM branchroutes INNER JOIN branchroutesubtable ON branchroutes.Sno = branchroutesubtable.RefNo INNER JOIN branchdata ON branchroutesubtable.BranchID = branchdata.sno INNER JOIN indents ON branchdata.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON products_subcategory.sno = productsdata.SubCat_sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno INNER JOIN invmaster ON productsdata.Inventorysno = invmaster.sno INNER JOIN inventory_monitor ON branchdata.sno = inventory_monitor.BranchId  WHERE (branchroutes.Sno = @TripID) AND (indents.I_date BETWEEN @starttime AND @endtime) AND (indents.Status <> 'D') AND (indents.IndentType = @itype) AND (branchproducts.branch_sno = @BranchID) GROUP BY productsdata.ProductName, branchdata.BranchName, productsdata.sno, products_category.Categoryname ORDER BY branchproducts.Rank");
-            cmd = new MySqlCommand("SELECT modifiedroutes.RouteName, brnchprdt.Rank, modifiedroutesubtable.Rank AS RouteRank, indents_subtable.UnitCost, indents_subtable.unitQty, indent.IndentType, productsdata.ProductName, branchdata.BranchName, productsdata.Units, productsdata.sno, products_category.Categoryname, invmaster.Qty, inventory_monitor.Qty AS invopening FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date, IndentType, Status FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN  (SELECT branch_sno, product_sno, Rank FROM branchproducts WHERE (branch_sno = @BranchID)) brnchprdt ON productsdata.sno = brnchprdt.product_sno INNER JOIN invmaster ON productsdata.Inventorysno = invmaster.sno INNER JOIN inventory_monitor ON branchdata.sno = inventory_monitor.BranchId WHERE (modifiedroutes.Sno = @TripID) AND (indent.Status <> 'D') AND (indent.IndentType = @itype) AND (brnchprdt.branch_sno = @BranchID) AND  (modifiedroutesubtable.EDate IS NULL) OR (modifiedroutes.Sno = @TripID) AND (indent.Status <> 'D') AND (indent.IndentType = @itype) AND (brnchprdt.branch_sno = @BranchID) AND  (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate < @starttime) GROUP BY productsdata.ProductName, branchdata.BranchName, productsdata.sno, products_category.Categoryname ORDER BY brnchprdt.Rank, RouteRank");
+            cmd = new MySqlCommand("SELECT modifiedroutes.RouteName, brnchprdt.Rank, modifiedroutesubtable.Rank AS RouteRank, indents_subtable.UnitCost, indents_subtable.unitQty, indent.IndentType, productsdata.ProductName, productsdata.Qty as uomqty,branchdata.BranchName, productsdata.Units, productsdata.sno, products_category.Categoryname, invmaster.Qty, inventory_monitor.Qty AS invopening FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date, IndentType, Status FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN  (SELECT branch_sno, product_sno, Rank FROM branchproducts WHERE (branch_sno = @BranchID)) brnchprdt ON productsdata.sno = brnchprdt.product_sno INNER JOIN invmaster ON productsdata.Inventorysno = invmaster.sno INNER JOIN inventory_monitor ON branchdata.sno = inventory_monitor.BranchId WHERE (modifiedroutes.Sno = @TripID) AND (indent.Status <> 'D') AND (indent.IndentType = @itype) AND (brnchprdt.branch_sno = @BranchID) AND  (modifiedroutesubtable.EDate IS NULL) OR (modifiedroutes.Sno = @TripID) AND (indent.Status <> 'D') AND (indent.IndentType = @itype) AND (brnchprdt.branch_sno = @BranchID) AND  (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate < @starttime) GROUP BY productsdata.ProductName, branchdata.BranchName, productsdata.sno, products_category.Categoryname ORDER BY brnchprdt.Rank, RouteRank");
             cmd.Parameters.AddWithValue("@TripID", routeid);
             if (Session["salestype"].ToString() == "Plant")
             {
@@ -219,7 +219,7 @@ public partial class RouteSheet : System.Web.UI.Page
                 foreach (DataRow dr in produtstbl.Rows)
                 {
 
-                    if (dr["Categoryname"].ToString() == "MILK" || dr["Categoryname"].ToString() == "CURD" || dr["Categoryname"].ToString() == "ButterMilk")
+                    if (dr["Categoryname"].ToString() == "MILK" || dr["Categoryname"].ToString() == "CURD" || dr["Categoryname"].ToString() == "ButterMilk" || dr["Categoryname"].ToString() == "Curd Buckets" || dr["Categoryname"].ToString() == "Curd Cups")
                     {
                         Report.Columns.Add(dr["ProductName"].ToString()).DataType = typeof(Double);
                         count++;
@@ -231,7 +231,8 @@ public partial class RouteSheet : System.Web.UI.Page
                         ColCount++;
                     }
                 }
-                Report.Columns.Add("TOTAL INDENT", typeof(Double)).SetOrdinal(count + 2);
+                Report.Columns.Add("TOTAL Milk INDENT(ltr/pkts)", typeof(Double)).SetOrdinal(count + 2);
+                Report.Columns.Add("TOTAL Curd INDENT(ltr/pkts)", typeof(Double)).SetOrdinal(count + 2);
                 Report.Columns.Add("Total Sales Amount", typeof(Double)).SetOrdinal(ColCount + 3);
                 Report.Columns.Add("Issued Crates", typeof(Double)).SetOrdinal(ColCount + 4);
                 Report.Columns.Add("Recieved Crates", typeof(Double)).SetOrdinal(ColCount + 5);
@@ -249,7 +250,8 @@ public partial class RouteSheet : System.Web.UI.Page
                     newrow["SNo"] = i;
                     newrow["Agent Name"] = branch["BranchName"].ToString();
 
-                    double total = 0;
+                    double milktotal = 0;
+                    double curdtotal = 0;
                     string totalcr = "";
                     string branchopening = "";
                     double TotalAmpunt = 0;
@@ -267,18 +269,31 @@ public partial class RouteSheet : System.Web.UI.Page
                             double.TryParse(dr["unitQty"].ToString(), out UnitQty);
                             double.TryParse(dr["UnitCost"].ToString(), out UnitCost);
                             Totcost = UnitQty * UnitCost;
+                            double uom = 0;
+
                             if (dr["Categoryname"].ToString() == "MILK")
                             {
                                 double.TryParse(dr["unitQty"].ToString(), out qtyvalue);
-                                total += qtyvalue;
+                                double.TryParse(dr["uomqty"].ToString(), out uom);
+                                double milkqty = qtyvalue * uom / 1000;
+                                milktotal += milkqty;
 
                             }
+                            if (dr["Categoryname"].ToString() == "CURD" || dr["Categoryname"].ToString() == "Curd Buckets"|| dr["Categoryname"].ToString() == "Curd Cups" || dr["Categoryname"].ToString() == "ButterMilk")
+                            {
+                                double.TryParse(dr["unitQty"].ToString(), out qtyvalue);
+                                double.TryParse(dr["uomqty"].ToString(), out uom);
+                                double curdqty = qtyvalue * uom / 1000;
+                                curdtotal += curdqty;
+                            }
+                            
                             branchopening = dr["invopening"].ToString();
                             TotalAmpunt += Totcost;
                         }
                     }
-                    totalcr = total.ToString();
-                    newrow["TOTAL INDENT"] = total;
+                    totalcr = milktotal.ToString();
+                    newrow["TOTAL Milk INDENT(ltr/pkts)"] = milktotal;
+                    newrow["TOTAL Curd INDENT(ltr/pkts)"] = curdtotal;
                     newrow["Total Sales Amount"] = TotalAmpunt;
                     //newrow["Issued Crates/Cans"] = indenttubs + '/' + indentcans;
                     Report.Rows.Add(newrow);

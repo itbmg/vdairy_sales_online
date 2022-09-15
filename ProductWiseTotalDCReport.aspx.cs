@@ -211,7 +211,7 @@ public partial class ProductWiseTotalDCReport : System.Web.UI.Page
             lbl_selttodate.Text = Todate.ToString("dd/MM/yyyy");
             Session["filename"] = "TOTAL DC REPORT";
             //cmd = new MySqlCommand("SELECT tripdata.Sno, tripsubdata.Qty, productsdata.ProductName,tripdata.I_Date, tripdata.VehicleNo,tripdata.Status, dispatch.DispName, products_category.Categoryname FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno INNER JOIN branchroutes ON dispatch.Route_id = branchroutes.Sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (dispatch.Branch_Id = @branch)  AND (tripdata.AssignDate BETWEEN @d1 AND @d2)");
-            cmd = new MySqlCommand("SELECT result.DispName, result.VehicleNo, result.Sno, tripsubdata.Qty, productsdata.ProductName, products_category.Categoryname, result.AssignDate, result.Status,result.I_Date, result.DCNo FROM (SELECT dispatch.DispName, tripdat.Sno, tripdat.VehicleNo, tripdat.AssignDate, tripdat.Status, tripdat.I_Date, tripdat.DCNo FROM dispatch INNER JOIN branchdata ON dispatch.Branch_Id = branchdata.sno INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate, Status, VehicleNo, I_Date, DCNo FROM tripdata WHERE (AssignDate BETWEEN @d1 AND @d2)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno WHERE (dispatch.Branch_Id = @branch) OR (branchdata.SalesOfficeID = @SOID)) result INNER JOIN tripsubdata ON result.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno");   
+            cmd = new MySqlCommand("SELECT result.DispName, result.VehicleNo, result.Sno, tripsubdata.Qty, productsdata.ProductName, productsdata.Qty as uomqty, products_category.Categoryname, result.AssignDate, result.Status,result.I_Date, result.DCNo FROM (SELECT dispatch.DispName, tripdat.Sno, tripdat.VehicleNo, tripdat.AssignDate, tripdat.Status, tripdat.I_Date, tripdat.DCNo FROM dispatch INNER JOIN branchdata ON dispatch.Branch_Id = branchdata.sno INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate, Status, VehicleNo, I_Date, DCNo FROM tripdata WHERE (AssignDate BETWEEN @d1 AND @d2)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno WHERE (dispatch.Branch_Id = @branch) OR (branchdata.SalesOfficeID = @SOID)) result INNER JOIN tripsubdata ON result.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno");   
             cmd.Parameters.AddWithValue("@branch", Session["branch"]);
             cmd.Parameters.AddWithValue("@SOID", Session["branch"]);
             cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
@@ -283,27 +283,33 @@ public partial class ProductWiseTotalDCReport : System.Web.UI.Page
                                 double curdBm = 0;
                                 double Buttermilk = 0;
                                 double AssignQty = 0;
+                                double uom = 0;
                                 double.TryParse(dr["Qty"].ToString(), out AssignQty);
                                 if (dr["Categoryname"].ToString() == "MILK")
                                 {
                                     newrow[dr["ProductName"].ToString()] = AssignQty;
-
                                     double.TryParse(dr["Qty"].ToString(), out assqty);
-                                    total += assqty;
+                                    double.TryParse(dr["uomqty"].ToString(), out uom);
+                                    double milkqty = assqty * uom / 1000;
+                                    total += milkqty;
                                 }
-                                if (dr["Categoryname"].ToString() == "CURD")
+                                if (dr["Categoryname"].ToString() == "CURD" || dr["Categoryname"].ToString() == "Curd Buckets" || dr["Categoryname"].ToString() == "Curd Cups")
                                 {
                                     newrow[dr["ProductName"].ToString()] = AssignQty;
 
                                     double.TryParse(dr["Qty"].ToString(), out curdBm);
-                                    totalcurdandBM += curdBm;
+                                    double.TryParse(dr["uomqty"].ToString(), out uom);
+                                    double curdqty = curdBm * uom / 1000;
+                                    totalcurdandBM += curdqty;
                                 }
                                 if (dr["Categoryname"].ToString() == "ButterMilk")
                                 {
                                     newrow[dr["ProductName"].ToString()] = AssignQty;
 
                                     double.TryParse(dr["Qty"].ToString(), out Buttermilk);
-                                    totalcurdandBM += Buttermilk;
+                                    double.TryParse(dr["uomqty"].ToString(), out uom);
+                                    double buttermilkqty = Buttermilk * uom / 1000;
+                                    totalcurdandBM += buttermilkqty;
                                 }
                             }
                         }

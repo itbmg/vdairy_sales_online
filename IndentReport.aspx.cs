@@ -225,7 +225,7 @@ public partial class Report : System.Web.UI.Page
                 var routeid = drrouteitype["Route_id"].ToString();
                 routeitype = drrouteitype["IndentType"].ToString();
             }
-            cmd = new MySqlCommand("SELECT modifiedroutes.RouteName, ROUND(SUM(indents_subtable.unitQty), 2) AS unitQty, productsdata.ProductName, productsdata.Units, products_category.Categoryname, invmaster.Qty, brnchprdt.Rank,productsdata.sno AS productid FROM dispatch INNER JOIN dispatch_sub ON dispatch.sno = dispatch_sub.dispatch_sno INNER JOIN modifiedroutes ON dispatch_sub.Route_id = modifiedroutes.Sno INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN (SELECT IndentNo, Branch_id, I_date, IndentType FROM indents WHERE (I_date BETWEEN @starttime AND @endtime) AND (IndentType = @itype)) indent ON modifiedroutesubtable.BranchID = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN invmaster ON productsdata.Inventorysno = invmaster.sno INNER JOIN (SELECT branch_sno, product_sno, Rank FROM branchproducts WHERE (branch_sno = @BranchID)) brnchprdt ON productsdata.sno = brnchprdt.product_sno WHERE (dispatch.sno = @dispatchSno) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) OR (dispatch.sno = @dispatchSno) AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) GROUP BY modifiedroutes.RouteName, products_category.Categoryname, productsdata.sno ORDER BY brnchprdt.Rank");
+            cmd = new MySqlCommand("SELECT modifiedroutes.RouteName, ROUND(SUM(indents_subtable.unitQty), 2) AS unitQty, productsdata.ProductName, productsdata.Units, products_category.Categoryname,productsdata.Qty as uomqty, invmaster.Qty, brnchprdt.Rank,productsdata.sno AS productid FROM dispatch INNER JOIN dispatch_sub ON dispatch.sno = dispatch_sub.dispatch_sno INNER JOIN modifiedroutes ON dispatch_sub.Route_id = modifiedroutes.Sno INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN (SELECT IndentNo, Branch_id, I_date, IndentType FROM indents WHERE (I_date BETWEEN @starttime AND @endtime) AND (IndentType = @itype)) indent ON modifiedroutesubtable.BranchID = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN invmaster ON productsdata.Inventorysno = invmaster.sno INNER JOIN (SELECT branch_sno, product_sno, Rank FROM branchproducts WHERE (branch_sno = @BranchID)) brnchprdt ON productsdata.sno = brnchprdt.product_sno WHERE (dispatch.sno = @dispatchSno) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) OR (dispatch.sno = @dispatchSno) AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) GROUP BY modifiedroutes.RouteName, products_category.Categoryname, productsdata.sno ORDER BY brnchprdt.Rank");
             if (Session["salestype"].ToString() == "Plant")
             {
                 cmd.Parameters.AddWithValue("@BranchID", Session["BranchID"]);
@@ -352,23 +352,30 @@ public partial class Report : System.Web.UI.Page
                             double allQTY = 0;
                             double offerqty = 0;
                             double totofferandind = 0;
+                            double uom = 0;
                             foreach (DataRow drindt in dtble.Select("ProductName='" + dr["ProductName"].ToString() + "' AND RouteName='" + branch["RouteName"].ToString() + "'"))
                             {
                                 double.TryParse(drindt["unitQty"].ToString(), out allQTY);
                                 if (dr["Categoryname"].ToString() == "MILK")
                                 {
                                     double.TryParse(drindt["unitQty"].ToString(), out qtyvalue);
-                                    total += qtyvalue;
+                                    double.TryParse(drindt["uomqty"].ToString(), out uom);
+                                    double milkqty = qtyvalue * uom / 1000;
+                                    total += milkqty;
                                 }
                                 if (dr["Categoryname"].ToString() == "CURD" || dr["Categoryname"].ToString() == "Curd Cups" || dr["Categoryname"].ToString() == "Curd Buckets")
                                 {
                                     double.TryParse(drindt["unitQty"].ToString(), out curdqtyvalue);
-                                    totalcurd += curdqtyvalue;
+                                    double.TryParse(drindt["uomqty"].ToString(), out uom);
+                                    double curdqty = curdqtyvalue * uom / 1000;
+                                    totalcurd += curdqty;
                                 }
                                 if (dr["Categoryname"].ToString() == "ButterMilk")
                                 {
                                     double.TryParse(drindt["unitQty"].ToString(), out BMqtyvalue);
-                                    totalbuttermilk += BMqtyvalue;
+                                    double.TryParse(drindt["uomqty"].ToString(), out uom);
+                                    double buttermilkqty = BMqtyvalue * uom / 1000;
+                                    totalbuttermilk += buttermilkqty;
                                 }
                             }
                             foreach (DataRow droffer in dt_offertble.Select("ProductName='" + dr["ProductName"].ToString() + "' AND RouteName='" + branch["RouteName"].ToString() + "'"))
