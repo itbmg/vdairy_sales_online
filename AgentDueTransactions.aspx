@@ -17,22 +17,11 @@
             position: absolute;
             z-index: 1;
         }
-        #bg-text
-        {
-            position: absolute;
-            opacity: 0.1;
-            color: lightgrey;
-            font-size: 120px; /*transform:rotate(300deg);
-        -webkit-transform:rotate(300deg);*/
-        }
+        
     </style>
     <script type="text/javascript">
 //        function CallPrint(strid) {
 //            document.getElementById("tbl_po_print").style.borderCollapse = "collapse";
-//            document.getElementById("bg-text").style.opacity = "0.1";
-//            document.getElementById("bg-text").style.width = "85%";
-//            document.getElementById("bg-text").style.position = "absolute";
-//            document.getElementById("bg-text").style.padding = "12% 8% 8% 8%";
 //            var divToPrint = document.getElementById(strid);
 //            var newWin = window.open('', 'Print-Window', 'width=400,height=400,top=100,left=100');
 //            newWin.document.open();
@@ -52,10 +41,6 @@
             today = year + "-" + month + "-" + day;
             $('#txtFrom_date').val(today);
 //            $('#txtTodate').val(today);
-            document.getElementById("bg-text").style.opacity = "0.1";
-            document.getElementById("bg-text").style.width = "85%";
-            document.getElementById("bg-text").style.position = "absolute";
-            document.getElementById("bg-text").style.padding = "12% 8% 8% 8%";
         });
 
         function FillSalesOffice() {

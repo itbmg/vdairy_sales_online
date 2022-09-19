@@ -15,14 +15,7 @@
             position: absolute;
             z-index: 1;
         }
-        #bg-text
-        {
-            position: absolute;
-            opacity: 0.1;
-            color: lightgrey;
-            font-size: 120px; /*transform:rotate(300deg);
-        -webkit-transform:rotate(300deg);*/
-        }
+       
     </style>
     <script type="text/javascript">
         $(function () {
