@@ -17,13 +17,7 @@
             z-index: 1;
         }
 
-        #bg-text {
-            position: absolute;
-            opacity: 0.1;
-            color: lightgrey;
-            font-size: 120px; /*transform:rotate(300deg);
-        -webkit-transform:rotate(300deg);*/
-        }
+        
     </style>
     <script type="text/javascript">
         $(function () {
@@ -36,18 +30,9 @@
             today = year + "-" + month + "-" + day;
             $('#txtfromdate').val(today);
             $('#txttodate').val(today);
-            //document.getElementById("bg-text").style.opacity = "0.1";
-            //document.getElementById("bg-text").style.width = "85%";
-            //document.getElementById("bg-text").style.position = "absolute";
-            //document.getElementById("bg-text").style.padding = "12% 8% 8% 8%";
         });
         function CallPrint(strid) {
             document.getElementById("tbl_po_print").style.borderCollapse = "collapse";
-            //document.getElementById("bg-text").style.transform = "rotate(300deg)";
-            //document.getElementById("bg-text").style.opacity = "0.1";
-            //document.getElementById("bg-text").style.width = "85%";
-            //document.getElementById("bg-text").style.position = "absolute";
-            //document.getElementById("bg-text").style.padding = "12% 8% 8% 8%";
             var divToPrint = document.getElementById(strid);
             var newWin = window.open('', 'Print-Window', 'width=400,height=400,top=100,left=100');
             newWin.document.open();
@@ -458,7 +443,6 @@
 
                 <div id="divPrint" class="watermark">
                     <div class="content">
-                        <%-- <p id="bg-text"><image width="100%;" src="http://www.vyshnavi.co.in/Images/original.jpg"></image> </p>--%>
                         <div style="border: 2px solid gray;" class="col-md-12">
                             <div style="width: 17%; float: right; padding-top: 12px;">
                                 <img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="100px" height="72px" />
