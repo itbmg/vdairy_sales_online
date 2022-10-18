@@ -165,7 +165,7 @@ public partial class agentavgmilk_curdsale : System.Web.UI.Page
             TimeSpan dateSpan = todate.Subtract(fromdate);
             int NoOfdays = dateSpan.Days;
             NoOfdays = NoOfdays + 1;
-            cmd = new MySqlCommand("SELECT modifiedroutes.RouteName, modifiedroutes.Sno AS routeid, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost) AS salevalue, indent.IndentType, productsdata.ProductName, branchdata.sno AS BSno, branchdata.BranchName, productsdata.Units, productsdata.sno, products_category.Categoryname FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, Status, I_date, IndentType FROM indents WHERE (I_date BETWEEN @starttime AND @endtime) AND (Status <> 'D')) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE  (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @endtime) AND (modifiedroutes.BranchID = @TripID) OR (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) AND (modifiedroutes.BranchID = @TripID) GROUP BY branchdata.BranchName, productsdata.sno, products_category.Categoryname ORDER BY modifiedroutes.RouteName");
+            cmd = new MySqlCommand("SELECT modifiedroutes.RouteName, modifiedroutes.Sno AS routeid, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost) AS salevalue, indent.IndentType, productsdata.ProductName, productsdata.Qty as uomqty,branchdata.sno AS BSno, branchdata.BranchName, productsdata.Units, productsdata.sno, products_category.Categoryname FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, Status, I_date, IndentType FROM indents WHERE (I_date BETWEEN @starttime AND @endtime) AND (Status <> 'D')) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE  (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @endtime) AND (modifiedroutes.BranchID = @TripID) OR (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) AND (modifiedroutes.BranchID = @TripID) GROUP BY branchdata.BranchName, productsdata.sno, products_category.Categoryname ORDER BY modifiedroutes.RouteName");
             cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
             cmd.Parameters.AddWithValue("@TripID", ddlSalesOffice.SelectedValue);
             cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
@@ -224,6 +224,7 @@ public partial class agentavgmilk_curdsale : System.Web.UI.Page
                                 double d_qty = 0;
                                 double DeliveryQty = 0;
                                 double UnitCost = 0;
+                                double uom = 0;
                                 DataRow[] drincentive = dtble.Select("RouteID='" + route + "' and ProductName='" + dr["ProductName"].ToString() + "'");
                                 foreach (DataRow drc in drincentive)
                                 {
@@ -241,12 +242,16 @@ public partial class agentavgmilk_curdsale : System.Web.UI.Page
                                 if (dr["Categoryname"].ToString() == "MILK")
                                 {
                                     double.TryParse(dr["DeliveryQty"].ToString(), out DeliveryQty);
-                                    ftotalmilkSale += DeliveryQty;
+                                    double.TryParse(dr["uomqty"].ToString(), out uom);
+                                    double milkqty = DeliveryQty * uom / 1000;
+                                    ftotalmilkSale += milkqty;
                                 }
-                                if (dr["Categoryname"].ToString() == "CURD")
+                                if (dr["Categoryname"].ToString() == "CURD" || dr["Categoryname"].ToString() == "Curd Buckets" || dr["Categoryname"].ToString() == "Curd Cups" || dr["Categoryname"].ToString() == "ButterMilk")
                                 {
                                     double.TryParse(dr["DeliveryQty"].ToString(), out DeliveryQty);
-                                    ftotalcurdSale += DeliveryQty;
+                                    double.TryParse(dr["uomqty"].ToString(), out uom);
+                                    double curdqty = DeliveryQty * uom / 1000;
+                                    ftotalcurdSale += curdqty;
                                 }
                             }
                             newvar["Total Milk Sale"] = Math.Round(ftotalmilkSale, 2);

@@ -297,9 +297,7 @@ public partial class Order_Report : System.Web.UI.Page
                 Report = new DataTable();
                 Report.Columns.Add("SNo");
                 Report.Columns.Add("Agent Name");
-                Report.Columns.Add("Crates Bal");
-                Report.Columns.Add("Cans Bal");
-                Report.Columns.Add("Bal Amount");
+                
                 int count = 0;
                 productsReport.DefaultView.Sort = "Rank ASC";
                 foreach (DataRow dr in productsReport.Rows)
@@ -315,7 +313,14 @@ public partial class Order_Report : System.Web.UI.Page
                         Report.Columns.Add(dr["ProductName"].ToString()).DataType = typeof(Double);
                     }
                 }
-                Report.Columns.Add("Total Indent", typeof(Double)).SetOrdinal(count + 5);
+                
+                Report.Columns.Add("Total Milk");
+                Report.Columns.Add("Total Curd");
+                Report.Columns.Add("Total Indent", typeof(Double));//.SetOrdinal(count + 5);
+                Report.Columns.Add("Crates Bal");
+                Report.Columns.Add("Cans Bal");
+                Report.Columns.Add("Bal Amount");
+
                 DataTable distincttable = view.ToTable(true, "BranchID", "BranchName", "RouteRank", "SalesType");
                 distincttable.DefaultView.Sort = "RouteRank ASC";
                 distincttable = distincttable.DefaultView.ToTable(true);
@@ -351,7 +356,7 @@ public partial class Order_Report : System.Web.UI.Page
                             newrow["Cans Bal"] = ivvbal.ToString();
                         }
                     }
-                    double total = 0;
+                    double total = 0;double milktotal = 0;double curdtotal = 0;
                     foreach (DataRow dr in productsReport.Rows)
                     {
                         double offerqty = 0;
@@ -401,7 +406,25 @@ public partial class Order_Report : System.Web.UI.Page
                         {
                             total += totindqty;
                         }
+
+                        double uom = 0;
+
+                        if (dr["Categoryname"].ToString() == "MILK")
+                        {
+                            double.TryParse(dr["uomqty"].ToString(), out uom);
+                            double milkqty = totindqty * uom / 1000;
+                            milktotal += milkqty;
+
+                        }
+                        if (dr["Categoryname"].ToString() == "CURD" || dr["Categoryname"].ToString() == "Curd Buckets" || dr["Categoryname"].ToString() == "Curd Cups" || dr["Categoryname"].ToString() == "ButterMilk")
+                        {
+                            double.TryParse(dr["uomqty"].ToString(), out uom);
+                            double curdqty = totindqty * uom / 1000;
+                            curdtotal += curdqty;
+                        }
                     }
+                    newrow["Total Milk"] = milktotal;
+                    newrow["Total Curd"] = curdtotal;
                     newrow["Total Indent"] = total;
                     Report.Rows.Add(newrow);
                     i++;

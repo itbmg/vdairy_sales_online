@@ -222,26 +222,26 @@ public partial class RouteSheet : System.Web.UI.Page
                     if (dr["Categoryname"].ToString() == "MILK" || dr["Categoryname"].ToString() == "CURD" || dr["Categoryname"].ToString() == "ButterMilk" || dr["Categoryname"].ToString() == "Curd Buckets" || dr["Categoryname"].ToString() == "Curd Cups")
                     {
                         Report.Columns.Add(dr["ProductName"].ToString()).DataType = typeof(Double);
-                        count++;
-                        ColCount++;
+                        //count++;
+                        //ColCount++;
                     }
                     else
                     {
                         Report.Columns.Add(dr["ProductName"].ToString()).DataType = typeof(Double);
-                        ColCount++;
+                        //ColCount++;
                     }
                 }
-                Report.Columns.Add("TOTAL Milk INDENT(ltr/pkts)", typeof(Double)).SetOrdinal(count + 2);
-                Report.Columns.Add("TOTAL Curd INDENT(ltr/pkts)", typeof(Double)).SetOrdinal(count + 2);
-                Report.Columns.Add("Total Sales Amount", typeof(Double)).SetOrdinal(ColCount + 3);
-                Report.Columns.Add("Issued Crates", typeof(Double)).SetOrdinal(ColCount + 4);
-                Report.Columns.Add("Recieved Crates", typeof(Double)).SetOrdinal(ColCount + 5);
-                Report.Columns.Add("Issued 40 ltr Cans", typeof(Double)).SetOrdinal(ColCount + 6);
-                Report.Columns.Add("Issued 20 ltr Cans", typeof(Double)).SetOrdinal(ColCount + 7);
-                Report.Columns.Add("Issued 10 ltr Cans", typeof(Double)).SetOrdinal(ColCount + 8);
-                Report.Columns.Add("Recieved 40 ltr Cans", typeof(Double)).SetOrdinal(ColCount + 9);
-                Report.Columns.Add("Recieved 20 ltr Cans", typeof(Double)).SetOrdinal(ColCount + 10);
-                Report.Columns.Add("Recieved 10 ltr Cans", typeof(Double)).SetOrdinal(ColCount + 11);
+                Report.Columns.Add("TOTAL Milk INDENT(ltr/pkts)", typeof(Double));//SetOrdinal(count + 2);
+                Report.Columns.Add("TOTAL Curd INDENT(ltr/pkts)", typeof(Double));//SetOrdinal(count + 2);
+                Report.Columns.Add("Total Sales Amount", typeof(Double));//.SetOrdinal(ColCount + 3);
+                Report.Columns.Add("Issued Crates", typeof(Double));//.SetOrdinal(ColCount + 4);
+                Report.Columns.Add("Recieved Crates", typeof(Double));//SetOrdinal(ColCount + 5);
+                Report.Columns.Add("Issued 40 ltr Cans", typeof(Double));//SetOrdinal(ColCount + 6);
+                Report.Columns.Add("Issued 20 ltr Cans", typeof(Double));//SetOrdinal(ColCount + 7);
+                Report.Columns.Add("Issued 10 ltr Cans", typeof(Double));//SetOrdinal(ColCount + 8);
+                Report.Columns.Add("Recieved 40 ltr Cans", typeof(Double));//SetOrdinal(ColCount + 9);
+                Report.Columns.Add("Recieved 20 ltr Cans", typeof(Double));//SetOrdinal(ColCount + 10);
+                Report.Columns.Add("Recieved 10 ltr Cans", typeof(Double));//SetOrdinal(ColCount + 11);
                 DataTable distincttable = view.ToTable(true, "BranchName");
                 int i = 1;
                 foreach (DataRow branch in distincttable.Rows)
