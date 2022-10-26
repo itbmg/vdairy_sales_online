@@ -113,9 +113,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "get_Hrms_Employee_Details":
                     get_Hrms_Employee_Details(context);
                     break;
-                case "get_finance_AccNos":
-                    get_finance_AccNos(context);
-                    break;
                 case "get_return_stock_Report_details":
                     get_return_stock_Report_details(context);
                     break;
@@ -137,25 +134,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "GetBtnViewPaidVoucherclick":
                     GetBtnViewPaidVoucherclick(context);
                     break;
-                case "GetAuditSubPaybleValues":
-                    GetAuditSubPaybleValues(context);
-                    break;
-                case "btnAuditVoucherPendingClick":
-                    btnAuditVoucherPendingClick(context);
-                    break;
-                case "btnAuditApproveVoucherclick":
-                    btnAuditApproveVoucherclick(context);
-                    break;
-                case "btnApproveall_AuditVoucherClick":
-                    btnApproveall_AuditVoucherClick(context);
-                    break;
                 case "saveBankDetails":
                     saveBankDetails(context);
                     break;
-
-
-
-
                 case "btnAgent_indent_Invoice_click":
                     btnAgent_indent_Invoice_click(context);
                     break;
@@ -13775,175 +13756,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-    //ok
-    private void GetAuditSubPaybleValues(HttpContext context)
-    {
-
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string VoucherID = context.Request["VoucherID"];
-            context.Session["VoucherID"] = VoucherID;
-            List<Subpayables> SubpayableList = new List<Subpayables>();
-            string BranchID = "0";
-            string LevelType = context.Session["LevelType"].ToString();
-            if (context.Session["salestype"].ToString() == "Plant")
-            {
-                BranchID = context.Request["BranchID"];
-            }
-            else
-            {
-                BranchID = context.Session["branch"].ToString();
-            }
-            cmd = new MySqlCommand("SELECT Sno FROM cashpayables WHERE (Sno = @VocherID) AND (BranchID = @BranchID)");
-            cmd.Parameters.AddWithValue("@VocherID", VoucherID);
-            cmd.Parameters.AddWithValue("@BranchID", BranchID);
-            DataTable dtCash = vdbmngr.SelectQuery(cmd).Tables[0];
-            string RefNo = dtCash.Rows[0]["Sno"].ToString();
-            cmd = new MySqlCommand("SELECT accountheads.HeadName, subpayable.Amount, accountheads.Sno FROM subpayable INNER JOIN accountheads ON subpayable.HeadSno = accountheads.Sno WHERE  (subpayable.RefNo = @RefNo)");
-            cmd.Parameters.AddWithValue("@RefNo", RefNo);
-            DataTable dtCashSubPayable = vdbmngr.SelectQuery(cmd).Tables[0];
-            foreach (DataRow dr in dtCashSubPayable.Rows)
-            {
-                Subpayables GetSubpayable = new Subpayables();
-                GetSubpayable.HeadSno = dr["Sno"].ToString();
-                GetSubpayable.HeadOfAccount = dr["HeadName"].ToString();
-                GetSubpayable.Amount = dr["Amount"].ToString();
-                SubpayableList.Add(GetSubpayable);
-            }
-            string response = GetJson(SubpayableList);
-            context.Response.Write(response);
-        }
-        catch
-        {
-        }
-    }
-    //ok
-    private void btnAuditVoucherPendingClick(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string VoucherID = context.Request["VoucherID"];
-            string Approvalamt = context.Request["Approvalamt"];
-            double Amount = 0;
-            double.TryParse(Approvalamt, out Amount);
-            string Remarks = context.Request["Remarks"];
-            string AuditRemarks = context.Request["AppRemarks"];
-            string Status = context.Request["Status"];
-            string BranchID = "0";
-            string LevelType = context.Session["LevelType"].ToString();
-            if (context.Session["salestype"].ToString() == "Plant")
-            {
-                BranchID = context.Request["BranchID"];
-            }
-            else
-            {
-                BranchID = context.Session["branch"].ToString();
-            }
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            string UserSno = context.Session["UserSno"].ToString();
-            cmd = new MySqlCommand("Update cashpayables set audit_remarks=@audit_remarks,audit_status=@audit_status,audit_by=@audit_by where Sno=@VocherID and BranchID=@BranchID");
-            cmd.Parameters.AddWithValue("@audit_remarks", AuditRemarks);
-            cmd.Parameters.AddWithValue("@audit_status", "P");
-            cmd.Parameters.AddWithValue("@audit_by", UserSno);
-            cmd.Parameters.AddWithValue("@VocherID", VoucherID);
-            cmd.Parameters.AddWithValue("@BranchID", BranchID);
-            vdbmngr.Update(cmd);
-            string msg = "Audit Approved successfully";
-            string response = GetJson(msg);
-            context.Response.Write(response);
-
-        }
-        catch (Exception ex)
-        {
-            string msg = ex.Message;
-            string response = GetJson(msg);
-            context.Response.Write(response);
-        }
-    }
-
-    private void btnApproveall_AuditVoucherClick(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string Status = "A";
-            string BranchID = "0";
-            string LevelType = context.Session["LevelType"].ToString();
-            string UserSno = context.Session["UserSno"].ToString();
-            if (context.Session["salestype"].ToString() == "Plant")
-            {
-                BranchID = context.Request["BranchID"];
-            }
-            else
-            {
-                BranchID = context.Session["branch"].ToString();
-            }
-            string fromdate = context.Request["fromdate"];
-            DateTime dtfrom = Convert.ToDateTime(fromdate);
-            cmd = new MySqlCommand("Update cashpayables set  audit_status=@audit_status,audit_by=@audit_by where  (doe between @d1 and @d2) and (BranchID=@BranchID) ");
-            cmd.Parameters.AddWithValue("@audit_status", Status);
-            cmd.Parameters.AddWithValue("@audit_by", UserSno);
-            cmd.Parameters.AddWithValue("@d1", GetLowDate(dtfrom));
-            cmd.Parameters.AddWithValue("@d2", GetHighDate(dtfrom));
-            cmd.Parameters.AddWithValue("@BranchID", BranchID);
-            vdbmngr.Update(cmd);
-            string msg = "Audit Approved successfully";
-            string response = GetJson(msg);
-            context.Response.Write(response);
-        }
-        catch (Exception ex)
-        {
-            string msg = ex.Message;
-            string response = GetJson(msg);
-            context.Response.Write(response);
-        }
-    }
-    //ok
-    private void btnAuditApproveVoucherclick(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string VoucherID = context.Request["VoucherID"];
-            string Approvalamt = context.Request["Approvalamt"];
-            string Status = "A";
-            string AuditRemarks = context.Request["AuditRemarks"];
-            string BranchID = "0";
-            string LevelType = context.Session["LevelType"].ToString();
-            string UserSno = context.Session["UserSno"].ToString();
-            if (context.Session["salestype"].ToString() == "Plant")
-            {
-                BranchID = context.Request["BranchID"];
-            }
-            else
-            {
-                BranchID = context.Session["branch"].ToString();
-            }
-            cmd = new MySqlCommand("Update cashpayables set  audit_remarks=@audit_remarks,audit_status=@audit_status,audit_by=@audit_by where  Sno=@VocherID and BranchID=@BranchID ");
-            cmd.Parameters.AddWithValue("@audit_status", Status);
-            cmd.Parameters.AddWithValue("@ApprovedAmount", Approvalamt);
-            cmd.Parameters.AddWithValue("@audit_remarks", AuditRemarks);
-            cmd.Parameters.AddWithValue("@VocherID", VoucherID);
-            cmd.Parameters.AddWithValue("@BranchID", BranchID);
-            cmd.Parameters.AddWithValue("@audit_by", UserSno);
-            vdbmngr.Update(cmd);
-            string msg = "Audit Approved successfully";
-            string response = GetJson(msg);
-            context.Response.Write(response);
-        }
-        catch (Exception ex)
-        {
-            string msg = ex.Message;
-            string response = GetJson(msg);
-            context.Response.Write(response);
-        }
-    }
-
-
-
 
     private void saveBankDetails(HttpContext context)
     {
@@ -34903,62 +34715,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string brach_ledger_code { get; set; }
         public string branchid { get; set; }
     }
-
-    //private void get_finance_Branches(HttpContext context)
-    //{
-    //    try
-    //    {
-    //        Accescontrol_db = new AccessControldbmanger();
-    //        a_cmd = new SqlCommand("SELECT   branchid, branchname,  statename, branchtype, company_code, code FROM branchmaster");
-    //        DataTable dtIndent = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-    //        int i = 1;
-    //        List<faaccountnumberscls> indentlist = new List<faaccountnumberscls>();
-    //        foreach (DataRow dr in dtIndent.Rows)
-    //        {
-    //            faaccountnumberscls Getindent = new faaccountnumberscls();
-    //            Getindent.branchname = dr["branchname"].ToString();
-    //            Getindent.branchid = dr["branchid"].ToString();
-    //            indentlist.Add(Getindent);
-    //        }
-    //        string response = GetJson(indentlist);
-    //        context.Response.Write(response);
-    //    }
-    //    catch
-    //    {
-    //    }
-    //}
-    private void get_finance_AccNos(HttpContext context)
-    {
-        try
-        {
-            Accescontrol_db = new AccessControldbmanger();
-            a_cmd = new SqlCommand("SELECT sno, bankid, ifscid, branchname, accountno, accounttype, status, doe, createdby, ladger_dr, brach_ledger, ladger_dr_code, brach_ledger_code FROM  bankaccountno_master");
-            DataTable dtIndent = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-            List<faaccountnumberscls> indentlist = new List<faaccountnumberscls>();
-            foreach (DataRow dr in dtIndent.Rows)
-            {
-                faaccountnumberscls Getindent = new faaccountnumberscls();
-                Getindent.sno = dr["sno"].ToString();
-                Getindent.bankid = dr["bankid"].ToString();
-                Getindent.ifscid = dr["ifscid"].ToString();
-                Getindent.branchname = dr["branchname"].ToString();
-                Getindent.accountno = dr["accountno"].ToString();
-                Getindent.status = dr["status"].ToString();
-                Getindent.doe = dr["doe"].ToString();
-                Getindent.createdby = dr["createdby"].ToString();
-                Getindent.ladger_dr = dr["ladger_dr"].ToString();
-                Getindent.brach_ledger = dr["brach_ledger"].ToString();
-                Getindent.ladger_dr_code = dr["ladger_dr_code"].ToString();
-                Getindent.brach_ledger_code = dr["brach_ledger_code"].ToString();
-                indentlist.Add(Getindent);
-            }
-            string response = GetJson(indentlist);
-            context.Response.Write(response);
-        }
-        catch
-        {
-        }
-    }
+    
     private void btnCollectionAmountClick(HttpContext context)
     {
         try
@@ -55564,7 +55321,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     //        string vehicleid = context.Request["vehicleid"];
     //        string sno = context.Request["sno"];
     //        string btnValue = context.Request["btnValue"];
-            
+
     //        string Inddate = context.Request["IndDate"];
     //        if (btnValue == "save")
     //        {
@@ -55619,6 +55376,35 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     //}
 
     #region "EWay Bill Data"
+    private string authenticate_ewaybill(string gstin, string gst_un, string gst_pw)
+    {
+        using (var httpClient = new HttpClient())
+        {
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/ewaybillapi/v1.03/authenticate?email=textmail&username=" + gst_un + "&password=" + gst_pw))
+            {
+                string ip_address = GetLocalIPAddress();
+                if (ip_address == "Error")
+                    ip_address = "122.175.32.16";
+                request.Headers.TryAddWithoutValidation("Accept", "application/json");
+                request.Headers.TryAddWithoutValidation("ip_address", ip_address);
+                request.Headers.TryAddWithoutValidation("client_id", "1234");
+                request.Headers.TryAddWithoutValidation("client_secret", "1234");
+                request.Headers.TryAddWithoutValidation("gstin", gstin);
+
+                var response = httpClient.SendAsync(request).Result;
+                var contents = response.Content.ReadAsStringAsync().Result;
+                return contents;
+
+                //var response = await httpClient.SendAsync(request);
+                //var contents = await response.Content.ReadAsStringAsync();
+                //return contents;
+
+                //var js = new JavaScriptSerializer();
+                //responce_data obj = js.Deserialize<responce_data>(contents);
+            }
+        }
+    }
+
     private string get_ewaybill_data_out(string ewaybill_no, string gstin)
     {
         using (var httpClient = new HttpClient())
@@ -55798,7 +55584,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 request.Headers.TryAddWithoutValidation("client_secret", "20f94dc1-5066-4ce5-8993-4d85b7899a0f");
                 request.Headers.TryAddWithoutValidation("auth-token", token);
                 request.Headers.TryAddWithoutValidation("gstin", gstin);
-
+                
+                //Body
               //  request.Content = new StringContent("{"Version":"1.1","TranDtls":{"TaxSch":"GST","SupTyp":"B2B","RegRev":"Y","EcmGstin":null,"IgstOnIntra":"N"},"DocDtls":{"Typ":"INV","No":"MAHI / 10","Dt":"08 / 08 / 2020"},"SellerDtls":{"Gstin":"29AABCT1332L000","LglNm":"ABC company pvt ltd","TrdNm":"NIC Industries","Addr1":"5th block, kuvempu layout","Addr2":"kuvempu layout","Loc":"GANDHINAGAR","Pin":560001,"Stcd":"29","Ph":"9000000000","Em":"abc@gmail.com"},"BuyerDtls":{"Gstin":"29AWGPV7107B1Z1","LglNm":"XYZ company pvt ltd","TrdNm":"XYZ Industries","Pos":"37","Addr1":"7th block, kuvempu layout","Addr2":"kuvempu layout","Loc":"GANDHINAGAR","Pin":560004,"Stcd":"29","Ph":"9000000000","Em":"abc@gmail.com"},"DispDtls":{"Nm":"ABC company pvt ltd","Addr1":"7th block, kuvempu layout","Addr2":"kuvempu layout","Loc":"Banagalore","Pin":518360,"Stcd":"37"},"ShipDtls":{"Gstin":"29AWGPV7107B1Z1","LglNm":"CBE company pvt ltd","TrdNm":"kuvempu layout","Addr1":"7th block, kuvempu layout","Addr2":"kuvempu layout","Loc":"Banagalore","Pin":518360,"Stcd":"37"},"ItemList":[{"SlNo":"1","IsServc":"N","PrdDesc":"Rice","HsnCd":"1001","Barcde":"123456","BchDtls":{"Nm":"123456","Expdt":"01 / 08 / 2020","wrDt":"01 / 09 / 2020"},"Qty":100.345,"FreeQty":10,"Unit":"NOS","UnitPrice":99.545,"TotAmt":9988.84,"Discount":10,"PreTaxVal":1,"AssAmt":9978.84,"GstRt":12,"SgstAmt":0,"IgstAmt":1197.46,"CgstAmt":0,"CesRt":5,"CesAmt":498.94,"CesNonAdvlAmt":10,"StateCesRt":12,"StateCesAmt":1197.46,"StateCesNonAdvlAmt":5,"OthChrg":10,"TotItemVal":12897.7,"OrdLineRef":"3256","OrgCntry":"AG","PrdSlNo":"12345","AttribDtls":[{"Nm":"Rice","Val":"10000"}]}],"ValDtls":{"AssVal":9978.84,"CgstVal":0,"SgstVal":0,"IgstVal":1197.46,"CesVal":508.94,"StCesVal":1202.46,"Discount":10,"OthChrg":20,"RndOffAmt":0.3,"TotInvVal":12908,"TotInvValFc":12897.7},"PayDtls":{"Nm":"ABCDE","Accdet":"5697389713210","Mode":"Cash","Fininsbr":"SBIN11000","Payterm":"100","Payinstr":"Gift","Crtrn":"test","Dirdr":"test","Crday":100,"Paidamt":10000,"Paymtdue":5000},"RefDtls":{"InvRm":"TEST","DocPerdDtls":{"InvStDt":"01 / 08 / 2020","InvEndDt":"01 / 09 / 2020"},"PrecDocDtls":[{"InvNo":"DOC / 002","InvDt":"01 / 08 / 2020","OthRefNo":"123456"}],"ContrDtls":[{"RecAdvRefr":"DOC / 002","RecAdvDt":"01 / 08 / 2020","Tendrefr":"Abc001","Contrrefr":"Co123","Extrefr":"Yo456","Projrefr":"Doc - 456","Porefr":"Doc - 789","PoRefDt":"01 / 08 / 2020"}]},"AddlDocDtls":[{"Url":"https://einv-apisandbox.nic.in","Docs":"Test Doc","Info":"Document Test"}],"ExpDtls":{"ShipBNo":"A-248","ShipBDt":"01/08/2020","Port":"INABG1","RefClm":"N","ForCur":"AED","CntCode":"AE"},"EwbDtls":{"Transid":"12AWGPV7107B1Z1","Transname":"XYZ EXPORTS","Distance":100,"Transdocno":"DOC01","TransdocDt":"01/08/2020","Vehno":"ka123456","Vehtype":"R","TransMode":"1"}}", Encoding.UTF8, "application/json");
                 var response = httpClient.SendAsync(request).Result;
                 var contents = response.Content.ReadAsStringAsync().Result;
@@ -55831,6 +55618,88 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
     }
 
+    private string cancel_invoice_reference_number(string gstin, string gst_un, string token, string irnNumber)
+    {
+        using (var httpClient = new HttpClient())
+        {
+            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/CANCEL/version/V1_03?email=naveen.vdmtech%40gmail.com&username=" + gst_un))
+            {
+                string ip_address = GetLocalIPAddress();
+                if (ip_address == "Error")
+                    ip_address = "182.18.162.51:52144";
+                request.Headers.TryAddWithoutValidation("Accept", "application/json");
+                request.Headers.TryAddWithoutValidation("ip_address", ip_address);
+                request.Headers.TryAddWithoutValidation("client_id", "83416692-7826-419a-8922-790556910a80");
+                request.Headers.TryAddWithoutValidation("client_secret", "20f94dc1-5066-4ce5-8993-4d85b7899a0f");
+                request.Headers.TryAddWithoutValidation("auth-token", token);
+                request.Headers.TryAddWithoutValidation("gstin", gstin);
+
+                //BODY
+               // request.Content = new StringContent("{"Irn": "+irnNumber+",  "CnlRsn": "1",  "CnlRem": "Wrong entry"}  ", Encoding.UTF8, "application/json");
+                var response = httpClient.SendAsync(request).Result;
+                var contents = response.Content.ReadAsStringAsync().Result;
+                return contents;
+
+                // Sample Response
+                //{ "status_cd": "0", "status_desc": "User Name does not exists"}
+
+            }
+        }
+    }
+
+    private string generate_ewaybill_using_IRN(string gstin, string gst_un, string token)
+    {
+        using (var httpClient = new HttpClient())
+        {
+            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/GENERATE_EWAYBILL/version/V1_03?email=naveen.vdmtech%40gmail.com&username=" + gst_un))
+            {
+                string ip_address = GetLocalIPAddress();
+                if (ip_address == "Error")
+                    ip_address = "182.18.162.51:52144";
+                request.Headers.TryAddWithoutValidation("Accept", "application/json");
+                request.Headers.TryAddWithoutValidation("ip_address", ip_address);
+                request.Headers.TryAddWithoutValidation("client_id", "83416692-7826-419a-8922-790556910a80");
+                request.Headers.TryAddWithoutValidation("client_secret", "20f94dc1-5066-4ce5-8993-4d85b7899a0f");
+                request.Headers.TryAddWithoutValidation("auth-token", token);
+                request.Headers.TryAddWithoutValidation("gstin", gstin);
+                
+                //BODY
+                //  request.Content = new StringContent("{"Irn": "47d7ba1814b6ca6123c780ad289b0a24e30c1baed59a7417d29a54e7b00a6bdf",  "Distance": 120,  "TransMode": "1",  "TransId": "29DPZPS4403C1ZF",  "TransName": "trans name",  "TransDocDt": "01/08/2020",  "TransDocNo": "MAHIE/10",  "VehNo": "KA12ER1234",  "VehType": "R"} ", Encoding.UTF8, "application/json");
+                var response = httpClient.SendAsync(request).Result;
+                var contents = response.Content.ReadAsStringAsync().Result;
+                return contents;
+
+                // Sample Response
+                //{ "status_cd": "0", "status_desc": "User Name does not exists"}
+            }
+        }
+    }
+
+    private string get_ewaybill_details_by_IRN(string gstin, string gst_un, string token, string irnNumber, string suppliergstin)
+    {
+        using (var httpClient = new HttpClient())
+        {
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/einvoice/type/GETEWAYBILLIRN/version/V1_03?param1==" + irnNumber + "&supplier_gstn=" + suppliergstin + "&email=naveen.vdmtech%40gmail.com&username=" + gst_un))
+            {
+                string ip_address = GetLocalIPAddress();
+                if (ip_address == "Error")
+                    ip_address = "182.18.162.51:52144";
+                request.Headers.TryAddWithoutValidation("Accept", "application/json");
+                request.Headers.TryAddWithoutValidation("ip_address", ip_address);
+                request.Headers.TryAddWithoutValidation("client_id", "83416692-7826-419a-8922-790556910a80");
+                request.Headers.TryAddWithoutValidation("client_secret", "20f94dc1-5066-4ce5-8993-4d85b7899a0f");
+                request.Headers.TryAddWithoutValidation("auth-token", token);
+                request.Headers.TryAddWithoutValidation("gstin", gstin);
+
+                var response = httpClient.SendAsync(request).Result;
+                var contents = response.Content.ReadAsStringAsync().Result;
+                return contents;
+
+                // Sample Response
+                //{ "status_cd": "0", "status_desc": "User Name does not exists"}
+            }
+        }
+    }
     #endregion
 }
 //}
