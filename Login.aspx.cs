@@ -18,11 +18,9 @@ using System.IO;
 public partial class Login : System.Web.UI.Page
 {
     MySqlCommand cmd;
-    DBManager hvdm;
     VehicleDBMgr vdm;
     SqlCommand a_cmd;
     string ipaddress;
-    AccessControldbmanger Accescontrol_db = new AccessControldbmanger();
     public string username, pwd;
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -234,7 +232,6 @@ public partial class Login : System.Web.UI.Page
                         }
 
                     }
-                    Otpupdate(no, otp, otpexptime, empid);
                     Id = Encrypt(no.Trim());
                     string hyperlink = " http://182.18.162.51/fp/OTP.aspx?Id=" + Id.Trim();
                     string message1 = "OTP for  " + empid + "  Billproceed  transaction is : " + otp + ". Valid till " + otpexptime + "  Do not share OTP for security reasons.";
@@ -396,74 +393,7 @@ public partial class Login : System.Web.UI.Page
         }
         return clearText;
     }
-    protected void Otpupdate(string mno, string otp, string edate, string uniqid)
-    {
-        try
-        {
-            hvdm = new DBManager();
-            string proid = "Sales";
-            string frmmid = "EmployeeLoginApproval";
-            string userid = Session["EmpName"].ToString();// "naseema";
-            int s = 1;
-            a_cmd = new SqlCommand("INSERT INTO VysAuthentication(val1,val2,val3,val4,val5,val6,val7,val8,val9,val10) VALUES(@val1,@val2,@val3,@val4,@val5,@val6,@val7,@val8,@val9,@val10)");
-            a_cmd.Parameters.Add("@val1", mno);
-            a_cmd.Parameters.Add("@val2", otp);
-            a_cmd.Parameters.Add("@val3", edate);
-            a_cmd.Parameters.Add("@val4", proid);
-            a_cmd.Parameters.Add("@val5", frmmid);
-            a_cmd.Parameters.Add("@val6", userid);
-            a_cmd.Parameters.Add("@val7", uniqid);
-            a_cmd.Parameters.Add("@val8", "1");
-            a_cmd.Parameters.Add("@val9", "1");
-            a_cmd.Parameters.Add("@val10", s);
-            //cmd.ExecuteNonQuery();
-            hvdm.insert(a_cmd);
-        }
-        catch (Exception ex)
-        {
-            ex.ToString();
-        }
-    }
-
-    //protected void sessionsclick_click(object sender, EventArgs e)
-    //{
-    //    try
-    //    {
-    //        String UserName = txtUserName.Text, PassWord = txtPassword.Text;
-    //        string username = lbl_username.Text.ToString();
-    //        string password = lbl_passwords.Text.ToString();
-    //        cmd = new MySqlCommand("update employe_logins set loginstatus=@log where username=@username and password=@passward");
-    //        cmd.Parameters.Add("@log", "0");
-    //        cmd.Parameters.Add("@username", username);
-    //        cmd.Parameters.Add("@passward", password);
-    //        vdm.Update(cmd);
-    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdm.conn);
-    //        cmd = new MySqlCommand("SELECT loginid,empid FROM employe_logins where username=@username and password=@passward");
-    //        cmd.Parameters.Add("@username", username);
-    //        cmd.Parameters.Add("@passward", password);
-    //        DataTable dtEMP = vdm.SelectQuery(cmd).Tables[0];
-    //        if (dtEMP.Rows.Count > 0)
-    //        {
-    //            string empid = dtEMP.Rows[0]["empid"].ToString();
-    //            cmd = new MySqlCommand("Select max(sno) as transno from logininfo where empid=@userid");
-    //            cmd.Parameters.Add("@userid", empid);
-    //            DataTable dttime = vdm.SelectQuery(cmd).Tables[0];
-    //            if (dttime.Rows.Count > 0)
-    //            {
-    //                string transno = dttime.Rows[0]["transno"].ToString();
-    //                cmd = new MySqlCommand("UPDATE logininfo set logouttime=@logouttime where sno=@sno");
-    //                cmd.Parameters.Add("@logouttime", ServerDateCurrentdate);
-    //                cmd.Parameters.Add("@sno", transno);
-    //                vdm.Update(cmd);
-    //            }
-    //        }
-    //        //this.AlertBox.Visible = false;
-    //    }
-    //    catch
-    //    {
-
-    //    }
-    //}
+  
     protected void sessionsclick_Close(object sender, EventArgs e)
     {
         //this.AlertBox.Visible = false;

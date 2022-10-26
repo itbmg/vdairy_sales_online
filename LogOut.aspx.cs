@@ -20,11 +20,9 @@ using System.IO;
 public partial class LogOut : System.Web.UI.Page
 {
     MySqlCommand cmd;
-    DBManager hvdm;
     VehicleDBMgr vdm = new VehicleDBMgr();
     SqlCommand a_cmd;
     string ipaddress;
-    AccessControldbmanger Accescontrol_db = new AccessControldbmanger();
     
     protected void Page_Load(object sender, EventArgs e)
     {

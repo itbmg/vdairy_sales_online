@@ -1989,40 +1989,10 @@
             }
         }
         var employeesname = [];
-        function get_Hrms_Employee_Details() {
-            var data = { 'operation': 'get_Hrms_Employee_Details' };
-            var s = function (msg) {
-                if (msg) {
-                    employeesname = msg;
-                    var availableTags = [];
-                    for (i = 0; i < msg.length; i++) {
-                        availableTags.push(msg[i].ledgername);
-                    }
-                    $("#txtdesc").autocomplete({
-                        source: function (req, responseFn) {
-                            var re = $.ui.autocomplete.escapeRegex(req.term);
-                            var matcher = new RegExp("^" + re, "i");
-                            var a = $.grep(availableTags, function (item, index) {
-                                return matcher.test(item);
-                            });
-                            responseFn(a);
-                        },
-                        change: changeemployeeid,
-                        autoFocus: true
-                    });
-                }
-            }
-            var e = function (x, h, e) {
-                alert(e.toString());
-            };
-            callHandler(data, s, e);
-        }
-
+     
         function ddltransactiontypechanged() {
             var employeetype = document.getElementById("ddltransactiontype").value;
             if (employeetype == "Employee") {
-                get_Hrms_Employee_Details();
-
 
             }
             else {

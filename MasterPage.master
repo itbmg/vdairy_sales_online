@@ -853,8 +853,7 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                                 <li id="liRouteWiseActivity"><a href="RouteWiseActivity.aspx">Route Wise Activity</a></li>
                                                 <li id="liSalesOfficewiseActivity"><a href="SalesOfficeWiseActivity.aspx">SalesOffice
                                                     Wise Activity</a></li>
-                                                <%--<li id="li1"><a href="RouteWiseClassification.aspx">Route Wise Classification Report</a></li>
-                                                <li id="linewagentreport"><a href="NewAgentReport.aspx">New Agent Report</a></li>--%>
+                                                <%--<li id="linewagentreport"><a href="NewAgentReport.aspx">New Agent Report</a></li>--%>
                                               <%--  <li id="licompassinvoice"><a href="AgentInvoiceReport.aspx">CompassInvoiceReport</a></li>--%>
                                             </ul>
                                         </div>

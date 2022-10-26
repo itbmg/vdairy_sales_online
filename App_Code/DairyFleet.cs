@@ -107,12 +107,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "Get_AgentWiseDue_Transaction_Report":
                     Get_AgentWiseDue_Transaction_Report(context);
                     break;
-                case "get_Employee_Salary_Details":
-                    get_Employee_Salary_Details(context);
-                    break;
-                case "get_Hrms_Employee_Details":
-                    get_Hrms_Employee_Details(context);
-                    break;
                 case "get_return_stock_Report_details":
                     get_return_stock_Report_details(context);
                     break;
@@ -2970,136 +2964,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string empname { get; set; }
         public string netpay { get; set; }
     }
-    private void get_Hrms_Employee_Details(HttpContext context)
-    {
-        try
-        {
-
-            vdm = new DBManager();
-            cm_d = new SqlCommand("SELECT  fullname, employee_num, empid, ftype,ledgername FROM employedetails");
-            //cmd.Parameters.AddWithValue("@employee_num", "VSPBK30022");
-            DataTable routes = vdm.SelectQuery(cm_d).Tables[0];
-            List<HrmsEmployee> employeeslist = new List<HrmsEmployee>();
-            foreach (DataRow dr in routes.Rows)
-            {
-                HrmsEmployee obj1 = new HrmsEmployee();
-                obj1.empid = dr["empid"].ToString();
-                string empname = dr["fullname"].ToString();
-                obj1.fullname = empname.Trim();
-                obj1.employee_num = dr["employee_num"].ToString();
-                obj1.ftype = dr["ftype"].ToString();
-                obj1.ledgername = dr["ledgername"].ToString();
-                employeeslist.Add(obj1);
-            }
-            string response = GetJson(employeeslist);
-            context.Response.Write(response);
-        }
-        catch
-        {
-        }
-    }
-
-    private void get_Employee_Salary_Details(HttpContext context)
-    {
-        try
-        {
-            vdm = new DBManager();
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            DateTime dtapril = new DateTime();
-            DateTime dtmarch = new DateTime();
-            int currentyear = ServerDateCurrentdate.Year;
-            int currentmonth = ServerDateCurrentdate.Month;
-            int nextmonth = ServerDateCurrentdate.Month + 1;
-            int backmonth = ServerDateCurrentdate.Month - 1;
-            int nextyear = ServerDateCurrentdate.Year + 1;
-            int currntyearnum = 0;
-            int nextyearnum = 0;
-            string apr = "" + backmonth + "/25/" + currentyear;
-            dtapril = DateTime.Parse(apr);
-            string march = "" + currentmonth + "/25/" + nextyear;
-            dtmarch = DateTime.Parse(march);
-            currntyearnum = currentyear;
-            nextyearnum = nextyear;
-            //GetLowDate(dtapril)
-            string empid = context.Request["empid"];
-            //if(backmonth ==
-            cm_d = new SqlCommand("SELECT   sno, employecode, empname, designation, daysmonth, attandancedays, clandholidayoff, payabledays, salary, basic, hra, conveyance, medical, washing,gross, pt, pf, esi, salaryadvance, loan, canteendeduction, mobilededuction, mediclim, otherdeduction, totaldeduction, netpay, bankaccountno, ifsccode, emptype, branchid, month, dateofclosing, closedby, year, deptid, tdsdeduction, betaperday, attendancebonus, type, empid, extrapay, extradays, entry_by, entry_date, modify_by, modify_date,salarypayble FROM monthlysalarystatement WHERE (empid = @empid) AND (month=@month) AND (year=@year) ORDER BY sno");
-            cm_d.Parameters.AddWithValue("@empid", empid);
-            cm_d.Parameters.AddWithValue("@month", backmonth);
-            cm_d.Parameters.AddWithValue("@year", currentyear);
-            DataTable routes = vdm.SelectQuery(cm_d).Tables[0];
-            cm_d = new SqlCommand("SELECT   pay_structure.sno, pay_structure.departmentid, pay_structure.empid, pay_structure.gross, pay_structure.profitionaltax, pay_structure.esi, pay_structure.medicalerning, pay_structure.providentfund, pay_structure.salaryperyear, pay_structure.mediclaimdeduction, pay_structure.tdsdeduction, pay_structure.empcode, pay_structure.entry_by, pay_structure.entry_date, pay_structure.modify_by, pay_structure.modify_date, mediclaimdeduction.medicliamamount FROM  pay_structure LEFT OUTER JOIN  mediclaimdeduction ON pay_structure.empid = mediclaimdeduction.empid WHERE  (pay_structure.empid = @empid)");
-            cm_d.Parameters.AddWithValue("@empid", empid);
-            DataTable dtemployeesalary = vdm.SelectQuery(cm_d).Tables[0];
-            List<HrmsEmployee> employeeslist = new List<HrmsEmployee>();
-            if (routes.Rows.Count > 0)
-            {
-                foreach (DataRow dr in routes.Rows)
-                {
-                    HrmsEmployee obj1 = new HrmsEmployee();
-                    double otamount, salarypayble = 0;
-                    double.TryParse(dr["netpay"].ToString(), out salarypayble);
-                    double.TryParse(dr["extrapay"].ToString(), out otamount);
-                    double netamount = salarypayble + otamount;
-                    obj1.netpay = netamount.ToString();
-                    obj1.empname = dr["empname"].ToString();
-                    obj1.designation = dr["designation"].ToString();
-                    employeeslist.Add(obj1);
-                }
-                string response = GetJson(employeeslist);
-                context.Response.Write(response);
-            }
-            else if (dtemployeesalary.Rows.Count > 0)
-            {
-                string gross = dtemployeesalary.Rows[0]["gross"].ToString();
-                string medical = dtemployeesalary.Rows[0]["medicliamamount"].ToString();
-                string tax = dtemployeesalary.Rows[0]["profitionaltax"].ToString();
-                string esi = dtemployeesalary.Rows[0]["esi"].ToString();
-                string pf = dtemployeesalary.Rows[0]["providentfund"].ToString();
-                string tds = dtemployeesalary.Rows[0]["tdsdeduction"].ToString();
-                double grossamt, pfamount, esiamount, tdsamount, medicalamt, taxamount;
-                double.TryParse(gross, out grossamt);
-                double.TryParse(medical, out medicalamt);
-                double.TryParse(tax, out taxamount);
-                double.TryParse(esi, out esiamount);
-                double.TryParse(pf, out pfamount);
-                double.TryParse(tds, out tdsamount);
-                double actualamount = (grossamt) - (pfamount + esiamount + tdsamount + medicalamt + taxamount);
-                cm_d = new SqlCommand("SELECT  COUNT(*) AS Days FROM  dailyattandancedetails  WHERE  (empid = @empid) AND (attendance_date BETWEEN @d1 AND @d2)");
-                cm_d.Parameters.AddWithValue("@empid", empid);
-                cm_d.Parameters.AddWithValue("@d1", GetLowDate(dtapril));
-                cm_d.Parameters.AddWithValue("@d2", GetHighDate(dtmarch));
-                DataTable dempattendencedays = vdm.SelectQuery(cm_d).Tables[0];
-                string ndays = dempattendencedays.Rows[0]["Days"].ToString();
-                double NoOfDays = 0;
-                double.TryParse(ndays, out NoOfDays);
-                double perdayamount = actualamount / 24;
-                double totnetpay = 0;
-                if (NoOfDays != 0)
-                {
-                    totnetpay = perdayamount * NoOfDays;
-                }
-                else
-                {
-                    totnetpay = perdayamount * 15;
-                }
-                HrmsEmployee obj1 = new HrmsEmployee();
-                double amount = Math.Round(totnetpay, 2);
-                obj1.netpay = amount.ToString();
-                employeeslist.Add(obj1);
-                string response = GetJson(employeeslist);
-                context.Response.Write(response);
-            }
-            else
-            {
-                string response = GetJson("Employee Not Avilable");
-                context.Response.Write(response);
-            }
-        }
-        catch
-        {
-        }
-    }
+   
     private void getRouteClassification(HttpContext context)
     {
         try
@@ -25833,7 +25698,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         try
         {
             vdbmngr = new VehicleDBMgr();
-            Accescontrol_db = new AccessControldbmanger();
             string Name = context.Request["Name"];
             string ledger_code = context.Request["ledger_code"];
             string Amount = context.Request["Amount"];
@@ -29425,7 +29289,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         try
         {
             vdbmngr = new VehicleDBMgr();
-            vdm = new DBManager();
             var js = new JavaScriptSerializer();
             var title1 = context.Request.Params[1];
             CashForms obj = js.Deserialize<CashForms>(title1);
@@ -29551,10 +29414,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 else if (VoucherType == "SalaryAdvance" || VoucherType == "SalaryPayble")
                 {
 
-                    cm_d = new SqlCommand("SELECT employee_num, fullname,ledgername, branchid,empid FROM  employedetails  where  ledgername=@employee_num");
-                    cm_d.Parameters.AddWithValue("@employee_num", Description);
-                    DataTable dtemployename = vdm.SelectQuery(cm_d).Tables[0];
-                    string employeename = dtemployename.Rows[0]["fullname"].ToString();
                     if (LevelType == "AccountsOfficer" || LevelType == "Director")
                     {
                         cmd = new MySqlCommand("Insert into cashpayables (BranchID,CashTo,DOE,VocherID,Remarks,Amount,Approvedby,onNameof,Status,Created_by,VoucherType,ApprovalRemarks,ApprovedAmount,DOR) values (@BranchID,@CashTo,@DOE,@VocherID,@Remarks,@Amount,@Approvedby,@onNameof,@Status,@Created_by,@VoucherType,@ApprovalRemarks,@ApprovedAmount,@DOR)");
@@ -29576,7 +29435,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     cmd.Parameters.AddWithValue("@VocherID", VocherID);
                     cmd.Parameters.AddWithValue("@Remarks", Remarks);
                     cmd.Parameters.AddWithValue("@Amount", Amount);
-                    cmd.Parameters.AddWithValue("@onNameof", employeename);
+                    cmd.Parameters.AddWithValue("@onNameof", "");
                     cmd.Parameters.AddWithValue("@Created_by", context.Session["UserSno"].ToString());
                     cmd.Parameters.AddWithValue("@VoucherType", VoucherType);
                     long CashSno = vdbmngr.insertScalar(cmd);
@@ -29590,24 +29449,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         string currentMonth = ServerDateCurrentdate.Month.ToString();
                         string currentYear = ServerDateCurrentdate.Year.ToString();
 
-                        cm_d = new SqlCommand("SELECT employee_num, fullname,ledgername, branchid,empid FROM  employedetails  where  ledgername=@ledgername");
-                        cm_d.Parameters.AddWithValue("@ledgername", dtheadaccountname.Rows[0]["HeadName"].ToString());
-                        DataTable dtempnumber = vdm.SelectQuery(cm_d).Tables[0];
-                        string employee_num = ""; string empid = "";
-                        if (dtempnumber.Rows.Count > 0)
-                        {
-                            employee_num = dtempnumber.Rows[0]["employee_num"].ToString();
-                            empid = dtempnumber.Rows[0]["empid"].ToString();
-                        }
-                        cm_d = new SqlCommand("insert into salessalaryadvance (empid,amount,doe,employee_num,month,year,remarks)values(@empid,@amount,@doe,@employee_num,@month,@year,@remarks)");
-                        cm_d.Parameters.AddWithValue("@empid", empid);
-                        cm_d.Parameters.AddWithValue("@amount", Amount);
-                        cm_d.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                        cm_d.Parameters.AddWithValue("@employee_num", employee_num);
-                        cm_d.Parameters.AddWithValue("@month", backmonth);
-                        cm_d.Parameters.AddWithValue("@year", currentYear);
-                        cm_d.Parameters.AddWithValue("@remarks", Remarks);
-                        vdm.insert(cm_d);
+                        
                         // End
                         cmd = new MySqlCommand("Insert into Subpayable (RefNo,HeadSno,Amount) values (@RefNo,@HeadSno,@Amount)");
                         cmd.Parameters.AddWithValue("@RefNo", CashSno);
@@ -29708,15 +29550,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 //salaryadvance Effecting In Hrms Start
                                 string currentMonth = ServerDateCurrentdate.Month.ToString();
                                 string currentYear = ServerDateCurrentdate.Year.ToString();
-                                cm_d = new SqlCommand("SELECT employee_num, fullname,ledgername, branchid,empid FROM  employedetails  where  ledgername=@ledgername");
-                                cm_d.Parameters.AddWithValue("@ledgername", Description);
-                                DataTable dtempnumber = vdm.SelectQuery(cm_d).Tables[0];
-                                string employee_num = ""; string empid = "";
-                                if (dtempnumber.Rows.Count > 0)
-                                {
-                                    employee_num = dtempnumber.Rows[0]["employee_num"].ToString();
-                                    empid = dtempnumber.Rows[0]["empid"].ToString();
-                                }
                                 string mnth = "";
                                 if (backmonth >= 10)
                                 {
@@ -29727,15 +29560,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     mnth = "0" + backmonth + "";
 
                                 }
-                                cm_d = new SqlCommand("insert into salaryadvance (empid,amount,doe,employee_num,month,year,remarks)values(@empid,@amount,@doe,@employee_num,@month,@year,@remarks)");
-                                cm_d.Parameters.AddWithValue("@empid", empid);
-                                cm_d.Parameters.AddWithValue("@amount", Amount);
-                                cm_d.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                cm_d.Parameters.AddWithValue("@employee_num", employee_num);
-                                cm_d.Parameters.AddWithValue("@month", mnth);
-                                cm_d.Parameters.AddWithValue("@year", currentYear);
-                                cm_d.Parameters.AddWithValue("@remarks", Remarks);
-                                vdm.insert(cm_d);
                                 // End
                                 cmd = new MySqlCommand("Insert into Subpayable (RefNo,HeadSno,Amount) values (@RefNo,@HeadSno,@Amount)");
                                 cmd.Parameters.AddWithValue("@RefNo", CashSno);
@@ -29755,15 +29579,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 //salaryadvance Effecting In Hrms Start
                                 string currentMonth = ServerDateCurrentdate.Month.ToString();
                                 string currentYear = ServerDateCurrentdate.Year.ToString();
-                                cm_d = new SqlCommand("SELECT employee_num, fullname,ledgername, branchid,empid FROM  employedetails  where  ledgername=@ledgername");
-                                cm_d.Parameters.AddWithValue("@ledgername", Description);
-                                DataTable dtempnumber = vdm.SelectQuery(cm_d).Tables[0];
-                                string employee_num = ""; string empid = "";
-                                if (dtempnumber.Rows.Count > 0)
-                                {
-                                    employee_num = dtempnumber.Rows[0]["employee_num"].ToString();
-                                    empid = dtempnumber.Rows[0]["empid"].ToString();
-                                }
                                 string mnth = "";
                                 if (backmonth >= 10)
                                 {
@@ -29774,15 +29589,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     mnth = "0" + backmonth + "";
 
                                 }
-                                cm_d = new SqlCommand("insert into salaryadvance (empid,amount,doe,employee_num,month,year,remarks)values(@empid,@amount,@doe,@employee_num,@month,@year,@remarks)");
-                                cm_d.Parameters.AddWithValue("@empid", empid);
-                                cm_d.Parameters.AddWithValue("@amount", Amount);
-                                cm_d.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                cm_d.Parameters.AddWithValue("@employee_num", employee_num);
-                                cm_d.Parameters.AddWithValue("@month", mnth);
-                                cm_d.Parameters.AddWithValue("@year", currentYear);
-                                cm_d.Parameters.AddWithValue("@remarks", Remarks);
-                                vdm.insert(cm_d);
                                 // End
                                 cmd = new MySqlCommand("Insert into Subpayable (RefNo,HeadSno,Amount) values (@RefNo,@HeadSno,@Amount)");
                                 cmd.Parameters.AddWithValue("@RefNo", CashSno);
@@ -31485,7 +31291,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     {
         try
         {
-            vdm = new DBManager();
             vdbmngr = new VehicleDBMgr();
 
             string SalesType = context.Request["SalesType"].ToString();
@@ -31496,12 +31301,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
                 dtDispatches = vdbmngr.SelectQuery(cmd).Tables[0];
             }
-            else
-            {
-                // cm_d = new SqlCommand("SELECT sno, DispName FROM dispatch WHERE (Branch_Id = @branchid) AND (DispType = 'LOCAL') OR (Branch_Id = @branchid) AND (DispType = 'Staff') OR (Branch_Id = @branchid) AND (DispType = 'Free') ORDER BY sno");
-                cm_d = new SqlCommand("SELECT employee_num, fullname,ledgername AS DispName, branchid,empid AS sno FROM  employedetails  where  status ='NO'");
-                dtDispatches = vdm.SelectQuery(cm_d).Tables[0];
-            }
+            
             List<Routes> Routelist = new List<Routes>();
             foreach (DataRow dr in dtDispatches.Rows)
             {
@@ -34720,7 +34520,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     {
         try
         {
-            Accescontrol_db = new AccessControldbmanger();
             vdbmngr = new VehicleDBMgr();
             string faaccuntno = context.Request["faaccuntno"];
             string BranchID = context.Request["BranchID"];
@@ -35619,70 +35418,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         t_Pbranchname = dt_branch.Rows[0]["P_tbranchname"].ToString();
                         S_whcode = dt_branch.Rows[0]["S_whcode"].ToString();
                         P_whcode = dt_branch.Rows[0]["P_whcode"].ToString();
-                    }
-                    a_cmd = new SqlCommand("SELECT branchid FROM branchmaster WHERE (whcode = @whcode)");
-                    a_cmd.Parameters.AddWithValue("@whcode", S_whcode);//Branch is Salesoffice Wh code
-                    DataTable DT_S_WH = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-                    a_cmd = new SqlCommand("SELECT branchid FROM branchmaster WHERE (whcode = @whcode)");
-                    a_cmd.Parameters.AddWithValue("@whcode", P_whcode);//Branch is Plant WHcode
-                    DataTable DT_P_WH = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-
-                    if (dt_branch.Rows.Count > 0)
-                    {
-                        a_cmd = new SqlCommand("INSERT INTO collections (accountno,name, amount, remarks, doe, createdby, status, receiptdate,branch,subbranch,sapimport) VALUES (@accountno,@name, @amount, @remarks, @doe, @createdby, @status, @receiptdate,@branch,@subbranch,@sapimport)");
-                        a_cmd.Parameters.AddWithValue("@accountno", faaccuntno);
-                        a_cmd.Parameters.AddWithValue("@name", tbranchname);
-                        a_cmd.Parameters.AddWithValue("@amount", PaidAmount);
-                        a_cmd.Parameters.AddWithValue("@remarks", Remarks);
-                        a_cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                        a_cmd.Parameters.AddWithValue("@createdby", context.Session["UserSno"].ToString());
-                        a_cmd.Parameters.AddWithValue("@status", "P");
-                        a_cmd.Parameters.AddWithValue("@receiptdate", ServerDateCurrentdate);
-                        a_cmd.Parameters.AddWithValue("@branch", DT_P_WH.Rows[0]["branchid"].ToString());
-                        a_cmd.Parameters.AddWithValue("@subbranch", DT_S_WH.Rows[0]["branchid"].ToString());
-                        a_cmd.Parameters.AddWithValue("@sapimport", "2");
-                        Accescontrol_db.insert(a_cmd);
-                        a_cmd = new SqlCommand("select MAX(sno) as sno from collections");
-                        DataTable dtsno = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-                        string refno = dtsno.Rows[0]["sno"].ToString();
-
-
-                        if (Branch == "285" && faaccuntno == "4")
-                        {
-                            a_cmd = new SqlCommand("SELECT sno, accountname FROM  headofaccounts_master  where  accountname=@accountname");
-                            a_cmd.Parameters.AddWithValue("@accountname", tbranchname);
-                        }
-                        else
-                        {
-                            a_cmd = new SqlCommand("SELECT sno, accountname FROM  headofaccounts_master  where  accountname=@accountname");
-                            a_cmd.Parameters.AddWithValue("@accountname", t_sobranchname);
-                        }
-                        //Getting Sales Office and Insert into main and sub tables 
-                        DataTable dt_soaccountdetails = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-
-                        a_cmd = new SqlCommand("INSERT INTO collectionsubdetails (collectionrefno, headofaccount, amount) VALUES (@collectionrefno, @headofaccount, @amount)");
-                        a_cmd.Parameters.AddWithValue("@collectionrefno", refno);
-                        a_cmd.Parameters.AddWithValue("@headofaccount", dt_soaccountdetails.Rows[0]["sno"].ToString());
-                        a_cmd.Parameters.AddWithValue("@amount", PaidAmount);
-                        Accescontrol_db.insert(a_cmd);
-
-                        //Getting Agent Data and Insert into sub tables 
-
-                        a_cmd = new SqlCommand("SELECT sno, accountname FROM  headofaccounts_master  where  accountname=@accountname");
-                        a_cmd.Parameters.AddWithValue("@accountname", tbranchname);
-                        DataTable dtaccountdetails = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-
-                        a_cmd = new SqlCommand("insert into subaccount_collection (collectionrefno, headofaccount, amount) values (@refno, @headofaccount, @amount)");
-                        a_cmd.Parameters.AddWithValue("@refno", refno);
-                        a_cmd.Parameters.AddWithValue("@headofaccount", dtaccountdetails.Rows[0]["sno"].ToString());
-                        a_cmd.Parameters.AddWithValue("@amount", PaidAmount);
-                        Accescontrol_db.insert(a_cmd);
-                    }
-                    else
-                    {
-                        cmd = new MySqlCommand("INSERT INTO excepcetions (Name) VALUES (@Name)");
-                        cmd.Parameters.AddWithValue("@Name", tbranchname);
-                        vdbmngr.insert(cmd);
                     }
                 }
                 if (PaymentType == "Journal Voucher")
@@ -39935,7 +39670,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     {
         try
         {
-            Accescontrol_db = new AccessControldbmanger();
             vdbmngr = new VehicleDBMgr();
             if (context.Session["userdata_sno"] == null)
             {
@@ -40165,91 +39899,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     S_whcode = dt_branch.Rows[0]["S_whcode"].ToString();
                                     P_whcode = dt_branch.Rows[0]["P_whcode"].ToString();
                                 }
-                                a_cmd = new SqlCommand("SELECT branchid FROM branchmaster WHERE (whcode = @whcode)");
-                                a_cmd.Parameters.AddWithValue("@whcode", S_whcode);//Branch is Salesoffice Wh code
-                                DataTable DT_S_WH = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-                                a_cmd = new SqlCommand("SELECT branchid FROM branchmaster WHERE (whcode = @whcode)");
-                                a_cmd.Parameters.AddWithValue("@whcode", P_whcode);//Branch is Plant WHcode
-                                DataTable DT_P_WH = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-                                if (dt_branch.Rows.Count > 0)
-                                {
-                                    DateTime dtcleardate = Convert.ToDateTime(cleardate);
-                                    a_cmd = new SqlCommand("INSERT INTO collections (accountno,name, amount, remarks, doe, createdby, status, receiptdate,branch,subbranch,sapimport) VALUES (@accountno,@name, @amount, @remarks, @doe, @createdby, @status, @receiptdate,@branch,@subbranch,@sapimport)");
-                                    a_cmd.Parameters.AddWithValue("@accountno", faaccuntno);
-                                    a_cmd.Parameters.AddWithValue("@name", tbranchname);
-                                    a_cmd.Parameters.AddWithValue("@amount", BranchAmount);
-                                    a_cmd.Parameters.AddWithValue("@remarks", Remarks);
-                                    a_cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                    a_cmd.Parameters.AddWithValue("@createdby", context.Session["UserSno"].ToString());
-                                    a_cmd.Parameters.AddWithValue("@status", "P");
-                                    a_cmd.Parameters.AddWithValue("@receiptdate", dtcleardate);
-                                    a_cmd.Parameters.AddWithValue("@branch", DT_P_WH.Rows[0]["branchid"].ToString());
-                                    a_cmd.Parameters.AddWithValue("@subbranch", DT_S_WH.Rows[0]["branchid"].ToString());
-                                    a_cmd.Parameters.AddWithValue("@sapimport", "2");
-                                    Accescontrol_db.insert(a_cmd);
-                                    a_cmd = new SqlCommand("select MAX(sno) as sno from collections");
-                                    DataTable dtsno = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-                                    string refno = dtsno.Rows[0]["sno"].ToString();
-
-                                    //Getting Sales Office and Insert into main and sub tables 
-                                    DataTable dt_soaccountdetails = new DataTable();
-                                    a_cmd = new SqlCommand("SELECT sno, accountname FROM  headofaccounts_master  where  accountname=@accountname");
-                                    a_cmd.Parameters.AddWithValue("@accountname", t_sobranchname);
-                                    dt_soaccountdetails = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-                                    if (dt_soaccountdetails.Rows.Count > 0)
-                                    {
-
-                                    }
-                                    else
-                                    {
-                                        a_cmd = new SqlCommand("insert into headofaccounts_master (accountname, doe) values (@accountname, @doe)");
-                                        a_cmd.Parameters.AddWithValue("@accountname", t_sobranchname);
-                                        a_cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                        Accescontrol_db.insert(a_cmd);
-                                        a_cmd = new SqlCommand("SELECT sno, accountname FROM  headofaccounts_master  where  accountname=@accountname");
-                                        a_cmd.Parameters.AddWithValue("@accountname", t_sobranchname);
-                                        dt_soaccountdetails = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-                                    }
-                                    a_cmd = new SqlCommand("INSERT INTO collectionsubdetails (collectionrefno, headofaccount, amount) VALUES (@collectionrefno, @headofaccount, @amount)");
-                                    a_cmd.Parameters.AddWithValue("@collectionrefno", refno);
-                                    a_cmd.Parameters.AddWithValue("@headofaccount", dt_soaccountdetails.Rows[0]["sno"].ToString());
-                                    a_cmd.Parameters.AddWithValue("@amount", BranchAmount);
-                                    Accescontrol_db.insert(a_cmd);
-
-                                    //Getting Agent Data and Insert into sub tables 
-                                    DataTable dtaccountdetails = new DataTable();
-
-                                    a_cmd = new SqlCommand("SELECT sno, accountname FROM  headofaccounts_master  where  accountname=@accountname");
-                                    a_cmd.Parameters.AddWithValue("@accountname", tbranchname);
-                                    dtaccountdetails = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-                                    if (dtaccountdetails.Rows.Count > 0)
-                                    {
-
-                                    }
-                                    else
-                                    {
-                                        a_cmd = new SqlCommand("insert into headofaccounts_master (accountname, doe) values (@accountname, @doe)");
-                                        a_cmd.Parameters.AddWithValue("@accountname", tbranchname);
-                                        a_cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                        Accescontrol_db.insert(a_cmd);
-
-                                        a_cmd = new SqlCommand("SELECT sno, accountname FROM  headofaccounts_master  where  accountname=@accountname");
-                                        a_cmd.Parameters.AddWithValue("@accountname", tbranchname);
-                                        dtaccountdetails = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-                                    }
-
-                                    a_cmd = new SqlCommand("insert into subaccount_collection (collectionrefno, headofaccount, amount) values (@refno, @headofaccount, @amount)");
-                                    a_cmd.Parameters.AddWithValue("@refno", refno);
-                                    a_cmd.Parameters.AddWithValue("@headofaccount", dtaccountdetails.Rows[0]["sno"].ToString());
-                                    a_cmd.Parameters.AddWithValue("@amount", BranchAmount);
-                                    Accescontrol_db.insert(a_cmd);
-                                }
-                                else
-                                {
-                                    cmd = new MySqlCommand("INSERT INTO excepcetions (Name) VALUES (@Name)");
-                                    cmd.Parameters.AddWithValue("@Name", tbranchname);
-                                    vdbmngr.insert(cmd);
-                                }
+                              
                             }
                             if (Status == "Approved")
                             {
@@ -40490,90 +40140,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 S_whcode = dt_branch.Rows[0]["S_whcode"].ToString();
                                 P_whcode = dt_branch.Rows[0]["P_whcode"].ToString();
                             }
-                            a_cmd = new SqlCommand("SELECT branchid FROM branchmaster WHERE (whcode = @whcode)");
-                            a_cmd.Parameters.AddWithValue("@whcode", S_whcode);//Branch is Salesoffice Wh code
-                            DataTable DT_S_WH = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-                            a_cmd = new SqlCommand("SELECT branchid FROM branchmaster WHERE (whcode = @whcode)");
-                            a_cmd.Parameters.AddWithValue("@whcode", P_whcode);//Branch is Plant WHcode
-                            DataTable DT_P_WH = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-                            //DateTime from_date = Convert.ToDateTime(cleardate);
-                            if (dt_branch.Rows.Count > 0)
-                            {
-                                a_cmd = new SqlCommand("INSERT INTO collections (accountno,name, amount, remarks, doe, createdby, status, receiptdate,branch,subbranch,sapimport) VALUES (@accountno,@name, @amount, @remarks, @doe, @createdby, @status, @receiptdate,@branch,@subbranch,@sapimport)");
-                                a_cmd.Parameters.AddWithValue("@accountno", faaccuntno);
-                                a_cmd.Parameters.AddWithValue("@name", tbranchname);
-                                a_cmd.Parameters.AddWithValue("@amount", BranchAmount);
-                                a_cmd.Parameters.AddWithValue("@remarks", Remarks);
-                                a_cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                a_cmd.Parameters.AddWithValue("@createdby", context.Session["UserSno"].ToString());
-                                a_cmd.Parameters.AddWithValue("@status", "P");
-                                a_cmd.Parameters.AddWithValue("@receiptdate", cleardate);
-                                a_cmd.Parameters.AddWithValue("@branch", DT_P_WH.Rows[0]["branchid"].ToString());
-                                a_cmd.Parameters.AddWithValue("@subbranch", DT_S_WH.Rows[0]["branchid"].ToString());
-                                a_cmd.Parameters.AddWithValue("@sapimport", "2");
-                                Accescontrol_db.insert(a_cmd);
-                                a_cmd = new SqlCommand("select MAX(sno) as sno from collections");
-                                DataTable dtsno = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-                                string refno = dtsno.Rows[0]["sno"].ToString();
-
-                                //Getting Sales Office and Insert into main and sub tables 
-                                DataTable dt_soaccountdetails = new DataTable();
-                                a_cmd = new SqlCommand("SELECT sno, accountname FROM  headofaccounts_master  where  accountname=@accountname");
-                                a_cmd.Parameters.AddWithValue("@accountname", t_sobranchname);
-                                dt_soaccountdetails = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-                                if (dt_soaccountdetails.Rows.Count > 0)
-                                {
-
-                                }
-                                else
-                                {
-                                    a_cmd = new SqlCommand("insert into headofaccounts_master (accountname, doe) values (@accountname, @doe)");
-                                    a_cmd.Parameters.AddWithValue("@accountname", t_sobranchname);
-                                    a_cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                    Accescontrol_db.insert(a_cmd);
-                                    a_cmd = new SqlCommand("SELECT sno, accountname FROM  headofaccounts_master  where  accountname=@accountname");
-                                    a_cmd.Parameters.AddWithValue("@accountname", t_sobranchname);
-                                    dt_soaccountdetails = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-                                }
-
-                                a_cmd = new SqlCommand("INSERT INTO collectionsubdetails (collectionrefno, headofaccount, amount) VALUES (@collectionrefno, @headofaccount, @amount)");
-                                a_cmd.Parameters.AddWithValue("@collectionrefno", refno);
-                                a_cmd.Parameters.AddWithValue("@headofaccount", dt_soaccountdetails.Rows[0]["sno"].ToString());
-                                a_cmd.Parameters.AddWithValue("@amount", BranchAmount);
-                                Accescontrol_db.insert(a_cmd);
-
-                                //Getting Agent Data and Insert into sub tables 
-                                DataTable dtaccountdetails = new DataTable();
-                                a_cmd = new SqlCommand("SELECT sno, accountname FROM  headofaccounts_master  where  accountname=@accountname");
-                                a_cmd.Parameters.AddWithValue("@accountname", tbranchname);
-                                dtaccountdetails = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-                                if (dtaccountdetails.Rows.Count > 0)
-                                {
-
-                                }
-                                else
-                                {
-                                    a_cmd = new SqlCommand("insert into headofaccounts_master (accountname, doe) values (@accountname, @doe)");
-                                    a_cmd.Parameters.AddWithValue("@accountname", tbranchname);
-                                    a_cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                    Accescontrol_db.insert(a_cmd);
-
-                                    a_cmd = new SqlCommand("SELECT sno, accountname FROM  headofaccounts_master  where  accountname=@accountname");
-                                    a_cmd.Parameters.AddWithValue("@accountname", tbranchname);
-                                    dtaccountdetails = Accescontrol_db.SelectQuery(a_cmd).Tables[0];
-                                }
-                                a_cmd = new SqlCommand("insert into subaccount_collection (collectionrefno, headofaccount, amount) values (@refno, @headofaccount, @amount)");
-                                a_cmd.Parameters.AddWithValue("@refno", refno);
-                                a_cmd.Parameters.AddWithValue("@headofaccount", dtaccountdetails.Rows[0]["sno"].ToString());
-                                a_cmd.Parameters.AddWithValue("@amount", BranchAmount);
-                                Accescontrol_db.insert(a_cmd);
-                            }
-                            else
-                            {
-                                cmd = new MySqlCommand("INSERT INTO excepcetions (Name) VALUES (@Name)");
-                                cmd.Parameters.AddWithValue("@Name", tbranchname);
-                                vdbmngr.insert(cmd);
-                            }
                         }
                     }
                     string errmsg = "Data Saved Successfully";
@@ -40796,9 +40362,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     SqlCommand cm_d;
     VehicleDBMgr vdbmngr;
     // SalesDBManager SalesDB;
-    DBManager vdm;
     SqlCommand a_cmd;
-    AccessControldbmanger Accescontrol_db;
     class InvDatails
     {
         public string SNo { set; get; }
@@ -45269,7 +44833,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         try
         {
             vdbmngr = new VehicleDBMgr();
-            vdm = new DBManager();
             var js = new JavaScriptSerializer();
             string Username = context.Session["userdata_sno"].ToString();
             string routelevel = context.Session["LevelType"].ToString();
@@ -45691,28 +45254,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     }
                 }
             }
-            if (SalesType == "Staff Sale")
-            {
-                string currentMonth = ServerDateCurrentdate.Month.ToString();
-                string currentYear = ServerDateCurrentdate.Year.ToString();
-                cm_d = new SqlCommand("SELECT employee_num, fullname,ledgername, branchid,empid FROM  employedetails  where  empid=@empid");
-                cm_d.Parameters.AddWithValue("@empid", SalesTypeId);
-                DataTable dtempnumber = vdm.SelectQuery(cm_d).Tables[0];
-                string employee_num = "";
-                if (dtempnumber.Rows.Count > 0)
-                {
-                    employee_num = dtempnumber.Rows[0]["employee_num"].ToString();
-                }
-                cm_d = new SqlCommand("insert into salaryadvance (empid,amount,doe,employee_num,month,year,remarks)values(@empid,@amount,@doe,@employee_num,@month,@year,@remarks)");
-                cm_d.Parameters.AddWithValue("@empid", SalesTypeId);
-                cm_d.Parameters.AddWithValue("@amount", totalamount);
-                cm_d.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                cm_d.Parameters.AddWithValue("@employee_num", employee_num);
-                cm_d.Parameters.AddWithValue("@month", currentMonth);
-                cm_d.Parameters.AddWithValue("@year", currentYear);
-                cm_d.Parameters.AddWithValue("@remarks", remarks);
-                vdm.insert(cm_d);
-            }
+            
             foreach (inventorydetail iv in obj.invdata)
             {
                 if (iv.InventorySno != null)
