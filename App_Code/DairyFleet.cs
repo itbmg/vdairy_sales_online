@@ -18,6 +18,7 @@ using System.Web.UI.WebControls;
 using System.Globalization;
 using System.Net.Sockets;
 using System.Net.Http;
+using Newtonsoft.Json;
 /// <summary>
 /// Summary description for DairyFleet
 /// </summary>
@@ -29653,11 +29654,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
     }
 
-
-
-
-
-
     private void GetApproveEmployeeNames(HttpContext context)
     {
         try
@@ -55238,8 +55234,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             if (newobj.status_cd == "Sucess")
             {
                 var authToken = newobj.data.authtoken;
-                //Rootlst = generate_e_invoice_JsonData(SOID, from_date);
-                var str1 = generate_e_invoice_details(gstin, gst_un, authToken);
+                string response = Get_e_invoice_JsonData(SOID, from_date);
+                var jsonresponse = JsonConvert.DeserializeObject<EInvoice.Root>(response);
+                var str1 = generate_e_invoice_details(gstin, gst_un, authToken, response);
             }
             else
             {
@@ -55256,10 +55253,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     }
 
 
-    private EInvoice.root  Generate_e_invoice_JsonData(string SOID, string from_date)
+    private string Get_e_invoice_JsonData(string SOID, string from_date)
     {
         try
         {
+            #region "Json"
             vdbmngr = new VehicleDBMgr();
             DateTime fromdate = Convert.ToDateTime(from_date);
 
@@ -55737,14 +55735,19 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 Rootlst.EwbDtls = ewbDtls;
                 //EwbDtlslst.Add(ewbDtls);
             }
-           
-            return GetJson(Rootlst);
+            #endregion
+
+            var response = JsonConvert.SerializeObject(Rootlst);
+
+            return response;
         }
         catch (Exception ex)
         {
+            return ex.Message;
         }
     }
-    private string generate_e_invoice_details(string gstin, string gst_un, string token)
+
+    private string generate_e_invoice_details(string gstin, string gst_un, string token, string jsonresponse)
     {
         using (var httpClient = new HttpClient())
         {
@@ -55762,6 +55765,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
 
                 //Body
+                var httpContent = new StringContent(jsonresponse, Encoding.UTF8, "application/json");
+                request.Content = httpContent;
                 //  request.Content = new StringContent("{"Version":"1.1","TranDtls":{"TaxSch":"GST","SupTyp":"B2B","RegRev":"Y","EcmGstin":null,"IgstOnIntra":"N"},"DocDtls":{"Typ":"INV","No":"MAHI / 10","Dt":"08 / 08 / 2020"},"SellerDtls":{"Gstin":"29AABCT1332L000","LglNm":"ABC company pvt ltd","TrdNm":"NIC Industries","Addr1":"5th block, kuvempu layout","Addr2":"kuvempu layout","Loc":"GANDHINAGAR","Pin":560001,"Stcd":"29","Ph":"9000000000","Em":"abc@gmail.com"},"BuyerDtls":{"Gstin":"29AWGPV7107B1Z1","LglNm":"XYZ company pvt ltd","TrdNm":"XYZ Industries","Pos":"37","Addr1":"7th block, kuvempu layout","Addr2":"kuvempu layout","Loc":"GANDHINAGAR","Pin":560004,"Stcd":"29","Ph":"9000000000","Em":"abc@gmail.com"},"DispDtls":{"Nm":"ABC company pvt ltd","Addr1":"7th block, kuvempu layout","Addr2":"kuvempu layout","Loc":"Banagalore","Pin":518360,"Stcd":"37"},"ShipDtls":{"Gstin":"29AWGPV7107B1Z1","LglNm":"CBE company pvt ltd","TrdNm":"kuvempu layout","Addr1":"7th block, kuvempu layout","Addr2":"kuvempu layout","Loc":"Banagalore","Pin":518360,"Stcd":"37"},"ItemList":[{"SlNo":"1","IsServc":"N","PrdDesc":"Rice","HsnCd":"1001","Barcde":"123456","BchDtls":{"Nm":"123456","Expdt":"01 / 08 / 2020","wrDt":"01 / 09 / 2020"},"Qty":100.345,"FreeQty":10,"Unit":"NOS","UnitPrice":99.545,"TotAmt":9988.84,"Discount":10,"PreTaxVal":1,"AssAmt":9978.84,"GstRt":12,"SgstAmt":0,"IgstAmt":1197.46,"CgstAmt":0,"CesRt":5,"CesAmt":498.94,"CesNonAdvlAmt":10,"StateCesRt":12,"StateCesAmt":1197.46,"StateCesNonAdvlAmt":5,"OthChrg":10,"TotItemVal":12897.7,"OrdLineRef":"3256","OrgCntry":"AG","PrdSlNo":"12345","AttribDtls":[{"Nm":"Rice","Val":"10000"}]}],"ValDtls":{"AssVal":9978.84,"CgstVal":0,"SgstVal":0,"IgstVal":1197.46,"CesVal":508.94,"StCesVal":1202.46,"Discount":10,"OthChrg":20,"RndOffAmt":0.3,"TotInvVal":12908,"TotInvValFc":12897.7},"PayDtls":{"Nm":"ABCDE","Accdet":"5697389713210","Mode":"Cash","Fininsbr":"SBIN11000","Payterm":"100","Payinstr":"Gift","Crtrn":"test","Dirdr":"test","Crday":100,"Paidamt":10000,"Paymtdue":5000},"RefDtls":{"InvRm":"TEST","DocPerdDtls":{"InvStDt":"01 / 08 / 2020","InvEndDt":"01 / 09 / 2020"},"PrecDocDtls":[{"InvNo":"DOC / 002","InvDt":"01 / 08 / 2020","OthRefNo":"123456"}],"ContrDtls":[{"RecAdvRefr":"DOC / 002","RecAdvDt":"01 / 08 / 2020","Tendrefr":"Abc001","Contrrefr":"Co123","Extrefr":"Yo456","Projrefr":"Doc - 456","Porefr":"Doc - 789","PoRefDt":"01 / 08 / 2020"}]},"AddlDocDtls":[{"Url":"https://einv-apisandbox.nic.in","Docs":"Test Doc","Info":"Document Test"}],"ExpDtls":{"ShipBNo":"A-248","ShipBDt":"01/08/2020","Port":"INABG1","RefClm":"N","ForCur":"AED","CntCode":"AE"},"EwbDtls":{"Transid":"12AWGPV7107B1Z1","Transname":"XYZ EXPORTS","Distance":100,"Transdocno":"DOC01","TransdocDt":"01/08/2020","Vehno":"ka123456","Vehtype":"R","TransMode":"1"}}", Encoding.UTF8, "application/json");
                 var response = httpClient.SendAsync(request).Result;
                 var contents = response.Content.ReadAsStringAsync().Result;
