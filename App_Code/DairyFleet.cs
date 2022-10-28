@@ -55190,12 +55190,14 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     {
         using (var httpClient = new HttpClient())
         {
-            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/einvoice/authenticate?email=naveen.vdmtech%40gmail.com&username=" + gst_un + "&password=" + gst_pw))
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/einvoice/authenticate?email=naveen.vdmtech%40gmail.com"))
             {
                 string ip_address = GetLocalIPAddress();
                 if (ip_address == "Error")
                     ip_address = "182.18.162.51:52144";
                 request.Headers.TryAddWithoutValidation("Accept", "application/json");
+                request.Headers.TryAddWithoutValidation("username", gst_un);
+                request.Headers.TryAddWithoutValidation("password", gst_pw);
                 request.Headers.TryAddWithoutValidation("ip_address", ip_address);
                 request.Headers.TryAddWithoutValidation("client_id", "83416692-7826-419a-8922-790556910a80");
                 request.Headers.TryAddWithoutValidation("client_secret", "20f94dc1-5066-4ce5-8993-4d85b7899a0f");
@@ -55226,7 +55228,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             string SOID = context.Request["SOID"];
             string from_date = context.Request["FromDate"];
             DateTime fromdate = Convert.ToDateTime(from_date);
-            string ewaybill_no = context.Request["ewaybill_no"].ToString();
+//string ewaybill_no = context.Request["ewaybill_no"].ToString();
             responce_data obj;
             EInvoice.Root Rootlst = new EInvoice.Root();
 
