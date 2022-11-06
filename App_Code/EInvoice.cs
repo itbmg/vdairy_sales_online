@@ -183,6 +183,7 @@ public class EInvoice
         public EwbDtls EwbDtls { get; set; }
     }
 
+    
     public class SellerDtls
     {
         public string Gstin { get; set; }
