@@ -55215,7 +55215,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         throw new Exception("Error");
     }
 
-    private authenticate_response authenticate_e_invoice(string gstin, string gst_un, string gst_pw, string client_id, string Client_secret)
+    EInvoice_Login Elogin = new EInvoice_Login();
+    private authenticate_response authenticate_e_invoice()
     {
         using (var httpClient = new HttpClient())
         {
@@ -55225,12 +55226,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 if (ip_address == "Error")
                     ip_address = "182.18.162.51:52144";
                 request.Headers.TryAddWithoutValidation("Accept", "application/json");
-                request.Headers.TryAddWithoutValidation("username", gst_un);
-                request.Headers.TryAddWithoutValidation("password", gst_pw);
+                request.Headers.TryAddWithoutValidation("username", Elogin.username);
+                request.Headers.TryAddWithoutValidation("password", Elogin.password);
                 request.Headers.TryAddWithoutValidation("ip_address", ip_address);
-                request.Headers.TryAddWithoutValidation("client_id", client_id);
-                request.Headers.TryAddWithoutValidation("client_secret", Client_secret);
-                request.Headers.TryAddWithoutValidation("gstin", gstin);
+                request.Headers.TryAddWithoutValidation("client_id", Elogin.client_id);
+                request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
+                request.Headers.TryAddWithoutValidation("gstin", Elogin.gstin);
                 var response = httpClient.SendAsync(request).Result;
                 var contents = response.Content.ReadAsStringAsync().Result;
                 // return contents;
@@ -55251,15 +55252,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         try
         {
             // For Testing Purpose , in future send customer GSTIN for generate e-invoice
-            EInvoice_Login Elogin = new EInvoice_Login();
-            string gstin = Elogin.gstin;
-            string gst_un = Elogin.username;
-            string gst_pw = Elogin.password;
-            string client_id = Elogin.client_id;
-            string Client_secret = Elogin.client_secret;
-            //string gstin = "36AAGCS6022F1ZJ"; 
-            //string gst_un = "Api_api_vyshnavids"; 
-            //string gst_pw = "Password@123"; 
             string AgentID = context.Request["AgentID"];
             string from_date = context.Request["FromDate"];
             string SOID = context.Request["SOID"];
@@ -55268,7 +55260,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             responce_data obj;
             EInvoice.Root Rootlst = new EInvoice.Root();
 
-            authenticate_response newobj = authenticate_e_invoice(gstin, gst_un, gst_pw, client_id, Client_secret);
+            authenticate_response newobj = authenticate_e_invoice();
             var str1 = "";
             if (newobj.status_cd == "Sucess")
             {
@@ -55276,7 +55268,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 context.Session["Token"] = authToken;
                 string response = Get_e_invoice_JsonData(AgentID, from_date, SOID);
                 var jsonresponse = JsonConvert.DeserializeObject<EInvoice.Root>(response);
-                str1 = generate_e_invoice_details(gstin, gst_un, authToken, from_date, SOID, AgentID, response, client_id, Client_secret);
+                str1 = generate_e_invoice_details(authToken, from_date, SOID, AgentID, response);
             }
             else
             {
@@ -55803,7 +55795,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string status_cd { get; set; }
         public string status_desc { get; set; }
     }
-    private string generate_e_invoice_details(string gstin, string gst_un, string token, string from_date,string SOID, string AgentID, string jsonresponse, string client_id, string Client_secret)
+    private string generate_e_invoice_details(string token, string from_date, string SOID, string AgentID, string jsonresponse)
     {
         DateTime fromdate = Convert.ToDateTime(from_date);
         vdbmngr = new VehicleDBMgr();
@@ -55816,13 +55808,13 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 if (ip_address == "Error")
                     ip_address = "182.18.162.51:52144";
                 request.Headers.TryAddWithoutValidation("Accept", "application/json");
-                request.Headers.TryAddWithoutValidation("username", gst_un);
+                request.Headers.TryAddWithoutValidation("username", Elogin.username);
                 //request.Headers.TryAddWithoutValidation("password", gst_pw);
                 request.Headers.TryAddWithoutValidation("ip_address", ip_address);
-                request.Headers.TryAddWithoutValidation("client_id", client_id);
-                request.Headers.TryAddWithoutValidation("client_secret", Client_secret);
+                request.Headers.TryAddWithoutValidation("client_id", Elogin.client_id);
+                request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
                 request.Headers.TryAddWithoutValidation("auth-token", token);
-                request.Headers.TryAddWithoutValidation("gstin", gstin);
+                request.Headers.TryAddWithoutValidation("gstin", Elogin.gstin);
 
 
                 //Body
@@ -55866,28 +55858,16 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         try
         {
             vdbmngr = new VehicleDBMgr();
-            EInvoice_Login Elogin = new EInvoice_Login();
-            string gstin = Elogin.gstin;
-            string gst_un = Elogin.username;
-            string gst_pw = Elogin.password;
-            string client_id = Elogin.client_id;
-            string Client_secret = Elogin.client_secret;
-
-            //string gstin = "36AAGCS6022F1ZJ"; 
-            //string gst_un = "Api_api_vyshnavids"; 
-            //string gst_pw = "Password@123"; 
             string AgentID = context.Request["AgentID"];
             string from_date = context.Request["FromDate"];
             string SOID = context.Request["SOID"];
             string IRN_No = context.Request["Irn_No"];
             DateTime fromdate = Convert.ToDateTime(from_date);
-            responce_data obj;
             EInvoice.Root Rootlst = new EInvoice.Root();
-
             
             string authToken = "";
             authenticate_response newobj =new authenticate_response();
-            newobj = authenticate_e_invoice(gstin, gst_un, gst_pw,client_id,Client_secret);
+            newobj = authenticate_e_invoice();
 
             //if (context.Session["Token"].ToString() == "")
             //{
@@ -55901,7 +55881,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             if (newobj.status_cd == "Sucess")
             {
                 authToken = newobj.data.authtoken;
-                str1 = get_e_envoice_details(gstin, gst_un, authToken, IRN_No, client_id, Client_secret);
+                str1 = get_e_envoice_details(authToken, IRN_No);
             }
             string res = GetJson(str1);
             context.Response.Write(res);
@@ -55912,7 +55892,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-    private string get_e_envoice_details(string gstin, string gst_un, string token, string IRN_No, string client_id, string Client_secret)
+
+    private string get_e_envoice_details(string token, string IRN_No)
     {
         using (var httpClient = new HttpClient())
         {
@@ -55923,12 +55904,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 if (ip_address == "Error")
                     ip_address = "182.18.162.51:52144";
                 request.Headers.TryAddWithoutValidation("Accept", "application/json");
-                request.Headers.TryAddWithoutValidation("username", gst_un);
+                request.Headers.TryAddWithoutValidation("username", Elogin.username);
                 request.Headers.TryAddWithoutValidation("ip_address", ip_address);
-                request.Headers.TryAddWithoutValidation("client_id", client_id);
-                request.Headers.TryAddWithoutValidation("client_secret", Client_secret);
+                request.Headers.TryAddWithoutValidation("client_id", Elogin.client_id);
+                request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
                 request.Headers.TryAddWithoutValidation("auth-token", token);
-                request.Headers.TryAddWithoutValidation("gstin", gstin);
+                request.Headers.TryAddWithoutValidation("gstin", Elogin.gstin);
 
                 var response = httpClient.SendAsync(request).Result;
                 var contents = response.Content.ReadAsStringAsync().Result;
@@ -55937,19 +55918,19 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
     }
 
-    private string cancel_invoice_reference_number(string gstin, string gst_un, string token, string irnNumber)
+    private string cancel_invoice_reference_number(string token, string irnNumber)
     {
         using (var httpClient = new HttpClient())
         {
-            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/CANCEL/version/V1_03?email=naveen.vdmtech%40gmail.com&username=" + gst_un))
+            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/CANCEL/version/V1_03?email=naveen.vdmtech%40gmail.com&username=" + Elogin.username))
             {
                 string ip_address = GetLocalIPAddress();
                 if (ip_address == "Error")
                     ip_address = "182.18.162.51:52144";
                 request.Headers.TryAddWithoutValidation("Accept", "application/json");
                 request.Headers.TryAddWithoutValidation("ip_address", ip_address);
-                request.Headers.TryAddWithoutValidation("client_id", "83416692-7826-419a-8922-790556910a80");
-                request.Headers.TryAddWithoutValidation("client_secret", "20f94dc1-5066-4ce5-8993-4d85b7899a0f");
+                request.Headers.TryAddWithoutValidation("client_id", Elogin.client_id);
+                request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
                 request.Headers.TryAddWithoutValidation("auth-token", token);
                 request.Headers.TryAddWithoutValidation("gstin", gstin);
 
@@ -55977,8 +55958,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     ip_address = "182.18.162.51:52144";
                 request.Headers.TryAddWithoutValidation("Accept", "application/json");
                 request.Headers.TryAddWithoutValidation("ip_address", ip_address);
-                request.Headers.TryAddWithoutValidation("client_id", "83416692-7826-419a-8922-790556910a80");
-                request.Headers.TryAddWithoutValidation("client_secret", "20f94dc1-5066-4ce5-8993-4d85b7899a0f");
+                request.Headers.TryAddWithoutValidation("client_id", Elogin.client_id);
+                request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
                 request.Headers.TryAddWithoutValidation("auth-token", token);
                 request.Headers.TryAddWithoutValidation("gstin", gstin);
 
@@ -55994,19 +55975,19 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
     }
 
-    private string get_ewaybill_details_by_IRN(string gstin, string gst_un, string token, string irnNumber, string suppliergstin)
+    private string get_ewaybill_details_by_IRN(string gstin, string token, string irnNumber, string suppliergstin)
     {
         using (var httpClient = new HttpClient())
         {
-            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/einvoice/type/GETEWAYBILLIRN/version/V1_03?param1==" + irnNumber + "&supplier_gstn=" + suppliergstin + "&email=naveen.vdmtech%40gmail.com&username=" + gst_un))
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/einvoice/type/GETEWAYBILLIRN/version/V1_03?param1==" + irnNumber + "&supplier_gstn=" + suppliergstin + "&email=naveen.vdmtech%40gmail.com&username=" + Elogin.username))
             {
                 string ip_address = GetLocalIPAddress();
                 if (ip_address == "Error")
                     ip_address = "182.18.162.51:52144";
                 request.Headers.TryAddWithoutValidation("Accept", "application/json");
                 request.Headers.TryAddWithoutValidation("ip_address", ip_address);
-                request.Headers.TryAddWithoutValidation("client_id", "83416692-7826-419a-8922-790556910a80");
-                request.Headers.TryAddWithoutValidation("client_secret", "20f94dc1-5066-4ce5-8993-4d85b7899a0f");
+                request.Headers.TryAddWithoutValidation("client_id", Elogin.client_id);
+                request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
                 request.Headers.TryAddWithoutValidation("auth-token", token);
                 request.Headers.TryAddWithoutValidation("gstin", gstin);
 
