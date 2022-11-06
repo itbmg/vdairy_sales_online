@@ -14,7 +14,6 @@ using System.Configuration;
 using System.Net;
 using System.Drawing;
 using System.Xml;
-using QRCoder;
 public partial class EinoviceTemplate : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)

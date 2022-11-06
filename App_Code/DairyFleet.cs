@@ -19,7 +19,6 @@ using System.Globalization;
 using System.Net.Sockets;
 using System.Net.Http;
 using Newtonsoft.Json;
-using QRCoder;
 /// <summary>
 /// Summary description for DairyFleet
 /// </summary>
@@ -55932,7 +55931,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 request.Headers.TryAddWithoutValidation("client_id", Elogin.client_id);
                 request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
                 request.Headers.TryAddWithoutValidation("auth-token", token);
-                request.Headers.TryAddWithoutValidation("gstin", gstin);
+                request.Headers.TryAddWithoutValidation("gstin", Elogin.gstin);
 
                 //BODY
                 // request.Content = new StringContent("{"Irn": "+irnNumber+",  "CnlRsn": "1",  "CnlRem": "Wrong entry"}  ", Encoding.UTF8, "application/json");
