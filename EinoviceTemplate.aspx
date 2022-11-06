@@ -679,7 +679,7 @@
                                             <div style="width: 100%;">
                                                 <%-- <table style="width: 100%;border: 3px solid #dddddd;"  class="table table-bordered table-hover dataTable no-footer">--%>
                                                 <div style="float: left; border-bottom: 1px solid gray; border-top: 1px solid gray; background: antiquewhite;">
-                                                    <span style="font-size: 18px; font-weight: bold;" id="spnInvoiceHeader">e-Invoice Details</span>
+                                                    <span style="font-size: 18px; font-weight: bold;" id="spnInvoiceHeader">1.e-Invoice Details</span>
                                                 </div>
                                                 <table style="width: 100%;">
                                                     <tr>
