@@ -695,7 +695,6 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                <%-- <li id="liBranchWiseRatesManagement" style="display: none;"><a href="BranchWiseRatesManagement.aspx">
                                     BranchWise Rates Management</a></li>--%>
                              <%--   <li id="liRatesManage1"><a href="PriceListForm.aspx">Rate Sheet Upload</a></li>--%>
-                              <%--  <li id="li170"><a href="AvgPriceSummary.aspx">AvgRateDetails</a></li>--%>
                                 <li id="liagentRatesManage"><a href="Agent_wise_rates.aspx">Agent Rate Sheets </a></li>
                                 <li id="liRatesManage"><a href="RatesManage.aspx">Rate Sheet Upload</a></li>
                                 <li id="li31"><a href="HeadOfAcMaster.aspx">Head Of Accounts</a></li>
@@ -743,9 +742,6 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                 </i>&nbsp Cash</a>
                                     <div class="drop3">
                                         <ul id="ul8">
-                                            <%-- <li id="liCollections"><a href="Collections.aspx"><i class="fa fa-ioxhost"></i>&nbsp
-                                                Collections</a></li>
-                                            <li id="liCashCollections"><a href="CashCollections.aspx">Cash Collections</a></li>--%>
                                             <li id="li8"><a href="NewForm.aspx">Collection</a></li>
                                             <li id="li25"><a href="JournalVoucher.aspx">Journal Voucher</a></li>
                                             <li id="li24"><a href="CashForm.aspx">Voucher From</a></li>

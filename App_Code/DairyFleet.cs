@@ -201,9 +201,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "Product_Image_files_upload":
                     Product_Image_files_upload(context);
                     break;
-                case "Retailer_profile_pic_files_upload":
-                    Retailer_profile_pic_files_upload(context);
-                    break;
                 case "Agent_profile_pic_files_upload":
                     Agent_profile_pic_files_upload(context);
                     break;
@@ -20667,42 +20664,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         response.Close();
         return true;
     }
-    private void Retailer_profile_pic_files_upload(HttpContext context)
-    {
-        try
-        {
-            //if (context.Session["branch_id"] != null)
-            //{
-            if (context.Request.Files.Count > 0)
-            {
-                string sno = context.Request["sno"];
-                HttpFileCollection files = context.Request.Files;
-                for (int i = 0; i < files.Count; i++)
-                {
-                    HttpPostedFile file = files[i];
-                    string[] extension = file.FileName.Split('.');
-                    string upload_filename = sno + "_profilepic_" + sno + ".jpeg";// +extension[extension.Length - 1];
-                    if (UploadToFTP(file, upload_filename))
-                    {
-                        MySqlCommand cmd = new MySqlCommand("update retail_details set images=@photos where sno=@sno");
-                        cmd.Parameters.AddWithValue("@sno", sno);
-                        cmd.Parameters.AddWithValue("@photos", upload_filename);
-                        vdbmngr.Update(cmd);
-                    }
-                }
-                context.Response.ContentType = "text/plain";
-                context.Response.Write("File Uploaded Successfully!");
-            }
-            //}
-
-        }
-        catch (Exception ex)
-        {
-            string response = GetJson(ex.Message);
-            context.Response.Write(response);
-        }
-    }
-
+   
     private void BtnCashexchangesaveClick(HttpContext context)
     {
         try
