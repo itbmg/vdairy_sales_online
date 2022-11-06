@@ -150,6 +150,7 @@
             var s = function (msg) {
                 if (msg) {
                     filleAgentdetails(msg);
+                    spnJsonData.innerHTML = "";
                 }
                 else {
                 }
@@ -201,6 +202,7 @@
             results += '</table></div>';
             $("#divEWayBilldata").html(results);
         }
+        //Generate EInvoice
         function GenerateEinvoice(thisid) {
             var FromDate = document.getElementById('txtFromDate').value;
             if (FromDate == "") {
@@ -225,6 +227,7 @@
             callHandler(data, s, e);
         }
 
+        //EInvoice_Get_Json Response
 
         function btn_Click_GetInvoice(thisid) {
             var FromDate = document.getElementById('txtFromDate').value;

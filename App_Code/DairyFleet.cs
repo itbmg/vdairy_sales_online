@@ -55835,7 +55835,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
                 var js = new JavaScriptSerializer();
                 Response_EInvoice obj = js.Deserialize<Response_EInvoice>(contents);
-                if (obj.status_cd == "Sucess")
+                if (obj.status_desc == "GSTR request succeeds")
                 {
                     string IRN_No = obj.data.Irn;
                     string ackno = obj.data.AckNo;
