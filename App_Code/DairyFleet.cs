@@ -1072,12 +1072,21 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "btnEInvoice_click":
                     btnEInvoice_click(context);
                     break;
-                //case "GetEWayDetails":
-                //    GetEWayDetails(context);
-                //    break;
+                case "GetEWayDetails":
+                    GetEWayDetails(context);
+                    break;
+                case "generate_ewaybill_Non_Registerd":
+                    generate_ewaybill_Non_Registerd(context);
+                    break;
+                    
                 //case "btnEwayBillSaveClick":
                 //    btnEwayBillSaveClick(context);
                 //    break;
+                case "generate_ewaybill_using_IRN":
+                    generate_ewaybill_using_IRN(context);
+                    break;
+                    
+
 
                 case "Get_Agent_Einvoice_Details":
                     Get_Agent_Einvoice_Details(context);
@@ -19928,7 +19937,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             string br = context.Session["branch"].ToString();
             if (context.Session["salestype"].ToString() == "Plant")
             {
-                cmd = new MySqlCommand(" SELECT tripdata.Sno AS TripId, DATE_FORMAT(tripdata.AssignDate, '%d %b %y') AS AssignDate, tripdata.Permissions, tripdata.VehicleNo, dispatch.DispName AS DispatchName,dispatch.DispMode,dispatch.DispType, empmanage.EmpName AS Employee FROM tripdata INNER JOIN empmanage ON tripdata.EmpId = empmanage.Sno INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno WHERE (tripdata.Status <> 'c') and (tripdata.DespatchStatus=@DespatchStatus) AND (tripdata.AssignDate BETWEEN @Adt AND @Adt1) AND (tripdata.Permissions LIKE '%D%') AND (dispatch.Branch_Id = @brnch) order by TripId");
+                cmd = new MySqlCommand("SELECT tripdata.Sno AS TripId, DATE_FORMAT(tripdata.AssignDate, '%d %b %y') AS AssignDate, tripdata.Permissions, tripdata.VehicleNo, dispatch.DispName AS DispatchName,dispatch.DispMode,dispatch.DispType, empmanage.EmpName AS Employee FROM tripdata INNER JOIN empmanage ON tripdata.EmpId = empmanage.Sno INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno WHERE (tripdata.Status <> 'c') and (tripdata.DespatchStatus=@DespatchStatus) AND (tripdata.AssignDate BETWEEN @Adt AND @Adt1) AND (tripdata.Permissions LIKE '%D%') AND (dispatch.Branch_Id = @brnch) order by TripId");
                 cmd.Parameters.AddWithValue("@UserName", context.Session["UserName"]);
                 cmd.Parameters.AddWithValue("@DespatchStatus", "Yes");
                 cmd.Parameters.AddWithValue("@brnch", context.Session["branch"]);
@@ -54404,7 +54413,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 }
                 int i = 0;
 
-                double tot_amount = 0; double PAmount = 0; double total_cgst = 0; double total_sgst = 0; double total_igst = 0; double gtotalamout = 0;
+                double tot_amount = 0;double TPAmount = 0; double PAmount = 0; double total_cgst = 0; double total_sgst = 0; double total_igst = 0; double gtotalamout = 0;
                 foreach (DataRow dritem in Itemtable.Select("sno='" + AgentId + "'"))
                 {
                     EInvoice.ItemList objitems = new EInvoice.ItemList();
@@ -54479,6 +54488,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         objitems.CgstAmt = 0;
                         total_igst += tot_vatamount;
                     }
+                    TPAmount += PAmount;
                     tot_amount = PAmount + tot_vatamount;
                     tot_amount = Math.Round(tot_amount, 2);
                     gtotalamout += tot_amount;
@@ -54632,266 +54642,509 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
     }
 
-    public class EWayClass
-    {
-        public string vehcleid { get; set; }
-        public string sno { get; set; }
-        public string Distance { get; set; }
-        public string Agentid { get; set; }
-        public string DocNumber { get; set; }
-        public string DocName { get; set; }
-        public string DocDate { get; set; }
-        public string VehcleNo { get; set; }
-        public string VehcleType { get; set; }
-        public string TransMode { get; set; }
-        public string AgentName { get; set; }
-        public string InvoiceNo { get; set; }
-        public string hdnInvoiceno { get; set; }
-
-    }
-    //private void GetEWayDetails(HttpContext context)
-    //{
-    //    try
-    //    {
-    //        vdbmngr = new VehicleDBMgr();
-    //        string ToDate = context.Request["FromDate"];
-    //        DateTime fromdate = Convert.ToDateTime(ToDate);
-    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-    //        DateTime dtapril = new DateTime();
-    //        DateTime dtmarch = new DateTime();
-    //        int currentyear = ServerDateCurrentdate.Year;
-    //        int nextyear = ServerDateCurrentdate.Year + 1;
-    //        int currntyearnum = 0;
-    //        int nextyearnum = 0;
-    //        if (ServerDateCurrentdate.Month > 3)
-    //        {
-    //            string apr = "4/1/" + currentyear;
-    //            dtapril = DateTime.Parse(apr);
-    //            string march = "3/31/" + nextyear;
-    //            dtmarch = DateTime.Parse(march);
-    //            currntyearnum = currentyear;
-    //            nextyearnum = nextyear;
-    //        }
-    //        if (ServerDateCurrentdate.Month <= 3)
-    //        {
-    //            if (ServerDateCurrentdate.Day == 31 && ServerDateCurrentdate.Month == 3)
-    //            {
-    //                string apr = "3/31/" + currentyear;
-    //                dtapril = DateTime.Parse(apr);
-    //                string march = "3/31/" + nextyear;
-    //                dtmarch = DateTime.Parse(march);
-    //            }
-    //            else
-    //            {
-    //                string apr = "4/1/" + (currentyear - 1);
-    //                dtapril = DateTime.Parse(apr);
-    //                string march = "3/31/" + (nextyear - 1);
-    //                dtmarch = DateTime.Parse(march);
-    //            }
-    //        }
-    //        string BranchID = context.Request["BranchID"];
-    //        List<EWayClass> Solist = new List<EWayClass>();
-
-    //        cmd = new MySqlCommand("SELECT  branchdata.BranchName,branchdata.BranchCode, branchdata.sno FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno<>'' and branchdata.gstno is not null) OR (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno<>'' and branchdata.gstno is not null) GROUP BY branchdata.sno ORDER BY branchdata.sno");
-    //        cmd.Parameters.AddWithValue("@BranchID", BranchID);
-    //        cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
-    //        cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
-    //        DataTable dtble = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //        cmd = new MySqlCommand("select BranchCode from branchdata where sno=@sno");
-    //        cmd.Parameters.AddWithValue("@sno", BranchID);
-    //        DataTable dtbranch = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //        //test query
-
-    //        cmd = new MySqlCommand("select ewb_details.sno,ewb_details.agentid,ewb_details.inv_no,ewb_details.soid,ewb_details.distance,ewb_details.ewb_no,ewb_details.ewb_date,vehiclemaster.VehicleNo,vehiclemaster.sno as vehcleid,ewb_details.inddate from ewb_details inner join vehiclemaster on ewb_details.vehicleno=vehiclemaster.sno  where ewb_details.soid=@soid and  ewb_details.inddate between @d1 and @d2");
-    //        cmd.Parameters.AddWithValue("@soid", BranchID);
-    //        cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-    //        cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
-    //        DataTable dtewayagents = vdbmngr.SelectQuery(cmd).Tables[0];
-
-
-
-    //        foreach (DataRow dr in dtble.Rows)
-    //        {
-    //            EWayClass obj = new EWayClass();
-    //            obj.DocNumber = "";
-    //            obj.AgentName = dr["BranchName"].ToString();
-    //            obj.Agentid = dr["sno"].ToString();
-
-    //            cmd = new MySqlCommand("select invoiceno from e_invoice WHERE (agentid = @BranchId)  AND (invoicedate BETWEEN @d1 AND @d2)");
-    //            cmd.Parameters.Add("@BranchId", dr["sno"].ToString());
-    //            cmd.Parameters.Add("@d1", GetLowDate(fromdate).AddDays(-1));
-    //            cmd.Parameters.Add("@d2", GetHighDate(fromdate).AddDays(-1));
-    //            DataTable dtinvoice = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //            string DcNo = "";
-    //            if (dtinvoice.Rows.Count > 0)
-    //            {
-    //                DcNo = dtinvoice.Rows[0]["invoiceno"].ToString();
-
-    //            }
-    //            obj.hdnInvoiceno = DcNo;
-
-    //            int countdc = 0;
-    //            int.TryParse(DcNo, out countdc);
-    //            if (countdc <= 10)
-    //            {
-    //                DcNo = "0000" + countdc;
-    //            }
-    //            if (countdc >= 10 && countdc <= 99)
-    //            {
-    //                DcNo = "000" + countdc;
-    //            }
-    //            if (countdc >= 99 && countdc <= 999)
-    //            {
-    //                DcNo = "00" + countdc;
-    //            }
-    //            if (countdc > 999 && countdc <= 9999)
-    //            {
-    //                DcNo = "0" + countdc;
-    //            }
-    //            if (countdc > 9999)
-    //            {
-    //                DcNo = "" + countdc;
-    //            }
-    //            DcNo = dtbranch.Rows[0]["BranchCode"].ToString() + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DcNo;
-
-    //            obj.InvoiceNo = DcNo;
-
-    //            DataRow[] agentarr = dtewayagents.Select("agentid='" + dr["sno"].ToString() + "'");
-    //            if (agentarr.Length != 0)
-    //            {
-    //                foreach (DataRow dritem in dtewayagents.Select("agentid='" + dr["sno"].ToString() + "'"))
-    //                {
-    //                    obj.DocDate = Convert.ToDateTime(dritem["ewb_date"].ToString()).ToString("yyyy-MM-dd");
-    //                    obj.DocNumber = dritem["ewb_no"].ToString();
-    //                    obj.Distance = dritem["distance"].ToString();
-    //                    obj.VehcleNo = dritem["vehicleno"].ToString();
-    //                    obj.vehcleid = dritem["vehcleid"].ToString();
-    //                    obj.sno = dritem["sno"].ToString();
-    //                }
-    //            }
-    //            else
-    //            {
-    //                obj.DocDate = "";
-    //                obj.DocNumber = "";
-    //                obj.Distance = "";
-    //                obj.VehcleNo = "";
-    //            }
-
-    //            Solist.Add(obj);
-    //        }
-    //        string errresponse = GetJson(Solist);
-    //        context.Response.Write(errresponse);
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        string msg = ex.Message;
-    //        string response = GetJson(msg);
-    //        context.Response.Write(response);
-    //    }
-    //}
-
-    //private void btnEwayBillSaveClick(HttpContext context)
-    //{
-    //    try
-    //    {
-    //        vdbmngr = new VehicleDBMgr();
-    //        string soid = context.Request["soid"];
-    //        string agentid = context.Request["agentid"];
-    //        string invoiceno = context.Request["invoiceno"];
-    //        string Distance = context.Request["Distance"];
-    //        string DocNumber = context.Request["DocNumber"];
-    //        string EwaybillDate = context.Request["EwaybillDate"];
-    //        string vehcleno = context.Request["vehcleno"];
-    //        string vehicleid = context.Request["vehicleid"];
-    //        string sno = context.Request["sno"];
-    //        string btnValue = context.Request["btnValue"];
-
-    //        string Inddate = context.Request["IndDate"];
-    //        if (btnValue == "save")
-    //        {
-    //            //cmd = new MySqlCommand("insert into addresstable (agentid,invoiceno,soid,distance,docno,doc_date,vehcleno,inddate,created_by,modified_by,doe,modified_date) values (@agentid,@invoiceno,@soid,@distance,@docno,@doc_date,@vehcleno,@inddate,@created_by,@modified_by,@doe,@modified_date)");
-    //            cmd = new MySqlCommand("insert into ewb_details (agentid,inv_no,soid,distance,ewb_no,ewb_date,vehicleno,inddate) values (@agentid,@inv_no,@soid,@distance,@ewb_no,@ewb_date,@vehicleno,@inddate)");
-    //        cmd.Parameters.AddWithValue("@agentid", agentid);
-    //        cmd.Parameters.AddWithValue("@inv_no", invoiceno);
-    //        cmd.Parameters.AddWithValue("@soid", soid);
-    //        cmd.Parameters.AddWithValue("@distance", Distance);
-    //        cmd.Parameters.AddWithValue("@ewb_no", DocNumber);
-    //        cmd.Parameters.AddWithValue("@ewb_date", EwaybillDate);
-    //        cmd.Parameters.AddWithValue("@vehicleno", vehicleid);
-    //        cmd.Parameters.AddWithValue("@inddate", Inddate);
-    //        //cmd.Parameters.AddWithValue("@created_by", cst);
-    //        //cmd.Parameters.AddWithValue("@modified_by", email);
-    //        //cmd.Parameters.AddWithValue("@doe", panno);
-    //        //cmd.Parameters.AddWithValue("@modified_date", customercode);
-    //        vdbmngr.insert(cmd);
-    //        string msg = "ewb detailes successfully Saved";
-    //        string response = GetJson(msg);
-    //        context.Response.Write(response);
-    //        }
-    //        else
-    //        {
-    //            //string sno = context.Request["sno"];
-    //            //cmd = new MySqlCommand("insert into addresstable (agentid,invoiceno,soid,distance,docno,doc_date,vehcleno,inddate,created_by,modified_by,doe,modified_date) values (@agentid,@invoiceno,@soid,@distance,@docno,@doc_date,@vehcleno,@inddate,@created_by,@modified_by,@doe,@modified_date)");
-    //            cmd = new MySqlCommand("update  ewb_details set agentid=@agentid,inv_no=@inv_no,soid=@soid,distance=@distance,ewb_no=@ewb_no,ewb_date=@ewb_date,vehicleno=@vehicleno,inddate=@inddate where sno=@sno");
-    //            cmd.Parameters.AddWithValue("@agentid", agentid);
-    //            cmd.Parameters.AddWithValue("@inv_no", invoiceno);
-    //            cmd.Parameters.AddWithValue("@soid", soid);
-    //            cmd.Parameters.AddWithValue("@distance", Distance);
-    //            cmd.Parameters.AddWithValue("@ewb_no", DocNumber);
-    //            cmd.Parameters.AddWithValue("@ewb_date", EwaybillDate);
-    //            cmd.Parameters.AddWithValue("@vehicleno", vehicleid);
-    //            cmd.Parameters.AddWithValue("@inddate", Inddate);
-    //            cmd.Parameters.AddWithValue("@sno", sno);
-    //            //cmd.Parameters.AddWithValue("@created_by", cst);
-    //            //cmd.Parameters.AddWithValue("@modified_by", email);
-    //            //cmd.Parameters.AddWithValue("@doe", panno);
-    //            //cmd.Parameters.AddWithValue("@modified_date", customercode);
-    //            vdbmngr.Update(cmd);
-    //            string msg = "ewb detailes successfully Updated";
-    //            string response = GetJson(msg);
-    //            context.Response.Write(response);
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        string Response = GetJson(ex.Message);
-    //        context.Response.Write(Response);
-    //    }
-    //}
-
-
-    
-
 
     #region "EWay Bill Data"
-    private string authenticate_ewaybill(string gstin, string gst_un, string gst_pw)
+    public class EwayItemList
+    {
+        public string productName { get; set; }
+        public string productDesc { get; set; }
+        public int hsnCode { get; set; }
+        public int quantity { get; set; }
+        public string qtyUnit { get; set; }
+        public int taxableAmount { get; set; }
+        public int sgstRate { get; set; }
+        public int cgstRate { get; set; }
+        public int igstRate { get; set; }
+        public int cessRate { get; set; }
+    }
+
+    public class RootEwayItems
+    {
+        public string supplyType { get; set; }
+        public string subSupplyType { get; set; }
+        public string subSupplyDesc { get; set; }
+        public string docType { get; set; }
+        public string docNo { get; set; }
+        public string docDate { get; set; }
+        public string fromGstin { get; set; }
+        public string fromTrdName { get; set; }
+        public string fromAddr1 { get; set; }
+        public string fromAddr2 { get; set; }
+        public string fromPlace { get; set; }
+        public int actFromStateCode { get; set; }
+        public int fromPincode { get; set; }
+        public int fromStateCode { get; set; }
+        public string toGstin { get; set; }
+        public string toTrdName { get; set; }
+        public string toAddr1 { get; set; }
+        public string toAddr2 { get; set; }
+        public string toPlace { get; set; }
+        public int toPincode { get; set; }
+        public int actToStateCode { get; set; }
+        public int toStateCode { get; set; }
+        public int transactionType { get; set; }
+        public string dispatchFromGSTIN { get; set; }
+        public string dispatchFromTradeName { get; set; }
+        public string shipToGSTIN { get; set; }
+        public string shipToTradeName { get; set; }
+        public int totalValue { get; set; }
+        public int cgstValue { get; set; }
+        public int sgstValue { get; set; }
+        public double igstValue { get; set; }
+        public double cessValue { get; set; }
+        public int cessNonAdvolValue { get; set; }
+        public int totInvValue { get; set; }
+        public string transMode { get; set; }
+        public string transDistance { get; set; }
+        public string transporterName { get; set; }
+        public string transporterId { get; set; }
+        public string transDocNo { get; set; }
+        public string transDocDate { get; set; }
+        public string vehicleNo { get; set; }
+        public string vehicleType { get; set; }
+        public List<EwayItemList> EwayItemList { get; set; }
+    }
+    public class eWay_Login
+    {
+        public string username { get; set; } //= "Api_api_vyshnavids";
+        public string password { get; set; } //= "Password@123";
+        public string client_id { get; set; } //= "83416692-7826-419a-8922-790556910a80";
+        public string client_secret { get; set; } //= "20f94dc1-5066-4ce5-8993-4d85b7899a0f";
+        public string Email { get; set; } //= "naveen.vdmtech@gmail.com";
+        public string gstin { get; set; }
+        public eWay_Login()
+        {
+            this.username = "Api_api_vyshnavids";
+            this.password = "Password@123";
+            this.client_id = "7b57fc57-4f88-41e7-a52e-00f642bc789c";
+            this.client_secret = "db685d26-1431-4aeb-9c42-1f73f5ef0d9c";
+            this.Email = "naveen.vdmtech@gmail.com";
+            this.gstin = "36AAGCS6022F1ZJ";
+        }
+    }
+    eWay_Login ewaylogin = new eWay_Login();
+    private authenticate_response authenticate_ewaybill()
     {
         using (var httpClient = new HttpClient())
         {
-            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/ewaybillapi/v1.03/authenticate?email=textmail&username=" + gst_un + "&password=" + gst_pw))
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/ewaybillapi/v1.03/authenticate?email=naveen.vdmtech%40gmail.com&username=Api_api_vyshnavids&password=Password%40123"))
             {
                 string ip_address = GetLocalIPAddress();
                 if (ip_address == "Error")
-                    ip_address = "122.175.32.16";
+                    ip_address = "182.18.162.51:52144";
                 request.Headers.TryAddWithoutValidation("Accept", "application/json");
+                //request.Headers.TryAddWithoutValidation("username", ewaylogin.username);
+                //request.Headers.TryAddWithoutValidation("password", ewaylogin.password);
                 request.Headers.TryAddWithoutValidation("ip_address", ip_address);
-                request.Headers.TryAddWithoutValidation("client_id", "1234");
-                request.Headers.TryAddWithoutValidation("client_secret", "1234");
-                request.Headers.TryAddWithoutValidation("gstin", gstin);
-
+                request.Headers.TryAddWithoutValidation("client_id", ewaylogin.client_id);
+                request.Headers.TryAddWithoutValidation("client_secret", ewaylogin.client_secret);
+                request.Headers.TryAddWithoutValidation("gstin", ewaylogin.gstin);
                 var response = httpClient.SendAsync(request).Result;
                 var contents = response.Content.ReadAsStringAsync().Result;
-                return contents;
+                // return contents;
 
                 //var response = await httpClient.SendAsync(request);
                 //var contents = await response.Content.ReadAsStringAsync();
                 //return contents;
 
-                //var js = new JavaScriptSerializer();
-                //responce_data obj = js.Deserialize<responce_data>(contents);
+                var js = new JavaScriptSerializer();
+                authenticate_response obj = js.Deserialize<authenticate_response>(contents);
+                return obj;
+            }
+        }
+    }
+    private void generate_ewaybill_Non_Registerd(HttpContext context)
+    {
+        try
+        {
+            // For Testing Purpose , in future send customer GSTIN for generate e-invoice
+            string AgentID = context.Request["agentid"];
+            string from_date = context.Request["FromDate"];
+            string SOID = context.Request["soid"];
+            string Document_No = context.Request["invoiceno"];
+            string Distance = context.Request["Distance"];
+            //string vehicleid = context.Request["vehicleid"];
+            string vehcleno = context.Request["vehcleno"];
+            //string irn = context.Request["irn"];
+            DateTime fromdate = Convert.ToDateTime(from_date);
+            //string ewaybill_no = context.Request["ewaybill_no"].ToString();
+            responce_data obj;
+      
+
+            DateTime dtCdate = VehicleDBMgr.GetTime(vdbmngr.conn);
+            DateTime dtapril = new DateTime();
+            DateTime dtmarch = new DateTime();
+            int currentyear = dtCdate.Year;
+            int nextyear = dtCdate.Year + 1;
+            if (dtCdate.Month > 3)
+            {
+                string apr = "4/1/" + currentyear;
+                dtapril = DateTime.Parse(apr);
+                string march = "3/31/" + nextyear;
+                dtmarch = DateTime.Parse(march);
+            }
+            if (dtCdate.Month <= 3)
+            {
+                string apr = "4/1/" + (currentyear - 1);
+                dtapril = DateTime.Parse(apr);
+                string march = "3/31/" + (nextyear - 1);
+                dtmarch = DateTime.Parse(march);
+            }
+
+            cmd = new MySqlCommand("SELECT  indents_subtable.indentno,SUM(indents_subtable.DeliveryQty) AS DeliveryQty,productsdata.SubCat_sno, indents_subtable.UnitCost,  productsdata.sno AS prodsno,productsdata.cgst,productsdata.sgst,productsdata.igst,productsdata.ProductName,productsdata.Itemcode, productsdata.hsncode,productsdata.Units, branchdata.BranchName,branchdata.BranchCode, branchdata.sno,branchdata.regtype,branchdata.gstno,branchdata.street,branchdata.city,branchdata.mandal,branchdata.area,branchdata.district,branchdata.pincode,branchdata.email,branchdata.doorno,branchdata.stateid,branchdata.statename,branchdata.companycode,branchdata.phonenumber FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutesubtable.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno='' or branchdata.gstno='0')  and (productsdata.igst <>'' and productsdata.igst<>'0') OR (modifiedroutesubtable.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno='' or branchdata.gstno='0') and (productsdata.igst <>'' and productsdata.igst<>'0') GROUP BY prodsno, branchdata.sno ORDER BY branchdata.sno, prodsno");
+            cmd.Parameters.AddWithValue("@BranchID", AgentID);
+            cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
+            cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
+            DataTable dtble = vdbmngr.SelectQuery(cmd).Tables[0];
+
+            cmd = new MySqlCommand("SELECT branchdata.branchname,branchdata.companycode, branchdata.phonenumber,branchdata.email, branchdata.sno,branchdata.stateid, branchdata.Address, branchdata.TinNumber, branchdata.panno, branchdata.BranchCode,statemastar.statecode, statemastar.statename, statemastar.gststatecode, branchdata.phonenumber, branchdata.emailid,  branchdata.street, branchdata.city, branchdata.mandal, branchdata.district, branchdata.pincode, branchdata.gstno, branchdata.doorno, branchdata.area FROM branchdata INNER JOIN statemastar ON branchdata.stateid = statemastar.sno WHERE (branchdata.sno = @branchsno)");
+            cmd.Parameters.AddWithValue("@branchsno", SOID);
+            DataTable dtsellardtble = vdbmngr.SelectQuery(cmd).Tables[0];
+
+            cmd = new MySqlCommand("SELECT  sno, BranchCode FROM  branchdata WHERE (sno = @branchsno)");
+            cmd.Parameters.AddWithValue("@branchsno", SOID);
+            DataTable dtsellarcode = vdbmngr.SelectQuery(cmd).Tables[0];
+
+            cmd = new MySqlCommand("SELECT  * FROM  statemastar");
+            DataTable dtstates = vdbmngr.SelectQuery(cmd).Tables[0];
+
+            DataView view = new DataView(dtble);
+            DataTable Buyerdtble = view.ToTable(true, "sno", "BranchName", "BranchCode", "gstno", "regtype", "doorno", "street", "city", "mandal", "area", "district", "pincode", "email", "stateid", "statename", "companycode", "phonenumber");
+            DataTable Itemtable = view.ToTable(true, "sno", "DeliveryQty", "SubCat_sno", "UnitCost", "prodsno", "ProductName", "cgst", "sgst", "igst", "Itemcode", "hsncode", "Units");
+            RootEwayItems obj_root = new RootEwayItems();
+            List<RootEwayItems> Rootlistlst = new List<RootEwayItems>();
+            List<EwayItemList> Itemlistlst = new List<EwayItemList>();
+            
+            foreach (DataRow dr in Buyerdtble.Rows)
+            {
+                string DCNO = "0";
+                string DcNo = "";
+                cmd = new MySqlCommand("SELECT agentdcno FROM  agenttaxdc WHERE (BranchId = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
+                cmd.Parameters.AddWithValue("@BranchId", AgentID);
+                cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+                cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
+                DataTable dtDcnumber = vdbmngr.SelectQuery(cmd).Tables[0];
+                string dcnumber = "";
+                if (dtDcnumber.Rows.Count > 0)
+                {
+                    dcnumber = dtDcnumber.Rows[0]["agentdcno"].ToString();
+                    DCNO = dcnumber.ToString();
+                }
+                else
+                {
+                }
+                //string DCNO = "";
+                DcNo = DCNO;
+                int countdc = 0;
+                int.TryParse(DcNo, out countdc);
+                if (countdc <= 10)
+                {
+                    DCNO = "0000" + countdc;
+                }
+                if (countdc >= 10 && countdc <= 99)
+                {
+                    DCNO = "000" + countdc;
+                }
+                if (countdc >= 99 && countdc <= 999)
+                {
+                    DCNO = "00" + countdc;
+                }
+                if (countdc > 999 && countdc <= 9999)
+                {
+                    DCNO = "0" + countdc;
+                }
+                if (countdc > 9999)
+                {
+                    DCNO = "" + countdc;
+                }
+
+                if (fromdate.Month > 3)
+                {
+                    DcNo = dtsellarcode.Rows[0]["BranchCode"].ToString() + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
+                }
+                else
+                {
+                    if (fromdate.Month <= 3)
+                    {
+                        DcNo = dtsellarcode.Rows[0]["BranchCode"].ToString() + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
+                    }
+                    else
+                    {
+                        DcNo = dtsellarcode.Rows[0]["BranchCode"].ToString() + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "T/" + DCNO;
+                    }
+                }
+                string regtype = dr["regtype"].ToString();
+                obj_root.supplyType = "B2B";
+                obj_root.subSupplyType = "1";
+                obj_root.subSupplyDesc = "B2B";
+                obj_root.docType = "INV";
+                obj_root.docNo = DcNo;
+                obj_root.docDate = fromdate.ToString("dd/MM/yyyy");
+                //obj_root.transactionType = "B2B";
+                obj_root.transMode = "1";
+                obj_root.transDistance = Distance;
+                obj_root.transporterName = "Vyshnavi Foods";
+                //obj_root.transporterId = "B2B";
+                obj_root.transDocNo = "B2B";
+                obj_root.transDocDate = fromdate.ToString("dd/MM/yyyy"); ;
+                obj_root.vehicleNo = vehcleno;
+                obj_root.vehicleType = "R";
+                string fromstate = ""; string tostate = "";
+
+                foreach (DataRow drselaar in dtsellardtble.Rows)
+                {
+
+                    obj_root.fromGstin = drselaar["gstno"].ToString();
+                    obj_root.fromTrdName = drselaar["branchname"].ToString();
+                    obj_root.fromAddr1 = drselaar["doorno"].ToString() + ";," + drselaar["street"].ToString() + ";," + drselaar["area"].ToString(); ;
+
+                    obj_root.fromAddr2 = drselaar["doorno"].ToString() + ";," + drselaar["street"].ToString() + ";," + drselaar["area"].ToString();
+                    obj_root.fromPlace = drselaar["area"].ToString(); ;
+                    obj_root.fromPincode = Convert.ToInt32(drselaar["pincode"].ToString());
+
+                    foreach (DataRow drstate in dtstates.Select("sno='" + drselaar["stateid"].ToString() + "'"))
+                    {
+                        fromstate = drstate["gststatecode"].ToString(); ;
+                        obj_root.fromStateCode = Convert.ToInt32(drstate["gststatecode"].ToString());
+                        obj_root.actFromStateCode = Convert.ToInt32(drstate["gststatecode"].ToString());
+                    }
+                    obj_root.dispatchFromGSTIN = drselaar["gstno"].ToString();
+                    obj_root.dispatchFromTradeName = drselaar["branchname"].ToString(); ;
+                }
+                foreach (DataRow drbuyer in Buyerdtble.Select("sno='" + AgentID + "'"))
+                {
+
+                    obj_root.toGstin = drbuyer["gstno"].ToString();
+                    obj_root.toTrdName = drbuyer["branchname"].ToString();
+                    obj_root.toAddr1 = drbuyer["doorno"].ToString() + ";," + drbuyer["street"].ToString() + ";," + drbuyer["area"].ToString();
+                    obj_root.toAddr2 = drbuyer["doorno"].ToString() + ";," + drbuyer["street"].ToString() + ";," + drbuyer["area"].ToString();
+                    obj_root.toPlace = drbuyer["area"].ToString();
+                    obj_root.toPincode = Convert.ToInt32(drbuyer["pincode"].ToString());
+                    foreach (DataRow drstate in dtstates.Select("sno='" + drbuyer["stateid"].ToString() + "'"))
+                    {
+                        fromstate = drstate["gststatecode"].ToString(); ;
+                        obj_root.actToStateCode = Convert.ToInt32(drstate["gststatecode"].ToString()); ;
+                        obj_root.toStateCode = Convert.ToInt32(drstate["gststatecode"].ToString()); ;
+                    }
+                    obj_root.shipToGSTIN = drbuyer["gstno"].ToString(); ;
+                    obj_root.shipToTradeName = drbuyer["branchname"].ToString();
+                }
+                int i = 0;
+                  
+                double tot_amount = 0; double TPAmount = 0; double PAmount = 0; double total_cgst = 0; double total_sgst = 0; double total_igst = 0; double gtotalamout = 0;
+                foreach (DataRow dritem in Itemtable.Select("sno='" + AgentID + "'"))
+                {
+                    i++;
+                    EwayItemList obj_items = new EwayItemList();
+
+                    //obj_items.s = i.ToString();
+                    obj_items.productName = dritem["ProductName"].ToString();
+                    obj_items.productDesc = dritem["ProductName"].ToString();
+                    obj_items.hsnCode = Convert.ToInt32(dritem["hsncode"].ToString());
+                    obj_items.qtyUnit = dritem["Units"].ToString();
+                    float qty = 0;
+                    float.TryParse(dritem["DeliveryQty"].ToString(), out qty);
+                    float rate = 0;
+                    float.TryParse(dritem["Unitcost"].ToString(), out rate);
+                    obj_items.quantity = Convert.ToInt32(dritem["DeliveryQty"].ToString());
+                    double sgstamount = 0;
+                    double cgstamount = 0;
+                    double Igst = 0;
+                    double Igstamount = 0;
+                    double totRate = 0;
+                    double.TryParse(dritem["Igst"].ToString(), out Igst);
+                    double Igstcon = 100 + Igst;
+                    Igstamount = (rate / Igstcon) * Igst;
+                    Igstamount = Math.Round(Igstamount, 2);
+                    totRate = Igstamount;
+                    double Vatrate = rate - totRate;
+                    Vatrate = Math.Round(Vatrate, 2);
+                    PAmount = qty * Vatrate;
+                    double tot_vatamount = (PAmount * Igst) / 100;
+                    if (fromstate == tostate)
+                    {
+                        if (regtype == "Special Economic Zone")
+                        {
+                            tot_vatamount = Math.Round(tot_vatamount, 2);
+                            //objitems.SgstAmt = 0;
+                            //objitems.IgstAmt = tot_vatamount;
+                            //objitems.CgstAmt = 0;
+                            obj_items.sgstRate = 0; 
+                            obj_items.cgstRate = 0 ;
+                            obj_items.igstRate = Convert.ToInt32(dritem["Igst"].ToString());
+                            obj_items.cessRate = 0;
+                            total_igst += tot_vatamount;
+                        }
+                        else
+                        {
+                            sgstamount = (tot_vatamount / 2);
+                            sgstamount = Math.Round(sgstamount, 2);
+                            cgstamount = (tot_vatamount / 2);
+                            cgstamount = Math.Round(cgstamount, 2);
+                            //newrow["cgst"] = dr["cgst"].ToString();
+                            // newrow["sgst"] = dr["sgst"].ToString();
+                            //objitems.SgstAmt = sgstamount;
+                            //objitems.IgstAmt = 0;
+                            //objitems.CgstAmt = cgstamount;
+                            obj_items.sgstRate = Convert.ToInt32(dritem["cgst"].ToString()); ;
+                            obj_items.cgstRate = Convert.ToInt32(dritem["sgst"].ToString()); ;
+                            obj_items.igstRate = 0;
+                            obj_items.cessRate = 0;
+
+                            total_cgst += cgstamount;
+                            total_sgst += sgstamount;
+                        }
+                    }
+                    else
+                    {
+                        tot_vatamount = Math.Round(tot_vatamount, 2);
+                        //objitems.SgstAmt = 0;
+                        //objitems.IgstAmt = tot_vatamount;
+                        //objitems.CgstAmt = 0;
+                        obj_items.sgstRate = 0;
+                        obj_items.cgstRate = 0;
+                        obj_items.igstRate = Convert.ToInt32(dritem["Igst"].ToString());
+                        obj_items.cessRate = 0;
+
+                        total_igst += tot_vatamount;
+                    }
+                    TPAmount += PAmount;
+                    tot_amount = PAmount + tot_vatamount;
+                    tot_amount = Math.Round(tot_amount, 2);
+                    gtotalamout += tot_amount;
+
+                    //objitems.FreeQty = 0;
+                    //objitems.Unit = dritem["Units"].ToString();
+                    //objitems.UnitPrice = Vatrate;
+                    //objitems.TotAmt = Math.Round(PAmount, 2);
+                    //obj_items.taxableAmount = Math.Round(PAmount, 2); ;
+                    obj_items.taxableAmount = Convert.ToInt32(PAmount); ;
+                    Itemlistlst.Add(obj_items);
+                    //objitems.Discount = 0;
+                    //objitems.PreTaxVal = Math.Round(PAmount, 2);
+                    //objitems.AssAmt = Math.Round(PAmount, 2);
+                    //objitems.GstRt = Convert.ToInt32(Igst);
+
+                    //objitems.CesRt = 0;
+                    //objitems.CesAmt = 0.0;
+                    //objitems.CesNonAdvlAmt = 0;
+                    //objitems.StateCesRt = 0;
+                    //objitems.StateCesAmt = 0.0;
+                    //objitems.StateCesNonAdvlAmt = 0;
+                    //objitems.OthChrg = 0;
+                    //objitems.TotItemVal = tot_amount;
+                    //objitems.OrdLineRef = "Empty";
+                    //objitems.OrgCntry = "IN";
+                    //objitems.PrdSlNo = "1";
+                    //ItemListlst.Add(objitems);
+                    //EwayItemList.Add(obj_items);
+                    //RootEwayItems. = EwayItemList;
+                }
+
+                //obj_root.totalValue = Math.Round(TPAmount, 2); 
+                obj_root.totalValue = Convert.ToInt32(TPAmount);  
+                obj_root.cgstValue = Convert.ToInt32(total_cgst); 
+                obj_root.sgstValue = Convert.ToInt32(total_sgst);
+                obj_root.igstValue = Convert.ToInt32(total_igst);
+                obj_root.cessValue = 0;
+                obj_root.cessNonAdvolValue = 0;
+                obj_root.totInvValue = Convert.ToInt32(gtotalamout);
+                obj_root.EwayItemList = Itemlistlst;
+
+                //EInvoice.ValDtls objval = new EInvoice.ValDtls();
+                //objval.AssVal = Math.Round(TPAmount, 2);
+                //objval.CgstVal = Math.Round(total_cgst, 2);
+                //objval.SgstVal = Math.Round(total_sgst, 2);
+                //objval.IgstVal = Math.Round(total_igst, 2);
+                //objval.CesVal = 0;
+                //objval.StCesVal = 0;
+                //objval.Discount = 0;
+                //objval.OthChrg = 0;
+                //objval.RndOffAmt = 0;
+                //objval.TotInvVal = Math.Round(gtotalamout, 2); ;
+                //objval.TotInvValFc = 0;
+
+                //Rootlst.ValDtls = objval;
+                //EwayList.Add(ewayobj);
+                authenticate_response newobj = authenticate_ewaybill();
+                var str1 = "";
+                if (newobj.status_desc == "If authentication succeeds")
+                {
+                    //var authToken = newobj.data.authtoken;
+                    //context.Session["Token"] = authToken;
+                    string response = JsonConvert.SerializeObject(obj_root);
+                    var jsonresponse = JsonConvert.DeserializeObject<RootEwayItems>(response);
+                    str1 = generate_ewaybill_Non_Registerd(from_date, SOID, AgentID, response);
+                }
+                else
+                {
+                    str1 = "Authentication Failed";
+                }
+                string res = GetJson(str1);
+                context.Response.Write(res);
+            }
+        }
+        catch (Exception ex)
+        {
+            string response = GetJson(ex.ToString());
+            context.Response.Write(response);
+        }
+    }
+
+    private string generate_ewaybill_Non_Registerd(string from_date, string SOID, string AgentID, string jsonresponse)
+    {
+        DateTime fromdate = Convert.ToDateTime(from_date);
+
+        using (var httpClient = new HttpClient())
+        {
+            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/GENERATE_EWAYBILL/version/V1_03?email=naveen.vdmtech%40gmail.com"))
+            {
+                string ip_address = GetLocalIPAddress();
+                if (ip_address == "Error")
+                    ip_address = "182.18.162.51:52144";
+
+                request.Headers.TryAddWithoutValidation("Accept", "application/json");
+                request.Headers.TryAddWithoutValidation("username", ewaylogin.username);
+                request.Headers.TryAddWithoutValidation("ip_address", ip_address);
+                request.Headers.TryAddWithoutValidation("client_id", ewaylogin.client_id);
+                request.Headers.TryAddWithoutValidation("client_secret", ewaylogin.client_secret);
+                request.Headers.TryAddWithoutValidation("gstin", ewaylogin.gstin);
+
+                var httpContent = new StringContent(jsonresponse, Encoding.UTF8, "application/json");
+                request.Content = httpContent;
+                var response = httpClient.SendAsync(request).Result;
+                var contents = response.Content.ReadAsStringAsync().Result;
+
+
+                DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
+
+                var js = new JavaScriptSerializer();
+                EWayClass obj = js.Deserialize<EWayClass>(jsonresponse);
+
+                var js1 = new JavaScriptSerializer();
+                Response_Eway obj1 = js1.Deserialize<Response_Eway>(contents);
+
+                if (obj1.status_desc == "GSTR request succeeds")
+                {
+                    cmd = new MySqlCommand("insert into ewb_details (agentid,soid,inddate,ewb_no,distance,ewb_date,vehicleno,created_by,created_date,modify_by,modify_date,type,status,expiry_date,irn_no) values (@agentid,@soid,@inddate,@ewb_no,@distance,@ewb_date,@vehicleno,@created_by,@created_date,@modify_by,@modify_date,@type,@status,@expiry_date,@irn_no)");
+                    cmd.Parameters.AddWithValue("@agentid", AgentID);
+                    cmd.Parameters.AddWithValue("@soid", SOID);
+                    cmd.Parameters.AddWithValue("@inddate", GetLowDate(fromdate.AddDays(-1)));
+                    cmd.Parameters.AddWithValue("@ewb_no", obj1.data.EwbNo);
+                    cmd.Parameters.AddWithValue("@distance", obj.Distance);
+                    cmd.Parameters.AddWithValue("@ewb_date", obj1.data.EwbDt);
+                    cmd.Parameters.AddWithValue("@vehicleno", obj.VehNo);
+                    cmd.Parameters.AddWithValue("@created_by", "1");
+                    cmd.Parameters.AddWithValue("@created_date", ServerDateCurrentdate);
+                    cmd.Parameters.AddWithValue("@modify_by", "1");
+                    cmd.Parameters.AddWithValue("@modify_date", ServerDateCurrentdate);
+                    cmd.Parameters.AddWithValue("@type", "R");
+                    cmd.Parameters.AddWithValue("@status", "R");
+                    cmd.Parameters.AddWithValue("@expiry_date", obj1.data.EwbValidTill);
+                    cmd.Parameters.AddWithValue("@irn_no", obj.Irn);
+                    vdbmngr.insert(cmd);
+                }
+                return contents;
             }
         }
     }
@@ -54981,7 +55234,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 }
             }
 
-            cmd = new MySqlCommand("SELECT  SUM(indents_subtable.DeliveryQty) AS DeliveryQty,SUM(indents_subtable.DeliveryQty*indents_subtable.UnitCost) AS TotalAmount,productsdata.SubCat_sno, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName,branchdata.gstno FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno<>'' and branchdata.gstno is not null) and (productsdata.igst<>'0') OR (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno<>'' and branchdata.gstno is not null) and (productsdata.igst<>'0') GROUP BY  branchdata.sno ORDER BY branchdata.sno");
+            cmd = new MySqlCommand("SELECT  ROUND(SUM(indents_subtable.DeliveryQty)) AS DeliveryQty,ROUND(SUM(indents_subtable.DeliveryQty*indents_subtable.UnitCost)) AS TotalAmount,productsdata.SubCat_sno, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName,branchdata.gstno FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno <>'' and branchdata.gstno <>'0') and (productsdata.igst <>'' and productsdata.igst<>'0') OR (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno <>'' and branchdata.gstno <>'0') and (productsdata.igst <>'' and productsdata.igst<>'0') GROUP BY  branchdata.sno ORDER BY branchdata.sno");
             cmd.Parameters.AddWithValue("@BranchID", soid);
             cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
             cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
@@ -55041,10 +55294,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     Report.Columns.Add("Receipt No").DataType = typeof(Double);
                     DataTable distincttable = view.ToTable(true, "BranchName", "sno");
                     List<EInvoice_Products> EInvProduct = new List<EInvoice_Products>();
-                    string StateName = ""; string status = ""; string irn = "";
-                    string signed_qr_code = ""; string ack_no = ""; string ack_date = "";
+                    
                     foreach (DataRow dr in dtble.Rows)
                     {
+                        string status = "";
+                        string StateName = ""; string irn = "";
+                        string signed_qr_code = ""; string ack_no = ""; string ack_date = "";
                         foreach (DataRow drinv in dtEinvble.Select("agentid='" + dr["sno"].ToString() + "'"))
                         {
                             status = drinv["status"].ToString();
@@ -55132,25 +55387,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string client_id { get; set; }
         public string txn { get; set; }
     }
-    public class ewaybill_data
-    {
-        public string ewbNo { get; set; }
-        public string validUpto { get; set; }
-        public string fromPlace { get; set; }
-        public string fromStateCode { get; set; }
-        public string fromPincode { get; set; }
-        public string actualDist { get; set; }
-        public string cEwbNo { get; set; }
-        public string cEwbDate { get; set; }
-        public string tripSheetNo { get; set; }
-        public string userGstin { get; set; }
-        public string transDocDate { get; set; }
-        public string fromState { get; set; }
-        public string vehicleNo { get; set; }
-        public string enteredDate { get; set; }
-
-        // public List<tripSheetEwbBills> tripSheetEwbBills { get; set; }
-    }
+    
     public class errors
     {
         public string message { get; set; }
@@ -55175,7 +55412,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
         throw new Exception("Error");
     }
-
+   
     EInvoice_Login Elogin = new EInvoice_Login();
     private authenticate_response authenticate_e_invoice()
     {
@@ -55314,6 +55551,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             cmd.Parameters.AddWithValue("@branchsno", SOID);
             DataTable dtsellarcode = vdbmngr.SelectQuery(cmd).Tables[0];
 
+            cmd = new MySqlCommand("SELECT  * FROM  statemastar");
+            DataTable dtstates = vdbmngr.SelectQuery(cmd).Tables[0];
+
             DataView view = new DataView(dtble);
             DataTable Buyerdtble = view.ToTable(true, "sno", "BranchName", "BranchCode", "gstno", "regtype", "doorno", "street", "city", "mandal", "area", "district", "pincode", "email", "stateid", "statename", "companycode", "phonenumber");
             DataTable Itemtable = view.ToTable(true, "sno", "DeliveryQty", "SubCat_sno", "UnitCost", "prodsno", "ProductName", "cgst", "sgst", "igst", "Itemcode", "hsncode", "Units");
@@ -55351,38 +55591,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 }
                 else
                 {
-
-                    ////if (NoOfdays < 2)
-                    ////{
-                    //cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM agenttaxdc WHERE (soid = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
-                    //cmd.Parameters.AddWithValue("@BranchId", SOID);
-                    //cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril).AddDays(-1));
-                    //cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch).AddDays(-1));
-                    //DataTable dtadcno = vdm.SelectQuery(cmd).Tables[0];
-                    //string agentdcNo = dtadcno.Rows[0]["Sno"].ToString();
-                    //cmd = new MySqlCommand("Insert Into agenttaxdc (BranchId,IndDate,soid,agentdcno,stateid,companycode,moduleid,doe,invoicetype) Values(@BranchId,@IndDate,@soid,@agentdcno,@stateid,@companycode,@moduleid,@doe,@invoicetype)");
-                    //cmd.Parameters.AddWithValue("@BranchId", AgentId);
-                    //cmd.Parameters.AddWithValue("@IndDate", GetLowDate(fromdate.AddDays(-1)));
-                    //cmd.Parameters.AddWithValue("@soid", SOID);
-                    //cmd.Parameters.AddWithValue("@agentdcno", agentdcNo);
-                    //cmd.Parameters.AddWithValue("@stateid", gststatecode);
-                    //cmd.Parameters.AddWithValue("@companycode", companycode);
-                    //cmd.Parameters.AddWithValue("@doe", ReportDate);
-                    //cmd.Parameters.AddWithValue("@moduleid", Session["moduleid"].ToString());
-                    //cmd.Parameters.AddWithValue("@invoicetype", "TSales");
-                    //DcNo = vdm.insertScalar(cmd);
-                    //cmd = new MySqlCommand("SELECT agentdcno FROM  agenttaxdc WHERE (BranchID = @BranchID) AND (IndDate BETWEEN @d1 AND @d2)");
-                    //cmd.Parameters.AddWithValue("@BranchID", branch["BSno"].ToString());
-                    //cmd.Parameters.AddWithValue("@soid", ddlSalesOffice.SelectedValue);
-                    //cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-                    //cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
-                    //DataTable dtsubDc = vdm.SelectQuery(cmd).Tables[0];
-                    //if (dtsubDc.Rows.Count > 0)
-                    //{
-                    //    DCNO = dtsubDc.Rows[0]["agentdcno"].ToString();
-                    //}
-                    //DCNO = DCNO.ToString();
-                    //}
                 }
                 //string DCNO = "";
                 DcNo = DCNO;
@@ -55445,12 +55653,15 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     objsellar.Loc = drselaar["area"].ToString();
                     objsellar.Pin = Convert.ToInt32(drselaar["pincode"].ToString());
                     //objsellar.Stcd = "36";
-                    objsellar.Stcd = "36";
                     //objsellar.Stcd = drselaar["stateid"].ToString();
                     objsellar.Ph = drselaar["phonenumber"].ToString();
                     objsellar.Em = drselaar["email"].ToString();
                     fromstate = drselaar["stateid"].ToString();
-                    fromstate = "36";
+                    foreach (DataRow drstate in dtstates.Select("sno='" + drselaar["stateid"].ToString() + "'"))
+                    {
+                        fromstate = drstate["gststatecode"].ToString(); ;
+                        objsellar.Stcd = drstate["gststatecode"].ToString(); ;
+                    }
 
                     Rootlst.SellerDtls = objsellar;
 
@@ -55461,7 +55672,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     objdisp.Addr2 = drselaar["doorno"].ToString() + ";," + drselaar["street"].ToString() + ";," + drselaar["area"].ToString();
                     objdisp.Loc = drselaar["area"].ToString();
                     objdisp.Pin = Convert.ToInt32(drselaar["pincode"].ToString());
-                    objdisp.Stcd = "36";
+                    foreach (DataRow drstate in dtstates.Select("sno='" + drselaar["stateid"].ToString() + "'"))
+                    {
+                        fromstate = drstate["gststatecode"].ToString(); ;
+                        objdisp.Stcd = drstate["gststatecode"].ToString();
+                    }
                     //objdisp.Stcd = drselaar["stateid"].ToString();
                     Rootlst.DispDtls = objdisp;
                     DispDtlslst.Add(objdisp);
@@ -55474,18 +55689,23 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     objbuyer.LglNm = drbuyer["branchname"].ToString();
                     objbuyer.TrdNm = drbuyer["branchname"].ToString();
                     //objbuyer.Pos = drbuyer["pincode"].ToString();
-                    objbuyer.Pos = "36" ;
                     objbuyer.Addr1 = drbuyer["doorno"].ToString() + ";," + drbuyer["street"].ToString() + ";," + drbuyer["area"].ToString();
                     objbuyer.Addr2 = drbuyer["doorno"].ToString() + ";," + drbuyer["street"].ToString() + ";," + drbuyer["area"].ToString();
                     objbuyer.Loc = drbuyer["area"].ToString();
                     objbuyer.Pin = Convert.ToInt32(drbuyer["pincode"].ToString());
                     //objbuyer.Stcd = drbuyer["stateid"].ToString(); ;
-                    objbuyer.Stcd = "36"; ;
                     objbuyer.Ph = drbuyer["phonenumber"].ToString();
                     objbuyer.Em = drbuyer["email"].ToString();
 
                     tostate = drbuyer["stateid"].ToString();
                     tostate = "36";
+
+                    foreach (DataRow drstate in dtstates.Select("sno='" + drbuyer["stateid"].ToString() + "'"))
+                    {
+                        fromstate = drstate["gststatecode"].ToString(); ;
+                        objbuyer.Pos = drstate["gststatecode"].ToString();
+                        objbuyer.Stcd = drstate["gststatecode"].ToString();
+                    }
 
                     Rootlst.BuyerDtls = objbuyer;
 
@@ -55501,14 +55721,17 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     objship.Loc = drbuyer["area"].ToString();
                     objship.Pin = Convert.ToInt32(drbuyer["pincode"].ToString());
                     //objship.Stcd = drbuyer["stateid"].ToString(); ;
-                    objship.Stcd = "36";
+                    foreach (DataRow drstate in dtstates.Select("sno='" + drbuyer["stateid"].ToString() + "'"))
+                    {
+                        objship.Stcd = drstate["gststatecode"].ToString(); ;
+                    }
                     Rootlst.ShipDtls = objship;
 
                     //ShipDtlslst.ShipDtls=objship;
                 }
                 int i = 0;
 
-                double tot_amount = 0; double PAmount = 0; double total_cgst = 0; double total_sgst = 0; double total_igst = 0; double gtotalamout = 0;
+                double tot_amount = 0;double TPAmount = 0; double PAmount = 0; double total_cgst = 0; double total_sgst = 0; double total_igst = 0; double gtotalamout = 0;
                 foreach (DataRow dritem in Itemtable.Select("sno='" + AgentId + "'"))
                 {
                     EInvoice.ItemList objitems = new EInvoice.ItemList();
@@ -55583,6 +55806,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         objitems.CgstAmt = 0;
                         total_igst += tot_vatamount;
                     }
+                    TPAmount += PAmount;
                     tot_amount = PAmount + tot_vatamount;
                     tot_amount = Math.Round(tot_amount, 2);
                     gtotalamout += tot_amount;
@@ -55620,16 +55844,16 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 }
 
                 EInvoice.ValDtls objval = new EInvoice.ValDtls();
-                objval.AssVal = Math.Round(PAmount, 2);
-                objval.CgstVal = total_cgst;
-                objval.SgstVal = total_sgst;
-                objval.IgstVal = total_igst;
+                objval.AssVal = Math.Round(TPAmount, 2);
+                objval.CgstVal = Math.Round(total_cgst,2);
+                objval.SgstVal = Math.Round(total_sgst,2);
+                objval.IgstVal = Math.Round(total_igst,2);
                 objval.CesVal = 0;
                 objval.StCesVal = 0;
                 objval.Discount = 0;
                 objval.OthChrg = 0;
                 objval.RndOffAmt = 0;
-                objval.TotInvVal = gtotalamout;
+                objval.TotInvVal = Math.Round(gtotalamout, 2); ;
                 objval.TotInvValFc = 0;
 
                 Rootlst.ValDtls = objval;
@@ -55756,6 +55980,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string status_cd { get; set; }
         public string status_desc { get; set; }
     }
+    
     private string generate_e_invoice_details(string token, string from_date, string SOID, string AgentID, string jsonresponse)
     {
         DateTime fromdate = Convert.ToDateTime(from_date);
@@ -55794,6 +56019,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     string ackno = obj.data.AckNo;
                     string SignedQRCode = obj.data.SignedQRCode;
                     string ackdate = obj.data.AckDt;
+                    string SignedInvoice = obj.data.SignedInvoice;
                     DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
 
                     cmd = new MySqlCommand("Insert Into e_invoice (agentid,e_invoiceno,soid,stateid,ack_no,ack_date,invoicedate,signed_qr_code,status) Values(@BranchId,@agentdcno,@soid,@stateid,@ack_no,@ack_date,@invoicedate,@signed_qr_code,@status)");
@@ -55805,6 +56031,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     cmd.Parameters.AddWithValue("@ack_date", ackdate);
                     cmd.Parameters.AddWithValue("@invoicedate", GetLowDate(fromdate).AddDays(-1));
                     cmd.Parameters.AddWithValue("@signed_qr_code", SignedQRCode);
+                    cmd.Parameters.AddWithValue("@SignedInvoice", SignedInvoice);
                     cmd.Parameters.AddWithValue("@status", "R");
                     vdbmngr.insert(cmd);
                 }
@@ -55908,30 +56135,493 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
     }
 
-    private string generate_ewaybill_using_IRN(string gstin, string gst_un, string token)
+    public class ewaybill_data
     {
+        public string ewbNo { get; set; }
+        public string validUpto { get; set; }
+        public string fromPlace { get; set; }
+        public string fromStateCode { get; set; }
+        public string fromPincode { get; set; }
+        public string actualDist { get; set; }
+        public string cEwbNo { get; set; }
+        public string cEwbDate { get; set; }
+        public string tripSheetNo { get; set; }
+        public string userGstin { get; set; }
+        public string transDocDate { get; set; }
+        public string fromState { get; set; }
+        public string vehicleNo { get; set; }
+        public string enteredDate { get; set; }
+
+        // public List<tripSheetEwbBills> tripSheetEwbBills { get; set; }
+    }
+    public class EWayClass
+    {
+        
+        public string Totalqty { get; set; }
+        public string Totalvalue { get; set; }
+        public string vehcleid { get; set; }
+        public string sno { get; set; }
+        public string status { get; set; }
+        public string Agentid { get; set; }
+        public string DocNumber { get; set; }
+        public string DocName { get; set; }
+        public string DocDate { get; set; }
+        public string gstno { get; set; }
+        
+        public string AgentName { get; set; }
+        public string InvoiceNo { get; set; }
+        public string hdnInvoiceno { get; set; }
+        public string status_desc { get; set; }
+        public string GeneratedBy { get; set; }
+        
+        public string ewb_no { get; set; }
+        public string ewb_date { get; set; }
+        public string ewb_expiredate { get; set; }
+        
+        public string Irn { get; set; }
+        public int Distance { get; set; }
+        
+        public string TransMode { get; set; }
+        public string TransName { get; set; }
+        public string TransDocDt { get; set; }
+        public string TransDocNo { get; set; }
+
+        public string VehNo { get; set; }
+        public string VehType { get; set; }
+        public string Type { get; set; }
+        public string InvoiceStatus { get; set; }
+        public string UserType { get; set; }
+        
+
+
+
+    }
+
+
+
+    private void GetEWayDetails(HttpContext context)
+    {
+        try
+        {
+            vdbmngr = new VehicleDBMgr();
+            string ToDate = context.Request["FromDate"];
+            DateTime fromdate = Convert.ToDateTime(ToDate);
+            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
+            DateTime dtapril = new DateTime();
+            DateTime dtmarch = new DateTime();
+            int currentyear = ServerDateCurrentdate.Year;
+            int nextyear = ServerDateCurrentdate.Year + 1;
+            int currntyearnum = 0;
+            int nextyearnum = 0;
+            if (ServerDateCurrentdate.Month > 3)
+            {
+                string apr = "4/1/" + currentyear;
+                dtapril = DateTime.Parse(apr);
+                string march = "3/31/" + nextyear;
+                dtmarch = DateTime.Parse(march);
+                currntyearnum = currentyear;
+                nextyearnum = nextyear;
+            }
+            if (ServerDateCurrentdate.Month <= 3)
+            {
+                if (ServerDateCurrentdate.Day == 31 && ServerDateCurrentdate.Month == 3)
+                {
+                    string apr = "3/31/" + currentyear;
+                    dtapril = DateTime.Parse(apr);
+                    string march = "3/31/" + nextyear;
+                    dtmarch = DateTime.Parse(march);
+                }
+                else
+                {
+                    string apr = "4/1/" + (currentyear - 1);
+                    dtapril = DateTime.Parse(apr);
+                    string march = "3/31/" + (nextyear - 1);
+                    dtmarch = DateTime.Parse(march);
+                }
+            }
+            string  BranchID = context.Request["BranchID"];
+            string ddltype = context.Request["ddltype"];
+            DataTable dtble = new DataTable();
+            List <EWayClass> Solist = new List<EWayClass>();
+            if (ddltype == "R")
+            {
+                cmd = new MySqlCommand("SELECT  ROUND(SUM(indents_subtable.DeliveryQty)) AS DeliveryQty,ROUND(SUM(indents_subtable.DeliveryQty*indents_subtable.UnitCost)) AS TotalAmount,productsdata.SubCat_sno, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName,branchdata.gstno FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno <>'' and branchdata.gstno <>'0') and (productsdata.igst <>'' and productsdata.igst<>'0') OR (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno <>'' and branchdata.gstno <>'0') and (productsdata.igst <>'' and productsdata.igst<>'0') GROUP BY  branchdata.sno ORDER BY branchdata.sno");
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
+                cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
+                dtble = vdbmngr.SelectQuery(cmd).Tables[0];
+            }
+            else
+            {
+                cmd = new MySqlCommand("SELECT ROUND(SUM(indents_subtable.DeliveryQty)) AS DeliveryQty, ROUND(SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost)) AS TotalAmount, productsdata.SubCat_sno, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName,branchdata.gstno FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN(SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE(modifiedroutes.BranchID = @BranchID) AND(modifiedroutesubtable.EDate IS NULL) AND(modifiedroutesubtable.CDate <= @starttime) and(branchdata.gstno = '' or branchdata.gstno = '0') and (productsdata.igst <> '' and productsdata.igst <> '0')  OR (modifiedroutes.BranchID = @BranchID)  AND(modifiedroutesubtable.EDate > @starttime) AND(modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno = '' or branchdata.gstno = '0') and (productsdata.igst <> '' and productsdata.igst <> '0')  GROUP BY  branchdata.sno ORDER BY branchdata.sno");
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
+                cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
+                dtble = vdbmngr.SelectQuery(cmd).Tables[0];
+            }
+
+            cmd = new MySqlCommand("select BranchCode from branchdata where sno=@sno");
+            cmd.Parameters.AddWithValue("@sno", BranchID);
+            DataTable dtbranch = vdbmngr.SelectQuery(cmd).Tables[0];
+
+            //test query
+
+            cmd = new MySqlCommand("select sno,irn_no,expiry_date,type,agentid,vehicleno,soid,distance,ewb_no,ewb_date,status,inddate from ewb_details  where soid=@soid and  inddate between @d1 and @d2");
+            cmd.Parameters.AddWithValue("@soid", BranchID);
+            cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+            cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
+            DataTable dtewayagents = vdbmngr.SelectQuery(cmd).Tables[0];
+
+            cmd = new MySqlCommand("select agentid,status,e_invoiceno,signed_qr_code,ack_no,ack_date from e_invoice where  soid=@soid and invoicedate between @d1 and @d2");
+            cmd.Parameters.AddWithValue("@soid", BranchID);
+            cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate).AddDays(-1));
+            cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate).AddDays(-1));
+            DataTable dtEinvble = vdbmngr.SelectQuery(cmd).Tables[0];
+
+            foreach (DataRow dr in dtble.Rows)
+            {
+                EWayClass obj = new EWayClass();
+                obj.DocNumber = "";
+
+                obj.AgentName = dr["BranchName"].ToString();
+                obj.Agentid = dr["sno"].ToString();
+                obj.Totalqty = dr["DeliveryQty"].ToString();
+                obj.Totalvalue = dr["TotalAmount"].ToString();
+                obj.gstno = dr["gstno"].ToString();
+
+                string DCNO = "0";
+                string DcNo = "";
+                cmd = new MySqlCommand("SELECT agentdcno FROM  agenttaxdc WHERE (BranchId = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
+                cmd.Parameters.AddWithValue("@BranchId", dr["sno"].ToString());
+                cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+                cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
+                DataTable dtDcnumber = vdbmngr.SelectQuery(cmd).Tables[0];
+                string dcnumber = "";
+                if (dtDcnumber.Rows.Count > 0)
+                {
+                    dcnumber = dtDcnumber.Rows[0]["agentdcno"].ToString();
+                    DCNO = dcnumber.ToString();
+                }
+                DcNo = DCNO;
+                int countdc = 0;
+                int.TryParse(DcNo, out countdc);
+                if (countdc <= 10)
+                {
+                    DCNO = "0000" + countdc;
+                }
+                if (countdc >= 10 && countdc <= 99)
+                {
+                    DCNO = "000" + countdc;
+                }
+                if (countdc >= 99 && countdc <= 999)
+                {
+                    DCNO = "00" + countdc;
+                }
+                if (countdc > 999 && countdc <= 9999)
+                {
+                    DCNO = "0" + countdc;
+                }
+                if (countdc > 9999)
+                {
+                    DCNO = "" + countdc;
+                }
+
+                if (fromdate.Month > 3)
+                {
+                    DcNo = dtbranch.Rows[0]["BranchCode"].ToString() + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
+                }
+                else
+                {
+                    if (fromdate.Month <= 3)
+                    {
+                        DcNo = dtbranch.Rows[0]["BranchCode"].ToString() + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
+                    }
+                    else
+                    {
+                        DcNo = dtbranch.Rows[0]["BranchCode"].ToString() + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "T/" + DCNO;
+                    }
+                }
+
+                obj.InvoiceNo = DcNo;
+
+                DataRow[] agentarr = dtewayagents.Select("agentid='" + dr["sno"].ToString() + "'");
+                if (agentarr.Length != 0)
+                {
+                    foreach (DataRow dritem in dtewayagents.Select("agentid='" + dr["sno"].ToString() + "'"))
+                    {
+                        obj.Distance = Convert.ToInt32(dritem["distance"].ToString());
+                        obj.VehNo = dritem["vehicleno"].ToString();
+                        obj.sno = dritem["sno"].ToString();
+                        obj.ewb_no = dritem["ewb_no"].ToString();
+                        obj.status = dritem["status"].ToString();
+                        obj.ewb_date = Convert.ToDateTime(dritem["ewb_date"].ToString()).ToString("dd/MM/yyyy");
+                        //obj.ewb_expiredate = Convert.ToDateTime(dritem["ewb_date"].ToString()).ToString("dd/MM/yyyy"); ;
+                        obj.ewb_expiredate = dritem["expiry_date"].ToString();
+                        obj.UserType = dritem["type"].ToString();
+                        obj.InvoiceNo = DcNo;
+                        obj.GeneratedBy = Elogin.gstin;
+
+                        if (ddltype == "R")
+                        { 
+                            obj.Irn = dritem["irn_no"].ToString();
+                        }
+                    }
+                }
+                else
+                {
+                    obj.Distance = 0;
+                    obj.VehNo = "";
+                    obj.vehcleid = "";
+                    obj.sno = "";
+                    obj.ewb_no = "";
+                    obj.ewb_date = "";
+                    obj.ewb_expiredate = "";
+                    obj.InvoiceNo = DcNo;
+                    obj.DocDate = "";
+                    obj.DocNumber = "";
+                    obj.status = "";
+                    //obj.Type = "";
+                    DataRow[] invarr = dtEinvble.Select("agentid='" + dr["sno"].ToString() + "'");
+                    if (invarr.Length != 0)
+                    {
+                        foreach (DataRow drinv in dtEinvble.Select("agentid='" + dr["sno"].ToString() + "'"))
+                        {
+                            obj.InvoiceStatus = drinv["status"].ToString();
+                            obj.Irn = drinv["e_invoiceno"].ToString();
+                        }
+                    }
+                    else
+                    {
+                        obj.Irn = "";
+                        obj.InvoiceStatus = "";
+                    }
+                }
+                Solist.Add(obj);
+            }
+
+            string errresponse = GetJson(Solist);
+            context.Response.Write(errresponse);
+        }
+        catch (Exception ex)
+        {
+            string msg = ex.Message;
+            string response = GetJson(msg);
+            context.Response.Write(response);
+        }
+    }
+
+    
+    //public class Irn_EwayBill
+    //{
+    //    public string Irn { get; set; }
+    //    public int Distance { get; set; }
+    //    public string TransMode { get; set; }
+    //    public string TransName { get; set; }
+    //    public string TransDocDt { get; set; }
+    //    public string TransDocNo { get; set; }
+    //    public string VehNo { get; set; }
+    //    public string VehType { get; set; }
+    //}
+
+    
+
+
+    public class Response_EwayData
+    {
+        public long EwbNo { get; set; }
+        public string EwbDt { get; set; }
+        public string EwbValidTill { get; set; }
+    }
+
+    public class Response_Eway
+    {
+        public Response_EwayData data { get; set; }
+        public string status_cd { get; set; }
+        public string status_desc { get; set; }
+    }
+    private void generate_ewaybill_using_IRN(HttpContext context)
+    {
+        try
+        {
+            // For Testing Purpose , in future send customer GSTIN for generate e-invoice
+            string AgentID = context.Request["agentid"];
+            string from_date = context.Request["FromDate"];
+            string SOID = context.Request["soid"];
+            string Document_No = context.Request["invoiceno"];
+            string Distance = context.Request["Distance"];
+            string vehicleid = context.Request["vehicleid"];
+            string vehcleno = context.Request["vehcleno"];
+            string irn = context.Request["irn"];
+            DateTime fromdate = Convert.ToDateTime(from_date);
+            //string ewaybill_no = context.Request["ewaybill_no"].ToString();
+            responce_data obj;
+            List<EWayClass> EwayList = new List<EWayClass>();
+
+
+            DateTime dtCdate = VehicleDBMgr.GetTime(vdbmngr.conn);
+            DateTime dtapril = new DateTime();
+            DateTime dtmarch = new DateTime();
+            int currentyear = dtCdate.Year;
+            int nextyear = dtCdate.Year + 1;
+            if (dtCdate.Month > 3)
+            {
+                string apr = "4/1/" + currentyear;
+                dtapril = DateTime.Parse(apr);
+                string march = "3/31/" + nextyear;
+                dtmarch = DateTime.Parse(march);
+            }
+            if (dtCdate.Month <= 3)
+            {
+                string apr = "4/1/" + (currentyear - 1);
+                dtapril = DateTime.Parse(apr);
+                string march = "3/31/" + (nextyear - 1);
+                dtmarch = DateTime.Parse(march);
+            }
+
+            string DCNO = "0";
+            string DcNo = "";
+            cmd = new MySqlCommand("SELECT agentdcno FROM  agenttaxdc WHERE (BranchId = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
+            cmd.Parameters.AddWithValue("@BranchId", AgentID);
+            cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+            cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
+            DataTable dtDcnumber = vdbmngr.SelectQuery(cmd).Tables[0];
+            string dcnumber = "";
+            if (dtDcnumber.Rows.Count > 0)
+            {
+                dcnumber = dtDcnumber.Rows[0]["agentdcno"].ToString();
+                DCNO = dcnumber.ToString();
+            }
+            DcNo = DCNO;
+            int countdc = 0;
+            int.TryParse(DcNo, out countdc);
+            if (countdc <= 10)
+            {
+                DCNO = "0000" + countdc;
+            }
+            if (countdc >= 10 && countdc <= 99)
+            {
+                DCNO = "000" + countdc;
+            }
+            if (countdc >= 99 && countdc <= 999)
+            {
+                DCNO = "00" + countdc;
+            }
+            if (countdc > 999 && countdc <= 9999)
+            {
+                DCNO = "0" + countdc;
+            }
+            if (countdc > 9999)
+            {
+                DCNO = "" + countdc;
+            }
+
+            if (fromdate.Month > 3)
+            {
+                DcNo = "WYR/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
+            }
+            else
+            {
+                if (fromdate.Month <= 3)
+                {
+                    DcNo = "WYR/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
+                }
+                else
+                {
+                    DcNo = "WYR/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "T/" + DCNO;
+                }
+            }
+            EWayClass  ewayobj = new EWayClass();
+
+
+            ewayobj.Irn = irn;
+            ewayobj.Distance = Convert.ToInt32(Distance);
+            ewayobj.TransMode = "1";
+            ewayobj.TransName = "VyshnaviFoods";
+            ewayobj.TransDocDt = fromdate.ToString("dd/MM/yyyy");
+            //ewayobj.TransDocNo = Document_No;
+            ewayobj.TransDocNo = dcnumber;
+            ewayobj.VehNo = vehcleno;
+            ewayobj.VehType = "R";
+            EwayList.Add(ewayobj);
+            authenticate_response newobj = authenticate_e_invoice();
+            var str1 = "";
+            if (newobj.status_cd == "Sucess")
+            {
+                var authToken = newobj.data.authtoken;
+                context.Session["Token"] = authToken;
+                string response = JsonConvert.SerializeObject(ewayobj);
+                var jsonresponse = JsonConvert.DeserializeObject<EInvoice.Root>(response);
+                str1 = generate_ewaybill_using_IRN(authToken, from_date, SOID, AgentID, response);
+            }
+            else
+            {
+                str1 = "Authentication Failed";
+            }
+            string res = GetJson(str1);
+            context.Response.Write(res);
+        }
+        catch (Exception ex)
+        {
+            string response = GetJson(ex.ToString());
+            context.Response.Write(response);
+        }
+    }
+
+    private string generate_ewaybill_using_IRN(string authToken, string from_date, string SOID, string AgentID, string jsonresponse)
+    {
+        DateTime fromdate = Convert.ToDateTime(from_date);
+
         using (var httpClient = new HttpClient())
         {
-            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/GENERATE_EWAYBILL/version/V1_03?email=naveen.vdmtech%40gmail.com&username=" + gst_un))
+            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/GENERATE_EWAYBILL/version/V1_03?email=naveen.vdmtech%40gmail.com"))
             {
                 string ip_address = GetLocalIPAddress();
                 if (ip_address == "Error")
                     ip_address = "182.18.162.51:52144";
+                
                 request.Headers.TryAddWithoutValidation("Accept", "application/json");
+                request.Headers.TryAddWithoutValidation("username", Elogin.username);
                 request.Headers.TryAddWithoutValidation("ip_address", ip_address);
                 request.Headers.TryAddWithoutValidation("client_id", Elogin.client_id);
                 request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
-                request.Headers.TryAddWithoutValidation("auth-token", token);
-                request.Headers.TryAddWithoutValidation("gstin", gstin);
+                request.Headers.TryAddWithoutValidation("auth-token", authToken);
+                request.Headers.TryAddWithoutValidation("gstin", Elogin.gstin);
 
-                //BODY
-                //  request.Content = new StringContent("{"Irn": "47d7ba1814b6ca6123c780ad289b0a24e30c1baed59a7417d29a54e7b00a6bdf",  "Distance": 120,  "TransMode": "1",  "TransId": "29DPZPS4403C1ZF",  "TransName": "trans name",  "TransDocDt": "01/08/2020",  "TransDocNo": "MAHIE/10",  "VehNo": "KA12ER1234",  "VehType": "R"} ", Encoding.UTF8, "application/json");
+                var httpContent = new StringContent(jsonresponse, Encoding.UTF8, "application/json");
+                request.Content = httpContent;
                 var response = httpClient.SendAsync(request).Result;
                 var contents = response.Content.ReadAsStringAsync().Result;
-                return contents;
 
-                // Sample Response
-                //{ "status_cd": "0", "status_desc": "User Name does not exists"}
+
+                DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
+
+                var js = new JavaScriptSerializer();
+                EWayClass obj = js.Deserialize<EWayClass>(jsonresponse);
+
+                var js1 = new JavaScriptSerializer();
+                Response_Eway obj1 = js1.Deserialize<Response_Eway>(contents);
+
+                if (obj1.status_desc == "GSTR request succeeds")
+                {
+                    cmd = new MySqlCommand("insert into ewb_details (agentid,soid,inddate,ewb_no,distance,ewb_date,vehicleno,created_by,created_date,modify_by,modify_date,type,status,expiry_date,irn_no) values (@agentid,@soid,@inddate,@ewb_no,@distance,@ewb_date,@vehicleno,@created_by,@created_date,@modify_by,@modify_date,@type,@status,@expiry_date,@irn_no)");
+                    cmd.Parameters.AddWithValue("@agentid", AgentID);
+                    cmd.Parameters.AddWithValue("@soid", SOID);
+                    cmd.Parameters.AddWithValue("@inddate", GetLowDate(fromdate.AddDays(-1)));
+                    cmd.Parameters.AddWithValue("@ewb_no", obj1.data.EwbNo);
+                    cmd.Parameters.AddWithValue("@distance", obj.Distance);
+                    cmd.Parameters.AddWithValue("@ewb_date", obj1.data.EwbDt);
+                    cmd.Parameters.AddWithValue("@vehicleno", obj.VehNo);
+                    cmd.Parameters.AddWithValue("@created_by", "1");
+                    cmd.Parameters.AddWithValue("@created_date", ServerDateCurrentdate);
+                    cmd.Parameters.AddWithValue("@modify_by", "1");
+                    cmd.Parameters.AddWithValue("@modify_date", ServerDateCurrentdate);
+                    cmd.Parameters.AddWithValue("@type", "R");
+                    cmd.Parameters.AddWithValue("@status", "R");
+                    cmd.Parameters.AddWithValue("@expiry_date", obj1.data.EwbValidTill);
+                    cmd.Parameters.AddWithValue("@irn_no", obj.Irn);
+                    vdbmngr.insert(cmd);
+                }
+                return contents;
             }
         }
     }

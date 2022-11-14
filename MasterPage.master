@@ -792,6 +792,18 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                     <li id="liLoginInformation"><a href="logininformation.aspx"><i class="fa fa-safari"></i>&nbsp
                                     Login Information</a></li>
                                 <li id="lisms"><a href="SmsForm.aspx"><i class="fa fa-whatsapp"></i>SMS</a></li>--%>
+
+                                <li id="liEinvoice" class="more" style="min-height: 25px;"><a href="#"><i>
+                                </i>&nbsp eInvoice Details</a>
+                                    <div class="drop3">
+                                        <ul id="ulEinvoice">
+                                            <li id="liEinvoiceDetails"><a href="EinoviceTemplate.aspx">e-Invoice</a></li>
+                                            <li id="lieWayBill"><a href="EWaybillDetails.aspx">eWayBill</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+
+
                             <li id="li60" class="more" style="min-height: 25px;"><a href="#"><i class="fa fa-maxcdn">
                                 </i>&nbsp Gate Pass</a>
                                     <div class="drop3">
