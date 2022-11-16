@@ -204,15 +204,15 @@
                     }
                     if (msg[i].status == "R") {
                         results += '<td data-title="brandstatus"  class="11">' + status + '</td>';
-                        results += '<td data-title="brandstatus"><button type="button"  disabled="true"  title="Click Here To Generate Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="GenerateEinvoice(this)"><span class="glyphicon glyphicon-plus" style="top: 0px !important;"></span></button></td>';
+                        results += '<td data-title="brandstatus"><button type="button"  disabled="true"  title="Click Here To Generate Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="GenerateEinvoice(this)"><i class="fa fa-file-text"></i></button></td>';
+                        results += '<td data-title="brandstatus"><button type="button" title="Click Here To View E-WayBill!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_eWayBill_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
+
                     }
                     else {
-
                         results += '<td data-title="brandstatus"  class="11">' + status + '</td>';
-                        results += '<td data-title="brandstatus"><button  type="button" title="Click Here To Generate E-WayBill!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="Generate_eWayBill(this)"><span class="glyphicon glyphicon-plus" style="top: 0px !important;"></span></button></td>';
+                        results += '<td data-title="brandstatus"><button  type="button" title="Click Here To Generate E-WayBill!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="Generate_eWayBill(this)"><i class="fa fa-file-text"></i></span></button></td>';
+                        results += '<td data-title="brandstatus"><button type="button" disabled="true" title="Click Here To View E-WayBill!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_eWayBill_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
                     }
-                    results += '<td data-title="brandstatus" style = "display:none;"><button type="button" title="Click Here To Get E-WayBill!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="btn_Click_Get_eWayBill(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
-                    results += '<td data-title="brandstatus"><button type="button" title="Click Here To View E-WayBill!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_eWayBill_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
                 results += '<td data-title="brandstatus"><button type="button" disabled="true" title="Click Here To Cancel E-WayBill!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 removeclass"   onclick="CanceleWayBill(this)"><span class="glyphicon glyphicon-remove-circle" style="top: 0px !important;"></span></button></td></tr>';
                     results += '<td style="display:none" class="4">' + i + '</td></tr>';
                 //}
@@ -268,14 +268,16 @@
 
             var Distance = $(id).closest("tr").find('#txtDistance').val();
             var invoiceno = $(id).parent().parent().children('.clsInvoiceNo').html();
-            if (Distance == "") {
+            if (Distance == "" || Distance =="0") {
                 alert("Enter Distance");
                 return false;
             }
-            var irn = $(id).parent().parent().children('.clsIRN').html();
-            if (irn == "" || irn == null) {
-                alert("IRN Number not available Please Raise eInvoice");
-                return false;
+            if (UserType == "R") {
+                var irn = $(id).parent().parent().children('.clsIRN').html();
+                if (irn == "" || irn == null) {
+                    alert("IRN Number not available Please Raise eInvoice");
+                    return false;
+                }
             }
             var vehcleno = $(id).closest("tr").find('#ddlvehcle').val();
             var agentid = $(id).parent().parent().children('.clsAgentId').html();
@@ -285,27 +287,27 @@
             }
             if (UserType == "R") {
 
-                /*if (Totvalue >= "50000") {*/
+                if (Totvalue >= "50000") {
                     var data = { 'operation': 'generate_ewaybill_using_IRN', 'soid': soid, 'agentid': agentid, 'invoiceno': invoiceno, 'Distance': Distance, 'vehcleno': vehcleno, 'FromDate': FromDate, 'irn': irn };
-                //}
-                //else {
-                //    alert("InvoiceAmount must be graterthan fifty thousand");
-                //    return false;
-                //}
+                }
+                else {
+                    alert("InvoiceAmount must be graterthan fifty thousand");
+                    return false;
+                }
             }
             else {
-               /* if (Totvalue >= "50000") {*/
+                if (Totvalue >= "50000") {
                     var data = { 'operation': 'generate_ewaybill_Non_Registerd', 'soid': soid, 'agentid': agentid, 'invoiceno': invoiceno, 'Distance': Distance, 'vehcleno': vehcleno, 'FromDate': FromDate };
-                //}
-                //else {
-                    //alert("InvoiceAmount must be graterthan fifty thousand");
-                    //return false;
-                //}
+                }
+                else {
+                    alert("InvoiceAmount must be graterthan fifty thousand");
+                    return false;
+                }
             }
             var s = function (msg) {
                 if (msg) {
-                    //alert(msg);
-                    spnJsonData.innerHTML = JSON.stringify(msg);
+                    alert(msg);
+                    //spnJsonData.innerHTML = JSON.stringify(msg);
                     GenerateClick();
                     if (msg == "Session Expired") {
                         window.location = "Login.aspx";
@@ -324,7 +326,7 @@
         function View_eWayBill_Click(thisid) {
             var FromDate = document.getElementById('txtFromDate').value;
             var soid = document.getElementById('ddlsalesOffice').value;
-
+            var status = $(thisid).parent().parent().children('.11').html();
             var invoiceno = $(thisid).parent().parent().children('.clsInvoiceNo').html();
             var Distance = $(thisid).parent().parent().children('.cls_Distance').html();
             var vehcleno = $(thisid).parent().parent().children('.cls_VehNo').html();

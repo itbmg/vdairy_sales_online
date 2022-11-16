@@ -54644,7 +54644,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
 
     #region "EWay Bill Data"
-    public class EwayItemList
+    public class itemList
     {
         public string productName { get; set; }
         public string productDesc { get; set; }
@@ -54652,8 +54652,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public int quantity { get; set; }
         public string qtyUnit { get; set; }
         public int taxableAmount { get; set; }
-        public int sgstRate { get; set; }
-        public int cgstRate { get; set; }
+        public double sgstRate { get; set; }
+        public double cgstRate { get; set; }
         public int igstRate { get; set; }
         public int cessRate { get; set; }
     }
@@ -54685,7 +54685,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public int transactionType { get; set; }
         public string dispatchFromGSTIN { get; set; }
         public string dispatchFromTradeName { get; set; }
-        public string shipToGSTIN { get; set; }
+        //public string shipToGSTIN { get; set; }
         public string shipToTradeName { get; set; }
         public int totalValue { get; set; }
         public int cgstValue { get; set; }
@@ -54697,12 +54697,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string transMode { get; set; }
         public string transDistance { get; set; }
         public string transporterName { get; set; }
-        public string transporterId { get; set; }
+        //public string transporterId { get; set; }
         public string transDocNo { get; set; }
         public string transDocDate { get; set; }
         public string vehicleNo { get; set; }
         public string vehicleType { get; set; }
-        public List<EwayItemList> EwayItemList { get; set; }
+        public List<itemList> itemList { get; set; }
     }
     public class eWay_Login
     {
@@ -54769,7 +54769,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             DateTime fromdate = Convert.ToDateTime(from_date);
             //string ewaybill_no = context.Request["ewaybill_no"].ToString();
             responce_data obj;
-      
+
 
             DateTime dtCdate = VehicleDBMgr.GetTime(vdbmngr.conn);
             DateTime dtapril = new DateTime();
@@ -54813,8 +54813,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             DataTable Itemtable = view.ToTable(true, "sno", "DeliveryQty", "SubCat_sno", "UnitCost", "prodsno", "ProductName", "cgst", "sgst", "igst", "Itemcode", "hsncode", "Units");
             RootEwayItems obj_root = new RootEwayItems();
             List<RootEwayItems> Rootlistlst = new List<RootEwayItems>();
-            List<EwayItemList> Itemlistlst = new List<EwayItemList>();
-            
+            List<itemList> Itemlistlst = new List<itemList>();
+
             foreach (DataRow dr in Buyerdtble.Rows)
             {
                 string DCNO = "0";
@@ -54874,13 +54874,13 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     }
                 }
                 string regtype = dr["regtype"].ToString();
-                obj_root.supplyType = "B2B";
+                obj_root.supplyType = "O";
                 obj_root.subSupplyType = "1";
                 obj_root.subSupplyDesc = "B2B";
                 obj_root.docType = "INV";
                 obj_root.docNo = DcNo;
                 obj_root.docDate = fromdate.ToString("dd/MM/yyyy");
-                //obj_root.transactionType = "B2B";
+                obj_root.transactionType = 1;
                 obj_root.transMode = "1";
                 obj_root.transDistance = Distance;
                 obj_root.transporterName = "Vyshnavi Foods";
@@ -54914,7 +54914,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 foreach (DataRow drbuyer in Buyerdtble.Select("sno='" + AgentID + "'"))
                 {
 
-                    obj_root.toGstin = drbuyer["gstno"].ToString();
+                    obj_root.toGstin = "URP";
                     obj_root.toTrdName = drbuyer["branchname"].ToString();
                     obj_root.toAddr1 = drbuyer["doorno"].ToString() + ";," + drbuyer["street"].ToString() + ";," + drbuyer["area"].ToString();
                     obj_root.toAddr2 = drbuyer["doorno"].ToString() + ";," + drbuyer["street"].ToString() + ";," + drbuyer["area"].ToString();
@@ -54922,20 +54922,20 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     obj_root.toPincode = Convert.ToInt32(drbuyer["pincode"].ToString());
                     foreach (DataRow drstate in dtstates.Select("sno='" + drbuyer["stateid"].ToString() + "'"))
                     {
-                        fromstate = drstate["gststatecode"].ToString(); ;
+                        tostate = drstate["gststatecode"].ToString(); ;
                         obj_root.actToStateCode = Convert.ToInt32(drstate["gststatecode"].ToString()); ;
                         obj_root.toStateCode = Convert.ToInt32(drstate["gststatecode"].ToString()); ;
                     }
-                    obj_root.shipToGSTIN = drbuyer["gstno"].ToString(); ;
+                    //obj_root.shipToGSTIN = drbuyer["gstno"].ToString(); ;
                     obj_root.shipToTradeName = drbuyer["branchname"].ToString();
                 }
                 int i = 0;
-                  
+
                 double tot_amount = 0; double TPAmount = 0; double PAmount = 0; double total_cgst = 0; double total_sgst = 0; double total_igst = 0; double gtotalamout = 0;
                 foreach (DataRow dritem in Itemtable.Select("sno='" + AgentID + "'"))
                 {
                     i++;
-                    EwayItemList obj_items = new EwayItemList();
+                    itemList obj_items = new itemList();
 
                     //obj_items.s = i.ToString();
                     obj_items.productName = dritem["ProductName"].ToString();
@@ -54969,8 +54969,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             //objitems.SgstAmt = 0;
                             //objitems.IgstAmt = tot_vatamount;
                             //objitems.CgstAmt = 0;
-                            obj_items.sgstRate = 0; 
-                            obj_items.cgstRate = 0 ;
+                            obj_items.sgstRate = 0;
+                            obj_items.cgstRate = 0;
                             obj_items.igstRate = Convert.ToInt32(dritem["Igst"].ToString());
                             obj_items.cessRate = 0;
                             total_igst += tot_vatamount;
@@ -54986,8 +54986,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             //objitems.SgstAmt = sgstamount;
                             //objitems.IgstAmt = 0;
                             //objitems.CgstAmt = cgstamount;
-                            obj_items.sgstRate = Convert.ToInt32(dritem["cgst"].ToString()); ;
-                            obj_items.cgstRate = Convert.ToInt32(dritem["sgst"].ToString()); ;
+                            obj_items.sgstRate = Convert.ToDouble(dritem["cgst"].ToString()); ;
+                            obj_items.cgstRate = Convert.ToDouble(dritem["sgst"].ToString()); ;
                             obj_items.igstRate = 0;
                             obj_items.cessRate = 0;
 
@@ -55042,14 +55042,14 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 }
 
                 //obj_root.totalValue = Math.Round(TPAmount, 2); 
-                obj_root.totalValue = Convert.ToInt32(TPAmount);  
-                obj_root.cgstValue = Convert.ToInt32(total_cgst); 
+                obj_root.totalValue = Convert.ToInt32(TPAmount);
+                obj_root.cgstValue = Convert.ToInt32(total_cgst);
                 obj_root.sgstValue = Convert.ToInt32(total_sgst);
                 obj_root.igstValue = Convert.ToInt32(total_igst);
                 obj_root.cessValue = 0;
                 obj_root.cessNonAdvolValue = 0;
                 obj_root.totInvValue = Convert.ToInt32(gtotalamout);
-                obj_root.EwayItemList = Itemlistlst;
+                obj_root.itemList = Itemlistlst;
 
                 //EInvoice.ValDtls objval = new EInvoice.ValDtls();
                 //objval.AssVal = Math.Round(TPAmount, 2);
@@ -55067,7 +55067,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 //Rootlst.ValDtls = objval;
                 //EwayList.Add(ewayobj);
                 authenticate_response newobj = authenticate_ewaybill();
-                var str1 = "";
+                var str1 = ""; var str2 = "";
                 if (newobj.status_desc == "If authentication succeeds")
                 {
                     //var authToken = newobj.data.authtoken;
@@ -55075,12 +55075,23 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     string response = JsonConvert.SerializeObject(obj_root);
                     var jsonresponse = JsonConvert.DeserializeObject<RootEwayItems>(response);
                     str1 = generate_ewaybill_Non_Registerd(from_date, SOID, AgentID, response);
+
+                    var js = new JavaScriptSerializer();
+                    Response_Eway obj1 = js.Deserialize<Response_Eway>(str1);
+                    if (obj1.status_cd == "1")
+                    {
+                        str1 = "eWaybill Raised successfully";
+                    }
+                    else
+                    {
+                        str2 = str1;
+                    }
                 }
                 else
                 {
                     str1 = "Authentication Failed";
                 }
-                string res = GetJson(str1);
+                string res = GetJson(str2);
                 context.Response.Write(res);
             }
         }
@@ -55455,11 +55466,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             string SOID = context.Request["SOID"];
             DateTime fromdate = Convert.ToDateTime(from_date);
             //string ewaybill_no = context.Request["ewaybill_no"].ToString();
-            responce_data obj;
+            //responce_data obj;
             EInvoice.Root Rootlst = new EInvoice.Root();
 
             authenticate_response newobj = authenticate_e_invoice();
-            var str1 = "";
+            var str1 = ""; string str2 = "";
             if (newobj.status_cd == "Sucess")
             {
                 var authToken = newobj.data.authtoken;
@@ -55467,12 +55478,22 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 string response = Get_e_invoice_JsonData(AgentID, from_date, SOID);
                 var jsonresponse = JsonConvert.DeserializeObject<EInvoice.Root>(response);
                 str1 = generate_e_invoice_details(authToken, from_date, SOID, AgentID, response);
+                var js = new JavaScriptSerializer();
+                Response_EInvoice obj = js.Deserialize<Response_EInvoice>(str1);
+                if (obj.status_cd == "1")
+                {
+                    str1 = "eInvoice Raised successfully";
+                }
+                else
+                {
+                    str2 = str1;
+                }
             }
             else
             {
-                str1 = "Authentication Failed";
+                str2 = "Authentication Failed";
             }
-            string res = GetJson(str1);
+            string res = GetJson(str2);
             context.Response.Write(res);
         }
         catch (Exception ex)
@@ -55481,8 +55502,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
-
     private string Get_e_invoice_JsonData(string AgentID, string from_date, string SOID)
     {
         try
@@ -55980,12 +55999,13 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string status_cd { get; set; }
         public string status_desc { get; set; }
     }
-    
+
     private string generate_e_invoice_details(string token, string from_date, string SOID, string AgentID, string jsonresponse)
     {
+        //try
+        //{
         DateTime fromdate = Convert.ToDateTime(from_date);
         vdbmngr = new VehicleDBMgr();
-        
         using (var httpClient = new HttpClient())
         {
             using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/GENERATE/version/V1_03?email=naveen.vdmtech%40gmail.com"))
@@ -56009,7 +56029,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 //  request.Content = new StringContent("{"Version":"1.1","TranDtls":{"TaxSch":"GST","SupTyp":"B2B","RegRev":"Y","EcmGstin":null,"IgstOnIntra":"N"},"DocDtls":{"Typ":"INV","No":"MAHI / 10","Dt":"08 / 08 / 2020"},"SellerDtls":{"Gstin":"29AABCT1332L000","LglNm":"ABC company pvt ltd","TrdNm":"NIC Industries","Addr1":"5th block, kuvempu layout","Addr2":"kuvempu layout","Loc":"GANDHINAGAR","Pin":560001,"Stcd":"29","Ph":"9000000000","Em":"abc@gmail.com"},"BuyerDtls":{"Gstin":"29AWGPV7107B1Z1","LglNm":"XYZ company pvt ltd","TrdNm":"XYZ Industries","Pos":"37","Addr1":"7th block, kuvempu layout","Addr2":"kuvempu layout","Loc":"GANDHINAGAR","Pin":560004,"Stcd":"29","Ph":"9000000000","Em":"abc@gmail.com"},"DispDtls":{"Nm":"ABC company pvt ltd","Addr1":"7th block, kuvempu layout","Addr2":"kuvempu layout","Loc":"Banagalore","Pin":518360,"Stcd":"37"},"ShipDtls":{"Gstin":"29AWGPV7107B1Z1","LglNm":"CBE company pvt ltd","TrdNm":"kuvempu layout","Addr1":"7th block, kuvempu layout","Addr2":"kuvempu layout","Loc":"Banagalore","Pin":518360,"Stcd":"37"},"ItemList":[{"SlNo":"1","IsServc":"N","PrdDesc":"Rice","HsnCd":"1001","Barcde":"123456","BchDtls":{"Nm":"123456","Expdt":"01 / 08 / 2020","wrDt":"01 / 09 / 2020"},"Qty":100.345,"FreeQty":10,"Unit":"NOS","UnitPrice":99.545,"TotAmt":9988.84,"Discount":10,"PreTaxVal":1,"AssAmt":9978.84,"GstRt":12,"SgstAmt":0,"IgstAmt":1197.46,"CgstAmt":0,"CesRt":5,"CesAmt":498.94,"CesNonAdvlAmt":10,"StateCesRt":12,"StateCesAmt":1197.46,"StateCesNonAdvlAmt":5,"OthChrg":10,"TotItemVal":12897.7,"OrdLineRef":"3256","OrgCntry":"AG","PrdSlNo":"12345","AttribDtls":[{"Nm":"Rice","Val":"10000"}]}],"ValDtls":{"AssVal":9978.84,"CgstVal":0,"SgstVal":0,"IgstVal":1197.46,"CesVal":508.94,"StCesVal":1202.46,"Discount":10,"OthChrg":20,"RndOffAmt":0.3,"TotInvVal":12908,"TotInvValFc":12897.7},"PayDtls":{"Nm":"ABCDE","Accdet":"5697389713210","Mode":"Cash","Fininsbr":"SBIN11000","Payterm":"100","Payinstr":"Gift","Crtrn":"test","Dirdr":"test","Crday":100,"Paidamt":10000,"Paymtdue":5000},"RefDtls":{"InvRm":"TEST","DocPerdDtls":{"InvStDt":"01 / 08 / 2020","InvEndDt":"01 / 09 / 2020"},"PrecDocDtls":[{"InvNo":"DOC / 002","InvDt":"01 / 08 / 2020","OthRefNo":"123456"}],"ContrDtls":[{"RecAdvRefr":"DOC / 002","RecAdvDt":"01 / 08 / 2020","Tendrefr":"Abc001","Contrrefr":"Co123","Extrefr":"Yo456","Projrefr":"Doc - 456","Porefr":"Doc - 789","PoRefDt":"01 / 08 / 2020"}]},"AddlDocDtls":[{"Url":"https://einv-apisandbox.nic.in","Docs":"Test Doc","Info":"Document Test"}],"ExpDtls":{"ShipBNo":"A-248","ShipBDt":"01/08/2020","Port":"INABG1","RefClm":"N","ForCur":"AED","CntCode":"AE"},"EwbDtls":{"Transid":"12AWGPV7107B1Z1","Transname":"XYZ EXPORTS","Distance":100,"Transdocno":"DOC01","TransdocDt":"01/08/2020","Vehno":"ka123456","Vehtype":"R","TransMode":"1"}}", Encoding.UTF8, "application/json");
                 var response = httpClient.SendAsync(request).Result;
                 var contents = response.Content.ReadAsStringAsync().Result;
-
 
                 var js = new JavaScriptSerializer();
                 Response_EInvoice obj = js.Deserialize<Response_EInvoice>(contents);
@@ -56036,9 +56055,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     vdbmngr.insert(cmd);
                 }
                 return contents;
-
             }
         }
+        //}
+
     }
 
     private void btn_Click_GetInvoice(HttpContext context)
@@ -56171,6 +56191,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string AgentName { get; set; }
         public string InvoiceNo { get; set; }
         public string hdnInvoiceno { get; set; }
+        public string status_cd { get; set; }
+        
         public string status_desc { get; set; }
         public string GeneratedBy { get; set; }
         
@@ -56253,7 +56275,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             }
             else
             {
-                cmd = new MySqlCommand("SELECT ROUND(SUM(indents_subtable.DeliveryQty)) AS DeliveryQty, ROUND(SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost)) AS TotalAmount, productsdata.SubCat_sno, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName,branchdata.gstno FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN(SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE(modifiedroutes.BranchID = @BranchID) AND(modifiedroutesubtable.EDate IS NULL) AND(modifiedroutesubtable.CDate <= @starttime) and(branchdata.gstno = '' or branchdata.gstno = '0') and (productsdata.igst <> '' and productsdata.igst <> '0')  OR (modifiedroutes.BranchID = @BranchID)  AND(modifiedroutesubtable.EDate > @starttime) AND(modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno = '' or branchdata.gstno = '0') and (productsdata.igst <> '' and productsdata.igst <> '0')  GROUP BY  branchdata.sno ORDER BY branchdata.sno");
+                cmd = new MySqlCommand("select * from (SELECT ROUND(SUM(indents_subtable.DeliveryQty)) AS DeliveryQty, ROUND(SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost)) AS TotalAmount, productsdata.SubCat_sno, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName,branchdata.gstno FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN(SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE(modifiedroutes.BranchID = @BranchID) AND(modifiedroutesubtable.EDate IS NULL) AND(modifiedroutesubtable.CDate <= @starttime) and(branchdata.gstno = '' or branchdata.gstno = '0') and (productsdata.igst <> '' and productsdata.igst <> '0')  OR (modifiedroutes.BranchID = @BranchID)  AND(modifiedroutesubtable.EDate > @starttime) AND(modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno = '' or branchdata.gstno = '0') and (productsdata.igst <> '' and productsdata.igst <> '0')  GROUP BY  branchdata.sno ORDER BY branchdata.sno) as t1 where t1.TotalAmount > '50000'");
                 cmd.Parameters.AddWithValue("@BranchID", BranchID);
                 cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
                 cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
@@ -56544,7 +56566,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             ewayobj.VehType = "R";
             EwayList.Add(ewayobj);
             authenticate_response newobj = authenticate_e_invoice();
-            var str1 = "";
+            var str1 = "";var str2 = "";
             if (newobj.status_cd == "Sucess")
             {
                 var authToken = newobj.data.authtoken;
@@ -56552,12 +56574,23 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 string response = JsonConvert.SerializeObject(ewayobj);
                 var jsonresponse = JsonConvert.DeserializeObject<EInvoice.Root>(response);
                 str1 = generate_ewaybill_using_IRN(authToken, from_date, SOID, AgentID, response);
+
+                var js = new JavaScriptSerializer();
+                EWayClass obj1 = js.Deserialize<EWayClass>(str1);
+                if (obj1.status_cd == "1")
+                {
+                    str1 = "eWaybill Raised successfully";
+                }
+                else
+                {
+                    str2 = str1;
+                }
             }
             else
             {
-                str1 = "Authentication Failed";
+                str2 = "Authentication Failed";
             }
-            string res = GetJson(str1);
+            string res = GetJson(str2);
             context.Response.Write(res);
         }
         catch (Exception ex)

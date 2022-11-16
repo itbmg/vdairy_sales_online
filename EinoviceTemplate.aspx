@@ -185,14 +185,16 @@
                 }
                 if (msg[i].status == "R") {
                     results += '<td data-title="brandstatus"  class="11">' + status + '</td>';
-                    results += '<td data-title="brandstatus"><button type="button" disabled="true" title="Click Here To Generate Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="GenerateEinvoice(this)"><span class="glyphicon glyphicon-plus" style="top: 0px !important;"></span></button></td>';
+                    results += '<td data-title="brandstatus"><button type="button" disabled="true" title="Click Here To Generate Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="GenerateEinvoice(this)"><i class="fa fa-file-text"></i></button></td>';
+                    results += '<td data-title="brandstatus"><button type="button" title="Click Here To View Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_Einvoice_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
+
                 }
                 else {
                     results += '<td data-title="brandstatus"  class="11">' + status + '</td>';
-                    results += '<td data-title="brandstatus"><button  type="button" title="Click Here To Generate Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="GenerateEinvoice(this)"><span class="glyphicon glyphicon-plus" style="top: 0px !important;"></span></button></td>';
+                    results += '<td data-title="brandstatus"><button  type="button" title="Click Here To Generate Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="GenerateEinvoice(this)"><i class="fa fa-file-text"></i></button></td>';
+                    results += '<td data-title="brandstatus"><button type="button" disabled="true" title="Click Here To View Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_Einvoice_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
+
                 }
-                results += '<td data-title="brandstatus" style = "display:none;"><button type="button" title="Click Here To Get Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="btn_Click_GetInvoice(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
-                results += '<td data-title="brandstatus"><button type="button" title="Click Here To View Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_Einvoice_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
                 results += '<td data-title="brandstatus"><button type="button" disabled="true" title="Click Here To Cancel Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 removeclass"   onclick="CancelEinvoice(this)"><span class="glyphicon glyphicon-remove-circle" style="top: 0px !important;"></span></button></td></tr>';
                 l = l + 1;
                 if (l == 4) {
@@ -212,14 +214,11 @@
             var AgentID = $(thisid).parent().parent().children('.2').html();
             var Totvalue = $(thisid).parent().parent().children('.6').html();
             var branchID = document.getElementById("ddlsalesOffice").value;
-            if (Totvalue == "0" || Totvalue >= "50000" || Totvalue == "") {
-            }
-            else {
-                var data = { 'operation': 'generate_e_invoice_details', 'AgentID': AgentID, 'FromDate': FromDate, 'SOID': branchID };
-            }
+
+            var data = { 'operation': 'generate_e_invoice_details', 'AgentID': AgentID, 'FromDate': FromDate, 'SOID': branchID };
             var s = function (msg) {
-                if (msg) {
-                    spnJsonData.innerHTML = JSON.stringify(msg);
+                if (msg.length > 0) {
+                    alert(msg);
                     GenerateClick();
                 }
                 else {
