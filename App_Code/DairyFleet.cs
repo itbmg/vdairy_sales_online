@@ -908,9 +908,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "branchwise_Others_Dispatch_qty":
                     branchwise_Others_Dispatch_qty(context);
                     break;
-
-
-
                 case "Route_Wise_Other_SaleQty":
                     Route_Wise_Other_SaleQty(context);
                     break;
@@ -980,17 +977,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "Get_RouteWiseBetweenDayProduct_Comparison":
                     Get_RouteWiseBetweenDayProduct_Comparison(context);
                     break;
-
-
-
                 case "btn_approve_voucher_grid":
                     btn_approve_voucher_grid(context);
                     break;
                 case "getAgent_Name":
                     getAgent_Name(context);
                     break;
-
-                //
                 case "get_fillsaleoffice_details_despatch":
                     get_fillsaleoffice_details_despatch(context);
                     break;
@@ -1013,8 +1005,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "get_Plant_DayWise_InventaryDetails":
                     get_Plant_DayWise_InventaryDetails(context);
                     break;
-
-
                 case "get_PlantDirectSales_Wise_InventaryDetails":
                     get_PlantDirectSales_Wise_InventaryDetails(context);
                     break;
@@ -1085,9 +1075,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "generate_ewaybill_using_IRN":
                     generate_ewaybill_using_IRN(context);
                     break;
-                    
-
-
                 case "Get_Agent_Einvoice_Details":
                     Get_Agent_Einvoice_Details(context);
                     break;
@@ -1098,8 +1085,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "btn_Click_GetInvoice":
                     btn_Click_GetInvoice(context);
                     break;
-                    
-
                 default:
                     var jsonString = String.Empty;
                     context.Request.InputStream.Position = 0;
@@ -1281,8 +1266,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         {
                             btnNewEditLeaksSaveClick(context);
                         }
-
-
                         if (obj.operation == "btnclosingstockedit")
                         {
                             btnclosingstockedit(context);
@@ -56176,7 +56159,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     }
     public class EWayClass
     {
-        
         public string Totalqty { get; set; }
         public string Totalvalue { get; set; }
         public string vehcleid { get; set; }
@@ -56187,22 +56169,17 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string DocName { get; set; }
         public string DocDate { get; set; }
         public string gstno { get; set; }
-        
         public string AgentName { get; set; }
         public string InvoiceNo { get; set; }
         public string hdnInvoiceno { get; set; }
         public string status_cd { get; set; }
-        
         public string status_desc { get; set; }
         public string GeneratedBy { get; set; }
-        
         public string ewb_no { get; set; }
         public string ewb_date { get; set; }
         public string ewb_expiredate { get; set; }
-        
         public string Irn { get; set; }
         public int Distance { get; set; }
-        
         public string TransMode { get; set; }
         public string TransName { get; set; }
         public string TransDocDt { get; set; }
@@ -56213,13 +56190,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string Type { get; set; }
         public string InvoiceStatus { get; set; }
         public string UserType { get; set; }
-        
-
-
-
     }
-
-
 
     private void GetEWayDetails(HttpContext context)
     {
@@ -56444,9 +56415,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     //    public string VehNo { get; set; }
     //    public string VehType { get; set; }
     //}
-
-    
-
 
     public class Response_EwayData
     {
