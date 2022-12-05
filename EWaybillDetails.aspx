@@ -2,12 +2,15 @@
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-    <script src="js/jquery-1.4.4.js" type="text/javascript"></script>
-    <script src="Js/JTemplate.js?v=3000" type="text/javascript"></script>
-    <script src="Js/jquery.blockUI.js?v=3005" type="text/javascript"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="js/jquery.blockUI.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" href="Css/VyshnaviStyles.css" />
     <script src="js/jquery.json-2.4.js" type="text/javascript"></script>
-    <script src="src/jquery-ui-1.8.13.custom.min.js" type="text/javascript"></script>
+    <script src="JIC/JIC.js?v=101" type="text/javascript"></script>
+    <script src="JSF/imagezoom.js" type="text/javascript"></script>
+    <script src="Plant/Script/fleetscript.js?v=3006" type="text/javascript"></script>
     <%-- <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css" />
     <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>--%>
     <script src="Barcode/jquery-barcode.js" type="text/javascript"></script>
@@ -234,7 +237,7 @@
                     }
                     $('.cls_VehNo').autocomplete({
                         source: VehiclesList,
-                        change: vehclenamechange,
+                        //change: vehclenamechange,
                         autoFocus: true
                     });
                 }
@@ -245,16 +248,16 @@
             callHandler(data, s, e);
         }
 
-        function vehclenamechange() {
-            var vehcleid = document.getElementById("ddlvehcle").value;;
-            for (var i = 0; i < BindVehicles.length; i++) {
-                var VehicleNo = BindVehicles[i].VehicleNo;
-                if (vehcleid == VehicleNo) {
-                    document.getElementById("spnvehicleid").value = BindVehicles[i].sno;
-                }
+        //function vehclenamechange() {
+        //    var vehcleid = document.getElementById("ddlvehcle").value;;
+        //    for (var i = 0; i < BindVehicles.length; i++) {
+        //        var VehicleNo = BindVehicles[i].VehicleNo;
+        //        if (vehcleid == VehicleNo) {
+        //            document.getElementById("spnvehicleid").value = BindVehicles[i].sno;
+        //        }
 
-            }
-        }
+        //    }
+        //}
 
         //Generate eWay Bill
         function Generate_eWayBill(id) {

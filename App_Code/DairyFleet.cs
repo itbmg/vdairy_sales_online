@@ -54221,7 +54221,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 objtrans.TaxSch = "GST";
                 objtrans.SupTyp = "B2B";
                 objtrans.RegRev = "Y";
-                objtrans.EcmGstin = "null";
+                //objtrans.EcmGstin = "null";
                 objtrans.IgstOnIntra = "N";
 
                 Rootlst.TranDtls = objtrans;
@@ -54632,7 +54632,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string productName { get; set; }
         public string productDesc { get; set; }
         public int hsnCode { get; set; }
-        public int quantity { get; set; }
+        public double quantity { get; set; }
         public string qtyUnit { get; set; }
         public int taxableAmount { get; set; }
         public double sgstRate { get; set; }
@@ -54679,6 +54679,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public int totInvValue { get; set; }
         public string transMode { get; set; }
         public string transDistance { get; set; }
+        //public string Distance { get; set; }
         public string transporterName { get; set; }
         //public string transporterId { get; set; }
         public string transDocNo { get; set; }
@@ -54695,19 +54696,32 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string client_secret { get; set; } //= "20f94dc1-5066-4ce5-8993-4d85b7899a0f";
         public string Email { get; set; } //= "naveen.vdmtech@gmail.com";
         public string gstin { get; set; }
-        public eWay_Login()
+        public eWay_Login(string soid)
         {
-            this.username = "Api_api_vyshnavids";
-            this.password = "Password@123";
-            this.client_id = "7b57fc57-4f88-41e7-a52e-00f642bc789c";
-            this.client_secret = "db685d26-1431-4aeb-9c42-1f73f5ef0d9c";
-            this.Email = "naveen.vdmtech@gmail.com";
-            this.gstin = "36AAGCS6022F1ZJ";
+            if (soid == "4")
+            {
+                this.username = "API_dairysoftap";
+                this.password = "Password@123";
+                this.client_id = "83416692-7826-419a-8922-790556910a80";
+                this.client_secret = "20f94dc1-5066-4ce5-8993-4d85b7899a0f";
+                this.Email = "naveen.vdmtech@gmail.com";
+                this.gstin = "37AAGCS6022F1ZH";
+            }
+            else
+            {
+                this.username = "Api_api_vyshnavids";
+                this.password = "Password@123";
+                this.client_id = "7b57fc57-4f88-41e7-a52e-00f642bc789c";
+                this.client_secret = "db685d26-1431-4aeb-9c42-1f73f5ef0d9c";
+                this.Email = "naveen.vdmtech@gmail.com";
+                this.gstin = "36AAGCS6022F1ZJ";
+            }
         }
     }
-    eWay_Login ewaylogin = new eWay_Login();
-    private authenticate_response authenticate_ewaybill()
+    private authenticate_response authenticate_ewaybill(string SOID)
     {
+        eWay_Login ewaylogin = new eWay_Login(SOID);
+
         using (var httpClient = new HttpClient())
         {
             using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/ewaybillapi/v1.03/authenticate?email=naveen.vdmtech%40gmail.com&username=Api_api_vyshnavids&password=Password%40123"))
@@ -54865,9 +54879,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 obj_root.docDate = fromdate.ToString("dd/MM/yyyy");
                 obj_root.transactionType = 1;
                 obj_root.transMode = "1";
-                obj_root.transDistance = Distance;
+                obj_root.transDistance = "0";
                 obj_root.transporterName = "Vyshnavi Foods";
-                //obj_root.transporterId = "B2B";
+                //obj_root.Distance = "0";
                 obj_root.transDocNo = "B2B";
                 obj_root.transDocDate = fromdate.ToString("dd/MM/yyyy"); ;
                 obj_root.vehicleNo = vehcleno;
@@ -54926,10 +54940,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     obj_items.hsnCode = Convert.ToInt32(dritem["hsncode"].ToString());
                     obj_items.qtyUnit = dritem["Units"].ToString();
                     float qty = 0;
+                    double Q_ty = 0;
                     float.TryParse(dritem["DeliveryQty"].ToString(), out qty);
                     float rate = 0;
                     float.TryParse(dritem["Unitcost"].ToString(), out rate);
-                    obj_items.quantity = Convert.ToInt32(dritem["DeliveryQty"].ToString());
+                    double.TryParse(dritem["DeliveryQty"].ToString(), out Q_ty);
+                    obj_items.quantity = Q_ty;
                     double sgstamount = 0;
                     double cgstamount = 0;
                     double Igst = 0;
@@ -55049,7 +55065,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
                 //Rootlst.ValDtls = objval;
                 //EwayList.Add(ewayobj);
-                authenticate_response newobj = authenticate_ewaybill();
+                authenticate_response newobj = authenticate_ewaybill(SOID);
                 var str1 = ""; var str2 = "";
                 if (newobj.status_desc == "If authentication succeeds")
                 {
@@ -55087,6 +55103,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
     private string generate_ewaybill_Non_Registerd(string from_date, string SOID, string AgentID, string jsonresponse)
     {
+        eWay_Login ewaylogin = new eWay_Login(SOID);
+
         DateTime fromdate = Convert.ToDateTime(from_date);
 
         using (var httpClient = new HttpClient())
@@ -55336,14 +55354,27 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string client_secret { get; set; } //= "20f94dc1-5066-4ce5-8993-4d85b7899a0f";
         public string Email { get; set; } //= "naveen.vdmtech@gmail.com";
         public string gstin { get; set; }
-        public EInvoice_Login()
+        public string soid { get; set; }
+        public EInvoice_Login(string soid)
         {
-            this.username = "Api_api_vyshnavids";
-            this.password = "Password@123";
-            this.client_id = "83416692-7826-419a-8922-790556910a80";
-            this.client_secret = "20f94dc1-5066-4ce5-8993-4d85b7899a0f";
-            this.Email = "naveen.vdmtech@gmail.com";
-            this.gstin = "36AAGCS6022F1ZJ";
+            if (soid == "4")
+            {
+                this.username = "API_dairysoftap";
+                this.password = "Password@123";
+                this.client_id = "83416692-7826-419a-8922-790556910a80";
+                this.client_secret = "20f94dc1-5066-4ce5-8993-4d85b7899a0f";
+                this.Email = "naveen.vdmtech@gmail.com";
+                this.gstin = "37AAGCS6022F1ZH";
+            }
+            else
+            {
+                this.username = "Api_api_vyshnavids";
+                this.password = "Password@123";
+                this.client_id = "83416692-7826-419a-8922-790556910a80";
+                this.client_secret = "20f94dc1-5066-4ce5-8993-4d85b7899a0f";
+                this.Email = "naveen.vdmtech@gmail.com";
+                this.gstin = "36AAGCS6022F1ZJ";
+            }
         }
     }
 
@@ -55406,10 +55437,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
         throw new Exception("Error");
     }
-   
-    EInvoice_Login Elogin = new EInvoice_Login();
-    private authenticate_response authenticate_e_invoice()
+
+    private authenticate_response authenticate_e_invoice(string SOID)
     {
+        EInvoice_Login Elogin = new EInvoice_Login(SOID);
+
         using (var httpClient = new HttpClient())
         {
             using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/einvoice/authenticate?email=naveen.vdmtech%40gmail.com"))
@@ -55452,7 +55484,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             //responce_data obj;
             EInvoice.Root Rootlst = new EInvoice.Root();
 
-            authenticate_response newobj = authenticate_e_invoice();
+            authenticate_response newobj = authenticate_e_invoice(SOID);
             var str1 = ""; string str2 = "";
             if (newobj.status_cd == "Sucess")
             {
@@ -55465,7 +55497,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 Response_EInvoice obj = js.Deserialize<Response_EInvoice>(str1);
                 if (obj.status_cd == "1")
                 {
-                    str1 = "eInvoice Raised successfully";
+                    str2 = "eInvoice Raised successfully";
                 }
                 else
                 {
@@ -55488,7 +55520,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     private string Get_e_invoice_JsonData(string AgentID, string from_date, string SOID)
     {
         try
-        {
+        { 
             #region "Json"
             vdbmngr = new VehicleDBMgr();
             DateTime fromdate = Convert.ToDateTime(from_date);
@@ -55700,11 +55732,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     objbuyer.Em = drbuyer["email"].ToString();
 
                     tostate = drbuyer["stateid"].ToString();
-                    tostate = "36";
+                    //tostate = "36";
 
                     foreach (DataRow drstate in dtstates.Select("sno='" + drbuyer["stateid"].ToString() + "'"))
                     {
-                        fromstate = drstate["gststatecode"].ToString(); ;
+                        tostate = drstate["gststatecode"].ToString(); ;
                         objbuyer.Pos = drstate["gststatecode"].ToString();
                         objbuyer.Stcd = drstate["gststatecode"].ToString();
                     }
@@ -55987,8 +56019,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     {
         //try
         //{
+        EInvoice_Login Elogin = new EInvoice_Login(SOID);
+
         DateTime fromdate = Convert.ToDateTime(from_date);
         vdbmngr = new VehicleDBMgr();
+        
         using (var httpClient = new HttpClient())
         {
             using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/GENERATE/version/V1_03?email=naveen.vdmtech%40gmail.com"))
@@ -56058,7 +56093,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             
             string authToken = "";
             authenticate_response newobj =new authenticate_response();
-            newobj = authenticate_e_invoice();
+            newobj = authenticate_e_invoice(SOID);
 
             //if (context.Session["Token"].ToString() == "")
             //{
@@ -56072,7 +56107,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             if (newobj.status_cd == "Sucess")
             {
                 authToken = newobj.data.authtoken;
-                str1 = get_e_envoice_details(authToken, IRN_No);
+                str1 = get_e_envoice_details(authToken, IRN_No,SOID);
             }
             string res = GetJson(str1);
             context.Response.Write(res);
@@ -56084,8 +56119,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
     }
 
-    private string get_e_envoice_details(string token, string IRN_No)
+    private string get_e_envoice_details(string token, string IRN_No,string SOID)
     {
+        EInvoice_Login Elogin = new EInvoice_Login(SOID);
         using (var httpClient = new HttpClient())
         {
             // IRNNUMBER (IRN == Invoice Reference Number ) send dynamically 
@@ -56111,19 +56147,21 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
     private string cancel_invoice_reference_number(string token, string irnNumber)
     {
+
+
         using (var httpClient = new HttpClient())
         {
-            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/CANCEL/version/V1_03?email=naveen.vdmtech%40gmail.com&username=" + Elogin.username))
+            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/CANCEL/version/V1_03?email=naveen.vdmtech%40gmail.com"))
             {
                 string ip_address = GetLocalIPAddress();
                 if (ip_address == "Error")
                     ip_address = "182.18.162.51:52144";
                 request.Headers.TryAddWithoutValidation("Accept", "application/json");
-                request.Headers.TryAddWithoutValidation("ip_address", ip_address);
-                request.Headers.TryAddWithoutValidation("client_id", Elogin.client_id);
-                request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
-                request.Headers.TryAddWithoutValidation("auth-token", token);
-                request.Headers.TryAddWithoutValidation("gstin", Elogin.gstin);
+                //request.Headers.TryAddWithoutValidation("ip_address", ip_address);
+                //request.Headers.TryAddWithoutValidation("client_id", Elogin.client_id);
+                //request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
+                //request.Headers.TryAddWithoutValidation("auth-token", token);
+                //request.Headers.TryAddWithoutValidation("gstin", Elogin.gstin);
 
                 //BODY
                 // request.Content = new StringContent("{"Irn": "+irnNumber+",  "CnlRsn": "1",  "CnlRem": "Wrong entry"}  ", Encoding.UTF8, "application/json");
@@ -56196,6 +56234,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     {
         try
         {
+
             vdbmngr = new VehicleDBMgr();
             string ToDate = context.Request["FromDate"];
             DateTime fromdate = Convert.ToDateTime(ToDate);
@@ -56352,7 +56391,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         obj.ewb_expiredate = dritem["expiry_date"].ToString();
                         obj.UserType = dritem["type"].ToString();
                         obj.InvoiceNo = DcNo;
-                        obj.GeneratedBy = Elogin.gstin;
+                        //obj.GeneratedBy = Elogin.gstin;
 
                         if (ddltype == "R")
                         { 
@@ -56533,7 +56572,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             ewayobj.VehNo = vehcleno;
             ewayobj.VehType = "R";
             EwayList.Add(ewayobj);
-            authenticate_response newobj = authenticate_e_invoice();
+            authenticate_response newobj = authenticate_e_invoice(SOID);
             var str1 = "";var str2 = "";
             if (newobj.status_cd == "Sucess")
             {
@@ -56570,6 +56609,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
     private string generate_ewaybill_using_IRN(string authToken, string from_date, string SOID, string AgentID, string jsonresponse)
     {
+        EInvoice_Login Elogin = new EInvoice_Login(SOID);
+
         DateTime fromdate = Convert.ToDateTime(from_date);
 
         using (var httpClient = new HttpClient())
@@ -56631,15 +56672,15 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     {
         using (var httpClient = new HttpClient())
         {
-            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/einvoice/type/GETEWAYBILLIRN/version/V1_03?param1==" + irnNumber + "&supplier_gstn=" + suppliergstin + "&email=naveen.vdmtech%40gmail.com&username=" + Elogin.username))
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/einvoice/type/GETEWAYBILLIRN/version/V1_03?param1==" + irnNumber + "&supplier_gstn=" + suppliergstin + "&email=naveen.vdmtech%40gmail.com"))
             {
                 string ip_address = GetLocalIPAddress();
                 if (ip_address == "Error")
                     ip_address = "182.18.162.51:52144";
                 request.Headers.TryAddWithoutValidation("Accept", "application/json");
                 request.Headers.TryAddWithoutValidation("ip_address", ip_address);
-                request.Headers.TryAddWithoutValidation("client_id", Elogin.client_id);
-                request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
+                //request.Headers.TryAddWithoutValidation("client_id", Elogin.client_id);
+                //request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
                 request.Headers.TryAddWithoutValidation("auth-token", token);
                 request.Headers.TryAddWithoutValidation("gstin", gstin);
 

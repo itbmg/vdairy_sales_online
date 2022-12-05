@@ -215,7 +215,7 @@ public class EInvoice
         public string TaxSch { get; set; }
         public string SupTyp { get; set; }
         public string RegRev { get; set; }
-        public object EcmGstin { get; set; }
+        //public object EcmGstin { get; set; }
         public string IgstOnIntra { get; set; }
     }
 
