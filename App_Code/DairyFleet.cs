@@ -55492,7 +55492,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 context.Session["Token"] = authToken;
                 string response = Get_e_invoice_JsonData(AgentID, from_date, SOID);
                 var jsonresponse = JsonConvert.DeserializeObject<EInvoice.Root>(response);
-                str1 = generate_e_invoice_details(authToken, from_date, SOID, AgentID, response);
+                string empsno = context.Session["UserSno"].ToString();
+                str1 = generate_e_invoice_details(authToken, from_date, SOID, AgentID, empsno, response);
                 var js = new JavaScriptSerializer();
                 Response_EInvoice obj = js.Deserialize<Response_EInvoice>(str1);
                 if (obj.status_cd == "1")
@@ -56015,7 +56016,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string status_desc { get; set; }
     }
 
-    private string generate_e_invoice_details(string token, string from_date, string SOID, string AgentID, string jsonresponse)
+    private string generate_e_invoice_details(string token, string from_date, string SOID, string AgentID,string empsno, string jsonresponse)
     {
         //try
         //{
@@ -56059,7 +56060,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     string SignedInvoice = obj.data.SignedInvoice;
                     DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
 
-                    cmd = new MySqlCommand("Insert Into e_invoice (agentid,e_invoiceno,soid,stateid,ack_no,ack_date,invoicedate,signed_qr_code,status) Values(@BranchId,@agentdcno,@soid,@stateid,@ack_no,@ack_date,@invoicedate,@signed_qr_code,@status)");
+                    cmd = new MySqlCommand("Insert Into e_invoice (agentid,e_invoiceno,soid,stateid,ack_no,ack_date,invoicedate,signed_qr_code,status,user_type,created_by,created_date) Values(@BranchId,@agentdcno,@soid,@stateid,@ack_no,@ack_date,@invoicedate,@signed_qr_code,@status,@user_type,@created_by,@created_date)");
                     cmd.Parameters.AddWithValue("@BranchId", AgentID);
                     cmd.Parameters.AddWithValue("@agentdcno", IRN_No);
                     cmd.Parameters.AddWithValue("@soid", SOID);
@@ -56070,6 +56071,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     cmd.Parameters.AddWithValue("@signed_qr_code", SignedQRCode);
                     cmd.Parameters.AddWithValue("@SignedInvoice", SignedInvoice);
                     cmd.Parameters.AddWithValue("@status", "R");
+                    cmd.Parameters.AddWithValue("@user_type", "R");
+                    cmd.Parameters.AddWithValue("@created_by", empsno);
+                    cmd.Parameters.AddWithValue("@created_date", ServerDateCurrentdate);
                     vdbmngr.insert(cmd);
                 }
                 return contents;
