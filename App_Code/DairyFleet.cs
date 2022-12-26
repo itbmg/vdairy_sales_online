@@ -25686,7 +25686,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
             DateTime dtchequedate = new DateTime();
             DateTime paydate = new DateTime();
-            paydate = DateTime.Parse(PaidDate);
+            
             if (chequeDate != "")
             {
                 dtchequedate = DateTime.Parse(chequeDate);
@@ -25717,8 +25717,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             string remarks = "Other Collections";
             cmd = new MySqlCommand("SELECT Branchid, UserData_sno, AmountPaid, Denominations, Remarks, Sno, PaidDate FROM collections WHERE (Branchid = @BranchID) AND (PaidDate BETWEEN @d1 AND @d2)");
             cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
-            cmd.Parameters.AddWithValue("@d1", GetLowDate(paydate));
-            cmd.Parameters.AddWithValue("@d2", GetHighDate(paydate));
+            cmd.Parameters.AddWithValue("@d1", GetLowDate(CurDate));
+            cmd.Parameters.AddWithValue("@d2", GetHighDate(CurDate));
             DataTable dtcashbookstatus = vdbmngr.SelectQuery(cmd).Tables[0];
             if (paymenttype == "Cheque" || paymenttype == "Bank Transfer")
             {
