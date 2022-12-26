@@ -31190,7 +31190,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         try
         {
             vdbmngr = new VehicleDBMgr();
-
+            DBManager vdm = new DBManager();
             string SalesType = context.Request["SalesType"].ToString();
             DataTable dtDispatches = new DataTable();
             if (SalesType == "Local Sale" || SalesType == "Free Sale")
@@ -31199,6 +31199,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
                 dtDispatches = vdbmngr.SelectQuery(cmd).Tables[0];
             }
+            else
+            {
+                cm_d = new SqlCommand("SELECT employee_num, fullname,ledgername AS DispName, branchid,empid AS sno FROM  employedetails  where  status ='NO'");
+                dtDispatches = vdm.SelectQuery(cm_d).Tables[0];
+            }
+        
 
             List<Routes> Routelist = new List<Routes>();
             foreach (DataRow dr in dtDispatches.Rows)
