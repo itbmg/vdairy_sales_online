@@ -246,7 +246,7 @@
                 return false;
             }
             
-            var data = { 'operation': 'GetNewEditLeaksReturnsClick', 'RouteID': ddlRouteName, 'soid': ddlSalesOffice, 'IndDate': txtDate, 'ddledittype': ddledittype };
+            var data = { 'operation': 'GetEditLeaksReturnsClick', 'RouteID': ddlRouteName, 'soid': ddlSalesOffice, 'IndDate': txtDate, 'ddledittype': ddledittype };
             var s = function (msg) {
                 if (msg) {
                     $('#divFillScreen').removeTemplate();
@@ -321,7 +321,7 @@
                 alert("Select Edit Type");
                 return false;
             }
-            var data = { 'operation': 'btnNewEditLeaksSaveClick', 'data': Indentdetails, 'invdata': Inventorydetails, 'refno': ddlRouteName, 'indentdate': txtDate, 'edittype': ddledittype, 'BranchID': ddlSalesOffice };
+            var data = { 'operation': 'btnEditLeaksSaveClick', 'data': Indentdetails, 'invdata': Inventorydetails, 'refno': ddlRouteName, 'indentdate': txtDate, 'edittype': ddledittype, 'BranchID': ddlSalesOffice };
             var s = function (msg) {
                 if (msg) {
                     alert(msg);
