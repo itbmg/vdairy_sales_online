@@ -14595,7 +14595,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         else
                         {
                             DateTime dtjuly = new DateTime();
-                            string jul = "7/18/" + currentyear;
+                            string jul = "7/18/2022";
                             dtjuly = DateTime.Parse(jul);
                             if (dtjuly > fromdate.AddDays(1))
                             {
@@ -15060,7 +15060,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     {
 
                         DateTime dtjuly = new DateTime();
-                        string jul = "7/18/" + currentyear;
+                        string jul = "7/18/2022";
                         dtjuly = DateTime.Parse(jul);
                         if (dtjuly > fromdate.AddDays(1))
                         {
@@ -15739,7 +15739,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         else
                         {
                             DateTime dtjuly = new DateTime();
-                            string jul = "7/18/" + currentyear;
+                            string jul = "7/18/2022";
                             dtjuly = DateTime.Parse(jul);
                             if (dtjuly > fromdate)
                             {
@@ -16025,7 +16025,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     foreach (DataRow dr in dtInvoice.Rows)
                     {
                         DateTime dtjuly = new DateTime();
-                        string jul = "7/18/" + currentyear;
+                        string jul = "7/18/2022";
                         dtjuly = DateTime.Parse(jul);
                         if (dtjuly > fromdate)
                         {
@@ -18612,7 +18612,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             if (dr["ProductId"].ToString() == drprdt["sno"].ToString())
                             {
                                 DateTime dtjuly = new DateTime();
-                                string jul = "7/18/" + currentyear;
+                                string jul = "7/18/2022";
                                 dtjuly = DateTime.Parse(jul);
                                 if (dtjuly > AssignDate.AddDays(1))
                                 {
@@ -19153,7 +19153,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 else
                                 {
                                     DateTime dtjuly = new DateTime();
-                                    string jul = "7/18/" + currentyear;
+                                    string jul = "7/18/2022";
                                     dtjuly = DateTime.Parse(jul);
                                     if (dtjuly > AssignDate.AddDays(1))
                                     {
