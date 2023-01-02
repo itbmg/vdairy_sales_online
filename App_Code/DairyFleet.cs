@@ -26,7 +26,6 @@ using Newtonsoft.Json;
 //{
 public class DairyFleet : IHttpHandler, IRequiresSessionState
 {
-
     public DairyFleet()
     {
         //
@@ -41,7 +40,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     {
         public string op { set; get; }
     }
-
     class CashDetails
     {
         public string SNo { set; get; }
@@ -1160,7 +1158,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             //context.Response.Write(ex.Message);
         }
     }
-
     class invcollectionsave
     {
         public string op { set; get; }
@@ -1170,7 +1167,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string RouteSno { set; get; }
         public string btnvalue { set; get; }
         public string inddate { set; get; }
-
     }
     private void CollectioninventrySaveClick(HttpContext context)
     {
@@ -1341,7 +1337,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     }
     public class collectiondetails
     {
-
         public string sno { get; set; }
         public string AmountPaid { get; set; }
         public string Denominations { get; set; }
@@ -1422,7 +1417,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string Title { get; set; }
         public string lblReceived { get; set; }
     }
-
     private void Get_Voucher_Print_Details(HttpContext context)//akbar
     {
 
@@ -1536,12 +1530,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     }
     public class employeedetails
     {
-
         public string employeename { get; set; }
         public string logintime { get; set; }
-
         public string logouttime { get; set; }
-
         public string sessiontimeout { get; set; }
         public string ipaddress { get; set; }
         public string devicetype { get; set; }
@@ -1551,10 +1542,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string outtime { get; set; }
         public string timeinterval { get; set; }
         public string sno { get; set; }
-
-
-
-
     }
     private void btn_getlogininfoemployee_details(HttpContext context)
     {
@@ -1757,8 +1744,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string fromstatename { get; set; }
         public string fromstatecode { get; set; }
         public string fromgstin { get; set; }
-
-
         public List<ReturnStockSubDetails> Returnstockarr { get; set; }
     }
     public class ReturnStockSubDetails
@@ -1775,7 +1760,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public List<ReturnStocDetails> ReturnStocDetails { get; set; }
         public List<ReturnStockSubDetails> ReturnStockSubDetails { get; set; }
     }
-
     public class AgentDueTransactionClass
     {
         public string Sno { get; set; }
@@ -1788,7 +1772,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string ClosingAmount { get; set; }
         public string OppeningBalance { get; set; }
     }
-
     public class agentdueclosingdetails
     {
         public string btnval { get; set; }
@@ -2355,7 +2338,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     public class HrmsEmployee
     {
         public string empid { get; set; }
@@ -2367,7 +2349,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string empname { get; set; }
         public string netpay { get; set; }
     }
-
     private void getRouteClassification(HttpContext context)
     {
         try
@@ -2938,8 +2919,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string difference { get; set; }
         public string BranchID { get; set; }
         public string BranchName { get; set; }
-
-
     }
     public class CategoryClassifications
     {
@@ -2949,13 +2928,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string difference { get; set; }
         public string salesbranchid { get; set; }
     }
-
     public class ClassificationClass
     {
         public List<RouteClassification> RouteClassification { get; set; }
         public List<CategoryClassifications> CategoryClassifications { get; set; }
     }
-
     #region
     private void GetBranchwiseDetailsInformation(HttpContext context)
     {
@@ -3945,8 +3922,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         }
     }
-
-
     public class approvalplan
     {
         public string Sno { set; get; }
@@ -3980,9 +3955,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string clostock { set; get; }
         public string CollAmount { set; get; }
         public string DueAmount { set; get; }
-
     }
-
     public class GroupWiseClass
     {
         public string GroupTotDispQty { get; set; }
@@ -3990,7 +3963,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string GroupTotCollectionValue { get; set; }
         public string GroupDueAmount { get; set; }
     }
-
     public class MainGroupWiseClass
     {
         public List<approvalplan> ApprovalPlanDetails { get; set; }
@@ -4008,19 +3980,15 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     public class DayWiseDatescls
     {
         public string DeliveryDates { get; set; }
-
         public string ThisMonthDate { get; set; }
         public string LastMonthDate { get; set; }
         public string LastYearDate { get; set; }
     }
-
     public class MainDayWiseProductDetails
     {
         public List<DayWiseDatescls> daywisedatescls { get; set; }
         public List<DayWiseProductcls> daywiseproductcls { get; set; }
-
     }
-    //double totalqty = 0;
     private void GetProductInformation(HttpContext context)
     {
         try
@@ -4380,7 +4348,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     public class PieValues
     {
         public List<string> RouteName { get; set; }
@@ -4391,7 +4358,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string totalqty { get; set; }
         public List<PieValueTableClass> PieValueTableClass { get; set; }
     }
-
     public class PieValueTableClass
     {
         public string RouteName { get; set; }
@@ -4401,12 +4367,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string AverageyQty { get; set; }
         public string SaleValue { get; set; }
         public string AvgSaleValue { get; set; }
-
-
-
         public string catidandBranchid { get; set; }
     }
-
     private void GetCategoryWiseChart(HttpContext context)
     {
         try
@@ -4899,8 +4861,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-
     private void Get_Dispatch_Sale_CategoryWise(HttpContext context)
     {
         try
@@ -5243,8 +5203,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-
     private void branchwise_Dispatch_milk_qty(HttpContext context)
     {
         try
@@ -6009,8 +5967,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-
     private void branchwise_Others_Dispatch_qty1(HttpContext context)
     {
         try
@@ -6301,8 +6257,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-
     private void Route_Wise_Other_SaleQty(HttpContext context)
     {
         try
@@ -7595,7 +7549,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     private void Route_Wise_DueAmount(HttpContext context)
     {
         try
@@ -7847,7 +7800,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     private void Agent_Wise_DueAmount(HttpContext context)
     {
         try
@@ -11073,8 +11025,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-
     private void get_RouteWiseDay_Comparison(HttpContext context)
     {
         try
@@ -11621,7 +11571,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     private void Get_AgentWiseDayProduct_Comparison(HttpContext context)
     {
         try
@@ -12367,8 +12316,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-
     private void Get_SalesOfficeBetweenDayProduct_Comparison(HttpContext context)
     {
         try
@@ -12543,8 +12490,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-
     private void Get_SalesTypeBetweenDayProduct_Comparison(HttpContext context)
     {
         try
@@ -12680,8 +12625,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-
     private void Get_RouteWiseBetweenDayProduct_Comparison(HttpContext context)
     {
         try
@@ -12817,8 +12760,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-
     public class IndentClass
     {
         public string RouteName { get; set; }
@@ -12833,7 +12774,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string AgentName { get; set; }
         public string sno { get; set; }
         public string Route_id { get; set; }
-
     }
     private void getAgent_Name(HttpContext context)
     {
@@ -12865,10 +12805,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-
     #endregion
-    //ok
     private void GetPaidVouchers(HttpContext context)
     {
         try
@@ -12955,9 +12892,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-
-    //ok
     private void GetBtnViewPaidVoucherclick(HttpContext context)
     {
         try
@@ -13024,7 +12958,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     private void saveBankDetails(HttpContext context)
     {
         try
@@ -13067,7 +13000,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(Response);
         }
     }
-
     public class BankMaster
     {
         public string name { get; set; }
@@ -13103,8 +13035,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         }
     }
-
-
     private void get_Employees_leveltypes(HttpContext context)
     {
         try
@@ -13153,7 +13083,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     public class Indclass
     {
         public string sno { get; set; }
@@ -13331,7 +13260,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public List<Aagent_Invoice> Aagent_Invoice { get; set; }
         public List<Aagent_Invoice_item_det> Aagent_Invoice_item_det { get; set; }
         public List<Aagent_Inventary> Aagent_Inventary { get; set; }
-
     }
 
     public class Aagent_Invoice_item_det
@@ -13344,7 +13272,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string Vat { get; set; }
         public string rate { get; set; }
         public string uomqty { get; set; }
-
         public string hsncode { get; set; }
         public string uom { get; set; }
         public string discount { get; set; }
@@ -13361,7 +13288,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string invoiceno { get; set; }
         public string pktqty { get; set; }
         public string TempInvoice { get; set; }
-
     }
     public class Aagent_Invoice
     {
@@ -13371,7 +13297,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string city { get; set; }
         public string companyphone { get; set; }
         public string companyemail { get; set; }
-
         public string AgentAddress { get; set; }
         public string BranchAddress { get; set; }
         public string ponumber { get; set; }
@@ -13449,7 +13374,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(Response);
         }
     }
-
     private void save_customerdocument(HttpContext context)
     {
         try
@@ -13502,8 +13426,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
-
     private void btnUpdateQuotationPoNumbers(HttpContext context)
     {
         try
@@ -13541,7 +13463,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void btnAgent_indent_Invoice_click(HttpContext context)
     {
         try
@@ -14745,7 +14666,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void btnAgentInvoice_click(HttpContext context)
     {
         try
@@ -15997,7 +15917,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     public class SaleRepresentive
     {
         public string AgentName { get; set; }
@@ -16432,14 +16351,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     public class MobileNumbers
     {
         public string sno { get; set; }
         public string dispno { get; set; }
         public string btnval { get; set; }
         public List<DispatchMobile> Mobilnumarr { get; set; }
-
     }
     public class DispatchMobile
     {
@@ -16450,7 +16367,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string msgtype { get; set; }
         public string dispatchid { get; set; }
         public string sno { get; set; }
-
     }
     private void saveDispatchMobileNumbers(HttpContext context)
     {
@@ -16606,13 +16522,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(Response);
         }
     }
-
-
     public class AgentSale
     {
         public string ProductName { get; set; }
         public string rate { get; set; }
-
         public string salevalue { get; set; }
         public string Month { get; set; }
         public string str { get; set; }
@@ -16645,13 +16558,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
     public class ProductMonthlySale
     {
-
         public string salevalue { get; set; }
         public string BranchName { get; set; }
         public string Branchid { get; set; }
         public string Month { get; set; }
         public string DelivaryQty { get; set; }
-
     }
     public class AgentInentive
     {
@@ -16662,7 +16573,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string TotalDiscount { get; set; }
         public string Remarks { get; set; }
     }
-
     public class ProductMonthlySaleDetails
     {
         public List<ProductSale> ProductSale { get; set; }
@@ -16985,7 +16895,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(Response);
         }
     }
-
     private void get_Product(HttpContext context)
     {
         try
@@ -17004,7 +16913,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     private void get_Product_Monthly_Sale_Pie(HttpContext context)
     {
         try
@@ -17455,16 +17363,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string filter { get; set; }
         public string joingmonths { get; set; }
     }
-
-
-
     public class incentive
     {
         public string TotalLtrs { get; set; }
         public string productname { get; set; }
         public string indentdate { get; set; }
         public List<subincentive> subincentive { get; set; }
-
     }
     public class subincentive
     {
@@ -17482,8 +17386,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public List<subincentive> SubIsncentive { get; set; }
         public List<incentive> incentive { get; set; }
     }
-
-
     public class Invoice_Details
     {
         public string invoicenumber { get; set; }
@@ -17495,15 +17397,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string Remarks { get; set; }
         public string Date { get; set; }
         public string btnval { get; set; }
-
         public string BranchName { get; set; }
         public string AgentName { get; set; }
         public string RouteName { get; set; }
         public string totalamount { get; set; }
-
         public string sno { get; set; }
         public List<Invoice_Sub_Details> invoice_arr { get; set; }
-
     }
     public class Invoice_Sub_Details
     {
@@ -17511,7 +17410,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string invoiceno { get; set; }
         public string sno { get; set; }
         public string refno { get; set; }
-
     }
     private void Product_Image_files_upload(HttpContext context)
     {
@@ -17548,10 +17446,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     float leakpercentage = 0.0f;
     double totmilkamt = 0;
-    //DataTable Report = new DataTable();
     private void get_Agentwise_incentive_statements(HttpContext context)
     {
         try
@@ -18766,7 +18662,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             //grdReports.DataBind();
         }
     }
-
     public class dcproductDetails
     {
         public string sno { get; set; }
@@ -18778,8 +18673,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string amount { get; set; }
         public string OfferQty { get; set; }
         public string uomqty { get; set; }
-
-        //GSTuomqty
         public string hsncode { get; set; }
         public string uom { get; set; }
         public string discount { get; set; }
@@ -18792,7 +18685,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string igstamount { get; set; }
         public string itemcode { get; set; }
         public string totalamount { get; set; }
-
     }
     private void get_DeliveryChallan_click(HttpContext context)
     {
@@ -19192,7 +19084,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     public class DcmainDetails
     {
         public string Title { get; set; }
@@ -19235,8 +19126,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string Stocktransfer { get; set; }
         public string SBranchid { get; set; }
         public string Branchid { get; set; }
-
-
         public string TripId { get; set; }
         public string AssignDate { get; set; }
         public string Permissions { get; set; }
@@ -19244,7 +19133,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string DispatchName { get; set; }
         public string Employee { get; set; }
     }
-    
     private void get_DC_details_click(HttpContext context)
     {
         try
@@ -19340,7 +19228,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     }
     public class addressmaster
     {
-
         public string distributorname { get; set; }
         public string sno { get; set; }
         public string companyname { get; set; }
@@ -19966,7 +19853,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     private void GetLineChart_agentduetransactions(HttpContext context)
     {
         try
@@ -20513,15 +20399,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     {
         public string DespName { get; set; }
     }
-    
     #region "PARLOUR Code"
-
     public class DespClass
     {
         public string Sno { get; set; }
         public string DispName { get; set; }
     }
-
     public class TripSubData
     {
         public string Sno { get; set; }
@@ -20530,9 +20413,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string Qty { get; set; }
         public string remQty { get; set; }
     }
-
-
-
     public class TripInvData
     {
         public string Sno { get; set; }
@@ -20540,7 +20420,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string InventorySno { get; set; }
         public string Qty { get; set; }
     }
-
     class Inventorydetail
     {
         public string SNo { set; get; }
@@ -20552,7 +20431,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     }
 
     #endregion "PARLOUR Code"
-
     #region "GatePass Details Code"
     private void btnGatePassDeatailsSaveclick(HttpContext context)
     {
@@ -20617,7 +20495,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
     }
     #endregion "GatePass Details Code"
-
     private void GetRouteAgentInformation(HttpContext context)
     {
         try
@@ -20931,7 +20808,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string tabletype { get; set; }
         public string BranchId { get; set; }
         public string PuffLeaks { get; set; }
-
     }
     private void GetsoandPlantDespNames(HttpContext context)
     {
@@ -21076,7 +20952,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         }
     }
-
     private void getLineChartforsubcategeoryReport1(HttpContext context)
     {
         try
@@ -21169,8 +21044,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-
     private void GetAgentPrdtInformation(HttpContext context)
     {
         try
@@ -21246,7 +21119,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         }
     }
-
     public class TotalProductclass
     {
         public string subCatsno { get; set; }
@@ -21262,24 +21134,19 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     }
     public class SubTotalProductclass
     {
-
         public string MilkQty { get; set; }
         public string CurdQty { get; set; }
         public string OtherQty { get; set; }
-
         public string MilkValue { get; set; }
         public string CurdValue { get; set; }
         public string OthersValue { get; set; }
 
     }
-
     public class MainTotalProductclass
     {
         public List<TotalProductclass> TotalProductclass { get; set; }
         public List<SubTotalProductclass> SubTotalProductclass { get; set; }
     }
-
-
     class AgentImages
     {
         public string ftplocation { get; set; }
@@ -21290,8 +21157,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string ftplocation { get; set; }
         public string Shop_Photo { get; set; }
     }
-
-
     class AgentMaster
     {
         public List<ShopImages> ShopImages { get; set; }
@@ -21431,8 +21296,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
 
     }
-
-
     private void btnVoucherUpdateClick(HttpContext context)
     {
         try
@@ -22223,7 +22086,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void GetEditCollectionValuesClick(HttpContext context)
     {
         try
@@ -22280,7 +22142,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         }
     }
-
     private void GetEditCollectionamountClick(HttpContext context)
     {
         try
@@ -22507,9 +22368,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
 
     }
-   
-
-
     private void btnAmountUpdateClick(HttpContext context)
     {
         try
@@ -22600,7 +22458,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void btnEditCollectionSaveClick(HttpContext context)
     {
         try
@@ -22852,9 +22709,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
-
-
     private void btnEditsalesofficeCollectionSaveClick(HttpContext context)
     {
         try
@@ -23048,7 +22902,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private DateTime GetLowMonthRetrive(DateTime dt)
     {
         double Day, Hour, Min, Sec;
@@ -23092,7 +22945,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
         return DT;
     }
-
     private void BtnCashAmountClick(HttpContext context)
     {
         #region
@@ -25105,12 +24957,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
         #endregion
     }
-
     private object GetLowDate(string fromdate)
     {
         throw new NotImplementedException();
     }
-
     private void GetAgentClosingAmount(HttpContext context)
     {
         try
@@ -25448,7 +25298,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         }
     }
-    
     private void GetHeadLimit(HttpContext context)
     {
         vdbmngr = new VehicleDBMgr();
@@ -25513,8 +25362,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         string response = GetJson(msg);
         context.Response.Write(response);
     }
-
-
     private void GetSalesOffices(HttpContext context)
     {
         try
@@ -25917,7 +25764,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     class VoucherPrintdetails
     {
         public string voucherid { get; set; }
@@ -25933,7 +25779,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string lblReceived { get; set; }
 
     }
-
     public static string NumToWordBD(Int64 Num)
     {
         string[] Below20 = { "", "One ", "Two ", "Three ", "Four ",
@@ -26007,7 +25852,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string HeadSno { get; set; }
         public string HeadOfAccount { get; set; }
         public string Amount { get; set; }
-
     }
     private void BtnClearRaiseVoucherClick(HttpContext context)
     {
@@ -26423,7 +26267,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     private void btnRejectVoucherclick(HttpContext context)
     {
         try
@@ -26464,7 +26307,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void btnApproveVoucherclick(HttpContext context)
     {
         try
@@ -26523,7 +26365,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void GetRaisedVouchers(HttpContext context)
     {
         try
@@ -26605,7 +26446,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string auditstatus { get; set; }
         public string branchvoucherid { get; set; }
         public string branchVocherID { get; set; }
-
     }
     private void BtnRaiseVoucherClick(HttpContext context)
     {
@@ -26971,7 +26811,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void GetApproveEmployeeNames(HttpContext context)
     {
         try
@@ -27070,7 +26909,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string Empname { get; set; }
         public string RouteName { get; set; }
         public string Vehicleno { get; set; }
-
     }
     private void btnEditDCSaveclick(string jsonString, HttpContext context)
     {
@@ -27864,8 +27702,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-
     private void GetSplDcProducts(HttpContext context)
     {
         try
@@ -27959,7 +27795,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void GetSOClosingStock(HttpContext context)
     {
         try
@@ -28135,8 +27970,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         }
     }
-
-
     private void Get_Sales_Office_Agents(HttpContext context)
     {
         try
@@ -28195,14 +28028,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string BranchId { set; get; }
         public MySqlDbType SNo { get; set; }
     }
-
     public class Total_ProductClass
     {
         public List<ProductsName> ProductsName { get; set; }
         public List<PlantProducts> PlantProducts { get; set; }
-
     }
-
     private void GetBranchProducts(HttpContext context)
     {
         try
@@ -29801,7 +29631,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void GetProductNamechange(HttpContext context)
     {
         try
@@ -30727,7 +30556,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string b_id { set; get; }
         public string BranchName { set; get; }
     }
-
     private void GetDespatches(HttpContext context)
     {
         try
@@ -30837,1012 +30665,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string brach_ledger_code { get; set; }
         public string branchid { get; set; }
     }
-
-    //private void btnCollectionAmountClick(HttpContext context)
-    //{
-    //    try
-    //    {
-    //        vdbmngr = new VehicleDBMgr();
-    //        string faaccuntno = context.Request["faaccuntno"];
-    //        string BranchID = context.Request["BranchID"];
-    //        string Amount = context.Request["Amount"];
-    //        string PaymentType = context.Request["PaymentType"];
-    //        string ChequeNo = context.Request["ChequeNo"];
-    //        string Remarks = context.Request["Remarks"];
-    //        string PaidDate = context.Request["PaidDate"];
-    //        string chequeDate = context.Request["chequeDate"];
-    //        string BankName = context.Request["BankName"];
-    //        string soid = context.Request["soid"];
-    //        string Transactiontype = context.Request["ddltransactiontype"];
-    //        string DenominationString = context.Request["DenominationString"];
-    //        string ReturnDenominationString = context.Request["ReturnDenominationString"];
-    //        string HeadSno = context.Request["HeadSno"];
-    //        DateTime dtSelecteddate = new DateTime();
-    //        dtSelecteddate = DateTime.Parse(PaidDate);
-    //        DateTime dtchequedate = new DateTime();
-    //        DateTime dtapril = new DateTime();
-    //        DateTime dtmarch = new DateTime();
-    //        if (chequeDate != null)
-    //        {
-    //            dtchequedate = DateTime.Parse(chequeDate);
-    //        }
-    //        double PaidAmount = 0;
-    //        double.TryParse(Amount, out PaidAmount);
-    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-    //        int currentyear = ServerDateCurrentdate.Year;
-    //        int nextyear = ServerDateCurrentdate.Year + 1;
-    //        string Branch = soid;
-    //        if (soid == "572")
-    //        {
-    //            Branch = "158";
-    //        }
-    //        if (ServerDateCurrentdate.Month > 3)
-    //        {
-    //            string apr = "4/1/" + currentyear;
-    //            dtapril = DateTime.Parse(apr);
-    //            string march = "3/31/" + nextyear;
-    //            dtmarch = DateTime.Parse(march);
-    //        }
-    //        if (ServerDateCurrentdate.Month <= 3)
-    //        {
-    //            string apr = "4/1/" + (currentyear - 1);
-    //            dtapril = DateTime.Parse(apr);
-    //            string march = "3/31/" + (nextyear - 1);
-    //            dtmarch = DateTime.Parse(march);
-    //        }
-
-
-    //        if (Branch == "158")
-    //        {
-    //            cmd = new MySqlCommand("Select Amount from branchaccounts where BranchId=@BranchId");
-    //            //cmd.Parameters.AddWithValue("@BranchId", context.Session["branch"].ToString());
-    //            cmd.Parameters.AddWithValue("@BranchId", Branch);
-    //            DataTable dtbrnchoppamt = vdbmngr.SelectQuery(cmd).Tables[0];
-    //            string amount = "0";
-    //            if (dtbrnchoppamt.Rows.Count > 0)
-    //            {
-    //                amount = dtbrnchoppamt.Rows[0]["Amount"].ToString();
-    //            }
-    //            cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID AND (DOE BETWEEN @d1 AND @d2)");
-    //            cmd.Parameters.AddWithValue("@BranchID", Branch);
-    //            cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril));
-    //            cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch));
-    //            DataTable dtReceipt = vdbmngr.SelectQuery(cmd).Tables[0];
-    //            string CashReceiptNo = dtReceipt.Rows[0]["Sno"].ToString();
-    //            if (PaymentType == "Cheque")
-    //            {
-    //                cmd = new MySqlCommand("insert into cashreceipts (BranchId,ReceivedFrom,AgentID,AmountPaid,DOE,Create_by,Remarks,OppBal,Receipt,Paymentstatus,ChequeNo) values (@BranchId,@ReceivedFrom,@AgentID,@AmountPaid,@DOE, @Create_by,@Remarks,@OppBal,@Receipt,@Paymentstatus,@ChequeNo)");
-    //                cmd.Parameters.AddWithValue("@ChequeNo", ChequeNo);
-    //                cmd.Parameters.AddWithValue("@Paymentstatus", "Cheque");
-    //            }
-    //            else
-    //            {
-    //                cmd = new MySqlCommand("insert into cashreceipts (BranchId,ReceivedFrom,AgentID,AmountPaid,DOE,Create_by,Remarks,OppBal,Receipt,Paymentstatus) values (@BranchId,@ReceivedFrom,@AgentID,@AmountPaid,@DOE, @Create_by,@Remarks,@OppBal,@Receipt,@Paymentstatus)");
-    //                cmd.Parameters.AddWithValue("@Paymentstatus", PaymentType);
-    //            }
-
-    //            cmd.Parameters.AddWithValue("@BranchId", Branch);
-    //            cmd.Parameters.AddWithValue("@ReceivedFrom", "Agent");
-    //            cmd.Parameters.AddWithValue("@AgentID", BranchID);
-    //            cmd.Parameters.AddWithValue("@AmountPaid", PaidAmount);
-    //            cmd.Parameters.AddWithValue("DOE", ServerDateCurrentdate);
-    //            cmd.Parameters.AddWithValue("@Create_by", context.Session["UserSno"].ToString());
-    //            cmd.Parameters.AddWithValue("@Remarks", Remarks);
-    //            cmd.Parameters.AddWithValue("@OppBal", amount);
-    //            cmd.Parameters.AddWithValue("@Receipt", CashReceiptNo);
-    //            vdbmngr.insert(cmd);
-    //            string Username = "1";
-    //            if (PaymentType == "Cheque")
-    //            {
-    //                cmd = new MySqlCommand("INSERT INTO collections (Branchid, AmountPaid, Denominations, Remarks, PaidDate, UserData_sno, PaymentType, ReturnDenomin, PayTime, EmpID, ChequeNo, CheckStatus, ReceiptNo,ChequeDate, BankName,headsno) VALUES (@Branchid, @AmountPaid, @Denominations, @Remarks, @PaidDate, @UserData_sno, @PaymentType, @ReturnDenomin, @PayTime, @EmpID, @ChequeNo,@CheckStatus, @ReceiptNo, @ChequeDate, @BankName,@headsno)");
-    //                cmd.Parameters.AddWithValue("@BankName", BankName);
-    //                cmd.Parameters.AddWithValue("@CheckStatus", "P");
-    //                cmd.Parameters.AddWithValue("@ChequeDate", dtchequedate);
-    //            }
-    //            else
-    //            {
-    //                cmd = new MySqlCommand("INSERT INTO collections (Branchid, AmountPaid, Denominations, Remarks, PaidDate, UserData_sno, PaymentType, ReturnDenomin, PayTime, EmpID, ChequeNo, ReceiptNo,headsno) VALUES (@Branchid, @AmountPaid, @Denominations, @Remarks, @PaidDate, @UserData_sno, @PaymentType, @ReturnDenomin, @PayTime, @EmpID, @ChequeNo,@ReceiptNo,@headsno)");
-    //            }
-    //            cmd.Parameters.AddWithValue("@Branchid", BranchID);
-    //            cmd.Parameters.AddWithValue("@AmountPaid", PaidAmount);
-    //            cmd.Parameters.AddWithValue("@Remarks", Remarks);
-    //            cmd.Parameters.AddWithValue("@headsno", HeadSno);
-    //            if (soid == "570")
-    //            {
-    //                cmd.Parameters.AddWithValue("@PaidDate", dtSelecteddate);
-    //            }
-    //            if (soid != "570")
-    //            {
-    //                cmd.Parameters.AddWithValue("@PaidDate", ServerDateCurrentdate);
-    //            }
-    //            cmd.Parameters.AddWithValue("@PayTime", ServerDateCurrentdate);
-    //            cmd.Parameters.AddWithValue("@UserData_sno", Username);
-    //            cmd.Parameters.AddWithValue("@PaymentType", PaymentType);
-    //            cmd.Parameters.AddWithValue("@EmpID", context.Session["UserSno"].ToString());
-    //            cmd.Parameters.AddWithValue("@ChequeNo", ChequeNo);
-    //            cmd.Parameters.AddWithValue("@ReceiptNo", CashReceiptNo);
-    //            cmd.Parameters.AddWithValue("@Denominations", DenominationString);
-    //            cmd.Parameters.AddWithValue("@ReturnDenomin", ReturnDenominationString);
-    //            vdbmngr.insert(cmd);
-
-    //            if (PaymentType == "Cheque")
-    //            {
-
-    //            }
-    //            if (PaymentType != "Cheque")
-    //            {
-    //                cmd = new MySqlCommand("Update branchaccounts set Amount=Amount+@Amount where BranchId=@BranchId");
-    //                cmd.Parameters.AddWithValue("@Amount", PaidAmount);
-    //                cmd.Parameters.AddWithValue("@BranchId", context.Session["branch"].ToString());
-    //                if (vdbmngr.Update(cmd) == 0)
-    //                {
-    //                    cmd = new MySqlCommand("insert into branchaccounts (BranchId,Amount) values (@BranchId,@Amount)");
-    //                    cmd.Parameters.AddWithValue("@Amount", PaidAmount);
-    //                    cmd.Parameters.AddWithValue("@BranchId", context.Session["branch"].ToString());
-    //                    vdbmngr.insert(cmd);
-    //                }
-    //                cmd = new MySqlCommand("Update branchaccounts set Amount=Amount-@PaidAmount where BranchId=@BranchId");
-    //                cmd.Parameters.AddWithValue("@PaidAmount", PaidAmount);
-    //                cmd.Parameters.AddWithValue("@BranchId", BranchID);
-    //                if (vdbmngr.Update(cmd) == 0)
-    //                {
-    //                    double paidamt = PaidAmount * -1;
-    //                    cmd = new MySqlCommand("insert into branchaccounts (BranchId,Amount) values (@BranchId,@Amount)");
-    //                    cmd.Parameters.AddWithValue("@Amount", paidamt);
-    //                    cmd.Parameters.AddWithValue("@BranchId", BranchID);
-    //                    vdbmngr.insert(cmd);
-    //                }
-    //                string twothousand = "0";
-    //                string thousand = "0";
-    //                string fivehundred = "0";
-    //                string hundred = "0";
-    //                string fifty = "0";
-    //                string twenty = "0";
-    //                string ten = "0";
-    //                string five = "0";
-    //                string twos = "0";
-    //                string ones = "0";
-    //                if (DenominationString != "")
-    //                {
-    //                    DenominationString = DenominationString.Replace("+", " ");
-    //                    foreach (string str in DenominationString.Split(' '))
-    //                    {
-    //                        if (str != "")
-    //                        {
-    //                            string[] price = str.Split('x');
-    //                            string amountcount = price[0];
-    //                            string notecount = price[1];
-    //                            if (amountcount == "2000")
-    //                            {
-    //                                twothousand = notecount;
-    //                            }
-    //                            if (amountcount == "1000")
-    //                            {
-    //                                thousand = notecount;
-    //                            }
-    //                            if (amountcount == "500")
-    //                            {
-    //                                fivehundred = notecount;
-    //                            }
-    //                            if (amountcount == "100")
-    //                            {
-    //                                hundred = notecount;
-    //                            }
-    //                            if (amountcount == "50")
-    //                            {
-    //                                fifty = notecount;
-    //                            }
-    //                            if (amountcount == "20")
-    //                            {
-    //                                twenty = notecount;
-    //                            }
-    //                            if (amountcount == "10")
-    //                            {
-    //                                ten = notecount;
-    //                            }
-    //                            if (amountcount == "5")
-    //                            {
-    //                                five = notecount;
-    //                            }
-    //                            if (amountcount == "2")
-    //                            {
-    //                                twos = notecount;
-    //                            }
-    //                            if (amountcount == "1")
-    //                            {
-    //                                ones = notecount;
-    //                            }
-    //                        }
-    //                    }
-    //                    cmd = new MySqlCommand("Update branch_denomination set amount=amount+@amount,twothousand=twothousand+@twothousand,thousand=thousand+@thousand,fivehundred=fivehundred+@fivehundred,hundred=hundred+@hundred,fifty=fifty+@fifty,twenty=twenty+@twenty,ten=ten+@ten,five=five+@five,twos=twos+@twos,ones=ones+@ones where BranchID=@BranchID");
-    //                    cmd.Parameters.AddWithValue("@amount", Amount);
-    //                    cmd.Parameters.AddWithValue("@twothousand", twothousand);
-    //                    cmd.Parameters.AddWithValue("@thousand", thousand);
-    //                    cmd.Parameters.AddWithValue("@fivehundred", fivehundred);
-    //                    cmd.Parameters.AddWithValue("@hundred", hundred);
-    //                    cmd.Parameters.AddWithValue("@fifty", fifty);
-    //                    cmd.Parameters.AddWithValue("@twenty", twenty);
-    //                    cmd.Parameters.AddWithValue("@ten", ten);
-    //                    cmd.Parameters.AddWithValue("@five", five);
-    //                    cmd.Parameters.AddWithValue("@twos", twos);
-    //                    cmd.Parameters.AddWithValue("@ones", ones);
-    //                    cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
-    //                    vdbmngr.Update(cmd);
-
-    //                    string return_twothousand = "0";
-    //                    string return_thousand = "0";
-    //                    string return_fivehundred = "0";
-    //                    string return_hundred = "0";
-    //                    string return_fifty = "0";
-    //                    string return_twenty = "0";
-    //                    string return_ten = "0";
-    //                    string return_five = "0";
-    //                    string return_twos = "0";
-    //                    string return_ones = "0";
-    //                    ReturnDenominationString = ReturnDenominationString.Replace("+", " ");
-    //                    foreach (string str in ReturnDenominationString.Split(' '))
-    //                    {
-    //                        if (str != "")
-    //                        {
-    //                            string[] price = str.Split('x');
-    //                            string amountcount = price[0];
-    //                            string notecount = price[1];
-    //                            if (amountcount == "2000")
-    //                            {
-    //                                return_twothousand = notecount;
-    //                            }
-    //                            if (amountcount == "1000")
-    //                            {
-    //                                return_thousand = notecount;
-    //                            }
-    //                            if (amountcount == "500")
-    //                            {
-    //                                return_fivehundred = notecount;
-    //                            }
-    //                            if (amountcount == "100")
-    //                            {
-    //                                return_hundred = notecount;
-    //                            }
-    //                            if (amountcount == "50")
-    //                            {
-    //                                return_fifty = notecount;
-    //                            }
-    //                            if (amountcount == "20")
-    //                            {
-    //                                return_twenty = notecount;
-    //                            }
-    //                            if (amountcount == "10")
-    //                            {
-    //                                return_ten = notecount;
-    //                            }
-    //                            if (amountcount == "5")
-    //                            {
-    //                                return_five = notecount;
-    //                            }
-    //                            if (amountcount == "2")
-    //                            {
-    //                                return_twos = notecount;
-    //                            }
-    //                            if (amountcount == "1")
-    //                            {
-    //                                return_ones = notecount;
-    //                            }
-    //                        }
-    //                    }
-    //                    cmd = new MySqlCommand("Update branch_denomination set twothousand=twothousand-@twothousand,thousand=thousand-@thousand,fivehundred=fivehundred-@fivehundred,hundred=hundred-@hundred,fifty=fifty-@fifty,twenty=twenty-@twenty,ten=ten-@ten,five=five-@five,twos=twos-@twos,ones=ones-@ones where BranchID=@BranchID");
-    //                    cmd.Parameters.AddWithValue("@amount", Amount);
-    //                    cmd.Parameters.AddWithValue("@twothousand", return_twothousand);
-    //                    cmd.Parameters.AddWithValue("@thousand", return_thousand);
-    //                    cmd.Parameters.AddWithValue("@fivehundred", return_fivehundred);
-    //                    cmd.Parameters.AddWithValue("@hundred", return_hundred);
-    //                    cmd.Parameters.AddWithValue("@fifty", return_fifty);
-    //                    cmd.Parameters.AddWithValue("@twenty", return_twenty);
-    //                    cmd.Parameters.AddWithValue("@ten", return_ten);
-    //                    cmd.Parameters.AddWithValue("@five", return_five);
-    //                    cmd.Parameters.AddWithValue("@twos", return_twos);
-    //                    cmd.Parameters.AddWithValue("@ones", return_ones);
-    //                    cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
-    //                    vdbmngr.Update(cmd);
-    //                }
-    //            }
-    //            //string Msg = "Saved Successfully";
-    //            //string response = GetJson(Msg);
-    //            //context.Response.Write(response);
-    //        }
-    //        if (Branch != "158")
-    //        {
-
-    //            if (Transactiontype == "Credit")
-    //            {
-    //                cmd = new MySqlCommand("SELECT Branchid, UserData_sno, AmountPaid, Denominations, Remarks, Sno, PaidDate FROM collections WHERE (Branchid = @BranchID) AND (PaidDate BETWEEN @d1 AND @d2)");
-    //                cmd.Parameters.AddWithValue("@BranchID", Branch);
-    //                cmd.Parameters.AddWithValue("@d1", GetLowDate(ServerDateCurrentdate));
-    //                cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate));
-    //                DataTable dtcashbookstatus = vdbmngr.SelectQuery(cmd).Tables[0];
-    //                if (dtcashbookstatus.Rows.Count > 0)
-    //                {
-    //                    ServerDateCurrentdate = ServerDateCurrentdate.AddDays(1);
-    //                }
-    //                cmd = new MySqlCommand("Select Amount from branchaccounts where BranchId=@BranchId");
-    //                cmd.Parameters.AddWithValue("@BranchId", Branch);
-    //                DataTable dtbrnchoppamt = vdbmngr.SelectQuery(cmd).Tables[0];
-    //                string amount = "0";
-    //                if (dtbrnchoppamt.Rows.Count > 0)
-    //                {
-    //                    amount = dtbrnchoppamt.Rows[0]["Amount"].ToString();
-    //                }
-    //                string CashReceiptNo = "0";
-    //                if (PaymentType == "Cash")
-    //                {
-    //                    cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID AND (DOE BETWEEN @d1 AND @d2)");
-    //                    //cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
-    //                    cmd.Parameters.AddWithValue("@BranchID", Branch);
-    //                    cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril));
-    //                    cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch));
-    //                    DataTable dtReceipt = vdbmngr.SelectQuery(cmd).Tables[0];
-    //                    CashReceiptNo = dtReceipt.Rows[0]["Sno"].ToString();
-    //                    // CashReceiptNo = "0";
-    //                    if (PaymentType == "Cheque")
-    //                    {
-    //                        cmd = new MySqlCommand("insert into cashreceipts (BranchId,ReceivedFrom,AgentID,AmountPaid,DOE,Create_by,Remarks,OppBal,Receipt,Paymentstatus,ChequeNo) values (@BranchId,@ReceivedFrom,@AgentID,@AmountPaid,@DOE, @Create_by,@Remarks,@OppBal,@Receipt,@Paymentstatus,@ChequeNo)");
-    //                        cmd.Parameters.AddWithValue("@ChequeNo", ChequeNo);
-    //                        cmd.Parameters.AddWithValue("@Paymentstatus", "Cheque");
-    //                    }
-    //                    else
-    //                    {
-    //                        cmd = new MySqlCommand("insert into cashreceipts (BranchId,ReceivedFrom,AgentID,AmountPaid,DOE,Create_by,Remarks,OppBal,Receipt,PaymentStatus) values (@BranchId,@ReceivedFrom,@AgentID,@AmountPaid,@DOE, @Create_by,@Remarks,@OppBal,@Receipt,@PaymentStatus)");
-    //                        cmd.Parameters.AddWithValue("@Paymentstatus", PaymentType);
-    //                    }
-    //                    //cmd.Parameters.AddWithValue("@BranchId", context.Session["branch"].ToString());
-    //                    cmd.Parameters.AddWithValue("@BranchId", Branch);
-    //                    cmd.Parameters.AddWithValue("@ReceivedFrom", "Agent");
-    //                    cmd.Parameters.AddWithValue("@AgentID", BranchID);
-    //                    cmd.Parameters.AddWithValue("@AmountPaid", PaidAmount);
-
-    //                    cmd.Parameters.AddWithValue("DOE", dtSelecteddate);
-
-
-    //                    cmd.Parameters.AddWithValue("@Create_by", context.Session["UserSno"].ToString());
-    //                    cmd.Parameters.AddWithValue("@Remarks", Remarks);
-    //                    cmd.Parameters.AddWithValue("@OppBal", amount);
-    //                    cmd.Parameters.AddWithValue("@Receipt", CashReceiptNo);
-    //                    vdbmngr.insert(cmd);
-    //                }
-    //                string Username = "1";
-    //                cmd = new MySqlCommand("select BranchName,phonenumber from BranchData where Sno=@sno");
-    //                cmd.Parameters.AddWithValue("@sno", BranchID);
-    //                DataTable dtBranchName = vdbmngr.SelectQuery(cmd).Tables[0];
-    //                string BranchName = dtBranchName.Rows[0]["BranchName"].ToString();
-    //                string phonenumber = dtBranchName.Rows[0]["phonenumber"].ToString();
-
-    //                if (PaymentType == "Cheque")
-    //                {
-    //                    //cmd = new MySqlCommand("insert into collections (Branchid,AmountPaid,Remarks,PaidDate,UserData_sno,PaymentType,PayTime,EmpID,ChequeNo,CheckStatus,ReceiptNo,ChequeDate,BankName)values(@Branchid,@AmountPaid,@Remarks,@PaidDate,@UserData_sno,@PaymentType,@PayTime,@EmpID,@ChequeNo,@CheckStatus,@ReceiptNo,@ChequeDate,@BankName)");
-    //                    cmd = new MySqlCommand("INSERT INTO collections (Branchid, AmountPaid, Denominations, Remarks, PaidDate, UserData_sno, PaymentType, ReturnDenomin, PayTime, EmpID, ChequeNo, CheckStatus, ReceiptNo,ChequeDate, BankName,headsno) VALUES (@Branchid, @AmountPaid, @Denominations, @Remarks, @PaidDate, @UserData_sno, @PaymentType, @ReturnDenomin, @PayTime, @EmpID, @ChequeNo,@CheckStatus, @ReceiptNo, @ChequeDate, @BankName,@headsno)");
-    //                    cmd.Parameters.AddWithValue("@BankName", BankName);
-    //                    cmd.Parameters.AddWithValue("@CheckStatus", "P");
-    //                    cmd.Parameters.AddWithValue("@ChequeDate", dtchequedate);
-    //                }
-    //                else
-    //                {
-    //                    //headsnocmd = new MySqlCommand("insert into collections (Branchid,AmountPaid,Remarks,PaidDate,UserData_sno,PaymentType,PayTime,EmpID,ChequeNo,ReceiptNo)values(@Branchid,@AmountPaid,@Remarks,@PaidDate,@UserData_sno,@PaymentType,@PayTime,@EmpID,@ChequeNo,@ReceiptNo)");
-    //                    cmd = new MySqlCommand("INSERT INTO collections (Branchid, AmountPaid, Denominations, Remarks, PaidDate, UserData_sno, PaymentType, ReturnDenomin, PayTime, EmpID, ChequeNo, ReceiptNo,headsno) VALUES (@Branchid, @AmountPaid, @Denominations, @Remarks, @PaidDate, @UserData_sno, @PaymentType, @ReturnDenomin, @PayTime, @EmpID, @ChequeNo,@ReceiptNo,@headsno)");
-    //                }
-    //                cmd.Parameters.AddWithValue("@Branchid", BranchID);
-    //                cmd.Parameters.AddWithValue("@AmountPaid", PaidAmount);
-    //                cmd.Parameters.AddWithValue("@Remarks", Remarks);
-    //                cmd.Parameters.AddWithValue("@headsno", HeadSno);
-
-    //                cmd.Parameters.AddWithValue("@PaidDate", dtSelecteddate);
-
-    //                cmd.Parameters.AddWithValue("@PayTime", ServerDateCurrentdate);
-    //                cmd.Parameters.AddWithValue("@UserData_sno", Username);
-    //                cmd.Parameters.AddWithValue("@PaymentType", PaymentType);
-    //                cmd.Parameters.AddWithValue("@EmpID", context.Session["UserSno"].ToString());
-    //                cmd.Parameters.AddWithValue("@ChequeNo", ChequeNo);
-    //                cmd.Parameters.AddWithValue("@ReceiptNo", CashReceiptNo);
-    //                cmd.Parameters.AddWithValue("@Denominations", DenominationString);
-    //                cmd.Parameters.AddWithValue("@ReturnDenomin", ReturnDenominationString);
-    //                vdbmngr.insert(cmd);
-    //                if (PaymentType == "Cheque")
-    //                {
-
-    //                }
-    //                if (PaymentType != "Cheque")
-    //                {
-    //                    cmd = new MySqlCommand("Update branchaccounts set Amount=Amount+@Amount where BranchId=@BranchId");
-    //                    cmd.Parameters.AddWithValue("@Amount", PaidAmount);
-    //                    cmd.Parameters.AddWithValue("@BranchId", context.Session["branch"].ToString());
-    //                    //vdbmngr.Update(cmd);
-    //                    if (vdbmngr.Update(cmd) == 0)
-    //                    {
-    //                        cmd = new MySqlCommand("insert into branchaccounts (BranchId,Amount) values (@BranchId,@Amount)");
-    //                        cmd.Parameters.AddWithValue("@Amount", PaidAmount);
-    //                        cmd.Parameters.AddWithValue("@BranchId", context.Session["branch"].ToString());
-    //                        vdbmngr.insert(cmd);
-    //                    }
-    //                    cmd = new MySqlCommand("Update branchaccounts set Amount=Amount-@PaidAmount where BranchId=@BranchId");
-    //                    cmd.Parameters.AddWithValue("@PaidAmount", PaidAmount);
-    //                    cmd.Parameters.AddWithValue("@BranchId", BranchID);
-    //                    //vdbmngr.Update(cmd);
-    //                    if (vdbmngr.Update(cmd) == 0)
-    //                    {
-    //                        double paidamt = PaidAmount * -1;
-    //                        cmd = new MySqlCommand("insert into branchaccounts (BranchId,Amount) values (@BranchId,@Amount)");
-    //                        cmd.Parameters.AddWithValue("@Amount", paidamt);
-    //                        cmd.Parameters.AddWithValue("@BranchId", BranchID);
-    //                        vdbmngr.insert(cmd);
-    //                    }
-    //                    //naveenjv
-
-    //                    // collection agent_bal_trans
-    //                    DateTime pdate = Convert.ToDateTime(PaidDate);
-    //                    cmd = new MySqlCommand("SELECT MAX(sno) as sno FROM agent_bal_trans WHERE agentid=@Branchid");
-    //                    cmd.Parameters.AddWithValue("@Branchid", BranchID);
-    //                    DataTable dtagenttrans = vdbmngr.SelectQuery(cmd).Tables[0];
-    //                    if (dtagenttrans.Rows.Count > 0)
-    //                    {
-    //                        string maxsno = dtagenttrans.Rows[0]["sno"].ToString();
-    //                        cmd = new MySqlCommand("Insert into agent_bal_trans_history(refno, paidamount, cashtype, createddate, entryby) values (@refno,@paidamount,@cashtype,@doe,@entryby)");
-    //                        cmd.Parameters.AddWithValue("@refno", maxsno);
-    //                        cmd.Parameters.AddWithValue("@paidamount", Math.Abs(PaidAmount));
-    //                        cmd.Parameters.AddWithValue("@cashtype", "JV");
-    //                        cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-    //                        cmd.Parameters.AddWithValue("@entryby", context.Session["UserSno"].ToString());
-    //                        vdbmngr.insert(cmd);
-
-    //                        cmd = new MySqlCommand("SELECT agentid, opp_balance,paidamount, inddate, salesvalue, clo_balance FROM agent_bal_trans WHERE sno=@sno");
-    //                        cmd.Parameters.AddWithValue("@sno", maxsno);
-    //                        DataTable dtmaxagenttrans = vdbmngr.SelectQuery(cmd).Tables[0];
-    //                        //added by akbar 
-
-    //                        //begin  commented by akbar
-    //                        ////cmd = new MySqlCommand("SELECT agentid, opp_balance, inddate, salesvalue, clo_balance FROM agent_bal_trans WHERE agentid=@agentid AND inddate between @d1 and @d2");
-    //                        ////cmd.Parameters.AddWithValue("@agentid", BranchID);
-    //                        ////cmd.Parameters.AddWithValue("@d1", GetLowDate(pdate.AddDays(-1)));
-    //                        ////cmd.Parameters.AddWithValue("@d2", GetHighDate(pdate.AddDays(-1)));
-    //                        ////DataTable dtIndentbal = vdbmngr.SelectQuery(cmd).Tables[0];
-    //                        ////if (dtIndentbal.Rows.Count > 0)
-    //                        ////{
-    //                        ////    string oppbalance = dtmaxagenttrans.Rows[0]["opp_balance"].ToString();
-    //                        ////    string salesvalue = dtmaxagenttrans.Rows[0]["salesvalue"].ToString();
-    //                        ////    double Prev_amount = 0;
-    //                        ////    double.TryParse(dtmaxagenttrans.Rows[0]["paidamount"].ToString(), out Prev_amount);
-    //                        ////    if (Prev_amount > 0)
-    //                        ////    {
-    //                        ////        PaidAmount = PaidAmount + Prev_amount;
-    //                        ////    }
-
-    //                        ////    double total = Convert.ToDouble(oppbalance) + Convert.ToDouble(salesvalue);
-    //                        ////    string closingbalance = dtmaxagenttrans.Rows[0]["clo_balance"].ToString();
-    //                        ////    double clsvalue = Convert.ToDouble(closingbalance);
-    //                        ////    double closingvalue = total - PaidAmount;
-    //                        ////    string inddate = dtmaxagenttrans.Rows[0]["inddate"].ToString();
-    //                        ////    cmd = new MySqlCommand("UPDATE agent_bal_trans SET paidamount=@paidamount, clo_balance=@closing where sno=@refno");
-    //                        ////    cmd.Parameters.AddWithValue("@paidamount", PaidAmount);
-    //                        ////    cmd.Parameters.AddWithValue("@refno", maxsno);
-    //                        ////    cmd.Parameters.AddWithValue("@closing", closingvalue);
-    //                        ////    vdbmngr.Update(cmd);
-    //                        ////}
-    //                        /////end commented by akbar
-    //                        //// begin added by akbar
-
-    //                        cmd = new MySqlCommand("SELECT * FROM agent_bal_trans WHERE agentid=@agentid and inddate between @d1 and @d2");
-    //                        cmd.Parameters.AddWithValue("@agentid", BranchID);
-    //                        cmd.Parameters.AddWithValue("@d1", GetLowDate(pdate).AddDays(-1));
-    //                        cmd.Parameters.AddWithValue("@d2", GetHighDate(pdate).AddDays(-1));
-    //                        DataTable dtagentbal = vdbmngr.SelectQuery(cmd).Tables[0];
-    //                        if (dtagentbal.Rows.Count > 0)
-    //                        {
-    //                            string sno = dtagentbal.Rows[0]["sno"].ToString();
-    //                            cmd = new MySqlCommand("SELECT sno, paidamount, clo_balance FROM agent_bal_trans WHERE sno=@sno");
-    //                            cmd.Parameters.AddWithValue("@sno", sno);
-    //                            DataTable dtmaxagentbal = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //                            double prevpaidamount = 0;
-    //                            double.TryParse(dtmaxagentbal.Rows[0]["paidamount"].ToString(), out prevpaidamount);
-
-    //                            double clobalance = 0;
-    //                            double.TryParse(dtmaxagentbal.Rows[0]["clo_balance"].ToString(), out clobalance);
-
-    //                            double diff = prevpaidamount - PaidAmount;
-    //                            //if (diff == 0)
-    //                            //{
-    //                            cmd = new MySqlCommand("UPDATE agent_bal_trans set paidamount=paidamount+@Amount, clo_balance=clo_balance-@Amount  where agentid=@BranchId AND inddate between @d1 and @d2");
-    //                            cmd.Parameters.AddWithValue("@d1", GetLowDate(pdate).AddDays(-1));
-    //                            cmd.Parameters.AddWithValue("@d2", GetHighDate(pdate).AddDays(-1));
-    //                            cmd.Parameters.AddWithValue("@Amount", PaidAmount);
-    //                            cmd.Parameters.AddWithValue("@BranchId", BranchID);
-    //                            if (vdbmngr.Update(cmd) == 0)
-    //                            {
-    //                                cmd = new MySqlCommand("Insert Into agent_bal_trans(agentid, opp_balance, inddate, paidamount, clo_balance, createdate, entryby) values (@BranchId,@opp_balance,@inddate, @paidamount, @clo_balance, @createdate, @entryby)");
-    //                                cmd.Parameters.AddWithValue("@BranchId", BranchID);
-    //                                cmd.Parameters.AddWithValue("@opp_balance", clobalance);
-    //                                cmd.Parameters.AddWithValue("@inddate", pdate.AddDays(-1));
-    //                                cmd.Parameters.AddWithValue("@paidamount", PaidAmount);
-    //                                cmd.Parameters.AddWithValue("@clo_balance", PaidAmount);
-    //                                cmd.Parameters.AddWithValue("@createdate", ServerDateCurrentdate);
-    //                                cmd.Parameters.AddWithValue("@entryby", "1");
-    //                                vdbmngr.insert(cmd);
-    //                            }
-    //                            cmd = new MySqlCommand("SELECT sno, agentid, opp_balance, inddate, salesvalue, clo_balance, paidamount FROM agent_bal_trans WHERE agentid=@agentid AND inddate between @d1 and @d2");
-    //                            cmd.Parameters.AddWithValue("@agentid", BranchID);
-    //                            cmd.Parameters.AddWithValue("@d1", GetLowDate(pdate));
-    //                            cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate));
-    //                            DataTable dtIndentbal = vdbmngr.SelectQuery(cmd).Tables[0];
-    //                            if (dtIndentbal.Rows.Count > 0)
-    //                            {
-    //                                foreach (DataRow dr in dtIndentbal.Rows)
-    //                                {
-    //                                    string csno = dr["sno"].ToString();
-    //                                    double existoppbal = 0;
-    //                                    double opp_balance = 0;
-    //                                    double.TryParse(dr["opp_balance"].ToString(), out opp_balance);
-    //                                    existoppbal = opp_balance - PaidAmount;
-
-    //                                    double existclovalue = 0;
-    //                                    double clo_balance = 0;
-    //                                    double.TryParse(dr["clo_balance"].ToString(), out clo_balance);
-    //                                    existclovalue = clo_balance - PaidAmount;
-
-    //                                    cmd = new MySqlCommand("UPDATE agent_bal_trans SET opp_balance=@oppbal, clo_balance=@closing where sno=@refno");
-    //                                    cmd.Parameters.AddWithValue("@oppbal", existoppbal);
-    //                                    cmd.Parameters.AddWithValue("@refno", csno);
-    //                                    cmd.Parameters.AddWithValue("@closing", existclovalue);
-    //                                    vdbmngr.Update(cmd);
-    //                                }
-    //                            }
-    //                            //}
-    //                            //else if (diff > 0)
-    //                            //{
-
-    //                            //    cmd = new MySqlCommand("UPDATE agent_bal_trans set paidamount=paidamount+@Amount, clo_balance=clo_balance-@Amount  where agentid=@BranchId AND inddate between @d1 and @d2");
-    //                            //    cmd.Parameters.AddWithValue("@d1", GetLowDate(pdate).AddDays(-1));
-    //                            //    cmd.Parameters.AddWithValue("@d2", GetHighDate(pdate).AddDays(-1));
-    //                            //    cmd.Parameters.AddWithValue("@Amount", PaidAmount);
-    //                            //    cmd.Parameters.AddWithValue("@BranchId", BranchID);
-    //                            //    if (vdbmngr.Update(cmd) == 0)
-    //                            //    {
-    //                            //        cmd = new MySqlCommand("Insert Into agent_bal_trans(agentid, opp_balance, inddate, paidamount, clo_balance, createdate, entryby) values (@BranchId,@opp_balance,@inddate, @paidamount, @clo_balance, @createdate, @entryby)");
-    //                            //        cmd.Parameters.AddWithValue("@BranchId", BranchID);
-    //                            //        cmd.Parameters.AddWithValue("@opp_balance", clobalance);
-    //                            //        cmd.Parameters.AddWithValue("@inddate", pdate.AddDays(-1));
-    //                            //        cmd.Parameters.AddWithValue("@paidamount", PaidAmount);
-    //                            //        cmd.Parameters.AddWithValue("@clo_balance", PaidAmount);
-    //                            //        cmd.Parameters.AddWithValue("@createdate", ServerDateCurrentdate);
-    //                            //        cmd.Parameters.AddWithValue("@entryby", "1");
-    //                            //        vdbmngr.insert(cmd);
-    //                            //    }
-    //                            //    cmd = new MySqlCommand("SELECT sno, agentid, opp_balance, inddate, salesvalue, clo_balance, paidamount FROM agent_bal_trans WHERE agentid=@agentid AND inddate between @d1 and @d2");
-    //                            //    cmd.Parameters.AddWithValue("@agentid", BranchID);
-    //                            //    cmd.Parameters.AddWithValue("@d1", GetLowDate(pdate));
-    //                            //    cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate));
-    //                            //    DataTable dtIndentbal = vdbmngr.SelectQuery(cmd).Tables[0];
-    //                            //    if (dtIndentbal.Rows.Count > 0)
-    //                            //    {
-    //                            //        foreach (DataRow dr in dtIndentbal.Rows)
-    //                            //        {
-    //                            //            string csno = dr["sno"].ToString();
-    //                            //            double existoppbal = 0;
-    //                            //            double opp_balance = 0;
-    //                            //            double.TryParse(dr["opp_balance"].ToString(), out opp_balance);
-    //                            //            existoppbal = opp_balance - PaidAmount;
-
-    //                            //            double existclovalue = 0;
-    //                            //            double clo_balance = 0;
-    //                            //            double.TryParse(dr["clo_balance"].ToString(), out clo_balance);
-    //                            //            existclovalue = clo_balance - PaidAmount;
-
-    //                            //            cmd = new MySqlCommand("UPDATE agent_bal_trans SET opp_balance=@oppbal, clo_balance=@closing where sno=@refno");
-    //                            //            cmd.Parameters.AddWithValue("@oppbal", existoppbal);
-    //                            //            cmd.Parameters.AddWithValue("@refno", csno);
-    //                            //            cmd.Parameters.AddWithValue("@closing", existclovalue);
-    //                            //            vdbmngr.Update(cmd);
-    //                            //        }
-    //                            //    }
-    //                            //}
-    //                            //else
-    //                            //{
-    //                            //    diff = PaidAmount - prevpaidamount;
-    //                            //    cmd = new MySqlCommand("UPDATE agent_bal_trans set paidamount=paidamount+@Amount, clo_balance=clo_balance-@Amount  where agentid=@BranchId AND inddate between @d1 and @d2");
-    //                            //    cmd.Parameters.AddWithValue("@d1", GetLowDate(pdate).AddDays(-1));
-    //                            //    cmd.Parameters.AddWithValue("@d2", GetHighDate(pdate).AddDays(-1));
-    //                            //    cmd.Parameters.AddWithValue("@Amount", PaidAmount);
-    //                            //    cmd.Parameters.AddWithValue("@BranchId", BranchID);
-    //                            //    if (vdbmngr.Update(cmd) == 0)
-    //                            //    {
-    //                            //        cmd = new MySqlCommand("Insert Into agent_bal_trans(agentid, opp_balance, inddate, paidamount, clo_balance, createdate, entryby) values (@BranchId,@opp_balance,@inddate, @paidamount, @clo_balance, @createdate, @entryby)");
-    //                            //        cmd.Parameters.AddWithValue("@BranchId", BranchID);
-    //                            //        cmd.Parameters.AddWithValue("@opp_balance", clobalance);
-    //                            //        cmd.Parameters.AddWithValue("@inddate", pdate.AddDays(-1));
-    //                            //        cmd.Parameters.AddWithValue("@paidamount", PaidAmount);
-    //                            //        cmd.Parameters.AddWithValue("@clo_balance", PaidAmount);
-    //                            //        cmd.Parameters.AddWithValue("@createdate", ServerDateCurrentdate);
-    //                            //        cmd.Parameters.AddWithValue("@entryby", "1");
-    //                            //        vdbmngr.insert(cmd);
-    //                            //    }
-    //                            //    cmd = new MySqlCommand("SELECT sno, agentid, opp_balance, inddate, salesvalue, clo_balance, paidamount FROM agent_bal_trans WHERE agentid=@agentid AND inddate between @d1 and @d2");
-    //                            //    cmd.Parameters.AddWithValue("@agentid", BranchID);
-    //                            //    cmd.Parameters.AddWithValue("@d1", GetLowDate(pdate));
-    //                            //    cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate));
-    //                            //    DataTable dtIndentbal = vdbmngr.SelectQuery(cmd).Tables[0];
-    //                            //    if (dtIndentbal.Rows.Count > 0)
-    //                            //    {
-    //                            //        foreach (DataRow dr in dtIndentbal.Rows)
-    //                            //        {
-    //                            //            string csno = dr["sno"].ToString();
-    //                            //            double existoppbal = 0;
-    //                            //            double opp_balance = 0;
-    //                            //            double.TryParse(dr["opp_balance"].ToString(), out opp_balance);
-    //                            //            existoppbal = opp_balance - PaidAmount;
-
-    //                            //            double existclovalue = 0;
-    //                            //            double clo_balance = 0;
-    //                            //            double.TryParse(dr["clo_balance"].ToString(), out clo_balance);
-    //                            //            existclovalue = clo_balance - PaidAmount;
-
-    //                            //            cmd = new MySqlCommand("UPDATE agent_bal_trans SET opp_balance=@oppbal, clo_balance=@closing where sno=@refno");
-    //                            //            cmd.Parameters.AddWithValue("@oppbal", existoppbal);
-    //                            //            cmd.Parameters.AddWithValue("@refno", csno);
-    //                            //            cmd.Parameters.AddWithValue("@closing", existclovalue);
-    //                            //            vdbmngr.Update(cmd);
-    //                            //        }
-    //                            //    }
-    //                            //}
-    //                        } //end added by akbar
-    //                        else
-    //                        {
-
-    //                            cmd = new MySqlCommand("SELECT sno, agentid, opp_balance, inddate, salesvalue, clo_balance, paidamount,createdate,entryby FROM agent_bal_trans WHERE agentid=@agentid AND inddate between @d1 and @d2 order by inddate");
-    //                            cmd.Parameters.AddWithValue("@agentid", BranchID);
-    //                            cmd.Parameters.AddWithValue("@d1", GetLowDate(pdate));
-    //                            cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate));
-    //                            DataTable dtgetdata = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //                            cmd = new MySqlCommand("delete  FROM agent_bal_trans WHERE agentid=@agentid AND inddate between @d1 and @d2");
-    //                            cmd.Parameters.AddWithValue("@agentid", BranchID);
-    //                            cmd.Parameters.AddWithValue("@d1", GetLowDate(pdate).AddDays(-1));
-    //                            cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate));
-    //                            vdbmngr.Delete(cmd);
-
-    //                            cmd = new MySqlCommand("SELECT MAX(sno) as sno FROM agent_bal_trans WHERE agentid=@Branchid AND (inddate < @d1)");
-    //                            cmd.Parameters.AddWithValue("@Branchid", BranchID);
-    //                            cmd.Parameters.AddWithValue("@d1", GetLowDate(pdate).AddDays(-1));
-    //                            DataTable dtgetprecloamt = vdbmngr.SelectQuery(cmd).Tables[0]; // get previous last most  record from selected date 
-    //                            double closingbalance = 0;
-    //                            if (dtgetprecloamt.Rows.Count > 0)
-    //                            {
-    //                                string sno = dtgetprecloamt.Rows[0]["sno"].ToString();
-    //                                cmd = new MySqlCommand("SELECT agentid, opp_balance, inddate, salesvalue, clo_balance FROM agent_bal_trans WHERE sno=@sno");
-    //                                cmd.Parameters.AddWithValue("@sno", dtgetprecloamt.Rows[0]["sno"].ToString());
-    //                                DataTable dtagent_value = vdbmngr.SelectQuery(cmd).Tables[0];
-    //                                if (dtagent_value.Rows.Count > 0)
-    //                                {
-    //                                    double.TryParse(dtagent_value.Rows[0]["clo_balance"].ToString(), out closingbalance);
-    //                                }
-    //                            }
-    //                            double clsvalue = Convert.ToDouble(closingbalance);
-    //                            double closingvalue = clsvalue - PaidAmount;
-
-    //                            DataRow newRow = dtgetdata.NewRow();
-    //                            newRow["agentid"] = BranchID;
-    //                            newRow["opp_balance"] = clsvalue;
-    //                            newRow["inddate"] = pdate.AddDays(-1);
-    //                            newRow["salesvalue"] = "0";
-    //                            newRow["paidamount"] = PaidAmount;
-    //                            newRow["clo_balance"] = closingvalue;
-    //                            newRow["createdate"] = ServerDateCurrentdate;
-    //                            newRow["entryby"] = context.Session["UserSno"].ToString();
-    //                            dtgetdata.Rows.InsertAt(newRow, 0);
-
-    //                            int i = 0; int j = 0;
-    //                            foreach (DataRow drr in dtgetdata.Rows)
-    //                            {
-    //                                //string csno = dr["sno"].ToString();
-    //                                double existoppbal = 0;
-    //                                double existclovalue = 0;
-    //                                double opp_balance = 0;
-    //                                double clo_balance = 0;
-
-    //                                if (i != j)
-    //                                {
-    //                                    double.TryParse(drr["opp_balance"].ToString(), out opp_balance);
-    //                                    existoppbal = opp_balance - PaidAmount;
-
-    //                                    double.TryParse(drr["clo_balance"].ToString(), out clo_balance);
-    //                                    existclovalue = clo_balance - PaidAmount;
-    //                                }
-    //                                else
-    //                                {
-    //                                    double.TryParse(drr["opp_balance"].ToString(), out opp_balance);
-    //                                    existoppbal = opp_balance;
-
-    //                                    double.TryParse(drr["clo_balance"].ToString(), out clo_balance);
-    //                                    existclovalue = clo_balance;
-    //                                }
-
-    //                                i++;
-    //                                DateTime inddate = Convert.ToDateTime(drr["inddate"].ToString());
-    //                                cmd = new MySqlCommand("Insert Into agent_bal_trans(agentid, opp_balance, inddate, salesvalue,paidamount,clo_balance, createdate, entryby) values (@agentid, @opp_balance, @inddate, @salesvalue,@paidamount,@clo_balance, @createdate, @entryby)");
-    //                                cmd.Parameters.AddWithValue("@agentid", drr["agentid"].ToString());
-    //                                cmd.Parameters.AddWithValue("@opp_balance", existoppbal);
-    //                                cmd.Parameters.AddWithValue("@inddate", inddate);
-    //                                cmd.Parameters.AddWithValue("@salesvalue", drr["salesvalue"].ToString());
-    //                                cmd.Parameters.AddWithValue("@paidamount", drr["paidamount"].ToString());
-    //                                cmd.Parameters.AddWithValue("@clo_balance", existclovalue);
-    //                                cmd.Parameters.AddWithValue("@createdate", ServerDateCurrentdate);
-    //                                cmd.Parameters.AddWithValue("@entryby", context.Session["UserSno"].ToString());
-    //                                vdbmngr.insert(cmd);
-
-    //                                //    string closingbalance = dtmaxagenttrans.Rows[0]["clo_balance"].ToString();
-    //                                //double clsvalue = Convert.ToDouble(closingbalance);
-    //                                //double closingvalue = clsvalue - PaidAmount;
-    //                                //cmd = new MySqlCommand("UPDATE agent_bal_trans set  clo_balance=clo_balance-@clAmount  where agentid=@BranchId AND inddate=@inddate");
-    //                                //cmd.Parameters.AddWithValue("@BranchId", BranchID);
-    //                                //cmd.Parameters.AddWithValue("@inddate", pdate.AddDays(-1));
-    //                                //cmd.Parameters.AddWithValue("@clAmount", closingvalue);
-    //                                //if (vdbmngr.Update(cmd) == 0)
-    //                                //{
-    //                                //    cmd = new MySqlCommand("Insert Into agent_bal_trans(agentid, opp_balance, inddate, salesvalue,  clo_balance, createdate, entryby,paidamount) values (@BranchId,@opp_balance,@inddate, @salesvalue, @clo_balance, @createdate, @entryby,@paidamount)");
-    //                                //    cmd.Parameters.AddWithValue("@paidamount", PaidAmount);
-    //                                //    cmd.Parameters.AddWithValue("@BranchId", BranchID);
-    //                                //    cmd.Parameters.AddWithValue("@opp_balance", clsvalue);
-    //                                //    cmd.Parameters.AddWithValue("@inddate", pdate.AddDays(-1));
-    //                                //    cmd.Parameters.AddWithValue("@salesvalue", 0);
-    //                                //    cmd.Parameters.AddWithValue("@clo_balance", closingvalue);
-    //                                //    cmd.Parameters.AddWithValue("@createdate", ServerDateCurrentdate);
-    //                                //    cmd.Parameters.AddWithValue("@entryby", context.Session["UserSno"].ToString());
-    //                                //    vdbmngr.insert(cmd);
-    //                                //}
-    //                            }
-    //                        }
-    //                    }
-    //                    //end agent_bal_trans
-
-
-
-    //                    //end jv
-    //                    string twothousand = "0";
-    //                    string thousand = "0";
-    //                    string fivehundred = "0";
-    //                    string hundred = "0";
-    //                    string fifty = "0";
-    //                    string twenty = "0";
-    //                    string ten = "0";
-    //                    string five = "0";
-    //                    string twos = "0";
-    //                    string ones = "0";
-    //                    if (PaymentType == "Cash")
-    //                    {
-    //                        if (DenominationString != "")
-    //                        {
-    //                            DenominationString = DenominationString.Replace("+", " ");
-    //                            foreach (string str in DenominationString.Split(' '))
-    //                            {
-    //                                if (str != "")
-    //                                {
-    //                                    string[] price = str.Split('x');
-    //                                    string amountcount = price[0];
-    //                                    string notecount = price[1];
-    //                                    if (amountcount == "2000")
-    //                                    {
-    //                                        twothousand = notecount;
-    //                                    }
-    //                                    if (amountcount == "1000")
-    //                                    {
-    //                                        thousand = notecount;
-    //                                    }
-    //                                    if (amountcount == "500")
-    //                                    {
-    //                                        fivehundred = notecount;
-    //                                    }
-    //                                    if (amountcount == "100")
-    //                                    {
-    //                                        hundred = notecount;
-    //                                    }
-    //                                    if (amountcount == "50")
-    //                                    {
-    //                                        fifty = notecount;
-    //                                    }
-    //                                    if (amountcount == "20")
-    //                                    {
-    //                                        twenty = notecount;
-    //                                    }
-    //                                    if (amountcount == "10")
-    //                                    {
-    //                                        ten = notecount;
-    //                                    }
-    //                                    if (amountcount == "5")
-    //                                    {
-    //                                        five = notecount;
-    //                                    }
-    //                                    if (amountcount == "2")
-    //                                    {
-    //                                        twos = notecount;
-    //                                    }
-    //                                    if (amountcount == "1")
-    //                                    {
-    //                                        ones = notecount;
-    //                                    }
-    //                                }
-    //                            }
-    //                            cmd = new MySqlCommand("Update branch_denomination set amount=amount+@amount,twothousand=twothousand+@twothousand,thousand=thousand+@thousand,fivehundred=fivehundred+@fivehundred,hundred=hundred+@hundred,fifty=fifty+@fifty,twenty=twenty+@twenty,ten=ten+@ten,five=five+@five,twos=twos+@twos,ones=ones+@ones where BranchID=@BranchID");
-    //                            cmd.Parameters.AddWithValue("@amount", Amount);
-    //                            cmd.Parameters.AddWithValue("@twothousand", twothousand);
-    //                            cmd.Parameters.AddWithValue("@thousand", thousand);
-    //                            cmd.Parameters.AddWithValue("@fivehundred", fivehundred);
-    //                            cmd.Parameters.AddWithValue("@hundred", hundred);
-    //                            cmd.Parameters.AddWithValue("@fifty", fifty);
-    //                            cmd.Parameters.AddWithValue("@twenty", twenty);
-    //                            cmd.Parameters.AddWithValue("@ten", ten);
-    //                            cmd.Parameters.AddWithValue("@five", five);
-    //                            cmd.Parameters.AddWithValue("@twos", twos);
-    //                            cmd.Parameters.AddWithValue("@ones", ones);
-    //                            cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
-    //                            vdbmngr.Update(cmd);
-
-    //                            string return_twothousand = "0";
-    //                            string return_thousand = "0";
-    //                            string return_fivehundred = "0";
-    //                            string return_hundred = "0";
-    //                            string return_fifty = "0";
-    //                            string return_twenty = "0";
-    //                            string return_ten = "0";
-    //                            string return_five = "0";
-    //                            string return_twos = "0";
-    //                            string return_ones = "0";
-    //                            ReturnDenominationString = ReturnDenominationString.Replace("+", " ");
-    //                            foreach (string str in ReturnDenominationString.Split(' '))
-    //                            {
-    //                                if (str != "")
-    //                                {
-    //                                    string[] price = str.Split('x');
-    //                                    string amountcount = price[0];
-    //                                    string notecount = price[1];
-    //                                    if (amountcount == "2000")
-    //                                    {
-    //                                        return_twothousand = notecount;
-    //                                    }
-    //                                    if (amountcount == "1000")
-    //                                    {
-    //                                        return_thousand = notecount;
-    //                                    }
-    //                                    if (amountcount == "500")
-    //                                    {
-    //                                        return_fivehundred = notecount;
-    //                                    }
-    //                                    if (amountcount == "100")
-    //                                    {
-    //                                        return_hundred = notecount;
-    //                                    }
-    //                                    if (amountcount == "50")
-    //                                    {
-    //                                        return_fifty = notecount;
-    //                                    }
-    //                                    if (amountcount == "20")
-    //                                    {
-    //                                        return_twenty = notecount;
-    //                                    }
-    //                                    if (amountcount == "10")
-    //                                    {
-    //                                        return_ten = notecount;
-    //                                    }
-    //                                    if (amountcount == "5")
-    //                                    {
-    //                                        return_five = notecount;
-    //                                    }
-    //                                    if (amountcount == "2")
-    //                                    {
-    //                                        return_twos = notecount;
-    //                                    }
-    //                                    if (amountcount == "1")
-    //                                    {
-    //                                        return_ones = notecount;
-    //                                    }
-    //                                }
-    //                            }
-    //                            cmd = new MySqlCommand("Update branch_denomination set twothousand=twothousand-@twothousand,thousand=thousand-@thousand,fivehundred=fivehundred-@fivehundred,hundred=hundred-@hundred,fifty=fifty-@fifty,twenty=twenty-@twenty,ten=ten-@ten,five=five-@five,twos=twos-@twos,ones=ones-@ones where BranchID=@BranchID");
-    //                            cmd.Parameters.AddWithValue("@amount", Amount);
-    //                            cmd.Parameters.AddWithValue("@twothousand", return_twothousand);
-    //                            cmd.Parameters.AddWithValue("@thousand", return_thousand);
-    //                            cmd.Parameters.AddWithValue("@fivehundred", return_fivehundred);
-    //                            cmd.Parameters.AddWithValue("@hundred", return_hundred);
-    //                            cmd.Parameters.AddWithValue("@fifty", return_fifty);
-    //                            cmd.Parameters.AddWithValue("@twenty", return_twenty);
-    //                            cmd.Parameters.AddWithValue("@ten", return_ten);
-    //                            cmd.Parameters.AddWithValue("@five", return_five);
-    //                            cmd.Parameters.AddWithValue("@twos", return_twos);
-    //                            cmd.Parameters.AddWithValue("@ones", return_ones);
-    //                            cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
-    //                            vdbmngr.Update(cmd);
-    //                        }
-    //                    }
-    //                }
-    //                if (phonenumber.Length == 10)
-    //                {
-    //                    if (PaymentType == "Incentive" || PaymentType == "Journal Voucher")
-    //                    {
-    //                        //if (PaymentType == "Incentive")
-    //                        //{
-    //                        //  string Date = PaidDate;
-    //                        //  WebClient client = new WebClient();
-    //                        //  DateTime dtmonth = Convert.ToDateTime(Date);
-    //                        //  string strdate = dtmonth.ToString("dd/MMM");
-
-    //                        //string baseurl = "http://103.225.76.43/blank/sms/user/urlsmstemp.php?username=vyshnavidairy&pass=vyshnavi@123&senderid=VYSHRM&dest_mobileno=" + phonenumber + "&message=Dear%20" + BranchName + "%20Your%20Incentive%20Amount%20Credeted%20for%20The%20Month%20Of%20%20" + strdate + "%20Amount%20is =" + PaidAmount + "&response=Y";
-    //                        // naveen 
-    //                        // string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Incentive%20Amount%20Credeted%20for%20The%20Month%20Of%20%20" + strdate + "%20Amount%20is =" + PaidAmount + "&type=1";
-
-    //                        // Stream data = client.OpenRead(baseurl);
-    //                        // StreamReader reader = new StreamReader(data);
-    //                        // string ResponseID = reader.ReadToEnd();
-    //                        //data.Close();
-    //                        //reader.Close();
-    //                        //}
-    //                    }
-    //                    else
-    //                    {
-    //                        ///////................Instruction By Raghu Kumar.............................../////////////
-
-    //                        try
-    //                        {
-    //                            // string Date = PaidDate;
-    //                            // WebClient client = new WebClient();
-    //                            //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
-
-    //                            //string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Amount%20Collected%20for%20today%20ReceiptNo%20%20" + CashReceiptNo + "%20Date%20" + Date + "%20Amount%20is =" + PaidAmount + "&type=1";
-    //                            // Stream data = client.OpenRead(baseurl);
-    //                            // StreamReader reader = new StreamReader(data);
-    //                            // string ResponseID = reader.ReadToEnd();
-    //                            // data.Close();
-    //                            // reader.Close();
-    //                        }
-    //                        catch
-    //                        {
-    //                        }
-    //                    }
-    //                }
-
-    //            }
-    //            if (PaymentType == "Bank Transfer")
-    //            {
-    //                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.tbranchname as S_tbranchname, branchdata.whcode as S_whcode, branchdata_1.BranchName AS P_BranchName, branchdata_1.tbranchname AS P_tbranchname, branchdata_1.whcode AS P_whcode,  branchdata_2.BranchName AS A_BranchName, branchdata_2.tbranchname  AS A_tBranchName FROM branchdata INNER JOIN  branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchdata branchdata_1 ON branchmappingtable.SuperBranch = branchdata_1.sno INNER JOIN branchmappingtable branchmappingtable_1 ON branchdata.sno = branchmappingtable_1.SuperBranch INNER JOIN branchdata branchdata_2 ON branchmappingtable_1.SubBranch = branchdata_2.sno WHERE (branchdata.sno = @BranchId) AND (branchdata_2.sno = @AgentID)");
-    //                cmd.Parameters.AddWithValue("@BranchId", Branch);//Branch is Salesofficer Branch
-    //                cmd.Parameters.AddWithValue("@AgentID", BranchID);//BranchID is Agent Branch
-    //                DataTable dt_branch = vdbmngr.SelectQuery(cmd).Tables[0];
-    //                string tbranchname = "";//Agent 
-    //                string t_sobranchname = "";
-    //                string t_Pbranchname = "";
-
-    //                string S_whcode = "";
-    //                string P_whcode = "";
-    //                if (dt_branch.Rows.Count > 0)
-    //                {
-    //                    tbranchname = dt_branch.Rows[0]["A_tBranchName"].ToString();
-    //                    t_sobranchname = dt_branch.Rows[0]["S_tbranchname"].ToString();
-    //                    t_Pbranchname = dt_branch.Rows[0]["P_tbranchname"].ToString();
-    //                    S_whcode = dt_branch.Rows[0]["S_whcode"].ToString();
-    //                    P_whcode = dt_branch.Rows[0]["P_whcode"].ToString();
-    //                }
-    //            }
-    //            if (PaymentType == "Journal Voucher")
-    //            {
-
-    //            }
-
-    //        }
-    //        string Msg = "Saved Successfully";
-    //        string response = GetJson(Msg);
-    //        context.Response.Write(response);
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        string Msg = ex.Message;
-    //        string response = GetJson(Msg);
-    //        context.Response.Write(response);
-    //    }
-    //}
-
     public class collection
     {
         public string receiptsno { get; set; }
@@ -31940,7 +30762,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         }
     }
-
     private void GetInventoryDeatails(HttpContext context)
     {
         try
@@ -32079,7 +30900,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     private void GetApprovalDetails(HttpContext context)
     {
         try
@@ -32834,7 +31654,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void GetDispatchValues(HttpContext context)
     {
         try
@@ -33681,7 +32500,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string RouteName { get; set; }
         public string ProductName { get; set; }
         public string LeakQty { get; set; }
-
         public string DispatchQty { get; set; }
         public string SaleValue { get; set; }
         public string MilkQty { get; set; }
@@ -34108,7 +32926,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string BranchName { get; set; }
         public string BranchID { get; set; }
         public List<string> ActMileage { get; set; }
-
         public string SaleQty { get; set; }
         public string salestypeid { get; set; }
         public string SalesType { get; set; }
@@ -34121,74 +32938,49 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string type1 { get; set; }
         public string AvgQty { get; set; }
         public string AvgSaleValue { get; set; }
-
-
         public string DataType { get; set; }
-
         public string yesterindent { get; set; }
         public string lastweekindent { get; set; }
         public string lastmonthindent { get; set; }
         public string lastyearindent { get; set; }
-
         public string presentweakindent { get; set; }
         public string presentmonthindent { get; set; }
         public string presentyearindent { get; set; }
-
         public string yesterdaypercentage { get; set; }
         public string lastweekpercentage { get; set; }
         public string lastmonthpercentage { get; set; }
         public string lastyearpercentage { get; set; }
-
-
         public string thismonthdate { get; set; }
         public string lastmonthdate { get; set; }
         public string lastyeardate { get; set; }
-
         public string thismonthtype { get; set; }
         public string lastmonthtype { get; set; }
         public string lastyeartype { get; set; }
-
         public string presentweakavg { get; set; }
         public string presentweakpercentage { get; set; }
         public string presentmonthavg { get; set; }
         public string presentmonthpercentage { get; set; }
         public string presentyearhavg { get; set; }
         public string presentyearpercentage { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-
-
         public string lastmonthweekindent { get; set; }
         public string lastmonthweekaverage { get; set; }
         public string lastmonthweekpercentage { get; set; }
-
         public string lastyearweekindent { get; set; }
         public string lastyearweekaverage { get; set; }
         public string lastyearweekpercentage { get; set; }
-
         public string lastsixthmonthpercentage { get; set; }
         public string lastsixthmonthaverage { get; set; }
         public string lastsixthmonthindent { get; set; }
-
         public string lastyearmonthpercentage { get; set; }
         public string lastyearmonthaverage { get; set; }
         public string lastyearmonthindent { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-
         public string yesterdayaverage { get; set; }
         public string lastweekaverage { get; set; }
         public string lastmonthaverage { get; set; }
         public string lastyearaverage { get; set; }
-
         public string temp { get; set; }
         public string temp1 { get; set; }
-
-
     }
-
     public class MainComaparisonDetails
     {
         public List<DayWiseDatescls> daywisedatescls { get; set; }
@@ -34196,7 +32988,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public List<LineChartValuesclass> linechartvaluesclass { get; set; }
         public string one { get; set; }
     }
-
     public class RegionNames
     {
         public string Sno { get; set; }
@@ -34838,7 +33629,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     public class Dispatchdetails
     {
         public string Sno { get; set; }
@@ -35442,7 +34232,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(msgresponse);
         }
     }
-
     private object GetHighDate(string IndentDate)
     {
         throw new NotImplementedException();
@@ -35524,7 +34313,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public float slotqty { set; get; }
         public float amount { set; get; }
     }
-
     class invoiceProducts
     {
         public string Productsno { set; get; }
@@ -35620,14 +34408,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     {
         public string[] Xvalue { get; set; }
         public List<decimal[]> YYvalue { get; set; }
-
-        //public List<string> Yvalue { get; set; }
         public string Yvalue { get; set; }
         public List<string> Month { get; set; }
         public List<string> ProductName { get; set; }
     }
-
-
     private void getAvglastThreeDaysSaleReport(HttpContext context)
     {
         try
@@ -35707,7 +34491,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     public class avgSale
     {
         public string SaleQty { get; set; }
@@ -36466,7 +35249,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public List<Helperdetails> HelperMasterdetails { set; get; }
         public List<IndentDetails> IndentDetails { set; get; }
         public List<offerorderdetails> Offerdetails { set; get; }
-
         public string[] dataarr { get; set; }
         public string[] Productlist { get; set; }
         public string[] Offer_Productlist { get; set; }
@@ -36611,7 +35393,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string UnitCost { get; set; }
         public string tubQty { get; set; }
         public string PktQty { get; set; }
-
         public string Puff_L { get; set; }
         public string PLQty { get; set; }
         public string PFQty { get; set; }
@@ -36619,7 +35400,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string PSQty { get; set; }
         public string PPufLQty { get; set; }
     }
-
     class offerorderdetails
     {
         public string SNo { set; get; }
@@ -36627,7 +35407,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string Qty { set; get; }
         public string offerqty { get; set; }
     }
-
     class Routes
     {
         public string operation { set; get; }
@@ -36636,8 +35415,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string mainbrnch { set; get; }
         public string indenttype { set; get; }
     }
-
-
     class DispatchInventory
     {
         public string Sno { get; set; }
@@ -37026,7 +35803,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void departmentsave(HttpContext context)
     {
         try
@@ -37128,7 +35904,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void get_Plant_TripRoutes(HttpContext context)
     {
         try
@@ -37271,7 +36046,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     class Dispatchplan
     {
         public string Sno { set; get; }
@@ -37300,7 +36074,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         return DT;
 
     }
-
     private DateTime GetHighDate(DateTime dt)
     {
         double Hour, Min, Sec;
@@ -38431,7 +37204,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     private void Get_Employee_editDC(HttpContext context)
     {
         try
@@ -38494,7 +37266,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void Get_Employee(HttpContext context)
     {
         try
@@ -38546,7 +37317,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string Employee_id { set; get; }
         public string EmployeeName { set; get; }
     }
-
     private void btnPuffPlanningSaveClick(HttpContext context)
     {
         try
@@ -40438,7 +39208,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void btnSpecialSaleSaveclick(HttpContext context)
     {
         try
@@ -41426,7 +40195,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void btnRoutesDeleteClick(HttpContext context)
     {
         try
@@ -41457,7 +40225,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void updateroutestogrid(HttpContext context)
     {
         string ltype = context.Session["LevelType"].ToString();
@@ -41517,7 +40284,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     public class routesgrid
     {
         public string RefNo { get; set; }
@@ -41569,7 +40335,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     public void Employee_profile_pic_files_upload(HttpContext context)
     {
         try
@@ -41605,7 +40370,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void save_Permissions(HttpContext context)
     {
         try
@@ -42105,7 +40869,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     public class RouteNames
     {
         public String id { get; set; }
@@ -42423,7 +41186,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string catgrysno { get; set; }
         public string description { get; set; }
     }
-
     private void productunitsmanagement(HttpContext context)
     {
         try
@@ -43211,7 +41973,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string ifsccode { get; set; }
         public string customeraccno { get; set; }
         public string regtype { get; set; }
-
     }
     private void save_branchproducts_click(HttpContext context)
     {
@@ -43782,7 +42543,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string empid { get; set; }
         public List<employeesmgnt> lstbrnch = new List<employeesmgnt>();
     }
-
     private void Inventorymanage(HttpContext context)
     {
         try
@@ -44153,7 +42913,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
         return jsonSerializer.Deserialize(obj, Type.GetType("System.Object"));
     }
-
     private void savestateDetails(HttpContext context)
     {
         try
@@ -44197,7 +42956,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(Response);
         }
     }
-
     private void get_state_details(HttpContext context)
     {
         try
@@ -44224,7 +42982,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     private void btnSMS_Click(HttpContext context)
     {
         try
@@ -45309,8 +44066,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string Count { get; set; }
         public string Amount { get; set; }
         public string EmpName { get; set; }
-
-
     }
     public class delaveryalldet
     {
@@ -45321,7 +44076,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public List<delaverysaletyamt> delaverysaletyamt { get; set; }
         public List<delaverydenomi> delaverydenomi { get; set; }
     }
-
     private void get_delavery_report_details(HttpContext context)
     {
         try
@@ -46743,7 +45497,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string subsno { get; set; }
         public string productname { get; set; }
         public string return_stock_refno { get; set; }
-
         public string InvName { get; set; }
         public string InvSno { get; set; }
         public string BranchName { get; set; }
@@ -46753,8 +45506,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string opening { get; set; }
         public string closing { get; set; }
         public string closingdate { get; set; }
-
-
         public string ReceivedCrates { get; set; }
         public string ReturnCrates { get; set; }
         public string DifferenceCrates { get; set; }
@@ -46765,8 +45516,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string ReturnCan20ltr { get; set; }
         public string DifferenceCan20ltr { get; set; }
     }
-
-
     private void get_PlantDirectSales_Wise_InventaryDetails(HttpContext context)
     {
         try
@@ -46860,7 +45609,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     private void get_Plant_DayWise_InventaryDetails(HttpContext context)
     {
         try
@@ -47171,7 +45919,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void SaveFormName(HttpContext context)
     {
         try
@@ -47196,7 +45943,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(Response);
         }
     }
-
     private void GetSalevlue(HttpContext context)
     {
         try
@@ -47760,11 +46506,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(Response);
         }
     }
-
-
-
-
-
     private void get_currentweekpossalevalue_details(HttpContext context)
     {
         try
@@ -48002,9 +46743,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(Response);
         }
     }
-
-
-
     private void get_weekpossalevalue_details(HttpContext context)
     {
         try
@@ -48286,8 +47024,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(Response);
         }
     }
-
-
     private void GetLastweekSalesDetails(HttpContext context)
     {
         try
@@ -48529,8 +47265,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(Response);
         }
     }
-
-
     private void GetLastweekBranchwiseSalesDetails(HttpContext context)
     {
         try
@@ -48778,7 +47512,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(Response);
         }
     }
-
     public class SalelDetails
     {
         public string categoeryname { set; get; }
@@ -48826,15 +47559,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public List<SalelDetails> SalelDetails { get; set; }
         public List<weekcls> wweekcls { get; set; }
     }
-
-    //emp logins
-
     public string indent_date { get; set; }
     public string fromdate { get; set; }
     public string dtcleardate { get; set; }
     public string BranchAmount { get; set; }
-
-
     private void btnsave_incentivemasterdetails(HttpContext context)
     {
         try
@@ -48915,7 +47643,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private void Getinsentivrdetails(HttpContext context)
     {
         try
@@ -48952,7 +47679,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(Response);
         }
     }
-
     private void getincentivependingdetails(HttpContext context)
     {
         try
@@ -49041,7 +47767,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(Response);
         }
     }
-
     public class approveincentive
     {
         public string btnval { set; get; }
@@ -49606,7 +48331,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         }
     }
-
     public class employelists
     {
         public string employee { set; get; }
@@ -49620,7 +48344,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string soid { set; get; }
         public string soidname { get; set; }
     }
-
     public class collectiontype
     {
         public string type { get; set; }
@@ -49650,7 +48373,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
     private string GetSpace(string p)
     {
         int i = 0;
@@ -49663,497 +48385,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
         return p.Substring(0, i) + " " + p.Substring(i, p.Length - i);
     }
-
-    //private void btnEInvoice_click(HttpContext context)
-    //{
-    //    try
-    //    {
-    //        vdbmngr = new VehicleDBMgr();
-
-    //        List<EInvoice.TranDtls> TranDtlslst = new List<EInvoice.TranDtls>();
-    //        List<EInvoice.DocDtls> DocDtlslst = new List<EInvoice.DocDtls>();
-    //        List<EInvoice.SellerDtls> SellerDtlslst = new List<EInvoice.SellerDtls>();
-    //        List<EInvoice.BuyerDtls> BuyerDtlslst = new List<EInvoice.BuyerDtls>();
-    //        List<EInvoice.DispDtls> DispDtlslst = new List<EInvoice.DispDtls>();
-    //        List<EInvoice.ShipDtls> ShipDtlslst = new List<EInvoice.ShipDtls>();
-    //        List<EInvoice.ItemList> ItemListlst = new List<EInvoice.ItemList>();
-    //        List<EInvoice.BchDtls> BchDtlslst = new List<EInvoice.BchDtls>();
-    //        List<EInvoice.AttribDtl> AttribDtllst = new List<EInvoice.AttribDtl>();
-    //        List<EInvoice.ValDtls> ValDtlslst = new List<EInvoice.ValDtls>();
-    //        List<EInvoice.PayDtls> PayDtlslst = new List<EInvoice.PayDtls>();
-    //        List<EInvoice.RefDtls> RefDtlslst = new List<EInvoice.RefDtls>();
-    //        List<EInvoice.DocPerdDtls> DocPerdDtlslst = new List<EInvoice.DocPerdDtls>();
-    //        List<EInvoice.PrecDocDtl> PrecDocDtllst = new List<EInvoice.PrecDocDtl>();
-    //        List<EInvoice.ContrDtl> ContrDtllst = new List<EInvoice.ContrDtl>();
-    //        List<EInvoice.AddlDocDtl> AddlDocDtllst = new List<EInvoice.AddlDocDtl>();
-    //        List<EInvoice.ExpDtls> ExpDtlslst = new List<EInvoice.ExpDtls>();
-    //        List<EInvoice.EwbDtls> EwbDtlslst = new List<EInvoice.EwbDtls>();
-    //        EInvoice.Root Rootlst = new EInvoice.Root();
-
-    //        SalesDBManager SalesDB = new SalesDBManager();
-    //        string titlename = context.Session["TitleName"].ToString();
-    //        string SOID = context.Request["SOID"];
-    //        //SOID = "2";
-    //        string from_date = context.Request["FromDate"];
-
-    //        DateTime fromdate = Convert.ToDateTime(from_date);
-
-    //        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-    //        DateTime dtapril = new DateTime();
-    //        DateTime dtmarch = new DateTime();
-    //        int currentyear = ServerDateCurrentdate.Year;
-    //        int nextyear = ServerDateCurrentdate.Year + 1;
-    //        int currntyearnum = 0;
-    //        int nextyearnum = 0;
-    //        if (ServerDateCurrentdate.Month > 3)
-    //        {
-    //            string apr = "4/1/" + currentyear;
-    //            dtapril = DateTime.Parse(apr);
-    //            string march = "3/31/" + nextyear;
-    //            dtmarch = DateTime.Parse(march);
-    //            currntyearnum = currentyear;
-    //            nextyearnum = nextyear;
-    //        }
-    //        if (ServerDateCurrentdate.Month <= 3)
-    //        {
-    //            string apr = "4/1/" + (currentyear - 1);
-    //            dtapril = DateTime.Parse(apr);
-    //            string march = "3/31/" + (nextyear - 1);
-    //            dtmarch = DateTime.Parse(march);
-
-    //        }
-
-    //        cmd = new MySqlCommand("SELECT  indents_subtable.indentno,SUM(indents_subtable.DeliveryQty) AS DeliveryQty,productsdata.SubCat_sno, indents_subtable.UnitCost,  productsdata.sno AS prodsno,productsdata.cgst,productsdata.sgst,productsdata.igst,productsdata.ProductName,productsdata.Itemcode, productsdata.hsncode,productsdata.Units, branchdata.BranchName,branchdata.BranchCode, branchdata.sno,branchdata.regtype,branchdata.gstno,branchdata.street,branchdata.city,branchdata.mandal,branchdata.area,branchdata.district,branchdata.pincode,branchdata.email,branchdata.doorno,branchdata.stateid,branchdata.statename,branchdata.companycode,branchdata.phonenumber FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno<>'' and branchdata.gstno is not null) and (productsdata.igst<>'0') OR (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno<>'' and branchdata.gstno is not null) and (productsdata.igst<>'0') GROUP BY prodsno, branchdata.sno ORDER BY branchdata.sno, prodsno");
-    //        cmd.Parameters.AddWithValue("@BranchID", SOID);
-    //        cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
-    //        cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
-    //        DataTable dtble = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //        cmd = new MySqlCommand("SELECT branchdata.branchname,branchdata.companycode, branchdata.phonenumber,branchdata.email, branchdata.sno,branchdata.stateid, branchdata.Address, branchdata.TinNumber, branchdata.panno, branchdata.BranchCode,statemastar.statecode, statemastar.statename, statemastar.gststatecode, branchdata.phonenumber, branchdata.emailid,  branchdata.street, branchdata.city, branchdata.mandal, branchdata.district, branchdata.pincode, branchdata.gstno, branchdata.doorno, branchdata.area FROM branchdata INNER JOIN statemastar ON branchdata.stateid = statemastar.sno WHERE (branchdata.sno = @branchsno)");
-    //        cmd.Parameters.AddWithValue("@branchsno", SOID);
-    //        DataTable dtsellardtble = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //        cmd = new MySqlCommand("SELECT  sno, BranchCode FROM  branchdata WHERE (sno = @branchsno)");
-    //        cmd.Parameters.AddWithValue("@branchsno", SOID);
-    //        DataTable dtsellarcode = vdbmngr.SelectQuery(cmd).Tables[0];
-
-    //        DataView view = new DataView(dtble);
-    //        DataTable Buyerdtble = view.ToTable(true, "sno", "BranchName", "BranchCode", "gstno", "regtype", "doorno", "street", "city", "mandal", "area", "district", "pincode", "email", "stateid", "statename", "companycode", "phonenumber");
-    //        DataTable Itemtable = view.ToTable(true, "sno", "DeliveryQty", "SubCat_sno", "UnitCost", "prodsno", "ProductName", "cgst", "sgst", "igst", "Itemcode", "hsncode", "Units");
-    //        foreach (DataRow dr in Buyerdtble.Rows)
-    //        {
-    //            string AgentId = dr["sno"].ToString();
-    //            string regtype = dr["regtype"].ToString();
-    //            Rootlst.Version = "1.1";
-    //            EInvoice.TranDtls objtrans = new EInvoice.TranDtls();
-    //            objtrans.TaxSch = "GST";
-    //            objtrans.SupTyp = "B2B";
-    //            objtrans.RegRev = "Y";
-    //            //objtrans.EcmGstin = "null";
-    //            objtrans.IgstOnIntra = "N";
-
-    //            Rootlst.TranDtls = objtrans;
-
-    //            TranDtlslst.Add(objtrans);
-
-    //            //DocumentDetails
-    //            string DCNO = "0";
-    //            string DcNo = "";
-    //            cmd = new MySqlCommand("SELECT agentdcno FROM  agenttaxdc WHERE (BranchId = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
-    //            cmd.Parameters.AddWithValue("@BranchId", AgentId);
-    //            cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-    //            cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
-    //            DataTable dtDcnumber = vdbmngr.SelectQuery(cmd).Tables[0];
-    //            string dcnumber = "";
-    //            if (dtDcnumber.Rows.Count > 0)
-    //            {
-    //                dcnumber = dtDcnumber.Rows[0]["agentdcno"].ToString();
-    //                DCNO = dcnumber.ToString();
-    //            }
-    //            else
-    //            {
-                  
-    //                ////if (NoOfdays < 2)
-    //                ////{
-    //                //cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM agenttaxdc WHERE (soid = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
-    //                //cmd.Parameters.AddWithValue("@BranchId", SOID);
-    //                //cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril).AddDays(-1));
-    //                //cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch).AddDays(-1));
-    //                //DataTable dtadcno = vdm.SelectQuery(cmd).Tables[0];
-    //                //string agentdcNo = dtadcno.Rows[0]["Sno"].ToString();
-    //                //cmd = new MySqlCommand("Insert Into agenttaxdc (BranchId,IndDate,soid,agentdcno,stateid,companycode,moduleid,doe,invoicetype) Values(@BranchId,@IndDate,@soid,@agentdcno,@stateid,@companycode,@moduleid,@doe,@invoicetype)");
-    //                //cmd.Parameters.AddWithValue("@BranchId", AgentId);
-    //                //cmd.Parameters.AddWithValue("@IndDate", GetLowDate(fromdate.AddDays(-1)));
-    //                //cmd.Parameters.AddWithValue("@soid", SOID);
-    //                //cmd.Parameters.AddWithValue("@agentdcno", agentdcNo);
-    //                //cmd.Parameters.AddWithValue("@stateid", gststatecode);
-    //                //cmd.Parameters.AddWithValue("@companycode", companycode);
-    //                //cmd.Parameters.AddWithValue("@doe", ReportDate);
-    //                //cmd.Parameters.AddWithValue("@moduleid", Session["moduleid"].ToString());
-    //                //cmd.Parameters.AddWithValue("@invoicetype", "TSales");
-    //                //DcNo = vdm.insertScalar(cmd);
-    //                //cmd = new MySqlCommand("SELECT agentdcno FROM  agenttaxdc WHERE (BranchID = @BranchID) AND (IndDate BETWEEN @d1 AND @d2)");
-    //                //cmd.Parameters.AddWithValue("@BranchID", branch["BSno"].ToString());
-    //                //cmd.Parameters.AddWithValue("@soid", ddlSalesOffice.SelectedValue);
-    //                //cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-    //                //cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
-    //                //DataTable dtsubDc = vdm.SelectQuery(cmd).Tables[0];
-    //                //if (dtsubDc.Rows.Count > 0)
-    //                //{
-    //                //    DCNO = dtsubDc.Rows[0]["agentdcno"].ToString();
-    //                //}
-    //                //DCNO = DCNO.ToString();
-    //                //}
-    //            }
-    //            //string DCNO = "";
-    //            int countdc = 0;
-    //            int.TryParse(DcNo, out countdc);
-    //            if (countdc <= 10)
-    //            {
-    //                DCNO = "0000" + countdc;
-    //            }
-    //            if (countdc >= 10 && countdc <= 99)
-    //            {
-    //                DCNO = "000" + countdc;
-    //            }
-    //            if (countdc >= 99 && countdc <= 999)
-    //            {
-    //                DCNO = "00" + countdc;
-    //            }
-    //            if (countdc > 999 && countdc <= 9999)
-    //            {
-    //                DCNO = "0" + countdc;
-    //            }
-    //            if (countdc > 9999)
-    //            {
-    //                DCNO = "" + countdc;
-    //            }
-
-    //            if (fromdate.Month > 3)
-    //            {
-    //                DcNo = dtsellarcode.Rows[0]["BranchCode"].ToString() + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
-    //            }
-    //            else
-    //            {
-    //                if (fromdate.Month <= 3)
-    //                {
-    //                    DcNo = dtsellarcode.Rows[0]["BranchCode"].ToString() + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
-    //                }
-    //                else
-    //                {
-    //                    DcNo = dtsellarcode.Rows[0]["BranchCode"].ToString() + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "T/" + DCNO;
-    //                }
-    //            }
-    //            //DcNo = dtbrnchaddress.Rows[0]["BranchCode"].ToString() + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
-    //            EInvoice.DocDtls objdocdtls = new EInvoice.DocDtls();
-    //            objdocdtls.Typ = "INV";
-    //            objdocdtls.No = DcNo;
-    //            objdocdtls.Dt = fromdate.ToString("dd/MM/yyyy");
-
-    //            Rootlst.DocDtls = objdocdtls;
-    //            DocDtlslst.Add(objdocdtls);
-    //            string fromstate = ""; string tostate = "";
-
-    //            foreach (DataRow drselaar in dtsellardtble.Rows)
-    //            {
-    //                EInvoice.SellerDtls objsellar = new EInvoice.SellerDtls();
-    //                objsellar.Gstin = drselaar["gstno"].ToString();
-    //                objsellar.LglNm = drselaar["branchname"].ToString();
-    //                objsellar.TrdNm = drselaar["branchname"].ToString();
-    //                objsellar.Addr1 = drselaar["doorno"].ToString() + ";," + drselaar["street"].ToString() + ";," + drselaar["area"].ToString();
-    //                objsellar.Addr2 = drselaar["doorno"].ToString() + ";," + drselaar["street"].ToString() + ";," + drselaar["area"].ToString();
-    //                objsellar.Loc = drselaar["area"].ToString();
-    //                objsellar.Pin = Convert.ToInt32(drselaar["pincode"].ToString());
-    //                //objsellar.Stcd = "36";
-    //                objsellar.Stcd = drselaar["stateid"].ToString();
-    //                objsellar.Ph = drselaar["phonenumber"].ToString();
-    //                objsellar.Em = drselaar["email"].ToString();
-    //                fromstate = drselaar["stateid"].ToString();
-    //                fromstate = "36";
-
-    //                Rootlst.SellerDtls = objsellar;
-
-    //                SellerDtlslst.Add(objsellar);
-    //                EInvoice.DispDtls objdisp = new EInvoice.DispDtls();
-    //                objdisp.Nm = drselaar["branchname"].ToString();
-    //                objdisp.Addr1 = drselaar["doorno"].ToString() + ";," + drselaar["street"].ToString() + ";," + drselaar["area"].ToString();
-    //                objdisp.Addr2 = drselaar["doorno"].ToString() + ";," + drselaar["street"].ToString() + ";," + drselaar["area"].ToString();
-    //                objdisp.Loc = drselaar["area"].ToString();
-    //                objdisp.Pin = Convert.ToInt32(drselaar["pincode"].ToString());
-    //                objdisp.Stcd = "36";
-    //                //objdisp.Stcd = drselaar["stateid"].ToString();
-    //                Rootlst.DispDtls = objdisp;
-    //                DispDtlslst.Add(objdisp);
-    //            }
-    //            foreach (DataRow drbuyer in Buyerdtble.Select("sno='" + AgentId + "'"))
-    //            {
-
-    //                EInvoice.BuyerDtls objbuyer = new EInvoice.BuyerDtls();
-    //                objbuyer.Gstin = drbuyer["gstno"].ToString();
-    //                objbuyer.LglNm = drbuyer["branchname"].ToString();
-    //                objbuyer.TrdNm = drbuyer["branchname"].ToString();
-    //                objbuyer.Pos = drbuyer["pincode"].ToString();
-    //                objbuyer.Addr1 = drbuyer["doorno"].ToString() + ";," + drbuyer["street"].ToString() + ";," + drbuyer["area"].ToString();
-    //                objbuyer.Addr2 = drbuyer["doorno"].ToString() + ";," + drbuyer["street"].ToString() + ";," + drbuyer["area"].ToString();
-    //                objbuyer.Loc = drbuyer["area"].ToString();
-    //                objbuyer.Pin = Convert.ToInt32(drbuyer["pincode"].ToString());
-    //                objbuyer.Stcd = drbuyer["stateid"].ToString(); ;
-    //                objbuyer.Ph = drbuyer["phonenumber"].ToString();
-    //                objbuyer.Em = drbuyer["email"].ToString();
-
-    //                tostate = drbuyer["stateid"].ToString();
-
-    //                Rootlst.BuyerDtls = objbuyer;
-
-    //                BuyerDtlslst.Add(objbuyer);
-
-    //                EInvoice.ShipDtls objship = new EInvoice.ShipDtls();
-
-    //                objship.Gstin = drbuyer["gstno"].ToString();
-    //                objship.LglNm = drbuyer["branchname"].ToString();
-    //                objship.TrdNm = drbuyer["branchname"].ToString();
-    //                objship.Addr1 = drbuyer["doorno"].ToString() + ";," + drbuyer["street"].ToString() + ";," + drbuyer["area"].ToString();
-    //                objship.Addr2 = drbuyer["doorno"].ToString() + ";," + drbuyer["street"].ToString() + ";," + drbuyer["area"].ToString();
-    //                objship.Loc = drbuyer["area"].ToString();
-    //                objship.Pin = Convert.ToInt32(drbuyer["pincode"].ToString());
-    //                //objship.Stcd = drbuyer["stateid"].ToString(); ;
-    //                objship.Stcd = "36";
-    //                Rootlst.ShipDtls = objship;
-
-    //                //ShipDtlslst.ShipDtls=objship;
-    //            }
-    //            int i = 0;
-
-    //            double tot_amount = 0;double TPAmount = 0; double PAmount = 0; double total_cgst = 0; double total_sgst = 0; double total_igst = 0; double gtotalamout = 0;
-    //            foreach (DataRow dritem in Itemtable.Select("sno='" + AgentId + "'"))
-    //            {
-    //                EInvoice.ItemList objitems = new EInvoice.ItemList();
-    //                i++;
-    //                objitems.SlNo = i.ToString();
-    //                objitems.IsServc = "N";
-    //                objitems.PrdDesc = dritem["ProductName"].ToString();
-    //                objitems.HsnCd = dritem["hsncode"].ToString();
-    //                objitems.Barcde = dritem["Itemcode"].ToString();
-
-    //                //EInvoice.BchDtls objbatch = new EInvoice.BchDtls();
-    //                //objbatch.Nm = dritem["ProductName"].ToString(); ;
-    //                //objbatch.Expdt = fromdate.AddDays(-1).ToString("dd/MM/yyyy");
-    //                //objbatch.wrDt = fromdate.AddDays(1).ToString("dd/MM/yyyy");
-    //                //objitems.BchDtls = objbatch;
-
-
-    //                //newrow["uomqty"] = dr["uomqty"].ToString();
-    //                float qty = 0;
-    //                float.TryParse(dritem["DeliveryQty"].ToString(), out qty);
-    //                float rate = 0;
-    //                float.TryParse(dritem["Unitcost"].ToString(), out rate);
-
-    //                objitems.Qty = Math.Round(qty, 2);
-
-    //                double sgstamount = 0;
-    //                double cgstamount = 0;
-    //                double Igst = 0;
-    //                double Igstamount = 0;
-    //                double totRate = 0;
-    //                double.TryParse(dritem["Igst"].ToString(), out Igst);
-    //                double Igstcon = 100 + Igst;
-    //                Igstamount = (rate / Igstcon) * Igst;
-    //                Igstamount = Math.Round(Igstamount, 2);
-    //                totRate = Igstamount;
-    //                double Vatrate = rate - totRate;
-    //                Vatrate = Math.Round(Vatrate, 2);
-    //                //newrow["Rate"] = Vatrate.ToString();
-    //                PAmount = qty * Vatrate;
-    //                //newrow["Taxable Value"] = Math.Round(PAmount, 2);
-    //                double tot_vatamount = (PAmount * Igst) / 100;
-    //                if (fromstate == tostate)
-    //                {
-    //                    if (regtype == "Special Economic Zone")
-    //                    {
-    //                        tot_vatamount = Math.Round(tot_vatamount, 2);
-    //                        objitems.SgstAmt = 0;
-    //                        objitems.IgstAmt = tot_vatamount;
-    //                        objitems.CgstAmt = 0;
-    //                        total_igst += tot_vatamount;
-    //                    }
-    //                    else
-    //                    {
-    //                        sgstamount = (tot_vatamount / 2);
-    //                        sgstamount = Math.Round(sgstamount, 2);
-    //                        cgstamount = (tot_vatamount / 2);
-    //                        cgstamount = Math.Round(cgstamount, 2);
-    //                        //newrow["cgst"] = dr["cgst"].ToString();
-    //                        // newrow["sgst"] = dr["sgst"].ToString();
-    //                        objitems.SgstAmt = sgstamount;
-    //                        objitems.IgstAmt = 0;
-    //                        objitems.CgstAmt = cgstamount;
-    //                        total_cgst += cgstamount;
-    //                        total_sgst += sgstamount;
-    //                    }
-    //                }
-    //                else
-    //                {
-    //                    tot_vatamount = Math.Round(tot_vatamount, 2);
-    //                    objitems.SgstAmt = 0;
-    //                    objitems.IgstAmt = tot_vatamount;
-    //                    objitems.CgstAmt = 0;
-    //                    total_igst += tot_vatamount;
-    //                }
-    //                TPAmount += PAmount;
-    //                tot_amount = PAmount + tot_vatamount;
-    //                tot_amount = Math.Round(tot_amount, 2);
-    //                gtotalamout += tot_amount;
-
-    //                objitems.FreeQty = 0;
-    //                objitems.Unit = dritem["Units"].ToString();
-    //                objitems.UnitPrice = Vatrate;
-    //                objitems.TotAmt = PAmount;
-    //                objitems.Discount = 0;
-    //                objitems.PreTaxVal = PAmount;
-    //                objitems.AssAmt = PAmount;
-    //                objitems.GstRt = Convert.ToInt32(Igst);
-
-    //                objitems.CesRt = 0;
-    //                objitems.CesAmt = 0.0;
-    //                objitems.CesNonAdvlAmt = 0;
-    //                objitems.StateCesRt = 0;
-    //                objitems.StateCesAmt = 0.0;
-    //                objitems.StateCesNonAdvlAmt = 0;
-    //                objitems.OthChrg = 0;
-    //                objitems.TotItemVal = tot_amount;
-    //                objitems.OrdLineRef = "Empty";
-    //                objitems.OrgCntry = "IN";
-    //                objitems.PrdSlNo = "1";
-
-
-    //                EInvoice.AttribDtl objattr = new EInvoice.AttribDtl();
-    //                objattr.Nm = "MILK";
-    //                objattr.Val = "1";
-    //                AttribDtllst.Add(objattr);
-    //                objitems.AttribDtls = AttribDtllst;
-    //                ItemListlst.Add(objitems);
-    //                Rootlst.ItemList = ItemListlst;
-
-    //            }
-
-    //            EInvoice.ValDtls objval = new EInvoice.ValDtls();
-    //            objval.AssVal = PAmount;
-    //            objval.CgstVal = total_cgst;
-    //            objval.SgstVal = total_sgst;
-    //            objval.IgstVal = total_igst;
-    //            objval.CesVal = 0;
-    //            objval.StCesVal = 0;
-    //            objval.Discount = 0;
-    //            objval.OthChrg = 0;
-    //            objval.RndOffAmt = 0;
-    //            objval.TotInvVal = gtotalamout;
-    //            objval.TotInvValFc = 0;
-
-    //            Rootlst.ValDtls = objval;
-    //            ValDtlslst.Add(objval);
-
-
-    //            EInvoice.PayDtls objpay = new EInvoice.PayDtls();
-    //            objpay.Nm = "Empty";
-    //            objpay.Accdet = "Empty";
-    //            objpay.Mode = "1";
-    //            objpay.Fininsbr = "Empty";
-    //            objpay.Payterm = "Empty";
-    //            objpay.Payinstr = "Empty";
-    //            objpay.Crtrn = "Empty";
-    //            objpay.Dirdr = "Empty";
-    //            objpay.Crday = 0;
-    //            objpay.Paidamt = 0;
-    //            objpay.Paymtdue = 0;
-
-    //            Rootlst.PayDtls = objpay;
-    //            PayDtlslst.Add(objpay);
-
-    //            EInvoice.RefDtls objref = new EInvoice.RefDtls();
-    //            objref.InvRm = "Empty";
-
-    //            //Rootlst.RefDtls = objref;
-    //            //RefDtlslst.Add(objref);
-
-    //            EInvoice.DocPerdDtls objdocperdtls = new EInvoice.DocPerdDtls();
-    //            objdocperdtls.InvStDt = fromdate.ToString("dd/MM/yyyy");
-    //            objdocperdtls.InvEndDt = fromdate.AddDays(-1).ToString("dd/MM/yyyy");
-
-    //            objref.DocPerdDtls = objdocperdtls;
-
-    //            //Rootlst.DocPerdDtls=objdocperdtls;
-    //            //DocDtlslst.Add(objdocperdtls);
-
-    //            EInvoice.PrecDocDtl objpredocdtls = new EInvoice.PrecDocDtl();
-    //            objpredocdtls.InvNo = DcNo;
-    //            objpredocdtls.InvDt = fromdate.ToString("dd/MM/yyyy");
-    //            objpredocdtls.OthRefNo = "Empty";
-    //            PrecDocDtllst.Add(objpredocdtls);
-    //            objref.PrecDocDtls = PrecDocDtllst;
-
-
-
-    //            EInvoice.ContrDtl objcondtls = new EInvoice.ContrDtl();
-    //            objcondtls.RecAdvRefr = "Empty";
-    //            objcondtls.RecAdvDt = fromdate.ToString("dd/MM/yyyy");
-    //            objcondtls.Tendrefr = "Empty";
-    //            objcondtls.Contrrefr = "Empty";
-    //            objcondtls.Extrefr = "Empty";
-    //            objcondtls.Projrefr = "Empty";
-    //            objcondtls.Porefr = "Empty";
-    //            objcondtls.PoRefDt = fromdate.ToString("dd/MM/yyyy");
-
-    //            ContrDtllst.Add(objcondtls);
-    //            objref.ContrDtls = ContrDtllst;
-    //            Rootlst.RefDtls = objref;
-
-
-
-    //            EInvoice.AddlDocDtl objadddocdtls = new EInvoice.AddlDocDtl();
-    //            objadddocdtls.Url = "https://einv-apisandbox.nic.in";
-    //            objadddocdtls.Docs = "Milk INvoice";
-    //            objadddocdtls.Info = "Milk Invoice Details";
-    //            AddlDocDtllst.Add(objadddocdtls);
-
-    //            Rootlst.AddlDocDtls = AddlDocDtllst;
-
-
-    //            EInvoice.ExpDtls objexpdtls = new EInvoice.ExpDtls();
-    //            objexpdtls.ShipBNo = "Empty";
-    //            objexpdtls.ShipBDt = fromdate.ToString("dd/MM/yyyy");
-    //            objexpdtls.Port = "Empty";
-    //            objexpdtls.RefClm = "1";
-    //            objexpdtls.ForCur = "Empty";
-    //            objexpdtls.CntCode = "IN";
-    //            Rootlst.ExpDtls = objexpdtls;
-
-    //            ExpDtlslst.Add(objexpdtls);
-
-    //            //EInvoice.EwbDtls ewbDtls = new EInvoice.EwbDtls();
-    //            //ewbDtls.Transid = "";
-    //            //ewbDtls.Transname = "";
-    //            //ewbDtls.Distance = 0;
-    //            //ewbDtls.Transdocno = "";
-    //            //ewbDtls.TransdocDt = "";
-    //            //ewbDtls.Vehno = "";
-    //            //ewbDtls.Vehtype = "";
-    //            //ewbDtls.TransMode = "";
-    //            //Rootlst.EwbDtls = ewbDtls;
-    //            //EwbDtlslst.Add(ewbDtls);
-    //        }
-    //        string response = GetJson(Rootlst);
-    //        context.Response.Write(response);
-
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        string msg = ex.Message;
-    //        string response = GetJson(msg);
-    //        context.Response.Write(response);
-    //    }
-    //}
-
-
     #region "EWay Bill Data"
     public class itemList
     {
@@ -50196,7 +48427,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public int transactionType { get; set; }
         public string dispatchFromGSTIN { get; set; }
         public string dispatchFromTradeName { get; set; }
-        //public string shipToGSTIN { get; set; }
         public string shipToTradeName { get; set; }
         public int totalValue { get; set; }
         public int cgstValue { get; set; }
@@ -50207,9 +48437,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public int totInvValue { get; set; }
         public string transMode { get; set; }
         public string transDistance { get; set; }
-        //public string Distance { get; set; }
         public string transporterName { get; set; }
-        //public string transporterId { get; set; }
         public string transDocNo { get; set; }
         public string transDocDate { get; set; }
         public string vehicleNo { get; set; }
@@ -50628,7 +48856,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             }
         }
     }
-
     private string get_ewaybill_data_out(string ewaybill_no, string gstin)
     {
         using (var httpClient = new HttpClient())
@@ -50652,7 +48879,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     }
     #endregion
 
-
     #region "E Invoice"
     public class EInvoice_Products
     {
@@ -50666,7 +48892,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string StateName { get; set; }
         public string StateId { get; set; }
         public string status { get; set; }
-
         public string signed_qr_code { get; set; }
         public string ack_no { get; set; }
         public string ack_date { get; set; }
@@ -50812,8 +49037,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-
     public class EInvoice_Login
     {
         public string username { get; set; } //= "Api_api_vyshnavids";
@@ -50845,7 +49068,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             }
         }
     }
-
     public class responce_data
     {
         public string status_cd { get; set; }
@@ -50861,7 +49083,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string status_desc { get; set; }
         public authenticate_data data { get; set; }
     }
-
     public class authenticate_data
     {
         public string username { get; set; }
@@ -50869,9 +49090,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string sek { get; set; }
         public string clientid { get; set; }
         public string authtoken { get; set; }
-
     }
-
     public class header_data
     {
         public string gstin { get; set; }
@@ -50880,19 +49099,16 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string client_id { get; set; }
         public string txn { get; set; }
     }
-    
     public class errors
     {
         public string message { get; set; }
         public string error_cd { get; set; }
         public string info { get; set; }
     }
-
     public class messages
     {
         public string errorCodes { get; set; }
     }
-
     public static string GetLocalIPAddress()
     {
         var host = Dns.GetHostEntry(Dns.GetHostName());
@@ -50905,7 +49121,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
         throw new Exception("Error");
     }
-
     private authenticate_response authenticate_e_invoice(string SOID)
     {
         EInvoice_Login Elogin = new EInvoice_Login(SOID);
@@ -50938,7 +49153,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             }
         }
     }
-
     private void generate_e_invoice_details(HttpContext context)
     {
         try
@@ -51462,7 +49676,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             return ex.Message;
         }
     }
-
     public class Response_EInvoiceData
     {
         public string AckNo { get; set; }
@@ -51483,7 +49696,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string status_cd { get; set; }
         public string status_desc { get; set; }
     }
-
     private string generate_e_invoice_details(string token, string from_date, string SOID, string AgentID,string empsno, string jsonresponse)
     {
         //try
@@ -51550,7 +49762,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         //}
 
     }
-
     private void btn_Click_GetInvoice(HttpContext context)
     {
         try
@@ -51590,7 +49801,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private string get_e_envoice_details(string token, string IRN_No,string SOID)
     {
         EInvoice_Login Elogin = new EInvoice_Login(SOID);
@@ -51616,7 +49826,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             }
         }
     }
-
     private string cancel_invoice_reference_number(string token, string irnNumber)
     {
 
@@ -51647,7 +49856,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             }
         }
     }
-
     public class ewaybill_data
     {
         public string ewbNo { get; set; }
@@ -51664,8 +49872,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string fromState { get; set; }
         public string vehicleNo { get; set; }
         public string enteredDate { get; set; }
-
-        // public List<tripSheetEwbBills> tripSheetEwbBills { get; set; }
     }
     public class EWayClass
     {
@@ -51694,14 +49900,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string TransName { get; set; }
         public string TransDocDt { get; set; }
         public string TransDocNo { get; set; }
-
         public string VehNo { get; set; }
         public string VehType { get; set; }
         public string Type { get; set; }
         public string InvoiceStatus { get; set; }
         public string UserType { get; set; }
     }
-
     private void GetEWayDetails(HttpContext context)
     {
         try
@@ -51913,7 +50117,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     
     //public class Irn_EwayBill
     //{
@@ -51933,7 +50136,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string EwbDt { get; set; }
         public string EwbValidTill { get; set; }
     }
-
     public class Response_Eway
     {
         public Response_EwayData data { get; set; }
@@ -52080,7 +50282,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
     private string generate_ewaybill_using_IRN(string authToken, string from_date, string SOID, string AgentID, string jsonresponse)
     {
         vdbmngr = new VehicleDBMgr();
@@ -52143,7 +50344,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             }
         }
     }
-
     private string get_ewaybill_details_by_IRN(string gstin, string token, string irnNumber, string suppliergstin)
     {
         using (var httpClient = new HttpClient())
