@@ -422,7 +422,7 @@ public partial class Tally_AR_AP_Invoice : System.Web.UI.Page
                         else
                         {
                             DateTime dtjuly = new DateTime();
-                            string jul = "7/18/" + currentyear;
+                            string jul = "7/18/2022";
                             dtjuly = DateTime.Parse(jul);
                             if (dtjuly > fromdate)
                             {
@@ -808,7 +808,7 @@ public partial class Tally_AR_AP_Invoice : System.Web.UI.Page
                                     else
                                     {
                                         DateTime dtjuly = new DateTime();
-                                        string jul = "7/18/" + currentyear;
+                                        string jul = "7/18/2022";
                                         dtjuly = DateTime.Parse(jul);
                                         if (dtjuly > fromdate)
                                         {
@@ -1032,7 +1032,7 @@ public partial class Tally_AR_AP_Invoice : System.Web.UI.Page
                     {
 
                         DateTime dtjuly = new DateTime();
-                        string jul = "7/18/" + currentyear;
+                        string jul = "7/18/2022";
                         dtjuly = DateTime.Parse(jul);
                         if (dtjuly > fromdate)
                         {
@@ -1422,7 +1422,7 @@ public partial class Tally_AR_AP_Invoice : System.Web.UI.Page
                                 foreach (DataRow branch in DtTripSubData.Rows)
                                 {
                                     DateTime dtjuly = new DateTime();
-                                    string jul = "7/18/" + currentyear;
+                                    string jul = "7/18/2022";
                                     dtjuly = DateTime.Parse(jul);
                                     if (dtjuly > fromdate)
                                     {
