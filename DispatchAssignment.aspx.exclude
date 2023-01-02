@@ -52,12 +52,9 @@
 
         function FillBranches() {
             var data = { 'operation': 'get_Pending_dispatches' };
-            // var data = { 'operation': 'Initilize_branchmapping' };
             var s = function (msg) {
                 if (msg) {
                     fillroutes_divchklist(msg);
-                    //counts = 0;
-                    //BindCategoriesss(msg);
                 }
                 else {
                 }

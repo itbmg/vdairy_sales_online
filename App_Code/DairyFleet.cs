@@ -219,6 +219,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "intialize_branchesmanages_salestype":
                     intialize_branchesmanages_salestype(context);
                     break;
+                    ///complete 02/01/2023
                 case "intialize_branchesproducts_branchname":
                     intialize_branchesproducts_branchname(context);
                     break;
@@ -279,9 +280,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "updatedivselected":
                     updatedivselected(context);
                     break;
-                case "get_Pending_dispatches":
-                    get_Pending_dispatches(context);
-                    break;
                 case "get_Branches_Salesoffice":
                     get_Branches_Salesoffice(context);
                     break;
@@ -316,20 +314,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "Gettripinventory_manage":
                     Gettripinventory_manage(context);
                     break;
+                    ///complete
                 case "Inventory_Purchase_manage":
                     Inventory_Purchase_manage(context);
                     break;
                 case "update_inventory_Purchase_manage":
                     update_inventory_Purchase_manage(context);
-                    break;
-                case "SaveFreezarIssuedeatils":
-                    SaveFreezarIssuedeatils(context);
-                    break;
-                case "get_FreezarIssue_details":
-                    get_FreezarIssue_details(context);
-                    break;
-                case "get_printFreezer_Report":
-                    get_printFreezer_Report(context);
                     break;
                 case "intialize_purchase_invname":
                     intialize_purchase_invname(context);
@@ -346,17 +336,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "GetTripEnd_Details":
                     GetTripEnd_Details(context);
                     break;
-                case "getallemployees":
-                    getallemployees(context);
-                    break;
                 case "Update_grid_oncheck_change_branchmanagement":
                     Update_grid_oncheck_change_branchmanagement(context);
                     break;
                 case "updatebrnchprdt_check_togrid":
                     updatebrnchprdt_check_togrid(context);
-                    break;
-                case "Add_all_prdt_to_brnchprdt":
-                    Add_all_prdt_to_brnchprdt(context);
                     break;
                 case "get_all_Routes":
                     get_all_Routes(context);
@@ -373,17 +357,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "getAvglastThreeDaysSaleReport":
                     getAvglastThreeDaysSaleReport(context);
                     break;
-                case "Getrouteleaks":
-                    Getrouteleaks(context);
-                    break;
                 case "GetProductnames":
                     GetProductnames(context);
                     break;
                 case "FillCategeoryname":
                     FillCategeoryname(context);
-                    break;
-                case "GetReturnLeakReport":
-                    GetReturnLeakReport(context);
                     break;
                 case "GetVerifyInventory":
                     GetVerifyInventory(context);
@@ -433,9 +411,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "updatedivslots":
                     updatedivslots(context);
                     break;
-                case "GetDashBoardDetails":
-                    GetDashBoardDetails(context);
-                    break;
+                
                 case "get_branch_clubbings":
                     get_branch_clubbings(context);
                     break;
@@ -451,11 +427,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "GetBranchProducts":
                     GetBranchProducts(context);
                     break;
-
-                case "Get_Products":
-                    Get_Products(context);
-                    break;
-
                 case "GetBranchStock":
                     GetBranchStock(context);
                     break;
@@ -483,9 +454,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "GetSalesOffice":
                     GetSalesOffice(context);
                     break;
-                case "GetSOAndPlantRoutes":
-                    GetSOAndPlantRoutes(context);
-                    break;
+               
                 case "GetSalesOfficeEmployee":
                     GetSalesOfficeEmployee(context);
                     break;
@@ -498,17 +467,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "GetVehicleNos":
                     GetVehicleNos(context);
                     break;
-                case "Getmarketexicutives":
-                    Getmarketexicutives(context);
-                    break;
                 case "SaveVehicleMasterClick":
                     SaveVehicleMasterClick(context);
                     break;
                 case "GetAgents":
                     GetAgents(context);
-                    break;
-                case "Get_SalesOffice_Agents":
-                    Get_SalesOffice_Agents(context);
                     break;
                 case "GetEmployeenames":
                     GetEmployeenames(context);
@@ -519,38 +482,22 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "GetApprovalDetails":
                     GetApprovalDetails(context);
                     break;
-                case "Getdetails":
-                    Getdetails(context);
-                    break;
                 case "GetSalesRoutes":
                     GetSalesRoutes(context);
                     break;
                 case "GetInventoryDeatails":
                     GetInventoryDeatails(context);
                     break;
-                case "GetAgentInvBal":
-                    GetAgentInvBal(context);
-                    break;
                 case "GetAgentAmountDeatails":
                     GetAgentAmountDeatails(context);
                     break;
-                
                 case "get_EditCollections_details":
                     get_EditCollections_details(context);
-                    break;
-
-                case "btnAgentCreditDebitTransaction":
-                    btnAgentCreditDebitTransaction(context);
-                    break;
-                case "btnAgentInventoryCDTransaction":
-                    btnAgentInventoryCDTransaction(context);
                     break;
                 case "LedgerDetailsClick":
                     LedgerDetailsClick(context);
                     break;
-                case "GetRoutes":
-                    GetRoutes(context);
-                    break;
+               
                 case "GetRouteNameChange":
                     GetRouteNameChange(context);
                     break;
@@ -561,28 +508,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "GetDeliverInventory":
                     GetDeliverInventory(context);
                     break;
-                case "CollectionSaveClick":
-                    CollectionSaveClick(context);
-                    break;
-                case "getBranchValuesamount":
-                    getBranchValuesamount(context);
-                    break;
-
                 // end added  by akbar 20-May-2022
                 case "GetEditInventoryValues":
                     GetEditInventoryValues(context);
-                    break;
-                case "btnDueApproveClick":
-                    btnDueApproveClick(context);
-                    break;
-                case "GetDueDetails":
-                    GetDueDetails(context);
-                    break;
-                case "GetIndentDetails":
-                    GetIndentDetails(context);
-                    break;
-                case "GetGheeSaleProducts":
-                    GetGheeSaleProducts(context);
                     break;
                 case "GetSalesOfficeChange":
                     GetSalesOfficeChange(context);
@@ -624,9 +552,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     GetPuffDespatches(context);
                     break;
                 /////.................Puff Planning.............../////////////////
-                case "Get_So_Plant_Despatches":
-                    Get_So_Plant_Despatches(context);
-                    break;
                 case "GetAllIndentTypes":
                     GetAllIndentTypes(context);
                     break;
@@ -680,9 +605,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     break;
                 case "GetHeadLimit":
                     GetHeadLimit(context);
-                    break;
-                case "btnVoucherPrintClick":
-                    btnVoucherPrintClick(context);
                     break;
 
                 //from last to till verified methods
@@ -997,12 +919,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "viewincentivependingdetails":
                     viewincentivependingdetails(context);
                     break;
-                case "GetAgetntinfosrwise":
-                    GetAgetntinfosrwise(context);
-                    break;
-                case "GetAgetntinformationagentwise":
-                    GetAgetntinformationagentwise(context);
-                    break;
                 case "btnEditCashbookSaveClick":
                     btnEditCashbookSaveClick(context);
                     break;
@@ -1117,10 +1033,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         {
                             save_Offers_assignment(context);
                         }
-                        if (obj.operation == "btndispatchassign")
-                        {
-                            btndispatchassign(context);
-                        }
                         if (obj.operation == "get_Plant_Trip_RouteNameChange")
                         {
                             get_Plant_Trip_RouteNameChange(context);
@@ -1173,11 +1085,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         if (obj.operation == "btnNewEditIndentSaveClick")
                         {
                             btnNewEditIndentSaveClick(context);
-                        }
-
-                        if (obj.operation == "btnIndentApproveSaveClick")
-                        {
-                            btnIndentApproveSaveClick(context);
                         }
                         if (obj.operation == "btnEditInventorySaveClick")
                         {
@@ -1233,11 +1140,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         {
                             Svae_Indent_Assign_Details(context);
                         }
-
-                        if (obj.operation == "btnDistributorProductsSaveClick")
-                        {
-                            btnDistributorProductsSaveClick(context);
-                        }
                         if (obj.operation == "saveBranch_Products_Details")
                         {
                             saveBranch_Products_Details(context);
@@ -1259,436 +1161,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
     }
 
-    private void getBranchValuesamount(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            List<string> MsgList = new List<string>();
-            if (context.Session["userdata_sno"] == null)
-            {
-                string errmsg = "Session Expired";
-                string errresponse = GetJson(errmsg);
-                context.Response.Write(errresponse);
-            }
-            else
-            {
-                string Username = context.Session["userdata_sno"].ToString();
-                DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-
-                string BranchID = context.Request["bid"];
-                //cmd = new MySqlCommand("SELECT productsdata.ProductName,indents_subtable.IndentNo, indents_subtable.Qty, indents_subtable.unitQty, indents_subtable.UnitCost, indents_subtable.Cost AS unitprice, productsdata.sno,Sum(indents_subtable.DeliveryQty * indents_subtable.UnitCost) AS Total, productsdata.Qty AS RawQty, productsdata.Units FROM indents INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno  WHERE (indents.IndentNo = (SELECT MAX(IndentNo) AS IndentNo FROM indents  WHERE (Branch_id = @bsno) AND (UserData_sno = @UserName) and (indents_1.PaymentStatus<>'V'))");
-                //cmd = new MySqlCommand("SELECT productsdata.ProductName, indents_subtable.IndentNo, indents_subtable.Qty, indents_subtable.unitQty, indents_subtable.UnitCost, indents_subtable.Cost AS unitprice, productsdata.sno, SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost) AS Total, productsdata.Qty AS RawQty, productsdata.Units FROM indents INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno  WHERE (indents.IndentNo =(SELECT MAX(IndentNo) AS IndentNo FROM indents indents_1 WHERE (Branch_id = @bsno) AND (UserData_sno = @UserName) AND (PaymentStatus <> 'V'))) AND (indents_subtable.Status = 'Delivered')");
-                cmd = new MySqlCommand("SELECT SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost) AS Total,indents.IndentNo FROM indents INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo WHERE (indents.Branch_id = @Branch_id) AND (indents.I_Date between @d1 and @d2 ) ");
-                cmd.Parameters.AddWithValue("@Branch_id", BranchID);
-                cmd.Parameters.AddWithValue("@d1", GetLowDate(ServerDateCurrentdate).AddDays(-1));
-                cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate).AddDays(-1));
-                DataTable dtYesdayIndent = vdbmngr.SelectQuery(cmd).Tables[0];
-                double Total = 0;
-                string IndentNo = "0";
-                if (dtYesdayIndent.Rows.Count > 0)
-                {
-                    if (dtYesdayIndent.Rows[0]["Total"].ToString() != "")
-                    {
-                        double Dtotal = (double)dtYesdayIndent.Rows[0]["Total"];
-                        Total = (double)Math.Round(Dtotal, 2);
-                        IndentNo = dtYesdayIndent.Rows[0]["IndentNo"].ToString();
-                    }
-                }
-                //cmd = new MySqlCommand("select sum(TotalPrice) as TotalPrice from indents where userdata_sno=@UserName and Branch_id='" + BranchID + "'");
-                cmd = new MySqlCommand("SELECT branchaccounts.Amount, branchdata.CollectionType FROM  branchaccounts INNER JOIN branchdata ON branchaccounts.BranchId = branchdata.sno WHERE (branchaccounts.BranchId = @BranchID)");
-                cmd.Parameters.AddWithValue("@BranchID", BranchID);
-                DataTable dtTotalAmount = vdbmngr.SelectQuery(cmd).Tables[0];
-                List<AmontClass> msgAmountlist = new List<AmontClass>();
-                if (dtTotalAmount.Rows.Count > 0)
-                {
-                    AmontClass getAmount = new AmontClass();
-                    getAmount.IndentNo = IndentNo;
-                    getAmount.TodayAmount = Total;
-                    getAmount.CollectionType = dtTotalAmount.Rows[0]["CollectionType"].ToString();
-                    getAmount.TotalAmount = dtTotalAmount.Rows[0]["Amount"].ToString();
-                    msgAmountlist.Add(getAmount);
-                    string response = GetJson(msgAmountlist);
-                    context.Response.Write(response);
-                }
-                else
-                {
-                    AmontClass getAmount = new AmontClass();
-                    getAmount.TodayAmount = Total;
-                    getAmount.TotalAmount = "0";
-                    getAmount.CollectionType = "Cash";
-                    msgAmountlist.Add(getAmount);
-                    string response = GetJson(msgAmountlist);
-                    context.Response.Write(response);
-                }
-            }
-        }
-        catch
-        {
-        }
-    }
-    private void CollectionSaveClick(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            DateTime dtCdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            DateTime dtapril = new DateTime();
-            DateTime dtmarch = new DateTime();
-            int currentyear = dtCdate.Year;
-            int nextyear = dtCdate.Year + 1;
-            if (dtCdate.Month > 3)
-            {
-                string apr = "4/1/" + currentyear;
-                dtapril = DateTime.Parse(apr);
-                string march = "3/31/" + nextyear;
-                dtmarch = DateTime.Parse(march);
-            }
-            if (dtCdate.Month <= 3)
-            {
-                string apr = "4/1/" + (currentyear - 1);
-                dtapril = DateTime.Parse(apr);
-                string march = "3/31/" + (nextyear - 1);
-                dtmarch = DateTime.Parse(march);
-            }
-            List<string> MsgList = new List<string>();
-            string Username = context.Session["userdata_sno"].ToString();
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            string b_bid = context.Request["BranchID"];
-            string PaidAmount = context.Request["PaidAmount"];
-            string PaymentType = context.Request["PaymentType"];
-            string DenominationString = context.Request["DenominationString"];
-            string btnvalue = context.Request["btnvalue"].ToString();
-            double TotPaidAmount = 0;
-            double.TryParse(PaidAmount, out TotPaidAmount);
-            TotPaidAmount = Math.Round(TotPaidAmount, 2);
-            if (btnvalue == "Save")
-            {
-                //Receipt
-                cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID AND (DOE BETWEEN @d1 AND @d2)");
-                cmd.Parameters.AddWithValue("@BranchID", context.Session["BranchSno"].ToString());
-                cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril));
-                cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch));
-                DataTable dtReceipt = vdbmngr.SelectQuery(cmd).Tables[0];
-                string CashReceiptNo = dtReceipt.Rows[0]["Sno"].ToString();
-                if (PaymentType == "Cheque")
-                {
-                    cmd = new MySqlCommand("insert into cashreceipts (BranchId,ReceivedFrom,AgentID,AmountPaid,DOE,Create_by,Remarks,OppBal,Receipt,Paymentstatus,ChequeNo,Tripid) values (@BranchId,@ReceivedFrom,@AgentID,@AmountPaid,@DOE, @Create_by,@Remarks,@OppBal,@Receipt,@Paymentstatus,@ChequeNo,@Tripid)");
-                    cmd.Parameters.AddWithValue("@ChequeNo", DenominationString);
-                    cmd.Parameters.AddWithValue("@Paymentstatus", "Cheque");
-                }
-                else
-                {
-                    cmd = new MySqlCommand("insert into cashreceipts (BranchId,ReceivedFrom,AgentID,AmountPaid,DOE,Create_by,Remarks,OppBal,Receipt,Tripid,Paymentstatus) values (@BranchId,@ReceivedFrom,@AgentID,@AmountPaid,@DOE, @Create_by,@Remarks,@OppBal,@Receipt,@Tripid,@Paymentstatus)");
-                    cmd.Parameters.AddWithValue("@Paymentstatus", "Cash");
-                }
-                cmd.Parameters.AddWithValue("@BranchId", context.Session["BranchSno"].ToString());
-                cmd.Parameters.AddWithValue("@ReceivedFrom", "Agent");
-                cmd.Parameters.AddWithValue("@AgentID", b_bid);
-                cmd.Parameters.AddWithValue("@AmountPaid", TotPaidAmount);
-                string ind_Date = context.Session["I_Date"].ToString();
-                DateTime dtindDate = Convert.ToDateTime(ind_Date);
-                cmd.Parameters.AddWithValue("DOE", dtindDate.AddDays(1));
-                //cmd.Parameters.Add("DOE", dtCdate);
-
-                cmd.Parameters.AddWithValue("@Create_by", context.Session["UserSno"].ToString());
-                cmd.Parameters.AddWithValue("@Remarks", "Sale Of Milk");
-                cmd.Parameters.AddWithValue("@OppBal", TotPaidAmount);
-                cmd.Parameters.AddWithValue("@Receipt", CashReceiptNo);
-                cmd.Parameters.AddWithValue("@Tripid", context.Session["TripdataSno"].ToString());
-                if (TotPaidAmount != 0.0)
-                {
-                    vdbmngr.insert(cmd);
-                }
-
-
-                if (PaymentType == "Cash")
-                {
-                    cmd = new MySqlCommand("insert into collections (Branchid,AmountPaid,Denominations,PaidDate,UserData_sno,PaymentType,tripId,PayTime, ReceiptNo)values(@Branchid,@AmountPaid,@Denominations,@PaidDate,@UserData_sno,@PaymentType,@tripId,@PayTime, @ReceiptNo)");
-                }
-                else
-                {
-                    cmd = new MySqlCommand("insert into collections (Branchid,AmountPaid,Denominations,PaidDate,UserData_sno,PaymentType,tripId,CheckStatus,PayTime, ReceiptNo)values(@Branchid,@AmountPaid,@Denominations,@PaidDate,@UserData_sno,@PaymentType,@tripId,@CheckStatus,@PayTime, @ReceiptNo)");
-                    cmd.Parameters.AddWithValue("@CheckStatus", 'P');
-                }
-                cmd.Parameters.AddWithValue("@Branchid", b_bid);
-                cmd.Parameters.AddWithValue("@AmountPaid", TotPaidAmount);
-                cmd.Parameters.AddWithValue("@Denominations", DenominationString);
-                cmd.Parameters.AddWithValue("@PaidDate", ServerDateCurrentdate);
-                cmd.Parameters.AddWithValue("@PayTime", ServerDateCurrentdate);
-                cmd.Parameters.AddWithValue("@UserData_sno", Username);
-                cmd.Parameters.AddWithValue("@PaymentType", PaymentType);
-                cmd.Parameters.AddWithValue("@tripId", context.Session["TripdataSno"].ToString());
-                cmd.Parameters.AddWithValue("@ReceiptNo", CashReceiptNo);
-                if (TotPaidAmount != 0.0)
-                {
-                    vdbmngr.insert(cmd);
-                }
-
-                cmd = new MySqlCommand("Update empaccounts set Amount=Amount+@Amount where EmpID=@EmpID");
-                cmd.Parameters.AddWithValue("@Amount", TotPaidAmount);
-                cmd.Parameters.AddWithValue("@EmpID", context.Session["UserSno"].ToString());
-                if (vdbmngr.Update(cmd) == 0)
-                {
-                    cmd = new MySqlCommand("Insert into empaccounts(Amount,EmpID) values(@Amount,@EmpID)");
-                    cmd.Parameters.AddWithValue("@Amount", TotPaidAmount);
-                    cmd.Parameters.AddWithValue("@EmpID", context.Session["UserSno"].ToString());
-                    vdbmngr.insert(cmd);
-                }
-                cmd = new MySqlCommand("Update branchaccounts set Amount=Amount-@Amount where BranchId=@BranchId");
-                cmd.Parameters.AddWithValue("@Amount", TotPaidAmount);
-                cmd.Parameters.AddWithValue("@BranchId", b_bid);
-                vdbmngr.Update(cmd);
-
-                //naveen amount histery entry
-                cmd = new MySqlCommand("SELECT MAX(sno) as sno FROM agent_bal_trans WHERE agentid=@Branchid");
-                cmd.Parameters.AddWithValue("@Branchid", b_bid);
-                DataTable dtagenttrans = vdbmngr.SelectQuery(cmd).Tables[0];
-                if (dtagenttrans.Rows.Count > 0)
-                {
-                    string maxsno = dtagenttrans.Rows[0]["sno"].ToString();
-                    cmd = new MySqlCommand("Insert into agent_bal_trans_history(refno, paidamount, cashtype, createddate, entryby) values (@refno,@paidamount,@cashtype,@doe,@entryby)");
-                    cmd.Parameters.AddWithValue("@refno", maxsno);
-                    cmd.Parameters.AddWithValue("@paidamount", TotPaidAmount);
-                    cmd.Parameters.AddWithValue("@cashtype", PaymentType);
-                    cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                    cmd.Parameters.AddWithValue("@entryby", context.Session["UserSno"].ToString());
-                    vdbmngr.insert(cmd);
-
-                    string indDate = context.Session["I_Date"].ToString();
-                    DateTime dt_indDate = Convert.ToDateTime(indDate);
-                    cmd = new MySqlCommand("SELECT agentid, opp_balance, paidamount, inddate, salesvalue, clo_balance FROM agent_bal_trans WHERE sno=@sno");
-                    cmd.Parameters.AddWithValue("@sno", maxsno);
-                    DataTable dtagentmaxtransvalues = vdbmngr.SelectQuery(cmd).Tables[0];
-
-                    cmd = new MySqlCommand("SELECT agentid, opp_balance, inddate,paidamount, salesvalue, clo_balance FROM agent_bal_trans WHERE agentid=@agentid AND inddate between @d1 and @d2");
-                    cmd.Parameters.AddWithValue("@agentid", b_bid);
-                    cmd.Parameters.AddWithValue("@d1", GetLowDate(dt_indDate));
-                    cmd.Parameters.AddWithValue("@d2", GetHighDate(dt_indDate));
-                    DataTable dtIndentbal = vdbmngr.SelectQuery(cmd).Tables[0];
-                    if (dtIndentbal.Rows.Count > 0)
-                    {
-                        string oppbalance = dtagentmaxtransvalues.Rows[0]["opp_balance"].ToString();
-                        string salesvalue = dtagentmaxtransvalues.Rows[0]["salesvalue"].ToString();
-                        double Prev_amount = 0;
-                        double.TryParse(dtagentmaxtransvalues.Rows[0]["paidamount"].ToString(), out Prev_amount);
-                        if (Prev_amount > 0)
-                        {
-                            TotPaidAmount = TotPaidAmount + Prev_amount;
-                        }
-                        double total = Convert.ToDouble(oppbalance) + Convert.ToDouble(salesvalue);
-                        string closingbalance = dtagentmaxtransvalues.Rows[0]["clo_balance"].ToString();
-                        double clsvalue = Convert.ToDouble(closingbalance);
-                        double closingvalue = total - TotPaidAmount;
-                        string inddate = dtagentmaxtransvalues.Rows[0]["inddate"].ToString();
-                        cmd = new MySqlCommand("UPDATE agent_bal_trans SET paidamount=@paidamount, clo_balance=@closing where sno=@refno");
-                        cmd.Parameters.AddWithValue("@paidamount", TotPaidAmount);
-                        cmd.Parameters.AddWithValue("@refno", maxsno);
-                        cmd.Parameters.AddWithValue("@closing", closingvalue);
-                        vdbmngr.Update(cmd);
-                    }
-                    else
-                    {
-                        string closingbalance = dtagentmaxtransvalues.Rows[0]["clo_balance"].ToString();
-                        double clsvalue = Convert.ToDouble(closingbalance);
-                        double closingvalue = clsvalue - TotPaidAmount;
-                        cmd = new MySqlCommand("UPDATE agent_bal_trans set  clo_balance=clo_balance-@clAmount  where agentid=@BranchId AND inddate=@inddate");
-                        cmd.Parameters.AddWithValue("@BranchId", b_bid);
-                        cmd.Parameters.AddWithValue("@inddate", dt_indDate);
-                        cmd.Parameters.AddWithValue("@clAmount", closingvalue);
-                        if (vdbmngr.Update(cmd) == 0)
-                        {
-                            cmd = new MySqlCommand("Insert Into agent_bal_trans(agentid, opp_balance, inddate, salesvalue,  clo_balance, createdate, entryby,paidamount) values (@BranchId,@opp_balance,@inddate, @salesvalue, @clo_balance, @createdate, @entryby,@paidamount)");
-                            cmd.Parameters.AddWithValue("@paidamount", TotPaidAmount);
-                            cmd.Parameters.AddWithValue("@BranchId", b_bid);
-                            cmd.Parameters.AddWithValue("@opp_balance", clsvalue);
-                            cmd.Parameters.AddWithValue("@inddate", dt_indDate);
-                            cmd.Parameters.AddWithValue("@salesvalue", 0);
-                            cmd.Parameters.AddWithValue("@clo_balance", closingvalue);
-                            cmd.Parameters.AddWithValue("@createdate", ServerDateCurrentdate);
-                            cmd.Parameters.AddWithValue("@entryby", Username);
-                            vdbmngr.insert(cmd);
-                        }
-                    }
-                }
-
-            }
-            else
-            {
-
-                cmd = new MySqlCommand("SELECT Branchid,AmountPaid,Denominations,PaidDate,UserData_sno,PaymentType,tripId, CheckStatus,PayTime, ReceiptNo FROM collections WHERE Branchid=@Branchid AND tripId=@tripId");
-                cmd.Parameters.AddWithValue("@Branchid", b_bid);
-                cmd.Parameters.AddWithValue("@tripId", context.Session["TripdataSno"].ToString());
-                DataTable dtcall = vdbmngr.SelectQuery(cmd).Tables[0];
-                if (dtcall.Rows.Count > 0)
-                {
-                    foreach (DataRow dr in dtcall.Rows)
-                    {
-                        string ReceiptNo = dr["ReceiptNo"].ToString();
-                        double amt = 0;
-                        double.TryParse(dr["AmountPaid"].ToString(), out amt);
-                        double diffamt = TotPaidAmount - amt;
-                        if (diffamt > 0)
-                        {
-                            if (PaymentType == "Cash")
-                            {
-                                cmd = new MySqlCommand("UPDATE collections SET AmountPaid=@AmountPaid, Denominations=@Denominations, PaidDate=@PaidDate, PayTime=@PayTime WHERE Branchid=@Branchid AND tripId=@tripId AND ReceiptNo=@ReceiptNo");
-                                cmd.Parameters.AddWithValue("@Branchid", b_bid);
-                                cmd.Parameters.AddWithValue("@tripId", context.Session["TripdataSno"].ToString());
-                                cmd.Parameters.AddWithValue("@PayTime", ServerDateCurrentdate);
-                                cmd.Parameters.AddWithValue("@PaidDate", ServerDateCurrentdate);
-                                cmd.Parameters.AddWithValue("@AmountPaid", TotPaidAmount);
-                                cmd.Parameters.AddWithValue("@Denominations", DenominationString);
-                                cmd.Parameters.AddWithValue("@ReceiptNo", ReceiptNo);
-                                vdbmngr.Update(cmd);
-
-                                cmd = new MySqlCommand("Update branchaccounts set Amount=Amount-@Amount where BranchId=@BranchId");
-                                cmd.Parameters.AddWithValue("@Amount", diffamt);
-                                cmd.Parameters.AddWithValue("@BranchId", b_bid);
-                                vdbmngr.Update(cmd);
-
-                                cmd = new MySqlCommand("SELECT MAX(sno) as sno FROM agent_bal_trans WHERE agentid=@Branchid");
-                                cmd.Parameters.AddWithValue("@Branchid", b_bid);
-                                DataTable dtagentbaltrans = vdbmngr.SelectQuery(cmd).Tables[0];
-                                if (dtagentbaltrans.Rows.Count > 0)
-                                {
-                                    string maxsno = dtagentbaltrans.Rows[0]["sno"].ToString();
-                                    cmd = new MySqlCommand("Insert into agent_bal_trans_history(refno, paidamount, cashtype, createddate, entryby) values (@refno,@paidamount,@cashtype,@doe,@entryby)");
-                                    cmd.Parameters.AddWithValue("@refno", maxsno);
-                                    cmd.Parameters.AddWithValue("@paidamount", diffamt);
-                                    cmd.Parameters.AddWithValue("@cashtype", PaymentType + "Edit");
-                                    cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                    cmd.Parameters.AddWithValue("@entryby", context.Session["UserSno"].ToString());
-                                    vdbmngr.insert(cmd);
-
-                                    cmd = new MySqlCommand("SELECT agentid, opp_balance, inddate, salesvalue, clo_balance FROM agent_bal_trans WHERE sno=@maxsno");
-                                    cmd.Parameters.AddWithValue("@maxsno", maxsno);
-                                    DataTable dtagenttrans = vdbmngr.SelectQuery(cmd).Tables[0];
-                                    if (dtagenttrans.Rows.Count > 0)
-                                    {
-                                        cmd = new MySqlCommand("UPDATE agent_bal_trans SET paidamount=paidamount+@paidamount, clo_balance=clo_balance-@clo_balance where sno=@refno");
-                                        cmd.Parameters.AddWithValue("@paidamount", diffamt);
-                                        cmd.Parameters.AddWithValue("@refno", maxsno);
-                                        cmd.Parameters.AddWithValue("@clo_balance", diffamt);
-                                        vdbmngr.Update(cmd);
-                                    }
-                                }
-                                else
-                                {
-                                    cmd = new MySqlCommand("UPDATE collections SET AmountPaid=@AmountPaid, ChequeNo=@Denominations, PaidDate=@PaidDate, PayTime=@PayTime WHERE Branchid=@Branchid AND tripId=@tripId AND ReceiptNo=@ReceiptNo");
-                                    cmd.Parameters.AddWithValue("@Branchid", b_bid);
-                                    cmd.Parameters.AddWithValue("@tripId", context.Session["TripdataSno"].ToString());
-                                    cmd.Parameters.AddWithValue("@PayTime", ServerDateCurrentdate);
-                                    cmd.Parameters.AddWithValue("@PaidDate", ServerDateCurrentdate);
-                                    cmd.Parameters.AddWithValue("@AmountPaid", TotPaidAmount);
-                                    cmd.Parameters.AddWithValue("@Denominations", DenominationString);
-                                    cmd.Parameters.AddWithValue("@ReceiptNo", ReceiptNo);
-                                    vdbmngr.Update(cmd);
-
-
-                                }
-                            }
-                        }
-                        else
-                        {
-                            //#begin added by akbar for paidamount updating at the time of edit
-                            cmd = new MySqlCommand("UPDATE collections SET AmountPaid=@AmountPaid, Denominations=@Denominations, PaidDate=@PaidDate, PayTime=@PayTime WHERE Branchid=@Branchid AND tripId=@tripId AND ReceiptNo=@ReceiptNo");
-                            cmd.Parameters.AddWithValue("@Branchid", b_bid);
-                            cmd.Parameters.AddWithValue("@tripId", context.Session["TripdataSno"].ToString());
-                            cmd.Parameters.AddWithValue("@PayTime", ServerDateCurrentdate);
-                            cmd.Parameters.AddWithValue("@PaidDate", ServerDateCurrentdate);
-                            cmd.Parameters.AddWithValue("@AmountPaid", TotPaidAmount);
-                            cmd.Parameters.AddWithValue("@Denominations", DenominationString);
-                            cmd.Parameters.AddWithValue("@ReceiptNo", ReceiptNo);
-                            vdbmngr.Update(cmd);
-                            //# End added by akbar for paidamount updating at the time of edit
-                            cmd = new MySqlCommand("Update branchaccounts set Amount=Amount-@Amount where BranchId=@BranchId");
-                            cmd.Parameters.AddWithValue("@Amount", diffamt);
-                            cmd.Parameters.AddWithValue("@BranchId", b_bid);
-                            vdbmngr.Update(cmd);
-                            cmd = new MySqlCommand("SELECT MAX(sno) as sno FROM agent_bal_trans WHERE agentid=@Branchid");
-                            cmd.Parameters.AddWithValue("@Branchid", b_bid);
-                            DataTable dtagentbaltrans = vdbmngr.SelectQuery(cmd).Tables[0];
-                            if (dtagentbaltrans.Rows.Count > 0)
-                            {
-                                string maxsno = dtagentbaltrans.Rows[0]["sno"].ToString();
-                                cmd = new MySqlCommand("Insert into agent_bal_trans_history(refno, paidamount, cashtype, createddate, entryby) values (@refno,@paidamount,@cashtype,@doe,@entryby)");
-                                cmd.Parameters.AddWithValue("@refno", maxsno);
-                                cmd.Parameters.AddWithValue("@paidamount", diffamt);
-                                cmd.Parameters.AddWithValue("@cashtype", PaymentType + "Edit");
-                                cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                cmd.Parameters.AddWithValue("@entryby", context.Session["UserSno"].ToString());
-                                if (diffamt > 0)
-                                {
-                                    vdbmngr.insert(cmd);
-                                }
-
-                                cmd = new MySqlCommand("SELECT agentid, opp_balance, inddate, salesvalue, clo_balance FROM agent_bal_trans WHERE sno=@maxsno");
-                                cmd.Parameters.AddWithValue("@maxsno", maxsno);
-                                DataTable dtagenttrans = vdbmngr.SelectQuery(cmd).Tables[0];
-                                if (dtagenttrans.Rows.Count > 0)
-                                {
-                                    cmd = new MySqlCommand("UPDATE agent_bal_trans SET paidamount=paidamount+@paidamount, clo_balance=clo_balance-@clo_balance where sno=@refno");
-                                    cmd.Parameters.AddWithValue("@paidamount", diffamt);
-                                    cmd.Parameters.AddWithValue("@refno", maxsno);
-                                    cmd.Parameters.AddWithValue("@clo_balance", diffamt);
-                                    vdbmngr.Update(cmd);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            cmd = new MySqlCommand("SELECT sno, BranchName, phonenumber FROM branchdata WHERE (sno = @BranchID)");
-            cmd.Parameters.AddWithValue("@BranchID", b_bid);
-            DataTable dtBranch = vdbmngr.SelectQuery(cmd).Tables[0];
-            if (dtBranch.Rows.Count > 0)
-            {
-                string BranchName = dtBranch.Rows[0]["BranchName"].ToString();
-                string phonenumber = dtBranch.Rows[0]["phonenumber"].ToString();
-                string Agentid = dtBranch.Rows[0]["sno"].ToString();
-                if (phonenumber.Length == 10)
-                {
-                    string Date = DateTime.Now.ToString("dd/MM/yyyy");
-                    string BranchSno = context.Session["CsoNo"].ToString();
-                    //////WebClient client = new WebClient();
-                    //////   //string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=" + MobNo + "&message=%20" + msg + "&response=Y";
-                    //////   // string strUrl = "http://roundsms.com/api/sendhttp.php?authkey=Y2U3NGE2MGFkM2V&mobiles=" + no + "&message=" + message1 +" &sender=VYSNVI&type=1&route=2";
-                    //////   string baseurl = "http://roundsms.com/api/sendhttp.php?authkey=Y2U3NGE2MGFkM2V&mobiles=" + phonenumber + "&message=Dear%20" + BranchName + "%20Your%20Collection" + TotPaidAmount + "%20for%20today%20Date%20" + Date + "%20if%20any%20changes%20please%20call&sender=VYSNVI&type=1&route=2";
-                    //////   //string baseul = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Collection" + TotPaidAmount + "%20for%20today%20Date%20" + Date + "%20if%20any%20changes%20please%20call&type=1";
-                    //////   Stream data = client.OpenRead(baseurl);
-                    //////   StreamReader reader = new StreamReader(data);
-                    //////   string ResponseID = reader.ReadToEnd();
-                    //////   data.Close();
-                    //////   reader.Close();
-
-                    //string message = " " + phonenumber + " Dear " + BranchName + " Your Collection" + TotPaidAmount + " for today Date " + Date + " if any changes please call ";
-                    //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                    //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid, msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                    //cmd.Parameters.AddWithValue("@agentid", Agentid);
-                    //cmd.Parameters.AddWithValue("@branchid", context.Session["CsoNo"].ToString());
-                    ////cmd.Parameters.AddWithValue("@mainbranch", Session["SuperBranch"].ToString());
-                    //cmd.Parameters.AddWithValue("@msg", message);
-                    //cmd.Parameters.AddWithValue("@mobileno", phonenumber);
-                    //cmd.Parameters.AddWithValue("@msgtype", "OnlineCollections");
-                    //cmd.Parameters.AddWithValue("@branchname", BranchName);
-                    //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                    //vdbmngr.insert(cmd);
-                }
-            }
-            List<string> msgStringlist = new List<string>();
-            string msg = "Saved Successfully";
-            string response = GetJson(msg);
-            context.Response.Write(response);
-        }
-        catch (Exception ex)
-        {
-            string msg = ex.Message;
-            string response = GetJson(msg);
-            context.Response.Write(response);
-        }
-    }
     class invcollectionsave
     {
         public string op { set; get; }
@@ -13779,65 +13251,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 string response = GetJson(msg);
                 context.Response.Write(response);
             }
-        }
-        catch (Exception ex)
-        {
-            string Response = GetJson(ex.Message);
-            context.Response.Write(Response);
-        }
-    }
-
-    public class DistributerClass
-    {
-        public string distributorid { get; set; }
-        public string btnVal { get; set; }
-        public string dispatchid { get; set; }
-        public string productid { get; set; }
-        public List<DistributerProductClass> distributerproduct { get; set; }
-    }
-    public class DistributerProductClass
-    {
-        public string productid { get; set; }
-        public string qty { get; set; }
-        public string rate { get; set; }
-        public string refno { get; set; }
-
-    }
-
-    private void btnDistributorProductsSaveClick(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            var js = new JavaScriptSerializer();
-            var title1 = context.Request.Params[1];
-            DistributerClass obj1 = js.Deserialize<DistributerClass>(title1);
-            string distributorid = obj1.distributorid;
-            string btnVal = obj1.btnVal;
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            string BranchID = context.Session["branch"].ToString();
-            string empid = context.Session["empid"].ToString();
-            //if (btnVal == "Save")
-            //{
-            cmd = new MySqlCommand("insert into distributor_delivary_details (distributorid,doe,entry_by) values (@distributorid,@doe,@entry_by)");
-            cmd.Parameters.AddWithValue("@distributorid", distributorid);
-            cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-            cmd.Parameters.AddWithValue("@entry_by", empid);
-            vdbmngr.insert(cmd);
-            long distributor_sno = vdbmngr.insertScalar(cmd);
-            foreach (DistributerProductClass o in obj1.distributerproduct)
-            {
-                cmd = new MySqlCommand("insert into distributor_delivary_products(productid,qty,rate,refno) values (@productid,@qty,@rate,@refno)");
-                cmd.Parameters.AddWithValue("@productid", o.productid);
-                cmd.Parameters.AddWithValue("@qty", o.qty);
-                cmd.Parameters.AddWithValue("@rate", o.rate);
-                cmd.Parameters.AddWithValue("@refno", distributor_sno);
-                vdbmngr.insert(cmd);
-            }
-            string msg = "Distributor Delivaries Successfully Saved";
-            string response = GetJson(msg);
-            context.Response.Write(response);
-            //}
         }
         catch (Exception ex)
         {
@@ -26035,23 +25448,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         }
     }
-    private void btnVoucherPrintClick(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            context.Session["VoucherID"] = context.Request["VoucherID"];
-            context.Session["BrachSOID"] = context.Request["BranchID"];
-            string msg = "Success";
-            string response = GetJson(msg);
-            context.Response.Write(response);
-        }
-        catch (Exception ex)
-        {
-            string response = GetJson(ex.Message);
-            context.Response.Write(response);
-        }
-    }
+    
     private void GetHeadLimit(HttpContext context)
     {
         vdbmngr = new VehicleDBMgr();
@@ -27632,87 +27029,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string Sno { get; set; }
         public string UserName { get; set; }
     }
-    private void GetDashBoardDetails(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            cmd = new MySqlCommand("SELECT tripdata.EmpId, tripdata.AssignDate, tripdata.DispTime, dispatch.DispName, tripdata.VehicleNo, tripdata.Sno, empmanage.EmpName FROM tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno INNER JOIN empmanage ON tripdata.EmpId = empmanage.Sno WHERE (dispatch.Branch_Id = @branchid) AND (tripdata.AssignDate BETWEEN @d1 and @d2) ORDER BY tripdata.AssignDate DESC");
-            cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
-            cmd.Parameters.AddWithValue("@d1", GetLowDate(ServerDateCurrentdate).AddDays(-3));
-            cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate));
-            DataTable dtDashboarddetails = vdbmngr.SelectQuery(cmd).Tables[0];
-            List<dashboard> dashbrdlist = new List<dashboard>();
-            if (dtDashboarddetails.Rows.Count > 0)
-            {
-                foreach (DataRow dr in dtDashboarddetails.Rows)
-                {
-                    dashboard Getdet = new dashboard();
-                    Getdet.DCNo = dr["Sno"].ToString();
-                    if (dr["DispTime"].ToString() == "")
-                    {
-                        Getdet.DispatchTime = dr["AssignDate"].ToString();
-                    }
-                    else
-                    {
-                        Getdet.DispatchTime = dr["DispTime"].ToString();
-                    }
-                    Getdet.Empname = dr["EmpName"].ToString();
-                    Getdet.RouteName = dr["DispName"].ToString();
-                    Getdet.Vehicleno = dr["VehicleNo"].ToString();
-                    dashbrdlist.Add(Getdet);
-                }
-            }
-            string response = GetJson(dashbrdlist);
-            context.Response.Write(response);
-        }
-        catch
-        {
-        }
-    }
-    private void GetGheeSaleProducts(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string BranchId = context.Session["branch"].ToString();
-            List<Products> Productslist = new List<Products>();
-            cmd = new MySqlCommand("SELECT productsdata.ProductName, productsdata.sno, brnchprdts.VatPercent, brnchprdts.unitprice FROM productsdata INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN (SELECT branch_sno, product_sno, unitprice, flag, userdata_sno, DTarget, WTarget, MTarget, BranchQty, LeakQty, Rank, VatPercent FROM branchproducts WHERE (branch_sno = @branch_sno)) brnchprdts ON productsdata.sno = brnchprdts.product_sno WHERE (productsdata.Product_type <> 0) ORDER BY brnchprdts.Rank");
-            cmd.Parameters.AddWithValue("@branch_sno", BranchId);
-            DataTable dtProducts = vdbmngr.SelectQuery(cmd).Tables[0];
-            int i = 1;
-            foreach (DataRow dr in dtProducts.Rows)
-            {
-                Products getProducts = new Products();
-                getProducts.snoO = i++.ToString();
-                getProducts.ProductName = dr["ProductName"].ToString();
-                getProducts.Productsno = dr["sno"].ToString();
-                if (dr["unitprice"].ToString() == "")
-                {
-                    getProducts.KgPrice = "0";
-                }
-                if (dr["unitprice"].ToString() != "")
-                {
-                    getProducts.KgPrice = dr["unitprice"].ToString();
-                }
-                if (dr["VatPercent"].ToString() == "")
-                {
-                    getProducts.VatPercent = "0";
-                }
-                if (dr["VatPercent"].ToString() != "")
-                {
-                    getProducts.VatPercent = dr["VatPercent"].ToString();
-                }
-                Productslist.Add(getProducts);
-            }
-            string response = GetJson(Productslist);
-            context.Response.Write(response);
-        }
-        catch
-        {
-        }
-    }
     private void GetAllIndentTypes(HttpContext context)
     {
         try
@@ -27756,128 +27072,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string Vehicleno { get; set; }
 
     }
-    private void Get_So_Plant_Despatches(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            DataTable dtTotalDispatches = new DataTable();
-            string Username = context.Session["userdata_sno"].ToString();
-            List<Route> brnch = new List<Route>();
-            List<Dispatchplan> DispatchplanList = new List<Dispatchplan>();
-            cmd = new MySqlCommand("select sno,DispName from dispatch where BranchID=@BranchID and flag<>0 order by sno");
-            cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
-            DataTable dtDispatches = vdbmngr.SelectQuery(cmd).Tables[0];
-            dtTotalDispatches.Columns.Add("sno");
-            dtTotalDispatches.Columns.Add("DispName");
-            dtTotalDispatches.Columns.Add("PlanStatus");
-            dtTotalDispatches.Columns.Add("Plantime");
-            dtTotalDispatches.Columns.Add("DespatchStatus");
-            dtTotalDispatches.Columns.Add("DispTime");
-            foreach (DataRow dr in dtDispatches.Rows)
-            {
-                DataRow newrow = dtTotalDispatches.NewRow();
-                newrow["sno"] = dr["sno"].ToString();
-                newrow["DispName"] = dr["DispName"].ToString();
-                newrow["PlanStatus"] = "";
-                newrow["Plantime"] = "";
-                newrow["DespatchStatus"] = "";
-                newrow["DispTime"] = "";
-                dtTotalDispatches.Rows.Add(newrow);
-            }
-            string indentdate = context.Request["indentdate"];
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            cmd = new MySqlCommand("SELECT dispatch.DispName, dispatch.sno, tripdata.PlanStatus, tripdata.DespatchStatus, tripdata.Status AS EndStatus, tripdata.Cdate, tripdata.Plantime, tripdata.DispTime, tripdata.AssignDate FROM tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno RIGHT OUTER JOIN dispatch ON triproutes.RouteID = dispatch.sno WHERE (dispatch.flag <> 0) AND (dispatch.BranchID = @branchid) AND (tripdata.AssignDate BETWEEN @d1 AND @d2) GROUP BY dispatch.DispName ORDER BY dispatch.sno");
-            cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-            cmd.Parameters.AddWithValue("@d1", GetLowDate(ServerDateCurrentdate));
-            cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate));
-            DataTable dtAssignDisp = vdbmngr.SelectQuery(cmd).Tables[0];
-            foreach (DataRow drtotal in dtTotalDispatches.Rows)
-            {
-                foreach (DataRow dr in dtAssignDisp.Rows)
-                {
-                    if (drtotal["sno"].ToString() == dr["sno"].ToString())
-                    {
-                        drtotal["PlanStatus"] = dr["PlanStatus"].ToString();
-                        drtotal["Plantime"] = dr["Plantime"].ToString();
-                        drtotal["DespatchStatus"] = dr["DespatchStatus"].ToString();
-                        drtotal["DispTime"] = dr["DispTime"].ToString();
-                    }
-                }
-            }
-            if (dtTotalDispatches.Rows.Count > 0)
-            {
-                int i = 1;
-                foreach (DataRow dr in dtTotalDispatches.Rows)
-                {
-                    Dispatchplan GetDispatch = new Dispatchplan();
-                    GetDispatch.Sno = i++.ToString();
-                    GetDispatch.Route_id = dr["Sno"].ToString();
-                    GetDispatch.RouteName = dr["DispName"].ToString();
-                    string Plantime = dr["Plantime"].ToString();
-                    if (Plantime != "")
-                    {
-                        GetDispatch.PlanTime = Plantime;
-                    }
-                    else
-                    {
-                        string ChangedTime = "";
-                        GetDispatch.PlanTime = ChangedTime;
-                    }
-                    string PlanStatus = dr["PlanStatus"].ToString();
-                    if (PlanStatus == "")
-                    {
-                        PlanStatus = "Plan";
-                    }
-                    if (PlanStatus == "A")
-                    {
-                        PlanStatus = "Planned";
-                    }
-                    if (PlanStatus == "P")
-                    {
-                        PlanStatus = "Planned";
-                    }
-
-                    string DespatchStatus = dr["DespatchStatus"].ToString();
-                    if (DespatchStatus == "")
-                    {
-                        DespatchStatus = "No";
-                    }
-                    if (DespatchStatus == "A")
-                    {
-                        DespatchStatus = "Yes";
-                    }
-                    if (DespatchStatus == "P")
-                    {
-                        DespatchStatus = "Yes";
-                    }
-                    GetDispatch.PlantStatus = PlanStatus;
-                    GetDispatch.PlanTime = dr["PlanTime"].ToString();
-                    GetDispatch.DespStatus = DespatchStatus;
-                    GetDispatch.DespTime = dr["DispTime"].ToString();
-                    DispatchplanList.Add(GetDispatch);
-                }
-                string response = GetJson(DispatchplanList);
-                context.Response.Write(response);
-            }
-        }
-        catch (Exception ex)
-        {
-            if (ex.Message == "Object reference not set to an instance of an object.")
-            {
-                string msg = "Session Expired";
-                string response = GetJson(msg);
-                context.Response.Write(response);
-            }
-            else
-            {
-                string msg = ex.Message;
-                string response = GetJson(msg);
-                context.Response.Write(response);
-            }
-        }
-    }
-
     private void btnEditDCSaveclick(string jsonString, HttpContext context)
     {
         try
@@ -29156,33 +28350,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             //context.Response.Write(response);
         }
     }
-    private void Get_Products(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            //   string branchid = context.Request["BranchID"];
-            cmd = new MySqlCommand("SELECT ProductName, sno FROM  productsdata");
-            cmd.Parameters.AddWithValue("@flag", "1");
-            DataTable dtBranchProduct = vdbmngr.SelectQuery(cmd).Tables[0];
-            List<ProductsName> Prodlist = new List<ProductsName>();
-            foreach (DataRow dr in dtBranchProduct.Rows)
-            {
-                ProductsName GetProducts = new ProductsName();
-                GetProducts.ProdID = dr["sno"].ToString();
-                GetProducts.ProdName = dr["ProductName"].ToString();
-                // GetProducts.Price = dr["unitprice"].ToString();
-                Prodlist.Add(GetProducts);
-            }
-            string response = GetJson(Prodlist);
-            context.Response.Write(response);
-        }
-        catch
-        {
-        }
-    }
-
-
     private void GetSpecialDispatches(HttpContext context)
     {
         try
@@ -29640,64 +28807,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         }
     }
-    private void btnIndentApproveSaveClick(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            var js = new JavaScriptSerializer();
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            var title1 = context.Request.Params[1];
-            Orders obj = js.Deserialize<Orders>(title1);
-            foreach (orderdetail o in obj.data)
-            {
-                cmd = new MySqlCommand("UPDATE indent_monitoring SET RouteId = @RouteId, Agent_ID = @Agent_ID, Indent_Date1 = @Indent_Date1, Indent_Date2 = @Indent_Date2, Indent_Increase = @Indent_Increase, Indent_Decrease = @Indent_Decrease, Entry_Date = @Entry_Date, Reason = @Reason, Remarks = @Remarks, Entered_by = @Entered_by, Yesterday_Qty = @Yesterday_Qty, Today_Qty = @Today_Qty WHERE (Entry_Date BETWEEN @d1 AND @d2) AND (Agent_ID = @Agent_ID)");
-                cmd.Parameters.AddWithValue("@RouteId", o.Routeid);
-                cmd.Parameters.AddWithValue("@Agent_ID", o.Agentid);
-                cmd.Parameters.AddWithValue("@Indent_Date1", GetLowDate(ServerDateCurrentdate.AddDays(-1)));
-                cmd.Parameters.AddWithValue("@Indent_Date2", GetLowDate(ServerDateCurrentdate));
-                cmd.Parameters.AddWithValue("@Indent_Increase", o.Indent_Increase);
-                cmd.Parameters.AddWithValue("@Indent_Decrease", o.Indent_Decrease);
-                cmd.Parameters.AddWithValue("@Entry_Date", ServerDateCurrentdate);
-                cmd.Parameters.AddWithValue("@Reason", o.Reason);
-                cmd.Parameters.AddWithValue("@Remarks", o.Remarks);
-                cmd.Parameters.AddWithValue("@Entered_by", context.Session["UserSno"].ToString());
-                cmd.Parameters.AddWithValue("@Yesterday_Qty", o.Indent_Yesterday);
-                cmd.Parameters.AddWithValue("@Today_Qty", o.Indent_Today);
-                cmd.Parameters.AddWithValue("@d1", GetLowDate(ServerDateCurrentdate));
-                cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate));
-
-                if (vdbmngr.Update(cmd) == 0)
-                {
-                    cmd = new MySqlCommand("INSERT INTO indent_monitoring (RouteId, Agent_ID, Indent_Date1, Indent_Date2, Indent_Increase, Indent_Decrease, Entry_Date, Reason, Remarks, Entered_by, Yesterday_Qty, Today_Qty) VALUES (@RouteId, @Agent_ID, @Indent_Date1, @Indent_Date2, @Indent_Increase, @Indent_Decrease, @Entry_Date, @Reason, @Remarks, @Entered_by,@Yesterday_Qty, @Today_Qty)");
-                    cmd.Parameters.AddWithValue("@RouteId", o.Routeid);
-                    cmd.Parameters.AddWithValue("@Agent_ID", o.Agentid);
-                    cmd.Parameters.AddWithValue("@Indent_Date1", GetLowDate(ServerDateCurrentdate.AddDays(-1)));
-                    cmd.Parameters.AddWithValue("@Indent_Date2", GetLowDate(ServerDateCurrentdate));
-                    cmd.Parameters.AddWithValue("@Indent_Increase", o.Indent_Increase);
-                    cmd.Parameters.AddWithValue("@Indent_Decrease", o.Indent_Decrease);
-                    cmd.Parameters.AddWithValue("@Entry_Date", ServerDateCurrentdate);
-                    cmd.Parameters.AddWithValue("@Reason", o.Reason);
-                    cmd.Parameters.AddWithValue("@Remarks", o.Remarks);
-                    cmd.Parameters.AddWithValue("@Entered_by", context.Session["UserSno"].ToString());
-                    cmd.Parameters.AddWithValue("@Yesterday_Qty", o.Indent_Yesterday);
-                    cmd.Parameters.AddWithValue("@Today_Qty", o.Indent_Today);
-                    vdbmngr.insert(cmd);
-                }
-            }
-            string msg = "Data Updated Successfully";
-            string response = GetJson(msg);
-            context.Response.Write(response);
-
-        }
-        catch (Exception ex)
-        {
-            string msg = ex.Message;
-            string response = GetJson(msg);
-            context.Response.Write(response);
-        }
-    }
-
     private void btnEditIndentSaveClick(HttpContext context)
     {
         try
@@ -31162,44 +30271,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string indent_decrease { get; set; }
         public string difference_indent { get; set; }
     }
-    private void btnDueApproveClick(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string BranchSno = context.Request["BranchSno"];
-            string soid = context.Request["salesofficeid"];
-            string routesno = context.Request["routesno"];
-            string salevalue = context.Request["salevalue"];
-            string collamt = context.Request["collamt"];
-            string dueAmount = context.Request["dueAmount"];
-            string Remarks = context.Request["Remarks"];
-            string indentdate = context.Request["txtDate"];
-            DateTime dtinddate = Convert.ToDateTime(indentdate);
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            cmd = new MySqlCommand("insert into branchsales (BranchID,DOE,SaleValue,Collection,dueamt,salesofficeid,Routeid,indentdate,Remarks) values (@BranchID,@DOE,@SaleValue,@Collection,@dueamt,@salesofficeid,@Routeid,@indentdate,@Remarks)");
-            cmd.Parameters.AddWithValue("@BranchID", BranchSno);
-            cmd.Parameters.AddWithValue("@DOE", ServerDateCurrentdate);
-            cmd.Parameters.AddWithValue("@SaleValue", salevalue);
-            cmd.Parameters.AddWithValue("@Collection", collamt);
-            cmd.Parameters.AddWithValue("@dueamt", dueAmount);
-            cmd.Parameters.AddWithValue("@salesofficeid", soid);
-            cmd.Parameters.AddWithValue("@Routeid", routesno);
-            cmd.Parameters.AddWithValue("@indentdate", dtinddate);
-            cmd.Parameters.AddWithValue("@Remarks", Remarks);
-            vdbmngr.insert(cmd);
-            string errmsg = "Data Saved Successfully";
-            string errresponse = GetJson(errmsg);
-            context.Response.Write(errresponse);
-        }
-        catch (Exception ex)
-        {
-            string errmsg = ex.Message;
-            string errresponse = GetJson(errmsg);
-            context.Response.Write(errresponse);
-        }
-    }
-
     private void GetMilkBuyerTransactonDetails(HttpContext context)
     {
         try
@@ -31628,265 +30699,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string invbal { get; set; }
         public string invdate { get; set; }
     }
-    private void GetIndentDetails(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string SOID = context.Request["RouteID"];
-            string fromdate = context.Request["fromdate"];
-            string todate = context.Request["todate"];
-            string ddl_route_id = context.Request["ddldispatchname"];
-            DateTime dtfromdate = Convert.ToDateTime(fromdate);
-            DateTime dttodate = Convert.ToDateTime(todate);
-            List<IndClass> IndentList = new List<IndClass>();
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-
-            cmd = new MySqlCommand("SELECT branchroutesubtable.BranchID, SUM(indents_subtable.unitQty) AS indentqty, branchdata.BranchName, branchdata.phonenumber FROM branchdata INNER JOIN branchroutesubtable ON branchdata.sno = branchroutesubtable.BranchID LEFT OUTER JOIN indents_subtable INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @d1 AND @d2)) indnts ON indents_subtable.IndentNo = indnts.IndentNo ON  branchroutesubtable.BranchID = indnts.Branch_id WHERE (branchroutesubtable.RefNo = @routeid) and (branchdata.flag=1) GROUP BY indnts.Branch_id");
-            cmd.Parameters.AddWithValue("@routeid", ddl_route_id);
-            cmd.Parameters.AddWithValue("@d1", GetLowDate(dtfromdate));
-            cmd.Parameters.AddWithValue("@d2", GetHighDate(dtfromdate));
-            DataTable dtindentprev = vdbmngr.SelectQuery(cmd).Tables[0];
-
-            cmd = new MySqlCommand("SELECT branchroutesubtable.BranchID, SUM(indents_subtable.unitQty) AS indentqty, branchdata.BranchName, branchdata.phonenumber FROM branchdata INNER JOIN branchroutesubtable ON branchdata.sno = branchroutesubtable.BranchID LEFT OUTER JOIN indents_subtable INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @d1 AND @d2)) indnts ON indents_subtable.IndentNo = indnts.IndentNo ON  branchroutesubtable.BranchID = indnts.Branch_id WHERE (branchroutesubtable.RefNo = @routeid) and (branchdata.flag=1) GROUP BY indnts.Branch_id");
-            cmd.Parameters.AddWithValue("@routeid", ddl_route_id);
-            cmd.Parameters.AddWithValue("@d1", GetLowDate(dttodate));
-            cmd.Parameters.AddWithValue("@d2", GetHighDate(dttodate));
-            DataTable dtindentpresent = vdbmngr.SelectQuery(cmd).Tables[0];
-
-            cmd = new MySqlCommand("SELECT branchroutesubtable.RefNo, branchroutesubtable.BranchID, branchdata.BranchName, branchdata.phonenumber, branchroutes.RouteName FROM branchroutesubtable INNER JOIN branchdata ON branchroutesubtable.BranchID = branchdata.sno INNER JOIN branchroutes ON branchroutesubtable.RefNo = branchroutes.Sno WHERE (branchroutesubtable.RefNo = @routeid) and (branchdata.flag=1)");
-            cmd.Parameters.AddWithValue("@routeid", ddl_route_id);
-            DataTable dtAgents = vdbmngr.SelectQuery(cmd).Tables[0];
-
-            foreach (DataRow dr in dtAgents.Rows)
-            {
-                IndClass GetRoutes = new IndClass();
-                double PrevIndent = 0;
-                double PresentIndent = 0;
-                double DifferenceIndent = 0;
-                foreach (DataRow drprev in dtindentprev.Select("BranchID='" + dr["BranchID"].ToString() + "'"))
-                {
-                    double.TryParse(drprev["indentqty"].ToString(), out PrevIndent);
-
-                }
-                foreach (DataRow drpresnt in dtindentpresent.Select("BranchID='" + dr["BranchID"].ToString() + "'"))
-                {
-                    double.TryParse(drpresnt["indentqty"].ToString(), out PresentIndent);
-
-                }
-
-                GetRoutes.routesno = dr["RefNo"].ToString();
-                GetRoutes.routename = dr["RouteName"].ToString();
-                GetRoutes.agentid = dr["BranchID"].ToString();
-                GetRoutes.agentname = dr["BranchName"].ToString();
-                GetRoutes.phonenumber = dr["phonenumber"].ToString();
-                //GetRoutes.collectiontype = dr["CollectionType"].ToString();
-
-                GetRoutes.salevalue = Math.Round(PrevIndent, 2).ToString();
-                GetRoutes.collection = Math.Round(PresentIndent, 2).ToString();
-                DifferenceIndent = PrevIndent - PresentIndent;
-                GetRoutes.difference_indent = Math.Round(DifferenceIndent, 2).ToString();
-                if (DifferenceIndent > 0)
-                {
-                    DifferenceIndent = Math.Abs(DifferenceIndent);
-                    double percent = 0;
-                    percent = Math.Abs(DifferenceIndent) / 100;
-                    GetRoutes.indent_decrease = DifferenceIndent.ToString();
-                    GetRoutes.indent_increase = "0";
-                }
-                if (DifferenceIndent < 0)
-                {
-                    DifferenceIndent = Math.Abs(DifferenceIndent);
-                    double percent = 0;
-                    percent = Math.Abs(DifferenceIndent) / 100;
-                    GetRoutes.indent_decrease = "0";
-                    GetRoutes.indent_increase = DifferenceIndent.ToString();
-                }
-                if (DifferenceIndent == 0)
-                {
-                    GetRoutes.indent_decrease = "0";
-                    GetRoutes.indent_increase = "0";
-                }
-                else
-                {
-                    IndentList.Add(GetRoutes);
-                }
-            }
-            string response = GetJson(IndentList);
-            context.Response.Write(response);
-        }
-        catch
-        {
-
-        }
-    }
-    private void GetDueDetails(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string RouteID = context.Request["RouteID"];
-            string IndDate = context.Request["IndDate"];
-            string ddltype = context.Request["ddltype"];
-            DateTime dtinddate = Convert.ToDateTime(IndDate);
-            List<IndClass> IndentList = new List<IndClass>();
-            if (ddltype == "Amount")
-            {
-                cmd = new MySqlCommand("SELECT modifiedroutes.RouteName, SUM(indents_subtable.DeliveryQty) AS saleQty, SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost) AS salevalue, modifiedroutes.Sno AS routeid, modifidroutssubtab.BranchID AS bid, branchdata_2.BranchName,branchdata_2.phonenumber, branchdata_2.flag, branchdata_1.sno AS BranchID,branchdata_2.SalesType, empmanage.EmpName, branchdata_2.SalesRepresentative FROM  branchdata branchdata_2 RIGHT OUTER JOIN branchdata INNER JOIN branchdata branchdata_1 ON branchdata.sno = branchdata_1.sno INNER JOIN modifiedroutes ON branchdata.sno = modifiedroutes.BranchID INNER JOIN (SELECT   RefNo, Rank, LevelType, BranchID, CDate, EDate FROM   modifiedroutesubtable WHERE  (EDate IS NULL) AND (CDate <= @starttime) OR (EDate > @starttime) AND (CDate <= @starttime)) modifidroutssubtab ON modifiedroutes.Sno = modifidroutssubtab.RefNo ON  branchdata_2.sno = modifidroutssubtab.BranchID LEFT OUTER JOIN indents_subtable INNER JOIN (SELECT  IndentNo, I_date, Branch_id FROM   indents WHERE   (I_date BETWEEN @starttime AND @endtime)) indt ON indents_subtable.IndentNo = indt.IndentNo ON  modifidroutssubtab.BranchID = indt.Branch_id INNER JOIN tripdata ON tripdata.Sno = indents_subtable.DTripId INNER JOIN empmanage ON tripdata.EmpId = empmanage.Sno WHERE  (branchdata.SalesType IS NOT NULL) AND (indents_subtable.DeliveryQty <> 0) AND (branchdata.sno = @BranchID) AND (branchdata_2.SalesType = @salestype) GROUP BY modifidroutssubtab.BranchID ORDER BY  branchdata_2.RouteID");
-                cmd.Parameters.AddWithValue("@BranchID", RouteID);
-                cmd.Parameters.AddWithValue("@salestype", "20");
-                cmd.Parameters.AddWithValue("@starttime", GetLowDate(dtinddate.AddDays(-1)));
-                cmd.Parameters.AddWithValue("@endtime", GetHighDate(dtinddate.AddDays(-1)));
-                DataTable dtroutesale = vdbmngr.SelectQuery(cmd).Tables[0];
-                cmd = new MySqlCommand("SELECT  branchdata.BranchName, branchdata.sno, modifiedroutes.RouteName, modifidroutssubtab.BranchID, modifiedroutes.Sno AS routesno, SUM(colltion.AmountPaid) AS AmountPaid FROM  branchdata INNER JOIN branchdata branchdata_1 ON branchdata.sno = branchdata_1.sno INNER JOIN modifiedroutes ON branchdata.sno = modifiedroutes.BranchID INNER JOIN (SELECT  RefNo, Rank, LevelType, BranchID, CDate, EDate FROM  modifiedroutesubtable WHERE        (EDate IS NULL) AND (CDate <= @starttime) OR (EDate > @starttime) AND (CDate <= @starttime)) modifidroutssubtab ON modifiedroutes.Sno = modifidroutssubtab.RefNo INNER JOIN (SELECT        Branchid, AmountPaid, PaidDate FROM  collections WHERE  (PaymentType <> 'Cheque') AND (PaymentType <> 'DUE') AND (PaidDate BETWEEN @d1 AND @d2)) colltion ON   modifidroutssubtab.BranchID = colltion.Branchid WHERE (modifiedroutes.BranchID = @BranchID) GROUP BY modifidroutssubtab.BranchID ORDER BY modifiedroutes.Sno");
-                cmd.Parameters.AddWithValue("@starttime", GetLowDate(dtinddate.AddDays(-1)));
-                cmd.Parameters.AddWithValue("@d1", GetLowDate(dtinddate));
-                cmd.Parameters.AddWithValue("@d2", GetHighDate(dtinddate));
-                cmd.Parameters.AddWithValue("@BranchID", RouteID);
-                DataTable dtpaidamount = vdbmngr.SelectQuery(cmd).Tables[0];
-                foreach (DataRow dr in dtroutesale.Rows)
-                {
-                    IndClass GetRoutes = new IndClass();
-                    float salevalue = 0;
-                    float.TryParse(dr["salevalue"].ToString(), out salevalue);
-                    float amtcollected = 0;
-                    foreach (DataRow drvalue in dtpaidamount.Select("Branchid='" + dr["bid"].ToString() + "'"))
-                    {
-                        amtcollected = 0;
-                        float.TryParse(drvalue["AmountPaid"].ToString(), out amtcollected);
-                    }
-                    float due = salevalue - amtcollected;
-                    if (salevalue > amtcollected)
-                    {
-                        if (due > 10)
-                        {
-                            GetRoutes.routesno = dr["routeid"].ToString();
-                            GetRoutes.routename = dr["RouteName"].ToString();
-                            GetRoutes.agentid = dr["bid"].ToString();
-                            GetRoutes.agentname = dr["BranchName"].ToString();
-                            GetRoutes.phonenumber = dr["phonenumber"].ToString();
-                            GetRoutes.collectiontype = "Cash Agent";
-                            double saleva = 0;
-                            double colamts = 0;
-                            //double.TryParse(dr["salevalue"].ToString(), out saleva);
-                            saleva = Math.Round(salevalue, 2);
-                            //double.TryParse(dr["AmountPaid"].ToString(), out colamts);
-                            colamts = Math.Round(amtcollected, 2);
-                            GetRoutes.salevalue = saleva.ToString("F2");
-                            GetRoutes.collection = colamts.ToString("F2");
-                            GetRoutes.due = due.ToString("F2");
-                            IndentList.Add(GetRoutes);
-                        }
-                    }
-                }
-                string response = GetJson(IndentList);
-                context.Response.Write(response);
-            }
-            else
-            {
-                cmd = new MySqlCommand("SELECT inventory_monitor.BranchId, inventory_monitor.Inv_Sno, inventory_monitor.Qty, inventory_monitor.Sno, branchdata.BranchName, branchdata.phonenumber,branchroutes.Sno AS routesno, branchroutes.RouteName FROM inventory_monitor INNER JOIN branchmappingtable ON inventory_monitor.BranchId = branchmappingtable.SubBranch INNER JOIN branchdata ON inventory_monitor.BranchId = branchdata.sno INNER JOIN branchroutesubtable ON branchdata.sno = branchroutesubtable.BranchID INNER JOIN branchroutes ON branchroutesubtable.RefNo = branchroutes.Sno WHERE (branchmappingtable.SuperBranch = @branchid) AND (branchroutes.flag <> 0) ORDER BY branchroutes.Sno");
-                cmd.Parameters.AddWithValue("@branchid", RouteID);
-                DataTable dtinventoryopp = vdbmngr.SelectQuery(cmd).Tables[0];
-
-                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno, branchdata.phonenumber, modifiedroutes.RouteName, SUM(invtran.Qty) AS qty, invtran.B_inv_sno, invtran.TransType FROM branchmappingtable INNER JOIN branchdata ON branchmappingtable.SubBranch = branchdata.sno INNER JOIN (SELECT RefNo, Rank, LevelType, BranchID, CDate, EDate FROM modifiedroutesubtable WHERE (EDate IS NULL) AND (CDate <= @starttime) OR (EDate > @starttime) AND (CDate <= @starttime)) modifidroutssubtab ON branchdata.sno = modifidroutssubtab.BranchID INNER JOIN modifiedroutes ON modifidroutssubtab.RefNo = modifiedroutes.Sno LEFT OUTER JOIN (SELECT TransType, FromTran, ToTran, Qty, EmpID, VarifyStatus, VTripId, VEmpId, Sno, B_inv_sno, DOE, VQty, CBFromTran, CBToTran, DeliveryTime,CollectionTime, Remarks FROM invtransactions12 WHERE (DOE BETWEEN @d1 AND @d2)) invtran ON modifidroutssubtab.BranchID = invtran.ToTran WHERE (branchmappingtable.SuperBranch = @branchid) AND (modifiedroutes.flag <> 0) GROUP BY branchdata.sno, invtran.B_inv_sno");
-                cmd.Parameters.AddWithValue("@branchid", RouteID);
-                cmd.Parameters.AddWithValue("@starttime", GetLowDate(dtinddate));
-
-                DateTime dt1 = GetLowDate(dtinddate);
-                DateTime dt2 = GetLowDate(dtinddate.AddDays(1));
-                cmd.Parameters.AddWithValue("@d1", dt1.AddHours(15));
-                cmd.Parameters.AddWithValue("@d2", dt2.AddHours(15));
-                DataTable dtinventoryDC = vdbmngr.SelectQuery(cmd).Tables[0];
-                DataView view = new DataView(dtinventoryopp);
-                DataTable invopp = view.ToTable(true, "BranchId", "RouteName", "BranchName", "routesno", "phonenumber");
-                foreach (DataRow dr in invopp.Rows)
-                {
-                    IndClass GetRoutes = new IndClass();
-                    GetRoutes.routesno = dr["routesno"].ToString();
-                    GetRoutes.routename = dr["RouteName"].ToString();
-                    GetRoutes.agentid = dr["BranchId"].ToString();
-                    GetRoutes.agentname = dr["BranchName"].ToString();
-                    GetRoutes.phonenumber = dr["phonenumber"].ToString();
-                    int cratesopp = 0;
-                    int cratesopp1 = 0;
-                    int cansopp = 0;
-                    int cansopp1 = 0;
-                    int cratesissued = 0;
-                    int cratesissued1 = 0;
-                    int cansissued = 0;
-                    int cansissued1 = 0;
-                    foreach (DataRow drdtdue in dtinventoryopp.Select("BranchId='" + dr["BranchId"].ToString() + "'"))
-                    {
-                        if (drdtdue["Inv_Sno"].ToString() == "1")
-                        {
-                            int.TryParse(drdtdue["Qty"].ToString(), out cratesopp);
-                            cratesopp1 += cratesopp;
-                        }
-                        if (drdtdue["Inv_Sno"].ToString() == "3")
-                        {
-                            int.TryParse(drdtdue["Qty"].ToString(), out cansopp);
-                            cansopp1 += cansopp;
-                        }
-                        if (drdtdue["Inv_Sno"].ToString() == "4")
-                        {
-                            int.TryParse(drdtdue["Qty"].ToString(), out cansopp);
-                            cansopp1 += cansopp;
-                        }
-                    }
-                    foreach (DataRow drdt in dtinventoryDC.Select("sno='" + dr["BranchId"].ToString() + "'"))
-                    {
-                        if (drdt["B_inv_sno"].ToString() == "1")
-                        {
-                            int.TryParse(drdt["qty"].ToString(), out cratesissued);
-                            cratesissued1 += cratesissued;
-                        }
-                        if (drdt["B_inv_sno"].ToString() == "3")
-                        {
-                            int.TryParse(drdt["qty"].ToString(), out cansissued);
-                            cansissued1 += cansissued;
-                        }
-                        if (drdt["B_inv_sno"].ToString() == "4")
-                        {
-                            int.TryParse(drdt["qty"].ToString(), out cansissued);
-                            cansissued1 += cansissued;
-                        }
-                    }
-                    int cratesdue = 0;
-                    int cansdue = 0;
-                    cratesdue = cratesopp1 - cratesissued1;
-                    cansdue = cansopp1 - cansissued1;
-                    if (cansdue != 0)
-                    {
-                        GetRoutes.cansbalance = cansdue.ToString();
-                        GetRoutes.cratesbalance = cratesdue.ToString();
-                    }
-                    if (cratesdue != 0)
-                    {
-                        GetRoutes.cratesbalance = cratesdue.ToString();
-                        GetRoutes.cansbalance = cansdue.ToString();
-                    }
-                    if (cratesdue < 0)
-                    {
-                        cratesdue = 0;
-                    }
-                    if (cansdue < 0)
-                    {
-                        cansdue = 0;
-                    }
-                    int tot = cratesdue + cansdue;
-                    if (tot > 0)
-                    {
-                        IndentList.Add(GetRoutes);
-                    }
-                }
-                string response = GetJson(IndentList);
-                context.Response.Write(response);
-            }
-        }
-        catch
-        {
-        }
-    }
     private void GetRouteNameChange(HttpContext context)
     {
         try
@@ -31971,30 +30783,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         }
     }
-    private void GetRoutes(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            cmd = new MySqlCommand("SELECT branchroutes.Sno, branchroutes.RouteName FROM branchroutes INNER JOIN branchdata ON branchroutes.BranchID = branchdata.sno WHERE (branchroutes.BranchID = @BranchID) OR (branchdata.SalesOfficeID = @SOID)");
-            cmd.Parameters.AddWithValue("@SOID", context.Session["branch"].ToString());
-            cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
-            DataTable dtRoute = vdbmngr.SelectQuery(cmd).Tables[0];
-            List<Routes> Routelist = new List<Routes>();
-            foreach (DataRow dr in dtRoute.Rows)
-            {
-                Routes GetRoutes = new Routes();
-                GetRoutes.routesno = dr["Sno"].ToString();
-                GetRoutes.routename = dr["RouteName"].ToString();
-                Routelist.Add(GetRoutes);
-            }
-            string response = GetJson(Routelist);
-            context.Response.Write(response);
-        }
-        catch
-        {
-        }
-    }
     private void LedgerDetailsClick(HttpContext context)
     {
         try
@@ -32031,399 +30819,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string DeliveryQty { get; set; }
         public string Cost { get; set; }
         public string totalAmount { get; set; }
-    }
-    private void btnAgentInventoryCDTransaction(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string BranchID = context.Request["BranchID"];
-            string Amount = context.Request["Amount"];
-            string PaymentType = context.Request["PaymentType"];
-            string Remarks = context.Request["Remarks"];
-            string PaidDate = context.Request["PaidDate"];
-            string Transactiontype = context.Request["ddltransactiontype"];
-            string invid = context.Request["invid"];
-            string soid = context.Request["soid"];
-            DateTime dtdate = new DateTime();
-            dtdate = DateTime.Parse(PaidDate);
-            float PaidAmount = 0;
-            float.TryParse(Amount, out PaidAmount);
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            string Branch = context.Session["branch"].ToString();
-            if (Branch == "158")
-            {
-            }
-            else
-            {
-                if (Transactiontype == "Credit")
-                {
-                    cmd = new MySqlCommand("INSERT INTO invtransactions12 (TransType, FromTran, ToTran, Qty, EmpID, B_inv_sno, DOE, DeliveryTime,Remarks) VALUES (@TransType, @FromTran, @ToTran, @Qty, @EmpID, @B_inv_sno, @DOE, @DeliveryTime,@Remarks)");
-                    cmd.Parameters.AddWithValue("@TransType", "1");
-                    cmd.Parameters.AddWithValue("@FromTran", BranchID);
-                    cmd.Parameters.AddWithValue("@ToTran", soid);
-                    cmd.Parameters.AddWithValue("@Qty", Amount);
-                    cmd.Parameters.AddWithValue("@EmpID", context.Session["UserSno"].ToString());
-                    cmd.Parameters.AddWithValue("@B_inv_sno", invid);
-                    cmd.Parameters.AddWithValue("@DOE", dtdate);
-                    cmd.Parameters.AddWithValue("@DeliveryTime", ServerDateCurrentdate);
-                    cmd.Parameters.AddWithValue("@Remarks", Remarks);
-                    vdbmngr.insert(cmd);
-                    cmd = new MySqlCommand("update inventory_monitor set Qty=Qty-@Qty where Inv_Sno=@Inv_Sno and BranchId=@BranchId");
-                    cmd.Parameters.AddWithValue("@Qty", Amount);
-                    cmd.Parameters.AddWithValue("@Inv_Sno", invid);
-                    cmd.Parameters.AddWithValue("@BranchId", BranchID);
-                    vdbmngr.Update(cmd);
-                    string Msg = "Saved Successfully";
-                    string response = GetJson(Msg);
-                    context.Response.Write(response);
-                }
-                if (Transactiontype == "Debit")
-                {
-                    cmd = new MySqlCommand("INSERT INTO invtransactions12 (TransType, FromTran, ToTran, Qty, EmpID, B_inv_sno, DOE, DeliveryTime,Remarks) VALUES (@TransType, @FromTran, @ToTran, @Qty, @EmpID, @B_inv_sno, @DOE, @DeliveryTime,@Remarks)");
-                    cmd.Parameters.AddWithValue("@TransType", "1");
-                    cmd.Parameters.AddWithValue("@FromTran", soid);
-                    cmd.Parameters.AddWithValue("@ToTran", BranchID);
-                    cmd.Parameters.AddWithValue("@Qty", Amount);
-                    cmd.Parameters.AddWithValue("@EmpID", context.Session["UserSno"].ToString());
-                    cmd.Parameters.AddWithValue("@B_inv_sno", invid);
-                    cmd.Parameters.AddWithValue("@DOE", dtdate);
-                    cmd.Parameters.AddWithValue("@DeliveryTime", ServerDateCurrentdate);
-                    cmd.Parameters.AddWithValue("@Remarks", Remarks);
-                    vdbmngr.insert(cmd);
-                    cmd = new MySqlCommand("update inventory_monitor set Qty=Qty+@Qty where Inv_Sno=@Inv_Sno and BranchId=@BranchId");
-                    cmd.Parameters.AddWithValue("@Qty", Amount);
-                    cmd.Parameters.AddWithValue("@Inv_Sno", invid);
-                    cmd.Parameters.AddWithValue("@BranchId", BranchID);
-                    vdbmngr.Update(cmd);
-                    string Msg = "Saved Successfully";
-                    string response = GetJson(Msg);
-                    context.Response.Write(response);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            string Msg = ex.Message;
-            string response = GetJson(Msg);
-            context.Response.Write(response);
-        }
-    }
-    private void btnAgentCreditDebitTransaction(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string BranchID = context.Request["BranchID"];
-            string Amount = context.Request["Amount"];
-            string PaymentType = context.Request["PaymentType"];
-            string ChequeNo = context.Request["ChequeNo"];
-            string Remarks = context.Request["Remarks"];
-            string PaidDate = context.Request["PaidDate"];
-            // string chequeDate = context.Request["chequeDate"];
-            string BankName = context.Request["BankName"];
-            string soid = context.Request["soid"];
-            string Transactiontype = context.Request["ddltransactiontype"];
-            DateTime dtchequedate = new DateTime();
-            dtchequedate = DateTime.Parse(PaidDate);
-            float PaidAmount = 0;
-            float.TryParse(Amount, out PaidAmount);
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            DateTime dtapril = new DateTime();
-            DateTime dtmarch = new DateTime();
-            int currentyear = ServerDateCurrentdate.Year;
-            int nextyear = ServerDateCurrentdate.Year + 1;
-            if (ServerDateCurrentdate.Month > 3)
-            {
-                string apr = "4/1/" + currentyear;
-                dtapril = DateTime.Parse(apr);
-                string march = "3/31/" + nextyear;
-                dtmarch = DateTime.Parse(march);
-            }
-            if (ServerDateCurrentdate.Month <= 3)
-            {
-                string apr = "4/1/" + (currentyear - 1);
-                dtapril = DateTime.Parse(apr);
-                string march = "3/31/" + (nextyear - 1);
-                dtmarch = DateTime.Parse(march);
-            }
-            //DateTime ServerDateCurrentdate = Convert.ToDateTime(PaidDate);
-            string Branch = context.Session["branch"].ToString();
-            if (soid == "572")
-            {
-                soid = "158";
-            }
-            else
-            {
-
-                if (Transactiontype == "Credit")
-                {
-                    cmd = new MySqlCommand("Select Amount from branchaccounts where BranchId=@BranchId");
-                    //cmd.Parameters.AddWithValue("@BranchId", context.Session["branch"].ToString());
-                    cmd.Parameters.AddWithValue("@BranchId", soid);
-                    DataTable dtbrnchoppamt = vdbmngr.SelectQuery(cmd).Tables[0];
-                    string amount = "0";
-                    if (dtbrnchoppamt.Rows.Count > 0)
-                    {
-                        amount = dtbrnchoppamt.Rows[0]["Amount"].ToString();
-                    }
-                    cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID AND (DOE BETWEEN @d1 AND @d2)");
-                    cmd.Parameters.AddWithValue("@BranchID", soid);
-                    cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril));
-                    cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch));
-                    DataTable dtReceipt = vdbmngr.SelectQuery(cmd).Tables[0];
-                    string CashReceiptNo = dtReceipt.Rows[0]["Sno"].ToString();
-                    CashReceiptNo = "0";
-                    cmd = new MySqlCommand("insert into cashreceipts (BranchId,ReceivedFrom,AgentID,AmountPaid,TransactionType,DOE,Create_by,Remarks,OppBal,Receipt) values (@BranchId,@ReceivedFrom,@AgentID,@AmountPaid,@TransactionType,@DOE, @Create_by,@Remarks,@OppBal,@Receipt)");
-                    cmd.Parameters.AddWithValue("@BranchId", soid);
-                    cmd.Parameters.AddWithValue("@ReceivedFrom", "Agent");
-                    cmd.Parameters.AddWithValue("@AgentID", BranchID);
-                    cmd.Parameters.AddWithValue("@AmountPaid", PaidAmount);
-                    cmd.Parameters.AddWithValue("@TransactionType", Transactiontype);
-                    cmd.Parameters.AddWithValue("DOE", dtchequedate);
-                    cmd.Parameters.AddWithValue("@Create_by", context.Session["UserSno"].ToString());
-                    cmd.Parameters.AddWithValue("@Remarks", Remarks);
-                    cmd.Parameters.AddWithValue("@OppBal", amount);
-                    cmd.Parameters.AddWithValue("@Receipt", CashReceiptNo);
-                    vdbmngr.insert(cmd);
-                    string Username = "1";
-                    string status = "1";
-                    cmd = new MySqlCommand("select BranchName,phonenumber from BranchData where Sno=@sno");
-                    cmd.Parameters.AddWithValue("@sno", BranchID);
-                    DataTable dtBranchName = vdbmngr.SelectQuery(cmd).Tables[0];
-                    string BranchName = dtBranchName.Rows[0]["BranchName"].ToString();
-                    string phonenumber = dtBranchName.Rows[0]["phonenumber"].ToString();
-                    cmd = new MySqlCommand("insert into collections (Branchid,AmountPaid,TransactionType,PaidDate,UserData_sno,PaymentType,PayTime,EmpID,ChequeNo,ReceiptNo,Remarks,SalesOfficeID,Status)values(@Branchid,@AmountPaid,@TransactionType,@PaidDate,@UserData_sno,@PaymentType,@PayTime,@EmpID,@ChequeNo,@ReceiptNo,@Remarks,@SalesOfficeID,@Status)");
-                    cmd.Parameters.AddWithValue("@Branchid", BranchID);
-                    cmd.Parameters.AddWithValue("@AmountPaid", PaidAmount);
-                    cmd.Parameters.AddWithValue("@TransactionType", Transactiontype);
-                    cmd.Parameters.AddWithValue("@PaidDate", dtchequedate);
-                    cmd.Parameters.AddWithValue("@PayTime", dtchequedate);
-                    cmd.Parameters.AddWithValue("@UserData_sno", Username);
-                    cmd.Parameters.AddWithValue("@PaymentType", PaymentType);
-                    cmd.Parameters.AddWithValue("@EmpID", context.Session["UserSno"].ToString());
-                    cmd.Parameters.AddWithValue("@ChequeNo", ChequeNo);
-                    cmd.Parameters.AddWithValue("@ReceiptNo", CashReceiptNo);
-                    cmd.Parameters.AddWithValue("@Remarks", Remarks);
-                    cmd.Parameters.AddWithValue("@SalesOfficeID", soid);
-                    cmd.Parameters.AddWithValue("@Status", status);
-                    // vdbmngr.insert(cmd);
-                    //Oppening Balances Start
-                    double BranchAmount = 0;
-                    double.TryParse(Amount, out BranchAmount);
-                    BranchAmount = Math.Round(BranchAmount, 2);
-                    double actualamt = 0;
-                    //cmd = new MySqlCommand("Update  Branchaccounts set  Amount=Amount-@Amount where  Branchid=@Branchid ");
-                    //cmd.Parameters.AddWithValue("@Branchid", BranchID);
-                    //cmd.Parameters.AddWithValue("@Amount", BranchAmount);
-                    //vdbmngr.Update(cmd);
-                    //DateTime fromdate = Convert.ToDateTime(cleardate);
-                    cmd = new MySqlCommand("SELECT   sno, opningamount, salevalue, paidamount, ClosingBalance, indentdate, doe, agentid, salesofficeid, saleqty, ReceivedAmount, DiffAmount, RouteId FROM tempduetrasactions WHERE (agentid = @Agentid) AND (indentdate BETWEEN @d1 AND @d2)");
-                    cmd.Parameters.AddWithValue("@Agentid", BranchID);
-                    cmd.Parameters.AddWithValue("@d1", GetLowDate(dtchequedate).AddDays(-1));
-                    cmd.Parameters.AddWithValue("@d2", GetLowDate(dtchequedate).AddDays(-1));
-                    DataTable dtpresentverifieddue = vdbmngr.SelectQuery(cmd).Tables[0];
-                    if (dtpresentverifieddue.Rows.Count > 0)
-                    {
-                        double salevalue = 0;
-                        double.TryParse(dtpresentverifieddue.Rows[0]["salevalue"].ToString(), out salevalue);
-                        double prevreceived = 0;
-                        double.TryParse(dtpresentverifieddue.Rows[0]["ReceivedAmount"].ToString(), out prevreceived);
-                        double opp = 0;
-                        double.TryParse(dtpresentverifieddue.Rows[0]["opningamount"].ToString(), out opp);
-                        double clo = 0;
-                        double.TryParse(dtpresentverifieddue.Rows[0]["ClosingBalance"].ToString(), out clo);
-                        double prsentamount = 0;
-                        double.TryParse(Amount, out prsentamount);
-                        double opamt = opp + salevalue;/// - BranchAmount;
-                        double Closing = opamt + BranchAmount;
-                        if (BranchAmount >= prevreceived)
-                        {
-                            actualamt = BranchAmount - prevreceived;
-                        }
-                        else
-                        {
-                            actualamt = prevreceived - BranchAmount;
-                        }
-                        cmd = new MySqlCommand("Update  tempduetrasactions set  ClosingBalance=@ClosingBalance,opningamount=opningamount+@ReceivedAmount,creditamount=creditamount+@creditamount where  agentid=@agentid AND indentdate=@indentdate");
-                        cmd.Parameters.AddWithValue("@ClosingBalance", Closing);
-                        cmd.Parameters.AddWithValue("@ReceivedAmount", BranchAmount);
-                        cmd.Parameters.AddWithValue("@creditamount", BranchAmount);
-
-                        cmd.Parameters.AddWithValue("@agentid", BranchID);
-                        cmd.Parameters.AddWithValue("@indentdate", GetLowDate(dtchequedate).AddDays(-1));
-                        vdbmngr.Update(cmd);
-                    }
-                    cmd = new MySqlCommand("SELECT   sno, opningamount, salevalue, paidamount, ClosingBalance, indentdate, doe, agentid, salesofficeid, saleqty, ReceivedAmount, DiffAmount, RouteId FROM tempduetrasactions WHERE (agentid = @Agentid) AND (indentdate BETWEEN @d1 AND @d2)");
-                    cmd.Parameters.AddWithValue("@Agentid", BranchID);
-                    cmd.Parameters.AddWithValue("@d1", GetLowDate(dtchequedate));
-                    cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate));
-                    DataTable dtDueTransactions = vdbmngr.SelectQuery(cmd).Tables[0];
-                    foreach (DataRow drr in dtDueTransactions.Rows)
-                    {
-                        string indentdate = drr["indentdate"].ToString();
-                        DateTime indent_date = Convert.ToDateTime(indentdate);
-                        cmd = new MySqlCommand("Update  tempduetrasactions set  opningamount=opningamount-@opningamount,ClosingBalance=ClosingBalance-@ClosingBalance where agentid=@Branchid AND indentdate=@indentdate");
-                        cmd.Parameters.AddWithValue("@opningamount", BranchAmount);
-                        cmd.Parameters.AddWithValue("@ClosingBalance", BranchAmount);
-                        cmd.Parameters.AddWithValue("@indentdate", GetLowDate(indent_date));
-                        cmd.Parameters.AddWithValue("@Branchid", BranchID);
-                        vdbmngr.Update(cmd);
-                    }
-                    //Oppening Balancess Closing
-                    cmd = new MySqlCommand("Update branchaccounts set Amount=Amount-@PaidAmount where BranchId=@BranchId");
-                    cmd.Parameters.AddWithValue("@PaidAmount", PaidAmount);
-                    cmd.Parameters.AddWithValue("@BranchId", BranchID);
-                    if (vdbmngr.Update(cmd) == 0)
-                    {
-                        float paidamt = PaidAmount * -1;
-                        cmd = new MySqlCommand("insert into branchaccounts (BranchId,Amount) values (@BranchId,@Amount)");
-                        cmd.Parameters.AddWithValue("@Amount", paidamt);
-                        cmd.Parameters.AddWithValue("@BranchId", BranchID);
-                        vdbmngr.insert(cmd);
-                    }
-                    if (phonenumber.Length == 10)
-                    {
-                    }
-                    string Msg = "Saved Successfully";
-                    string response = GetJson(Msg);
-                    context.Response.Write(response);
-                }
-                if (Transactiontype == "Debit")
-                {
-
-                    cmd = new MySqlCommand("Select Amount from branchaccounts where BranchId=@BranchId");
-                    //cmd.Parameters.AddWithValue("@BranchId", context.Session["branch"].ToString());
-                    cmd.Parameters.AddWithValue("@BranchId", soid);
-                    DataTable dtbrnchoppamt = vdbmngr.SelectQuery(cmd).Tables[0];
-                    string amount = "0";
-                    if (dtbrnchoppamt.Rows.Count > 0)
-                    {
-                        amount = dtbrnchoppamt.Rows[0]["Amount"].ToString();
-                    }
-                    cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID AND (DOE BETWEEN @d1 AND @d2)");
-                    cmd.Parameters.AddWithValue("@BranchID", soid);
-                    cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril));
-                    cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch));
-                    DataTable dtReceipt = vdbmngr.SelectQuery(cmd).Tables[0];
-                    string CashReceiptNo = dtReceipt.Rows[0]["Sno"].ToString();
-                    cmd = new MySqlCommand("insert into cashreceipts (BranchId,ReceivedFrom,AgentID,AmountPaid,TransactionType,AmountDebited,DOE,Create_by,Remarks,OppBal,Receipt) values (@BranchId,@ReceivedFrom,@AgentID,@AmountPaid,@TransactionType,@AmountDebited,@DOE, @Create_by,@Remarks,@OppBal,@Receipt)");
-                    CashReceiptNo = "0";
-                    int Creditamt = 0;
-                    cmd.Parameters.AddWithValue("@BranchId", soid);
-                    cmd.Parameters.AddWithValue("@ReceivedFrom", "Agent");
-                    cmd.Parameters.AddWithValue("@AgentID", BranchID);
-                    cmd.Parameters.AddWithValue("@AmountPaid", Creditamt);
-                    cmd.Parameters.AddWithValue("@TransactionType", Transactiontype);
-                    cmd.Parameters.AddWithValue("@AmountDebited", PaidAmount);
-                    cmd.Parameters.AddWithValue("DOE", ServerDateCurrentdate);
-                    cmd.Parameters.AddWithValue("@Create_by", context.Session["UserSno"].ToString());
-                    cmd.Parameters.AddWithValue("@Remarks", Remarks);
-                    cmd.Parameters.AddWithValue("@OppBal", amount);
-                    cmd.Parameters.AddWithValue("@Receipt", CashReceiptNo);
-                    vdbmngr.insert(cmd);
-                    string Username = "1";
-                    string status = "1";
-                    cmd = new MySqlCommand("insert into collections (Branchid,AmountPaid,TransactionType,AmountDebited,PaidDate,UserData_sno,PaymentType,PayTime,EmpID,ChequeNo,ReceiptNo,SalesOfficeID,Remarks,Status)values(@Branchid,@AmountPaid,@TransactionType,@AmountDebited,@PaidDate,@UserData_sno,@PaymentType,@PayTime,@EmpID,@ChequeNo,@ReceiptNo,@SalesOfficeID,@Remarks,@Status)");
-                    cmd.Parameters.AddWithValue("@Branchid", BranchID);
-                    cmd.Parameters.AddWithValue("@AmountPaid", Creditamt);
-                    cmd.Parameters.AddWithValue("@TransactionType", Transactiontype);
-                    cmd.Parameters.AddWithValue("@AmountDebited", PaidAmount);
-                    cmd.Parameters.AddWithValue("@PaidDate", dtchequedate);
-                    cmd.Parameters.AddWithValue("@PayTime", ServerDateCurrentdate);
-                    cmd.Parameters.AddWithValue("@UserData_sno", Username);
-                    cmd.Parameters.AddWithValue("@PaymentType", PaymentType);
-                    cmd.Parameters.AddWithValue("@EmpID", context.Session["UserSno"].ToString());
-                    cmd.Parameters.AddWithValue("@ChequeNo", ChequeNo);
-                    cmd.Parameters.AddWithValue("@ReceiptNo", CashReceiptNo);
-                    cmd.Parameters.AddWithValue("@Remarks", Remarks);
-                    cmd.Parameters.AddWithValue("@SalesOfficeID", soid);
-                    cmd.Parameters.AddWithValue("@Status", status);
-                    vdbmngr.insert(cmd);
-
-
-                    //Oppening Balances Start
-                    double BranchAmount = 0;
-                    double.TryParse(Amount, out BranchAmount);
-                    BranchAmount = Math.Round(BranchAmount, 2);
-                    double actualamt = 0;
-                    //cmd = new MySqlCommand("Update  Branchaccounts set  Amount=Amount-@Amount where  Branchid=@Branchid ");
-                    //cmd.Parameters.AddWithValue("@Branchid", BranchID);
-                    //cmd.Parameters.AddWithValue("@Amount", BranchAmount);
-                    //vdbmngr.Update(cmd);
-                    //DateTime fromdate = Convert.ToDateTime(cleardate);
-                    cmd = new MySqlCommand("SELECT   sno, OppBalance, SaleValue, paidamount, ClosingBalance, IndentDate, EntryDate, agentid, salesofficeid, SaleQty, ReceivedAmount, DiffAmount, RouteId, status FROM tempduetrasactions WHERE (agentid = @Agentid) AND (IndentDate BETWEEN @d1 AND @d2)");
-                    cmd.Parameters.AddWithValue("@Agentid", BranchID);
-                    cmd.Parameters.AddWithValue("@d1", GetLowDate(dtchequedate).AddDays(-1));
-                    cmd.Parameters.AddWithValue("@d2", GetLowDate(dtchequedate).AddDays(-1));
-                    DataTable dtpresentverifieddue = vdbmngr.SelectQuery(cmd).Tables[0];
-                    if (dtpresentverifieddue.Rows.Count > 0)
-                    {
-                        double salevalue = 0;
-                        double.TryParse(dtpresentverifieddue.Rows[0]["SaleValue"].ToString(), out salevalue);
-                        double prevreceived = 0;
-                        double.TryParse(dtpresentverifieddue.Rows[0]["ReceivedAmount"].ToString(), out prevreceived);
-                        double opp = 0;
-                        double.TryParse(dtpresentverifieddue.Rows[0]["OppBalance"].ToString(), out opp);
-                        double clo = 0;
-                        double.TryParse(dtpresentverifieddue.Rows[0]["ClosingBalance"].ToString(), out clo);
-                        double prsentamount = 0;
-                        double.TryParse(Amount, out prsentamount);
-                        double opamt = opp + salevalue + BranchAmount;/// - BranchAmount;
-                        double Closing = opamt - prevreceived;
-                        if (BranchAmount >= prevreceived)
-                        {
-                            actualamt = BranchAmount - prevreceived;
-                        }
-                        else
-                        {
-                            actualamt = prevreceived - BranchAmount;
-                        }
-                        cmd = new MySqlCommand("Update  tempduetrasactions set  ClosingBalance=@ClosingBalance,debitamount=debitamount+@debitamount where  agentid=@agentid AND indentdate=@indentdate");
-                        cmd.Parameters.AddWithValue("@ClosingBalance", Closing);
-                        cmd.Parameters.AddWithValue("@debitamount", BranchAmount);
-                        cmd.Parameters.AddWithValue("@agentid", BranchID);
-                        cmd.Parameters.AddWithValue("@indentdate", GetLowDate(dtchequedate).AddDays(-1));
-                        vdbmngr.Update(cmd);
-                    }
-                    cmd = new MySqlCommand("SELECT   sno, OppBalance, SaleValue, paidamount, ClosingBalance, IndentDate, EntryDate, agentid, salesofficeid, SaleQty, ReceivedAmount, DiffAmount, RouteId, status FROM tempduetrasactions WHERE (agentid = @Agentid) AND (IndentDate BETWEEN @d1 AND @d2)");
-                    cmd.Parameters.AddWithValue("@Agentid", BranchID);
-                    cmd.Parameters.AddWithValue("@d1", GetLowDate(dtchequedate).AddDays(-1));
-                    cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate));
-                    DataTable dtDueTransactions = vdbmngr.SelectQuery(cmd).Tables[0];
-                    foreach (DataRow drr in dtDueTransactions.Rows)
-                    {
-                        string indentdate = drr["indentdate"].ToString();
-                        DateTime indent_date = Convert.ToDateTime(indentdate);
-                        cmd = new MySqlCommand("Update  tempduetrasactions set  OppBalance=OppBalance+@opningamount,ClosingBalance=ClosingBalance+@ClosingBalance where agentid=@Branchid AND indentdate=@indentdate");
-                        cmd.Parameters.AddWithValue("@opningamount", BranchAmount);
-                        cmd.Parameters.AddWithValue("@ClosingBalance", BranchAmount);
-                        cmd.Parameters.AddWithValue("@indentdate", GetLowDate(indent_date));
-                        cmd.Parameters.AddWithValue("@Branchid", BranchID);
-                        vdbmngr.Update(cmd);
-                    }
-                    //Oppening Balancess Closing
-                    cmd = new MySqlCommand("Update branchaccounts set Amount=Amount+@PaidAmount where BranchId=@BranchId");
-                    cmd.Parameters.AddWithValue("@PaidAmount", PaidAmount);
-                    cmd.Parameters.AddWithValue("@BranchId", BranchID);
-                    if (vdbmngr.Update(cmd) == 0)
-                    {
-                        float paidamt = PaidAmount;
-                        cmd = new MySqlCommand("insert into branchaccounts (BranchId,Amount) values (@BranchId,@Amount)");
-                        cmd.Parameters.AddWithValue("@Amount", paidamt);
-                        cmd.Parameters.AddWithValue("@BranchId", BranchID);
-                        vdbmngr.insert(cmd);
-                    }
-                    string Msg = "Saved Successfully";
-                    string response = GetJson(Msg);
-                    context.Response.Write(response);
-                }
-            }
-        }
-        catch
-        {
-
-        }
     }
     public class faaccountnumberscls
     {
@@ -33572,35 +31967,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         }
     }
-    private void GetAgentInvBal(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string BranchID = context.Request["BranchID"];
-            string Invid = context.Request["Invid"];
-            cmd = new MySqlCommand("SELECT inventory_monitor.BranchId,inventory_monitor.Qty, inventory_monitor.Inv_Sno, inventory_monitor.Sno, invmaster.InvName FROM inventory_monitor INNER JOIN invmaster ON inventory_monitor.Inv_Sno = invmaster.sno WHERE (inventory_monitor.BranchId = @Branch_id) and (inventory_monitor.Inv_Sno = @Inv_Sno) ");
-            cmd.Parameters.AddWithValue("@Branch_id", BranchID);
-            cmd.Parameters.AddWithValue("@Inv_Sno", Invid);
-            DataTable dtinventory = vdbmngr.SelectQuery(cmd).Tables[0];
-
-
-            List<SORoute> RouteList = new List<SORoute>();
-            foreach (DataRow dr in dtinventory.Rows)
-            {
-                SORoute GetRoute = new SORoute();
-                GetRoute.rid = dr["Inv_Sno"].ToString();
-                GetRoute.RouteName = dr["Qty"].ToString();
-                RouteList.Add(GetRoute);
-            }
-            string response = GetJson(RouteList);
-            context.Response.Write(response);
-        }
-        catch
-        {
-
-        }
-    }
     private void GetAgentAmountDeatails(HttpContext context)
     {
         try
@@ -34187,43 +32553,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         }
     }
-    private void Getdetails(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string DispDate = context.Request["startDate"];
-            DateTime Selecteddate = Convert.ToDateTime(DispDate).AddDays(-1);
-            string rowtype = context.Request["rowtype"];
-            if (rowtype == "Verified Crates")
-            {
-            }
-            if (rowtype == "Verified Cans")
-            {
-            }
-            if (rowtype == "Verified Leaks")
-            {
-                cmd = new MySqlCommand("SELECT productsdata.ProductName, productsdata.sno, SUM(indents_subtable.DeliveryQty) AS delqty, SUM(indents_subtable.unitQty) AS orderqty FROM branchmappingtable INNER JOIN (SELECT IndentNo, Branch_id, TotalQty, TotalPrice, I_date, D_date, Status, UserData_sno, PaymentStatus, I_createdby, I_modifiedby, IndentType FROM indents WHERE (I_date BETWEEN @d1 AND @d2)) indent ON branchmappingtable.SubBranch = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (branchmappingtable.SuperBranch = @salesofficeid) GROUP BY productsdata.sno");
-                //cmd.Parameters.AddWithValue("@salesofficeid", dispatchsno);
-                cmd.Parameters.AddWithValue("@d1", GetLowDate(Selecteddate));
-                cmd.Parameters.AddWithValue("@d2", GetHighDate(Selecteddate));
-                DataTable dtsaleoff_indent_delivery = vdbmngr.SelectQuery(cmd).Tables[0];
-            }
-            if (rowtype == "Verified Returns")
-            {
-                cmd = new MySqlCommand("SELECT productsdata.ProductName, productsdata.sno, SUM(indents_subtable.DeliveryQty) AS delqty, SUM(indents_subtable.unitQty) AS orderqty FROM branchmappingtable INNER JOIN (SELECT IndentNo, Branch_id, TotalQty, TotalPrice, I_date, D_date, Status, UserData_sno, PaymentStatus, I_createdby, I_modifiedby, IndentType FROM indents WHERE (I_date BETWEEN @d1 AND @d2)) indent ON branchmappingtable.SubBranch = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (branchmappingtable.SuperBranch = @salesofficeid) GROUP BY productsdata.sno");
-                //cmd.Parameters.AddWithValue("@salesofficeid", dispatchsno);
-                cmd.Parameters.AddWithValue("@d1", GetLowDate(Selecteddate));
-                cmd.Parameters.AddWithValue("@d2", GetHighDate(Selecteddate));
-                DataTable dtsaleoff_indent_delivery = vdbmngr.SelectQuery(cmd).Tables[0];
-            }
-        }
-        catch
-        {
-        }
-    }
-
-
     private void GetDispatchPlanningStatus(HttpContext context)
     {
         try
@@ -34410,32 +32739,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-    private void Get_SalesOffice_Agents(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string BranchID = context.Request["BranchID"];
-            cmd = new MySqlCommand("SELECT branchdata.sno, branchdata.BranchName FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchdata branchdata_1 ON branchmappingtable.SuperBranch = branchdata_1.sno WHERE (branchmappingtable.SuperBranch = @BranchID) AND (branchdata.flag = 1) OR (branchdata_1.SalesOfficeID = @SOID)");
-            //cmd = new MySqlCommand("SELECT branchdata.sno, branchdata.BranchName FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @BranchID)");
-            cmd.Parameters.AddWithValue("@BranchID", BranchID);
-            cmd.Parameters.AddWithValue("@SOID", BranchID);
-            DataTable dtBranch = vdbmngr.SelectQuery(cmd).Tables[0];
-            List<SoClass> Agentslist = new List<SoClass>();
-            foreach (DataRow dr in dtBranch.Rows)
-            {
-                SoClass getAgent = new SoClass();
-                getAgent.Sno = dr["sno"].ToString();
-                getAgent.BranchName = dr["BranchName"].ToString();
-                Agentslist.Add(getAgent);
-            }
-            string response = GetJson(Agentslist);
-            context.Response.Write(response);
-        }
-        catch
-        {
-        }
-    }
     private void GetAgents(HttpContext context)
     {
         try
@@ -34486,33 +32789,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-    private void Getmarketexicutives(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string soid = context.Request["soid"].ToString();
-            cmd = new MySqlCommand("SELECT DISTINCT branchdata.SalesRepresentative  FROM branchroutes INNER JOIN  branchroutesubtable ON branchroutes.Sno = branchroutesubtable.RefNo INNER JOIN   branchdata ON branchroutesubtable.BranchID = branchdata.sno INNER JOIN  salestypemanagement ON salestypemanagement.sno = branchdata.SalesType  WHERE (branchroutes.BranchID = @soid) AND (branchroutes.flag = '1') AND (branchdata.SalesRepresentative IS NOT NULL) AND (branchdata.SalesRepresentative <> '') AND (branchdata.SalesRepresentative <> '0')");
-            cmd.Parameters.AddWithValue("@soid", soid);
-            DataTable dtSalesRepresentative = vdbmngr.SelectQuery(cmd).Tables[0];
-            List<VehicleClass> Vehiclelist = new List<VehicleClass>();
-            foreach (DataRow dr in dtSalesRepresentative.Rows)
-            {
-                VehicleClass getVehicles = new VehicleClass();
-                getVehicles.sno = dr["SalesRepresentative"].ToString();
-                Vehiclelist.Add(getVehicles);
-            }
-            string response = GetJson(Vehiclelist);
-            context.Response.Write(response);
-        }
-        catch
-        {
-        }
-    }
-
-
-
     public class VehicleClass
     {
         public string VehicleNo { get; set; }
@@ -34689,42 +32965,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-
-    private void GetSOAndPlantRoutes(HttpContext context)
-    {
-        try
-        {
-
-            vdbmngr = new VehicleDBMgr();
-            string SalesType = context.Session["salestype"].ToString();
-            string salseofficesno = context.Request["salseofficesno"];
-            List<SoClass> Solist = new List<SoClass>();
-            if (SalesType == "Plant")
-            {
-                cmd = new MySqlCommand("SELECT Sno, RouteName, RouteLevel, UserID, BranchID FROM branchroutes WHERE (BranchID = @BranchId)");
-                cmd.Parameters.AddWithValue("@BranchId", salseofficesno);
-                DataTable dtBranch = vdbmngr.SelectQuery(cmd).Tables[0];
-                foreach (DataRow dr in dtBranch.Rows)
-                {
-                    SoClass GetSoClass = new SoClass();
-                    GetSoClass.Sno = dr["Sno"].ToString();
-                    GetSoClass.BranchName = dr["RouteName"].ToString();
-                    Solist.Add(GetSoClass);
-                }
-                string errresponse = GetJson(Solist);
-                context.Response.Write(errresponse);
-            }
-            else
-            {
-                string errresponse = GetJson(Solist);
-                context.Response.Write(errresponse);
-            }
-        }
-        catch
-        {
-        }
-    }
-
     private void GetSalesOffice(HttpContext context)
     {
         try
@@ -35435,85 +33675,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
         }
     }
-    private void Getrouteleaks(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            DateTime FromDate = DateTime.Now;
-            string StartDate = context.Request["startDate"];
-            string dispatchsno = context.Request["routesno"];
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            if (StartDate == "")
-            {
-                StartDate = ServerDateCurrentdate.ToString();
-            }
-            DateTime fmdate = Convert.ToDateTime(StartDate);
-            string time = fmdate.ToString("dd-MM-yyyy HH:mm");
-            string[] fromdatestrig = time.Split(' ');
-            if (fromdatestrig.Length > 1)
-            {
-                if (fromdatestrig[0].Split('-').Length > 0)
-                {
-                    string[] dates = fromdatestrig[0].Split('-');
-                    string[] times = fromdatestrig[1].Split(':');
-                    FromDate = new DateTime(int.Parse(dates[2]), int.Parse(dates[1]), int.Parse(dates[0]), int.Parse(times[0]), int.Parse(times[1]), 0);
-                }
-            }
-
-
-            DataTable dtTotalDispatches = new DataTable();
-            List<routeleaks> routeleakslist = new List<routeleaks>();
-
-
-            cmd = new MySqlCommand("SELECT triproutes.Tripdata_sno, leakages.TotalLeaks, dispatch.DispName, productsdata.ProductName FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, I_Date FROM tripdata WHERE (I_Date BETWEEN @d1 AND @d2)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN leakages ON tripdat.Sno = leakages.TripID INNER JOIN productsdata ON leakages.ProductID = productsdata.sno WHERE (dispatch.sno = @dispathsno) AND (leakages.TotalLeaks IS NOT NULL)");
-            string SalesType = context.Session["salestype"].ToString();
-            if (SalesType == "Plant")
-            {
-                cmd.Parameters.AddWithValue("@dispatchsno", dispatchsno);
-            }
-            else
-            {
-                cmd.Parameters.AddWithValue("@dispatchsno", dispatchsno);
-            }
-            cmd.Parameters.AddWithValue("@d1", CargoManagementSystem.DateConverter.GetLowDate(FromDate.AddDays(-7)));
-            cmd.Parameters.AddWithValue("@d2", CargoManagementSystem.DateConverter.GetHighDate(FromDate.AddDays(-1)));
-            DataTable dtleakstotal = vdbmngr.SelectQuery(cmd).Tables[0];
-            if (dtleakstotal.Rows.Count > 0)
-            {
-                int i = 0;
-                foreach (DataRow dr in dtleakstotal.Rows)
-                {
-                    routeleaks getRouteleaks = new routeleaks();
-                    getRouteleaks.Sno = i++.ToString();
-                    getRouteleaks.RouteName = dr["DispName"].ToString();
-                    getRouteleaks.ProductName = dr["ProductName"].ToString();
-                    getRouteleaks.LeakQty = dr["TotalLeaks"].ToString();
-                    routeleakslist.Add(getRouteleaks);
-                }
-                string response = GetJson(routeleakslist);
-                context.Response.Write(response);
-            }
-            else
-            {
-                string msg = "No Leaks Found";
-                string errresponse = GetJson(msg);
-                context.Response.Write(errresponse);
-            }
-        }
-        catch
-        {
-        }
-
-    }
-    //public class PieValues
-    //{
-    //    public List<string> RouteName { get; set; }
-    //    public List<string> Amount { get; set; }
-    //    public List<string> DeliveryQty { get; set; }
-    //    public List<string> AverageyQty { get; set; }
-    //    public string totalqty { get; set; }
-    //}
     public class routeleaks
     {
         public string Sno { get; set; }
@@ -37371,47 +35532,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string Amount { set; get; }
         public string Qty { set; get; }
     }
-    private void GetReturnLeakReport(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            List<ReturnLeakClass> ReturnLeaklist = new List<ReturnLeakClass>();
-            cmd = new MySqlCommand("SELECT leakages.VLeaks, leakages.VReturns,leakages.ProductID, dispatch.DispName, productsdata.ProductName FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno INNER JOIN leakages ON tripdata.Sno = leakages.VTripID INNER JOIN productsdata ON leakages.ProductID = productsdata.sno WHERE (dispatch.Branch_Id = @Branch_Id) AND (leakages.VarifyStatus = 'V') GROUP BY productsdata.ProductName ORDER BY productsdata.sno");
-            cmd.Parameters.AddWithValue("@Branch_Id", context.Session["branch"].ToString());
-            DataTable dtPuffLeak = vdbmngr.SelectQuery(cmd).Tables[0];
-            if (dtPuffLeak.Rows.Count > 0)
-            {
-                int i = 1;
-                foreach (DataRow drPufLeak in dtPuffLeak.Rows)
-                {
-                    ReturnLeakClass GetReturnLeak = new ReturnLeakClass();
-                    GetReturnLeak.Sno = i++.ToString();
-                    GetReturnLeak.ProdId = drPufLeak["ProductID"].ToString();
-                    GetReturnLeak.ProdName = drPufLeak["ProductName"].ToString();
-                    GetReturnLeak.Returns = drPufLeak["VReturns"].ToString();
-                    GetReturnLeak.Leaks = drPufLeak["VLeaks"].ToString();
-                    GetReturnLeak.EmpName = drPufLeak["DispName"].ToString();
-                    ReturnLeaklist.Add(GetReturnLeak);
-                }
-            }
-            string errresponse = GetJson(ReturnLeaklist);
-            context.Response.Write(errresponse);
-        }
-        catch
-        {
-
-        }
-    }
-    class ReturnLeakClass
-    {
-        public string Sno { get; set; }
-        public string ProdId { get; set; }
-        public string ProdName { get; set; }
-        public string Returns { get; set; }
-        public string EmpName { get; set; }
-        public string Leaks { get; set; }
-    }
     private void FillCategeoryname(HttpContext context)
     {
         try
@@ -38796,51 +36916,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-    private void Add_all_prdt_to_brnchprdt(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            cmd = new MySqlCommand("select sno as brnchsno from branchdata ORDER BY sno");
-            DataTable brchsno_dt = vdbmngr.SelectQuery(cmd).Tables[0];
-            cmd = new MySqlCommand("select sno as prdtsno from productsdata ORDER BY sno");
-            DataTable prdtsnodt = vdbmngr.SelectQuery(cmd).Tables[0];
-            int ccc = prdtsnodt.Rows.Count;
-            foreach (DataRow dr in brchsno_dt.Rows)
-            {
-                foreach (DataRow pd in prdtsnodt.Rows)
-                {
-                    int brnsno = 0;
-                    int prdsno = 0;
-                    int.TryParse(dr["brnchsno"].ToString(), out brnsno);
-                    int.TryParse(pd["prdtsno"].ToString(), out prdsno);
-                    cmd = new MySqlCommand("update branchproducts set branch_sno=@branchsno,product_sno=@prdtsno where branch_sno=@branchsno and product_sno=@prdtsno");
-                    cmd.Parameters.AddWithValue("@branchsno", brnsno);
-                    cmd.Parameters.AddWithValue("@prdtsno", prdsno);
-                    //vdbmngr.Update(cmd);
-                    if (vdbmngr.Update(cmd) == 0)
-                    {
-                        cmd = new MySqlCommand("insert into branchproducts (branch_sno,product_sno,unitprice,flag,userdata_sno,DTarget,WTarget,MTarget) values (@branchsno,@prdtsno,@unitprice,@flag,@userdata,@dt,@wt,@mt) ");
-                        cmd.Parameters.AddWithValue("@branchsno", brnsno);
-                        cmd.Parameters.AddWithValue("@prdtsno", prdsno);
-                        cmd.Parameters.AddWithValue("@unitprice", 0);
-                        cmd.Parameters.AddWithValue("@flag", false);
-                        cmd.Parameters.AddWithValue("@userdata", 1);
-                        cmd.Parameters.AddWithValue("@dt", 0);
-                        cmd.Parameters.AddWithValue("@wt", 0);
-                        cmd.Parameters.AddWithValue("@mt", 0);
-                        vdbmngr.insert(cmd);
-
-                    }
-                }
-            }
-        }
-        catch
-        {
-
-        }
-    }
-
     public class brnchmapping
     {
         public string sno { get; set; }
@@ -38917,39 +36992,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string DistributorName { get; set; }
         public string BranchName { get; set; }
         public string Indenttype { get; set; }
-    }
-    private void get_Pending_dispatches(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno, dispatch.DispName, dispatch.sno AS dispatchid, tripdat.Sno AS tripid, tripdat.Status, tripdat.Permissions FROM branchdata INNER JOIN branchdata branchdata_1 ON branchdata.sno = branchdata_1.sno INNER JOIN dispatch ON branchdata.sno = dispatch.BranchID INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, Status, Permissions FROM tripdata WHERE (SOTransfer IS NULL) AND (Status = 'A') AND (Permissions <> 'O')) tripdat ON triproutes.Tripdata_sno = tripdat.Sno WHERE (branchdata_1.SalesOfficeID = @SOID) AND (branchdata.SalesType IS NOT NULL) OR (branchdata.sno = @SOID) AND (branchdata.SalesType IS NOT NULL) ORDER BY branchdata.sno");
-            cmd.Parameters.AddWithValue("@SOID", context.Session["branch"].ToString());
-            cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
-            DataTable dtBranch = vdbmngr.SelectQuery(cmd).Tables[0];
-            List<RouteNames> initializedatalist = new List<RouteNames>();
-            foreach (DataRow dr in dtBranch.Rows)
-            {
-                RouteNames initializedata = new RouteNames();
-                initializedata.id = dr["tripid"].ToString();
-                initializedata.Name = dr["DispName"].ToString();
-
-                initializedata.status = "Dispatch";
-                initializedatalist.Add(initializedata);
-            }
-            if (initializedatalist != null)
-            {
-                string response = GetJson(initializedatalist);
-                context.Response.Write(response);
-            }
-
-        }
-        catch (Exception ex)
-        {
-            string msg = ex.Message;
-            string response = GetJson(msg);
-            context.Response.Write(response);
-        }
     }
     private void get_Branches_Salesoffice(HttpContext context)
     {
@@ -43215,86 +41257,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
         #endregion
     }
-    private void btndispatchassign(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            var js = new JavaScriptSerializer();
-            string Username = context.Session["userdata_sno"].ToString();
-            string routelevel = context.Session["LevelType"].ToString();
-            var title1 = context.Request.Params[1];
-            Orders obj = js.Deserialize<Orders>(title1);
-            string employeeid = obj.routename;
-            string btnSave = obj.btnSave;
-            string phonenumber = obj.Mobile;
-            string empname = obj.clubbingname;
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            Random randNum = new Random();
-
-            String r = randNum.Next(0, 1000000).ToString("D6");
-            double dcno = 0;
-
-            if (btnSave == "Save")
-            {
-                foreach (string o in obj.dataarr)
-                {
-                    cmd = new MySqlCommand("update  tripdata set DispatcherID=@employeeID,Password=@passwrd WHERE Sno=@sno");
-
-                    cmd.Parameters.AddWithValue("@employeeID", employeeid);
-                    cmd.Parameters.AddWithValue("@passwrd", r);
-
-                    cmd.Parameters.AddWithValue("@sno", o);
-                    vdbmngr.Update(cmd);
-                    double.TryParse(o, out dcno);
-                }
-                cmd = new MySqlCommand("update  empmanage set Password=@Password WHERE Sno=@sno");
-                cmd.Parameters.AddWithValue("@Password", r);
-                cmd.Parameters.AddWithValue("@sno", employeeid);
-                vdbmngr.Update(cmd);
-                if (phonenumber.Length == 10)
-                {
-                    string Date = ServerDateCurrentdate.ToString("dd/MM/yyyy");
-                    string message = "Date :" + Date + "\r\n";
-                    message += "Dear Employee Your Are The Dispatcher Today For DCno:" + dcno + " \r\n";
-                    message += "UserName :" + empname + "\r\n";
-                    message += "Password :" + r + "\r\n";
-                    try
-                    {
-                        WebClient client = new WebClient();
-                        //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
-
-                        string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=" + phonenumber + "&msg=%20" + message + "&type=1";
-                        Stream data = client.OpenRead(baseurl);
-                        StreamReader reader = new StreamReader(data);
-                        string ResponseID = reader.ReadToEnd();
-                        data.Close();
-                        reader.Close();
-                    }
-                    catch
-                    {
-                    }
-                }
-                var jsonSerializer = new JavaScriptSerializer();
-                var jsonString = String.Empty;
-                context.Request.InputStream.Position = 0;
-                using (var inputStream = new StreamReader(context.Request.InputStream))
-                {
-                    jsonString = inputStream.ReadToEnd();
-                }
-                List<string> MsgList = new List<string>();
-                string msg = "Data Successfully Saved";
-                MsgList.Add(msg);
-                string response = GetJson(MsgList);
-                context.Response.Write(response);
-
-            }
-        }
-        catch
-        {
-
-        }
-    }
     private void btnRoutesSaveClick(HttpContext context)
     {
         try
@@ -45783,26 +43745,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
         return lst;
     }
-
-
-    private void getallemployees(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            cmd = new MySqlCommand("SELECT Sno, Branch, EmpName, flag FROM empmanage WHERE (flag <> 0)");
-            DataTable emplist = vdbmngr.SelectQuery(cmd).Tables[0];
-            context.Session["get_empnames"] = emplist;
-        }
-        catch (Exception ex)
-        {
-            string msg = ex.Message;
-            string response = GetJson(msg);
-            context.Response.Write(response);
-        }
-    }
-
-
     public class employeesmgnt
     {
         public string sno { get; set; }
@@ -46141,168 +44083,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
-    public void SaveFreezarIssuedeatils(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string TypeofIssue = context.Request["TypeofIssue"];
-            string SalesOffice = context.Request["SalesOffice"];
-            string FreezarType = context.Request["FreezarType"];
-            string RouteName = context.Request["RouteName"];
-            string AgentName = context.Request["AgentName"];
-            string CompanyName = context.Request["CompanyName"];
-            string TotalAmount = context.Request["TotalAmount"];
-            string InstallmentAmount = context.Request["InstallmentAmount"];
-            string DateofIssue = context.Request["DateofIssue"];
-            string Status = context.Request["Status"];
-            string ApprovedBy = context.Request["ApprovedBy"];
-            string Remarks = context.Request["Remarks"];
-            string entry_by = context.Session["UserSno"].ToString();
-            string strdate = context.Request["purchasedate"];
-            DateTime dtissue_date = Convert.ToDateTime(strdate);
-            string btn_save = context.Request["btnval"];
-            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
-            string receiverid = "";
-            if (TypeofIssue == "Sales Office Wise")
-            {
-                receiverid = SalesOffice;
-            }
-            if (TypeofIssue == "Agent Wise")
-            {
-                receiverid = AgentName;
-            }
-            if (btn_save == "SAVE")
-            {
-                cmd = new MySqlCommand("insert into freezer_issue (freezer_type, issued_to, receiver_id, totalamount, installamount, status, approval_by, entry_by, doe,issue_date,companyname) values (@freezer_sno, @issued_to, @receiver_id, @totalamount, @installamount, @status, @approval_by, @entry_by, @doe,@issue_date,@companyname)");
-                cmd.Parameters.AddWithValue("@issued_to", TypeofIssue);
-                cmd.Parameters.AddWithValue("@freezer_type", FreezarType);
-                cmd.Parameters.AddWithValue("@receiver_id", receiverid);
-                cmd.Parameters.AddWithValue("@totalamount", TotalAmount);
-                cmd.Parameters.AddWithValue("@installamount", InstallmentAmount);
-                cmd.Parameters.AddWithValue("@status", Status);
-                cmd.Parameters.AddWithValue("@approval_by", ApprovedBy);
-                cmd.Parameters.AddWithValue("@entry_by", entry_by);
-                cmd.Parameters.AddWithValue("@issue_date", dtissue_date);
-                cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                cmd.Parameters.AddWithValue("@companyname", CompanyName);
-                vdbmngr.insert(cmd);
-                string msg = "Details successfully saved";
-                string Response = GetJson(msg);
-                context.Response.Write(Response);
-            }
-            else
-            {
-                //string sno = context.Request["sno"];
-                //cmd = new MySqlCommand("Update freezer_issue set freezer_sno=@freezer_sno,issued_to=@issued_to,receiver_id=@receiver_id,totalamount=@totalamount,installamount=@installamount,status=@status,approval_by=@approval_by,entry_by=@entry_by,doe=@doe,issue_date=@issue_date where sno=@sno");
-                //cmd.Parameters.AddWithValue("@issued_to", TypeofIssue);
-                //cmd.Parameters.AddWithValue("@freezer_sno", FreezarType);
-                //cmd.Parameters.AddWithValue("@receiver_id", receiverid);
-                //cmd.Parameters.AddWithValue("@totalamount", TotalAmount);
-                //cmd.Parameters.AddWithValue("@installamount", InstallmentAmount);
-                //cmd.Parameters.AddWithValue("@status", Status);
-                //cmd.Parameters.AddWithValue("@approval_by", ApprovedBy);
-                //cmd.Parameters.AddWithValue("@entry_by", entry_by);
-                //cmd.Parameters.AddWithValue("@issue_date", dtissue_date);
-                //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                //cmd.Parameters.AddWithValue("@sno", sno);
-                //vdbmngr.Update(cmd);
-                //string msg = "Details successfully updated";
-                //string Response = GetJson(msg);
-                //context.Response.Write(Response);
-            }
-        }
-        catch (Exception ex)
-        {
-            string Response = GetJson(ex.Message);
-            context.Response.Write(Response);
-        }
-    }
-    public class FreezarIssueDetails
-    {
-        public string TypeofIssue { get; set; }
-        public string SalesOffice { get; set; }
-        public string RouteName { get; set; }
-        public string ReceiverName { get; set; }
-        public string CompanyName { get; set; }
-        public string FreezarType { get; set; }
-        public string TotalAmount { get; set; }
-        public string InstallmentAmount { get; set; }
-        public string DateofIssue { get; set; }
-        public string Status { get; set; }
-        public string ApprovedBy { get; set; }
-        public string Remarks { get; set; }
-        public string MachineNo { get; set; }
-        public string AssetNo { get; set; }
-        public string sno { get; set; }
-        public string receiver_id { get; set; }
-        public string freezer_type { get; set; }
-        public string issue_date { get; set; }
-    }
-    private void get_FreezarIssue_details(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            cmd = new MySqlCommand("SELECT freezer_issue.receiver_id, freezer_issue.sno, freezer_issue.totalamount, freezer_issue.installamount, freezer_issue.issue_date, branchdata.BranchName, freezer_issue.freezer_type, freezer_issue.companyname FROM freezer_issue INNER JOIN  branchdata ON freezer_issue.receiver_id = branchdata.sno");
-            DataTable routes = vdbmngr.SelectQuery(cmd).Tables[0];
-            List<FreezarIssueDetails> FreezarIssuedetailslist = new List<FreezarIssueDetails>();
-            foreach (DataRow dr in routes.Rows)
-            {
-                FreezarIssueDetails getFreezarIssuetdetails = new FreezarIssueDetails();
-                getFreezarIssuetdetails.ReceiverName = dr["BranchName"].ToString();
-                getFreezarIssuetdetails.TotalAmount = dr["totalamount"].ToString();
-                getFreezarIssuetdetails.InstallmentAmount = dr["installamount"].ToString();
-                getFreezarIssuetdetails.freezer_type = dr["freezer_type"].ToString();
-                getFreezarIssuetdetails.issue_date = dr["issue_date"].ToString();
-                getFreezarIssuetdetails.sno = dr["sno"].ToString();
-
-                FreezarIssuedetailslist.Add(getFreezarIssuetdetails);
-            }
-            string response = GetJson(FreezarIssuedetailslist);
-            context.Response.Write(response);
-        }
-        catch (Exception ex)
-        {
-            string Response = GetJson(ex.Message);
-            context.Response.Write(Response);
-        }
-    }
-
-    private void get_printFreezer_Report(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string sno = context.Request["sno"];
-            cmd = new MySqlCommand("SELECT freezer_detaills.sno, freezer_detaills.companyname, freezer_detaills.freezer_type, freezer_detaills.amount, freezer_detaills.status, freezer_detaills.remarks, freezer_detaills.entry_by, freezer_detaills.branchid,  freezer_detaills.doe, freezer_detaills.purchasedate, freezer_detaills.machineno, freezer_detaills.assetno, freezer_issue.sno AS Expr1, freezer_issue.freezer_sno, freezer_issue.issued_to, freezer_issue.receiver_id, freezer_issue.totalamount, freezer_issue.installamount, freezer_issue.status AS Expr2, freezer_issue.approval_by, freezer_issue.entry_by AS Expr3, freezer_issue.doe AS Expr4, freezer_issue.issue_date, branchdata.BranchName FROM  freezer_detaills INNER JOIN freezer_issue ON freezer_detaills.sno = freezer_issue.freezer_sno INNER JOIN branchdata ON freezer_issue.receiver_id = branchdata.sno WHERE (freezer_detaills.sno = @sno)");
-            cmd.Parameters.AddWithValue("@sno", sno);
-            DataTable routes = vdbmngr.SelectQuery(cmd).Tables[0];
-            List<FreezarIssueDetails> FreezarIssuedetailslist = new List<FreezarIssueDetails>();
-            foreach (DataRow dr in routes.Rows)
-            {
-                FreezarIssueDetails getFreezarIssuetdetails = new FreezarIssueDetails();
-                getFreezarIssuetdetails.ReceiverName = dr["BranchName"].ToString();
-                getFreezarIssuetdetails.TotalAmount = dr["totalamount"].ToString();
-                getFreezarIssuetdetails.InstallmentAmount = dr["installamount"].ToString();
-                getFreezarIssuetdetails.freezer_type = dr["freezer_type"].ToString();
-                getFreezarIssuetdetails.MachineNo = dr["machineno"].ToString();
-                getFreezarIssuetdetails.AssetNo = dr["assetno"].ToString();
-                getFreezarIssuetdetails.issue_date = dr["issue_date"].ToString();
-                getFreezarIssuetdetails.sno = dr["sno"].ToString();
-                FreezarIssuedetailslist.Add(getFreezarIssuetdetails);
-            }
-            string response = GetJson(FreezarIssuedetailslist);
-            context.Response.Write(response);
-        }
-        catch (Exception ex)
-        {
-            string Response = GetJson(ex.Message);
-            context.Response.Write(Response);
-        }
-    }
-
     private void intialize_purchase_invname(HttpContext context)
     {
         try
@@ -51524,120 +49304,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-
-    private void GetAgetntinformationagentwise(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string agentid = context.Request["agentid"].ToString();
-            cmd = new MySqlCommand("SELECT b1.sno, b1.BranchName, salestypemanagement.SalesType, b1.Lat, b1.Lng, b1.Radius, b1.phonenumber, b1.emailid, b1.userdata_sno, b1.flag, b1.WTarget, b1.MTarget, b1.DTarget, b1.CollectionType, b1.Address,    b1.DateOfEntry, b1.incentiveStructure_sno, b1.OrtherBrands, b1.ShopName, b1.SalesOfficeID, b1.RouteID, b1.BranchCode, b1.phonenumber2, b1.duelimit, b1.TinNumber, b1.Shop_Photo, b1.SalesRepresentative,   b1.Due_Limit_Days, b1.Due_Limit_Type, b1.Agent_PIC, b1.tbranchname, b1.ladger_dr, b1.statename, b1.incentivename, b1.panno, b1.customercode, b1.whcode, b1.ladger_dr_code, b1.tax, b1.ntax, b1.ledger_jv_code,   b1.companyname, b1.street, b1.city, b1.mandal, b1.district, b1.pincode, b1.cst, b1.email, b1.gstno, b1.doorno, b1.area, b1.bankid, b1.ifsccode, b1.accountno, b1.regtype, b1.stateid, b1.tollfreeno, b1.companycode, b1.LeakagePercent, b1.SplBonus, b1.InsentiveStructId, b1.mmname, b1.mename, b1.amount, b1.amountsince  FROM            branchdata b1 INNER JOIN salestypemanagement ON b1.SalesType = salestypemanagement.sno WHERE        (b1.sno = @sno)");
-            //cmd = new MySqlCommand("SELECT BranchName, SalesType, phonenumber, emailid, Address, DateOfEntry, duelimit, TinNumber, Due_Limit_Type, Agent_PIC, panno, street, city, mandal, district, pincode, cst, email, gstno, bankid, ifsccode, accountno, regtype, SplBonus, sno, Due_Limit_Days, statename, doorno, LeakagePercent, SalesRepresentative  FROM  branchdata WHERE sno=@sno");
-            cmd.Parameters.AddWithValue("@sno", agentid);
-            DataTable dt = vdbmngr.SelectQuery(cmd).Tables[0];
-            List<BranchDetails> BranchDetailslist = new List<BranchDetails>();
-            foreach (DataRow dr in dt.Rows)
-            {
-                BranchDetails GetBranchDetails = new BranchDetails();
-                GetBranchDetails.BranchName = dr["BranchName"].ToString();
-                // GetBranchDetails.Branchid = dr["SuperBranch"].ToString();
-                //GetBranchDetails.TBranchName = dr["TBranchName"].ToString();
-                GetBranchDetails.Salestype = dr["SalesType"].ToString();
-                //GetBranchDetails.collectiontyp = dr["CollectionType"].ToString();
-                GetBranchDetails.phone = dr["phonenumber"].ToString();
-                GetBranchDetails.address = "" + dr["street"].ToString() + "" + dr["city"].ToString() + "" + dr["mandal"].ToString() + "" + dr["district"].ToString() + "" + dr["pincode"].ToString() + "" + dr["cst"].ToString() + "" + dr["email"].ToString() + "";
-                GetBranchDetails.Flag = dr["flag"].ToString();
-                // GetBranchDetails.WTarget = dr["WTarget"].ToString();
-                //GetBranchDetails.DTarget = dr["DTarget"].ToString();
-                // GetBranchDetails.MTarget = dr["MTarget"].ToString();
-                GetBranchDetails.refsno = dr["sno"].ToString();
-                // GetBranchDetails.sno = dr["SuperBranch"].ToString();
-                //GetBranchDetails.Otherbrands = dr["OrtherBrands"].ToString();
-                GetBranchDetails.lat = dr["Lat"].ToString();
-                GetBranchDetails.lng = dr["Lng"].ToString();
-                GetBranchDetails.Salesrep = dr["SalesRepresentative"].ToString();
-                GetBranchDetails.branchcode = dr["BranchCode"].ToString();
-                GetBranchDetails.tinno = dr["TinNumber"].ToString();
-                GetBranchDetails.ledgerdr = dr["ladger_dr"].ToString();
-                GetBranchDetails.incentive = dr["incentivename"].ToString();
-                GetBranchDetails.panno = dr["panno"].ToString();
-                GetBranchDetails.state = dr["stateid"].ToString();
-                GetBranchDetails.customercode = dr["customercode"].ToString();
-                GetBranchDetails.whcode = dr["whcode"].ToString();
-                GetBranchDetails.ladger_dr_code = dr["ladger_dr_code"].ToString();
-                GetBranchDetails.street = dr["street"].ToString();
-                GetBranchDetails.city = dr["city"].ToString();
-                GetBranchDetails.mandal = dr["mandal"].ToString();
-                GetBranchDetails.district = dr["district"].ToString();
-                GetBranchDetails.pincode = dr["pincode"].ToString();
-                GetBranchDetails.cst = dr["cst"].ToString();
-                GetBranchDetails.email = dr["email"].ToString();
-                //GetBranchDetails.SuperBranchName = dr["SuperBranchName"].ToString();
-                // GetBranchDetails.SuperSno = dr["SuperSno"].ToString();
-                GetBranchDetails.Agent_PIC = dr["Agent_PIC"].ToString();
-                GetBranchDetails.ftplocation = "ftp://223.196.32.30:21/Sales/";
-                GetBranchDetails.area = dr["area"].ToString();
-                GetBranchDetails.gstin = dr["gstno"].ToString();
-                GetBranchDetails.regtype = dr["regtype"].ToString();
-                GetBranchDetails.doorno = dr["doorno"].ToString();
-                GetBranchDetails.Due_Limit_Type = dr["Due_Limit_Type"].ToString();
-                GetBranchDetails.duelimit = dr["DueLimit"].ToString();
-                GetBranchDetails.LimitDays = dr["Due_Limit_Days"].ToString();
-                GetBranchDetails.Bankid = dr["bankid"].ToString();
-                GetBranchDetails.ifsccode = dr["ifsccode"].ToString();
-                GetBranchDetails.customeraccno = dr["accountno"].ToString();
-                GetBranchDetails.CreateDate = dr["DateOfEntry"].ToString();
-                BranchDetailslist.Add(GetBranchDetails);
-            }
-
-            string response = GetJson(BranchDetailslist);
-            context.Response.Write(response);
-
-        }
-        catch (Exception ex)
-        {
-            string msg = ex.Message;
-            string response = GetJson(msg);
-            context.Response.Write(response);
-        }
-    }
-
-    private void GetAgetntinfosrwise(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string soid = context.Request["soid"].ToString();
-            string routeid = context.Request["routeid"].ToString();
-            string sr = context.Request["SR"].ToString();
-
-            cmd = new MySqlCommand("SELECT branchdata.sno AS Agentid, branchdata.BranchName AS AgentName, branchroutes.RouteName, branchroutes.BranchID AS SalesOfficeID, salestypemanagement.salestype, branchdata.SalesRepresentative,  branchdata.phonenumber, branchdata.CollectionType, branchroutes.Sno FROM branchroutes INNER JOIN  branchroutesubtable ON branchroutes.Sno = branchroutesubtable.RefNo INNER JOIN  branchdata ON branchroutesubtable.BranchID = branchdata.sno INNER JOIN  salestypemanagement ON salestypemanagement.sno = branchdata.SalesType WHERE (branchroutes.BranchID = @soid) AND (branchroutes.flag = '1') AND branchdata.SalesRepresentative=@sr");
-            cmd.Parameters.AddWithValue("@soid", soid);
-            cmd.Parameters.AddWithValue("@routeid", routeid);
-            cmd.Parameters.AddWithValue("@sr", sr);
-            DataTable routes = vdbmngr.SelectQuery(cmd).Tables[0];
-            List<CashForms> insentivelist = new List<CashForms>();
-            foreach (DataRow dr in routes.Rows)
-            {
-                CashForms getinsentivedetails = new CashForms();
-                getinsentivedetails.Routename = dr["RouteName"].ToString();
-                getinsentivedetails.agentid = dr["Agentid"].ToString();
-                getinsentivedetails.Agentname = dr["AgentName"].ToString();
-                getinsentivedetails.salestype = dr["salestype"].ToString();
-                getinsentivedetails.mobileno = dr["phonenumber"].ToString();
-                getinsentivedetails.collectiontype = dr["CollectionType"].ToString();
-                insentivelist.Add(getinsentivedetails);
-            }
-            string response = GetJson(insentivelist);
-            context.Response.Write(response);
-        }
-        catch (Exception ex)
-        {
-            string Response = GetJson(ex.Message);
-            context.Response.Write(Response);
-        }
-    }
-
     private void viewincentivependingdetails(HttpContext context)
     {
         try
