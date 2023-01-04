@@ -615,7 +615,7 @@
                 return false;
             }
             var date = document.getElementById('txtFromDate').value;
-            var data = { 'operation': 'Svae_Dispatch_Assign_Details', 'empid': empid, 'btnVal': btnVal, 'date': date, 'Dispatcharr': Dispatcharr };
+            var data = { 'operation': 'Save_Dispatch_Assign_Details', 'empid': empid, 'btnVal': btnVal, 'date': date, 'Dispatcharr': Dispatcharr };
             var s = function (msg) {
                 if (msg) {
                     alert(msg);
