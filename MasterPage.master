@@ -832,6 +832,7 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                             <li id="li36"><a href="indentCrates.aspx">Indent Crates</a></li>
                                             <li id="li19"><a href="RouteInfo.aspx">Route Info</a></li>
                                             <li id="liroutesheet"><a href="RouteSheet.aspx">Route Sheet</a></li>
+                                            <li id="liofferindent"><a href="OfferIndent.aspx">Offer Indent</a></li>
                                         </ul>
                                     </div>
                                 </li>

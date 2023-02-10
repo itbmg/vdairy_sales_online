@@ -67,10 +67,10 @@
                     ddlsalesOffice.appendChild(opt);
                 }
             }
-            document.getElementById('ddlSalesOffice').selectedIndex = 1;
-            fill_offer_structures();
+            //document.getElementById('ddlSalesOffice').selectedIndex = 1;
+            //fill_offer_structures();
         }
-        function fill_offer_structures() {
+        function btngenerate() {
             var ddlsalesofficeid = document.getElementById('ddlSalesOffice').value;
 
             var data = { 'operation': 'GetSalesOfficeOffers', 'ddlsalesofficeid': ddlsalesofficeid };
@@ -265,6 +265,11 @@
                                 <option>Agents</option>
                             </select>
                         </td>
+                        <td style="width: 5px;">
+                            </td>
+                            <td>
+                             <button type="button" class="btn btn-primary" style="margin-right: 5px;" onclick="btngenerate()"><i class="fa fa-refresh"></i>Generate</button>
+                            </td>
                     </tr>
                 </table>
                 <br />
