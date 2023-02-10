@@ -713,7 +713,7 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                     </div>
                                 </li>
 
-                                <li id="li55" class="more" style="min-height: 25px;display: none;"><a href="#">Offers Master</a>
+                                <li id="li55" class="more" style="min-height: 25px;"><a href="#">Offers Master</a>
                                     <div class="drop3">
                                         <ul id="ul10">
                                             <li id="li57"><a href="OffersManagement.aspx">Offers Management</a></li>
