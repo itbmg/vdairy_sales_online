@@ -895,9 +895,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "generate_e_invoice_details":
                     generate_e_invoice_details(context);
                     break;
-                case "btn_Click_GetInvoice":
-                    btn_Click_GetInvoice(context);
-                    break;
+                //case "btn_Click_GetInvoice":
+                //    btn_Click_GetInvoice(context);
+                //    break;
                 default:
                     var jsonString = String.Empty;
                     context.Request.InputStream.Position = 0;
@@ -915,6 +915,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             case "btnEditBranchStock":
                                 btnEditBranchStock(jsonString, context);
                                 break;
+                            case "btnEditDCSaveclick":
+                                btnEditDCSaveclick(jsonString, context);
+                                break;
+
                         }
                     }
                     else
@@ -15560,7 +15564,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             string br = context.Session["branch"].ToString();
             if (context.Session["salestype"].ToString() == "Plant")
             {
-                cmd = new MySqlCommand("SELECT tripdata.Sno AS TripId, DATE_FORMAT(tripdata.AssignDate, '%d %b %y') AS AssignDate, tripdata.Permissions, tripdata.VehicleNo, dispatch.DispName AS DispatchName,dispatch.DispMode,dispatch.DispType, empmanage.EmpName AS Employee FROM tripdata INNER JOIN empmanage ON tripdata.EmpId = empmanage.Sno INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno WHERE (tripdata.Status <> 'c') and (tripdata.DespatchStatus=@DespatchStatus) AND (tripdata.AssignDate BETWEEN @Adt AND @Adt1) AND (tripdata.Permissions LIKE '%D%') AND (dispatch.Branch_Id = @brnch) order by TripId");
+
+                cmd = new MySqlCommand("SELECT tripdata.Sno AS TripId, DATE_FORMAT(tripdata.AssignDate, '%d %b %y') AS AssignDate, tripdata.Permissions, tripdata.VehicleNo, dispatch.DispName AS DispatchName,dispatch.DispMode,dispatch.DispType, empmanage.EmpName AS Employee FROM tripdata INNER JOIN empmanage ON tripdata.EmpId = empmanage.Sno INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno  WHERE (tripdata.Status <> 'c') and (tripdata.DespatchStatus=@DespatchStatus) AND (tripdata.AssignDate BETWEEN @Adt AND @Adt1) AND (tripdata.Permissions LIKE '%D%') AND (dispatch.Branch_Id = @brnch) order by TripId");
                 cmd.Parameters.AddWithValue("@UserName", context.Session["UserName"]);
                 cmd.Parameters.AddWithValue("@DespatchStatus", "Yes");
                 cmd.Parameters.AddWithValue("@brnch", context.Session["branch"]);
@@ -43933,6 +43938,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     #region "E Invoice"
     public class EInvoice_Products
     {
+        
+        public string dcno { get; set; }
+        public string dispsno { get; set; }
+        
         public string AgentName { get; set; }
         public string IRN_NO { get; set; }
         public string AgentId { get; set; }
@@ -43954,6 +43963,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             vdbmngr = new VehicleDBMgr();
             string soid = context.Request["branchID"];
             string IndDate = context.Request["FromDate"];
+            string type = context.Request["type"];
 
             DateTime fromdate = Convert.ToDateTime(IndDate);
             DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
@@ -43989,17 +43999,56 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     dtmarch = DateTime.Parse(march);
                 }
             }
+            string invoicetype = "";
+            DataTable dtble = new DataTable();
+            DataTable dtEinvble = new DataTable();
+            DataTable dtall = new DataTable();
+            if (type == "invoice")
+            {
+                cmd = new MySqlCommand("SELECT  ROUND(SUM(indents_subtable.unitQty)) AS DeliveryQty,ROUND(SUM(indents_subtable.unitQty*indents_subtable.UnitCost)) AS TotalAmount,productsdata.SubCat_sno, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName,branchdata.gstno FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno <>'' and branchdata.gstno <>'0') and (productsdata.igst <>'' and productsdata.igst<>'0') OR (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno <>'' and branchdata.gstno <>'0') and (productsdata.igst <>'' and productsdata.igst<>'0') GROUP BY  branchdata.sno ORDER BY branchdata.sno");
+                cmd.Parameters.AddWithValue("@BranchID", soid);
+                cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate));
+                cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate));
+                dtble = vdbmngr.SelectQuery(cmd).Tables[0];
+                cmd = new MySqlCommand("select type,agentid,status,e_invoiceno,signed_qr_code,ack_no,ack_date from e_invoice where  soid=@soid and invoicedate between @d1 and @d2");
+                cmd.Parameters.AddWithValue("@soid", soid);
+                cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
+                cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate));
+                dtEinvble = vdbmngr.SelectQuery(cmd).Tables[0];
+                invoicetype = "invoice";
+            }
+            else
+            {
+                cmd = new MySqlCommand("SELECT   SalesType from branchdata where sno=@sno");
+                cmd.Parameters.AddWithValue("@sno", soid);
+               DataTable dt = vdbmngr.SelectQuery(cmd).Tables[0];
 
-            cmd = new MySqlCommand("SELECT  ROUND(SUM(indents_subtable.DeliveryQty)) AS DeliveryQty,ROUND(SUM(indents_subtable.DeliveryQty*indents_subtable.UnitCost)) AS TotalAmount,productsdata.SubCat_sno, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName,branchdata.gstno FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno <>'' and branchdata.gstno <>'0') and (productsdata.igst <>'' and productsdata.igst<>'0') OR (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno <>'' and branchdata.gstno <>'0') and (productsdata.igst <>'' and productsdata.igst<>'0') GROUP BY  branchdata.sno ORDER BY branchdata.sno");
-            cmd.Parameters.AddWithValue("@BranchID", soid);
-            cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
-            cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
-            DataTable dtble = vdbmngr.SelectQuery(cmd).Tables[0];
-            cmd = new MySqlCommand("select agentid,status,e_invoiceno,signed_qr_code,ack_no,ack_date from e_invoice where  soid=@soid and invoicedate between @d1 and @d2");
-            cmd.Parameters.AddWithValue("@soid", soid);
-            cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate).AddDays(-1));
-            cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate).AddDays(-1));
-            DataTable dtEinvble = vdbmngr.SelectQuery(cmd).Tables[0];
+                if (dt.Rows[0]["salestype"].ToString() == "23")
+                {
+                    cmd = new MySqlCommand("SELECT  dispatch.sno as dispsno,b1.gstno,dispatch.DispName as BranchName,b1.sno,tripdata.Sno AS TripId,productsdata.productname,ROUND(SUM(tripsubdata.Qty)) AS DeliveryQty,tripsubdata.ProductId FROM tripdata INNER JOIN empmanage ON tripdata.EmpId = empmanage.Sno INNER JOIN tripsubdata ON tripsubdata.Tripdata_sno=tripdata.sno INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno INNER JOIN branchdata as b1 ON b1.sno=dispatch.BranchID  INNER JOIN productsdata ON productsdata.sno=tripsubdata.ProductId  WHERE (tripdata.Status <> 'c') and (tripdata.DespatchStatus=@DespatchStatus) AND (tripdata.AssignDate BETWEEN @Adt AND @Adt1) AND (tripdata.Permissions LIKE '%D%') AND (dispatch.Branch_Id = @brnch) and (b1.gstno <>'' and b1.gstno <>'0') and (productsdata.igst <>'' and productsdata.igst<>'0') group by b1.sno,TripId order by b1.sno");
+                    cmd.Parameters.AddWithValue("@UserName", context.Session["UserName"]);
+                    cmd.Parameters.AddWithValue("@DespatchStatus", "Yes");
+                    cmd.Parameters.AddWithValue("@brnch", soid);
+                    cmd.Parameters.AddWithValue("@Adt", GetLowDate(fromdate));
+                    cmd.Parameters.AddWithValue("@Adt1", GetHighDate(fromdate));
+                    dtble = vdbmngr.SelectQuery(cmd).Tables[0];
+                    invoicetype = "dc";
+                    //cmd = new MySqlCommand("select a1.SubBranch,a1.SuperBranch from branchmappingtable as a1 inner join branchmappingtable as b1 ON  a1.SubBranch=b1.SubBranch INNER JOIN branchdata ON branchdata.sno=a1.SubBranch where  a1.SuperBranch=@BranchID and branchdata.SalesType=@salestype");
+                    //cmd.Parameters.AddWithValue("@BranchID", "7");
+                    //cmd.Parameters.AddWithValue("@salestype", "21");
+                    //DataTable dtbranch = vdbmngr.SelectQuery(cmd).Tables[0];
+                    //foreach (DataRow drb in dtbranch.Rows)
+                    //{
+                    cmd = new MySqlCommand("select type,refno,agentid,status,e_invoiceno,signed_qr_code,ack_no,ack_date from e_invoice where  (soid=@soid) and (invoicedate between @d1 and @d2) and (type=@type)");
+                    cmd.Parameters.AddWithValue("@soid", soid);
+                    cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
+                    cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate));
+                    cmd.Parameters.AddWithValue("@type", "dc");
+                    DataTable dtdata = vdbmngr.SelectQuery(cmd).Tables[0];
+                    dtEinvble.Merge(dtdata);
+                    //}
+                }
+            }
 
             cmd = new MySqlCommand("select products_category.sno as catsno,products_subcategory.sno as subcatsno from products_category inner join products_subcategory on products_category.sno = products_subcategory.category_sno");
             DataTable dtcategory = vdbmngr.SelectQuery(cmd).Tables[0];
@@ -44050,26 +44099,55 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     Report.Columns.Add("Receipt No").DataType = typeof(Double);
                     DataTable distincttable = view.ToTable(true, "BranchName", "sno");
                     List<EInvoice_Products> EInvProduct = new List<EInvoice_Products>();
-                    
+                    int noof_rows = dtEinvble.Rows.Count;
+                    int count = 0;
                     foreach (DataRow dr in dtble.Rows)
                     {
                         string status = "";
                         string StateName = ""; string irn = "";
                         string signed_qr_code = ""; string ack_no = ""; string ack_date = "";
-                        foreach (DataRow drinv in dtEinvble.Select("agentid='" + dr["sno"].ToString() + "'"))
+                        if (dtEinvble.Rows.Count > 0)
                         {
-                            status = drinv["status"].ToString();
-                            irn = drinv["e_invoiceno"].ToString();
-                            signed_qr_code = drinv["signed_qr_code"].ToString();
-                            ack_no = drinv["ack_no"].ToString();
-                            DateTime ackdate = Convert.ToDateTime(drinv["ack_date"].ToString());
-                            ack_date = ackdate.ToString("dd/MM/yyyy");
+                            if (invoicetype == "dc")
+                            {
+                                foreach (DataRow drinv in dtEinvble.Select("agentid='" + dr["sno"].ToString() + "' and refno='" + dr["TripId"].ToString() + "'"))
+                                {
+                                    status = drinv["status"].ToString();
+                                    irn = drinv["e_invoiceno"].ToString();
+                                    signed_qr_code = drinv["signed_qr_code"].ToString();
+                                    ack_no = drinv["ack_no"].ToString();
+                                    DateTime ackdate = Convert.ToDateTime(drinv["ack_date"].ToString());
+                                    ack_date = ackdate.ToString("dd/MM/yyyy");
+                                }
+                            }
+                            else
+                            {
+                                foreach (DataRow drinv in dtEinvble.Select("agentid='" + dr["sno"].ToString() + "'"))
+                                {
+                                    status = drinv["status"].ToString();
+                                    irn = drinv["e_invoiceno"].ToString();
+                                    signed_qr_code = drinv["signed_qr_code"].ToString();
+                                    ack_no = drinv["ack_no"].ToString();
+                                    DateTime ackdate = Convert.ToDateTime(drinv["ack_date"].ToString());
+                                    ack_date = ackdate.ToString("dd/MM/yyyy");
+                                }
+                            }
                         }
                         EInvoice_Products obj = new EInvoice_Products();
                         obj.AgentName = dr["BranchName"].ToString();
                         obj.AgentId = dr["sno"].ToString();
-                        obj.Totalqty = dr["DeliveryQty"].ToString();
-                        obj.Totalvalue = dr["TotalAmount"].ToString();
+
+                        if (invoicetype == "invoice")
+                        {
+                            obj.Totalqty = dr["DeliveryQty"].ToString();
+                            obj.Totalvalue = dr["TotalAmount"].ToString();
+                        }
+                        else
+                        {
+                            obj.Totalqty = dr["DeliveryQty"].ToString();
+                            obj.dcno = dr["TripId"].ToString();
+                            obj.dispsno = dr["dispsno"].ToString();
+                        }
                         obj.StateName = statename;
                         obj.GstNo = dr["gstno"].ToString();
                         obj.status = status;
@@ -44079,9 +44157,15 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         obj.ack_date = ack_date;
                         EInvProduct.Add(obj);
                     }
-                    string errresponse = GetJson(EInvProduct);
-                    context.Response.Write(errresponse);
+                    string response = GetJson(EInvProduct);
+                    context.Response.Write(response);
                 }
+            }
+            else
+            {
+                string msg = "Data not Found";
+                string errmessage = GetJson(msg);
+                context.Response.Write(errmessage);
             }
         }
         catch (Exception ex)
@@ -44212,6 +44296,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             string AgentID = context.Request["AgentID"];
             string from_date = context.Request["FromDate"];
             string SOID = context.Request["SOID"];
+            string Totvalue = context.Request["Totvalue"];
+            string dcno = context.Request["dcno"];
+            string type = context.Request["type"];
             DateTime fromdate = Convert.ToDateTime(from_date);
             //string ewaybill_no = context.Request["ewaybill_no"].ToString();
             //responce_data obj;
@@ -44223,10 +44310,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             {
                 var authToken = newobj.data.authtoken;
                 context.Session["Token"] = authToken;
-                string response = Get_e_invoice_JsonData(AgentID, from_date, SOID);
+                string response = Get_e_invoice_JsonData(AgentID, from_date, SOID, type, dcno);
+                //string response = Get_e_invoice_JsonData(AgentID, from_date, SOID);
                 var jsonresponse = JsonConvert.DeserializeObject<EInvoice.Root>(response);
                 string empsno = context.Session["UserSno"].ToString();
-                str1 = generate_e_invoice_details(authToken, from_date, SOID, AgentID, empsno, response);
+                str1 = generate_e_invoice_details(authToken, from_date, SOID, AgentID, empsno, type, dcno,response);
+                //str1 = generate_e_invoice_details(authToken, from_date, SOID, AgentID, empsno, response);
                 var js = new JavaScriptSerializer();
                 Response_EInvoice obj = js.Deserialize<Response_EInvoice>(str1);
                 if (obj.status_cd == "1")
@@ -44251,10 +44340,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-    private string Get_e_invoice_JsonData(string AgentID, string from_date, string SOID)
+    private string Get_e_invoice_JsonData(string AgentID, string from_date, string SOID, string type, string dcno)
     {
         try
-        { 
+        {
             #region "Json"
             vdbmngr = new VehicleDBMgr();
             DateTime fromdate = Convert.ToDateTime(from_date);
@@ -44304,27 +44393,120 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 dtmarch = DateTime.Parse(march);
 
             }
-
-            cmd = new MySqlCommand("SELECT  indents_subtable.indentno,SUM(indents_subtable.DeliveryQty) AS DeliveryQty,productsdata.SubCat_sno, indents_subtable.UnitCost,  productsdata.sno AS prodsno,productsdata.cgst,productsdata.sgst,productsdata.igst,productsdata.ProductName,productsdata.Itemcode, productsdata.hsncode,productsdata.Units, branchdata.BranchName,branchdata.BranchCode, branchdata.sno,branchdata.regtype,branchdata.gstno,branchdata.street,branchdata.city,branchdata.mandal,branchdata.area,branchdata.district,branchdata.pincode,branchdata.email,branchdata.doorno,branchdata.stateid,branchdata.statename,branchdata.companycode,branchdata.phonenumber FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutesubtable.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno<>'' and branchdata.gstno is not null) OR (modifiedroutesubtable.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno<>'' and branchdata.gstno is not null) GROUP BY prodsno, branchdata.sno ORDER BY branchdata.sno, prodsno");
-            cmd.Parameters.AddWithValue("@BranchID", AgentID);
-            cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate.AddDays(-1)));
-            cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate.AddDays(-1)));
-            DataTable dtble = vdbmngr.SelectQuery(cmd).Tables[0];
-
-            cmd = new MySqlCommand("SELECT branchdata.branchname,branchdata.companycode, branchdata.phonenumber,branchdata.email, branchdata.sno,branchdata.stateid, branchdata.Address, branchdata.TinNumber, branchdata.panno, branchdata.BranchCode,statemastar.statecode, statemastar.statename, statemastar.gststatecode, branchdata.phonenumber, branchdata.emailid,  branchdata.street, branchdata.city, branchdata.mandal, branchdata.district, branchdata.pincode, branchdata.gstno, branchdata.doorno, branchdata.area FROM branchdata INNER JOIN statemastar ON branchdata.stateid = statemastar.sno WHERE (branchdata.sno = @branchsno)");
-            cmd.Parameters.AddWithValue("@branchsno", SOID);
-            DataTable dtsellardtble = vdbmngr.SelectQuery(cmd).Tables[0];
-
-            cmd = new MySqlCommand("SELECT  sno, BranchCode FROM  branchdata WHERE (sno = @branchsno)");
-            cmd.Parameters.AddWithValue("@branchsno", SOID);
-            DataTable dtsellarcode = vdbmngr.SelectQuery(cmd).Tables[0];
-
+            DataTable dtble = new DataTable();
+            DataTable dtsellardtble = new DataTable();
+            DataTable dtsellarcode = new DataTable();
+            DataTable dtstates = new DataTable();
+            DataTable dtIndent = new DataTable();
+            DataTable dtbrnch_prdts = new DataTable();
+            DataTable dtdisp = new DataTable();
             cmd = new MySqlCommand("SELECT  * FROM  statemastar");
-            DataTable dtstates = vdbmngr.SelectQuery(cmd).Tables[0];
+            dtstates = vdbmngr.SelectQuery(cmd).Tables[0];
+            string Agent_id = ""; string DispMode = ""; string DispType = ""; string branchsno = "";
+            if (type == "invoice")
+            {
+                cmd = new MySqlCommand("SELECT  indents_subtable.indentno,SUM(indents_subtable.unitQty) AS DeliveryQty,productsdata.SubCat_sno, indents_subtable.UnitCost,  productsdata.sno AS prodsno,productsdata.cgst,productsdata.sgst,productsdata.igst,productsdata.ProductName,productsdata.Itemcode, productsdata.hsncode,productsdata.Units, branchdata.BranchName,branchdata.BranchCode, branchdata.sno,branchdata.regtype,branchdata.gstno,branchdata.street,branchdata.city,branchdata.mandal,branchdata.area,branchdata.district,branchdata.pincode,branchdata.email,branchdata.doorno,branchdata.stateid,branchdata.statename,branchdata.companycode,branchdata.phonenumber FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutesubtable.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno<>'' and branchdata.gstno is not null) and (productsdata.igst <>'' and productsdata.igst<>'0') AND (indents_subtable.unitQty>0) OR (modifiedroutesubtable.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno<>'' and branchdata.gstno is not null) and (productsdata.igst <>'' and productsdata.igst<>'0') AND (indents_subtable.unitQty>0) GROUP BY prodsno, branchdata.sno ORDER BY branchdata.sno, prodsno");
+                cmd.Parameters.AddWithValue("@BranchID", AgentID);
+                cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate));
+                cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate));
+                dtble = vdbmngr.SelectQuery(cmd).Tables[0];
 
+                cmd = new MySqlCommand("SELECT branchdata.branchname,branchdata.companycode, branchdata.phonenumber,branchdata.email, branchdata.sno,branchdata.stateid, branchdata.Address, branchdata.TinNumber, branchdata.panno, branchdata.BranchCode,statemastar.statecode, statemastar.statename, statemastar.gststatecode, branchdata.phonenumber, branchdata.emailid,  branchdata.street, branchdata.city, branchdata.mandal, branchdata.district, branchdata.pincode, branchdata.gstno, branchdata.doorno, branchdata.area FROM branchdata INNER JOIN statemastar ON branchdata.stateid = statemastar.sno WHERE (branchdata.sno = @branchsno)");
+                cmd.Parameters.AddWithValue("@branchsno", SOID);
+                dtsellardtble = vdbmngr.SelectQuery(cmd).Tables[0];
+
+                cmd = new MySqlCommand("SELECT  sno, BranchCode FROM  branchdata WHERE (sno = @branchsno)");
+                cmd.Parameters.AddWithValue("@branchsno", SOID);
+                dtsellarcode = vdbmngr.SelectQuery(cmd).Tables[0];
+            }
+            else
+            {
+                cmd = new MySqlCommand("SELECT tripdata.BranchID, tripdata.AssignDate, tripdata.Sno, tripdata.taxdcno AS DCNo, tripdata.DispTime, tripdata.VehicleNo, dispatch.DispType, dispatch.BranchID AS Agentid, dispatch.DispMode, dispatch.DispName AS DispatchName, dispatch.sno AS dispsno, empmanage_1.EmpName AS Employee, empmanage.EmpName AS dispather, branchdata.stateid, statemastar.statename AS BranchState, statemastar.gststatecode FROM branchdata INNER JOIN empmanage empmanage_1 ON branchdata.sno = empmanage_1.Branch INNER JOIN statemastar ON branchdata.stateid = statemastar.sno RIGHT OUTER JOIN tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno LEFT OUTER JOIN empmanage ON tripdata.DEmpId = empmanage.Sno ON empmanage_1.Sno = tripdata.EmpId WHERE (tripdata.Sno = @tripsno)");
+                cmd.Parameters.AddWithValue("@tripsno", dcno);
+                dtdisp = vdbmngr.SelectQuery(cmd).Tables[0];
+
+                cmd = new MySqlCommand("SELECT branchdata.gstno,branchdata.BranchName, branchdata.doorno,branchdata.street, branchdata.area,branchdata.pincode, branchdata.phonenumber, branchdata.email, branchdata.stateid, branchdata.BranchCode,statemastar.statecode, statemastar.statename,branchdata.stateid, statemastar.statename AS BranchState, statemastar.gststatecode FROM branchdata INNER JOIN statemastar ON branchdata.stateid = statemastar.sno WHERE (branchdata.sno = @BranchID)");
+                cmd.Parameters.AddWithValue("@BranchID", SOID);
+                dtsellardtble = vdbmngr.SelectQuery(cmd).Tables[0];
+
+                cmd = new MySqlCommand("SELECT branchdata.sno, branchdata.BranchName, branchdata.BranchCode, branchdata.gstno, branchdata.regtype, branchdata.doorno, branchdata.street,branchdata.city, branchdata.mandal, branchdata.area, branchdata.district,  branchdata.pincode, branchdata.email, branchdata.stateid, branchdata.statename, branchdata.companycode, branchdata.phonenumber FROM branchdata INNER JOIN statemastar ON branchdata.stateid = statemastar.sno WHERE (branchdata.sno = @Agentid)");
+                cmd.Parameters.AddWithValue("@Agentid", AgentID);
+                dtble = vdbmngr.SelectQuery(cmd).Tables[0];
+
+                cmd = new MySqlCommand("SELECT  sno, BranchCode FROM  branchdata WHERE (sno = @branchsno)");
+                cmd.Parameters.AddWithValue("@branchsno", SOID);
+                dtsellarcode = vdbmngr.SelectQuery(cmd).Tables[0];
+
+                cmd = new MySqlCommand("SELECT branchproducts.branch_sno as sno,tripsubdata.ProductId,productsdata.itemcode,productsdata.SubCat_sno as subcatid,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName, productsdata.VatPercent, branchproducts.VatPercent AS vp, tripsubdata.Price, ROUND(tripsubdata.Qty, 2) AS DeliveryQty,tripdata.AssignDate, tripdata.BranchID, branchproducts_1.VatPercent AS plantvp FROM tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno INNER JOIN branchproducts branchproducts_1 ON tripdata.BranchID = branchproducts_1.branch_sno AND branchproducts.product_sno = branchproducts_1.product_sno WHERE (tripdata.Sno = @tripdataId) AND (branchproducts.branch_sno = @BranchID) and (productsdata.igst <>'' and productsdata.igst<>'0') GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
+                cmd.Parameters.AddWithValue("@BranchID", AgentID);
+                cmd.Parameters.AddWithValue("@tripdataId", dcno);
+                dtIndent = vdbmngr.SelectQuery(cmd).Tables[0];
+                if (dtsellardtble.Rows.Count > 0)
+                {
+                    DispMode = dtdisp.Rows[0]["DispMode"].ToString();
+                    DispType = dtdisp.Rows[0]["DispType"].ToString();
+                    branchsno = dtdisp.Rows[0]["Agentid"].ToString();
+                }
+                if (DispMode == "Staff")
+                {
+                    cmd = new MySqlCommand("SELECT branchdata.stateid, productsdata.sno,productsdata.itemcode,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.ProductName, productsdata.Units,productsdata.qty as uomqty, branchproducts.unitprice, invmaster.Qty, products_category.Categoryname FROM branchproducts INNER JOIN productsdata ON branchproducts.product_sno = productsdata.sno INNER JOIN invmaster ON productsdata.Inventorysno = invmaster.sno INNER JOIN branchdata ON branchproducts.branch_sno = branchdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (branchdata.sno = @SOID) and (branchproducts.flag=@flag)  group by  productsdata.ProductName ORDER BY branchproducts.Rank");
+                    cmd.Parameters.AddWithValue("@SOID", branchsno);
+                    cmd.Parameters.AddWithValue("@flag", "1");
+                    cmd.Parameters.AddWithValue("@SalesType", "20");
+                    dtbrnch_prdts = vdbmngr.SelectQuery(cmd).Tables[0];
+                }
+                else if (DispMode == "AGENT")
+                {
+                    cmd = new MySqlCommand("SELECT branchdata.stateid, productsdata.sno,productsdata.itemcode,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.ProductName, productsdata.Units,productsdata.qty as uomqty, branchproducts.unitprice, invmaster.Qty, products_category.Categoryname, branchproducts_1.unitprice AS BUnitPrice FROM branchproducts INNER JOIN productsdata ON branchproducts.product_sno = productsdata.sno INNER JOIN invmaster ON productsdata.Inventorysno = invmaster.sno INNER JOIN branchdata ON branchproducts.branch_sno = branchdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchproducts branchproducts_1 ON branchmappingtable.SuperBranch = branchproducts_1.branch_sno AND productsdata.sno = branchproducts_1.product_sno WHERE (branchdata.sno = @SOID) and (branchproducts.flag=@flag) GROUP BY productsdata.ProductName ORDER BY branchproducts_1.Rank");
+                    cmd.Parameters.AddWithValue("@SOID", branchsno);
+                    cmd.Parameters.AddWithValue("@flag", "1");
+                    dtbrnch_prdts = vdbmngr.SelectQuery(cmd).Tables[0];
+                }
+                else if (DispMode == "Others")
+                {
+                    cmd = new MySqlCommand("SELECT branchdata.stateid,  productsdata.sno,productsdata.itemcode,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.ProductName, productsdata.Units,productsdata.qty as uomqty, branchproducts.unitprice, invmaster.Qty, products_category.Categoryname, branchproducts_1.unitprice AS BUnitPrice FROM branchproducts INNER JOIN productsdata ON branchproducts.product_sno = productsdata.sno INNER JOIN invmaster ON productsdata.Inventorysno = invmaster.sno INNER JOIN branchdata ON branchproducts.branch_sno = branchdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchproducts branchproducts_1 ON branchmappingtable.SuperBranch = branchproducts_1.branch_sno AND productsdata.sno = branchproducts_1.product_sno WHERE (branchdata.sno = @SOID) and (branchproducts.flag=@flag) GROUP BY productsdata.ProductName ORDER BY branchproducts_1.Rank");
+                    cmd.Parameters.AddWithValue("@SOID", branchsno);
+                    cmd.Parameters.AddWithValue("@flag", "1");
+                    dtbrnch_prdts = vdbmngr.SelectQuery(cmd).Tables[0];
+                }
+                else
+                {
+                    //string salestype = context.Session["salestype"].ToString();
+                    //if (salestype == "SALES OFFICE")
+                    //{
+                    //    branchsno = context.Session["branch"].ToString();
+                    //}
+                    //else
+                    //{
+                    //}
+                    if (DispType == "SO")
+                    {
+                        cmd = new MySqlCommand("SELECT  branchdata.stateid, productsdata.sno, productsdata.Itemcode, productsdata.hsncode, productsdata.igst, productsdata.cgst, productsdata.sgst, productsdata.ProductName, productsdata.Units,productsdata.qty as uomqty, branchproducts.unitprice, invmaster.Qty,products_category.Categoryname FROM branchproducts INNER JOIN productsdata ON branchproducts.product_sno = productsdata.sno INNER JOIN invmaster ON productsdata.Inventorysno = invmaster.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchdata ON branchproducts.branch_sno = branchdata.sno WHERE (branchproducts.branch_sno = @branchhsno) AND (branchproducts.flag = @flag) GROUP BY productsdata.ProductName, branchdata.stateid ORDER BY branchproducts.Rank");
+                        cmd.Parameters.AddWithValue("@flag", "1");
+                        cmd.Parameters.AddWithValue("@branchhsno", branchsno);
+                        dtbrnch_prdts = vdbmngr.SelectQuery(cmd).Tables[0];
+                    }
+                    else
+                    {
+                        cmd = new MySqlCommand("SELECT  branchdata.stateid, productsdata.sno, productsdata.Itemcode, productsdata.hsncode, productsdata.igst, productsdata.cgst, productsdata.sgst, productsdata.ProductName, productsdata.Units,productsdata.qty as uomqty, branchproducts.unitprice, invmaster.Qty,products_category.Categoryname FROM branchproducts INNER JOIN productsdata ON branchproducts.product_sno = productsdata.sno INNER JOIN invmaster ON productsdata.Inventorysno = invmaster.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchdata ON branchproducts.branch_sno = branchdata.sno WHERE (branchproducts.branch_sno = @branchhsno) AND (branchproducts.flag = @flag) GROUP BY productsdata.ProductName, branchdata.stateid ORDER BY branchproducts.Rank");
+                        cmd.Parameters.AddWithValue("@flag", "1");
+                        cmd.Parameters.AddWithValue("@branchhsno", branchsno);
+                        dtbrnch_prdts = vdbmngr.SelectQuery(cmd).Tables[0];
+                    }
+                }
+            }
+            DataTable Itemtable = new DataTable();
             DataView view = new DataView(dtble);
-            DataTable Buyerdtble = view.ToTable(true, "sno", "BranchName", "BranchCode", "gstno", "regtype", "doorno", "street", "city", "mandal", "area", "district", "pincode", "email", "stateid", "statename", "companycode", "phonenumber");
-            DataTable Itemtable = view.ToTable(true, "sno", "DeliveryQty", "SubCat_sno", "UnitCost", "prodsno", "ProductName", "cgst", "sgst", "igst", "Itemcode", "hsncode", "Units");
+            DataTable Buyerdtble = new DataTable();
+            if (type == "invoice")
+            {
+                Buyerdtble = view.ToTable(true, "sno", "BranchName", "BranchCode", "gstno", "regtype", "doorno", "street", "city", "mandal", "area", "district", "pincode", "email", "stateid", "statename", "companycode", "phonenumber", "indentno");
+                Itemtable = view.ToTable(true, "sno", "DeliveryQty", "SubCat_sno", "UnitCost", "prodsno", "ProductName", "cgst", "sgst", "igst", "Itemcode", "hsncode", "Units");
+            }
+            else
+            {
+                Buyerdtble = view.ToTable(true, "sno", "BranchName", "BranchCode", "gstno", "regtype", "doorno", "street", "city", "mandal", "area", "district", "pincode", "email", "stateid", "statename", "companycode", "phonenumber");
+            }
             foreach (DataRow dr in Buyerdtble.Rows)
             {
                 string AgentId = dr["sno"].ToString();
@@ -44333,32 +44515,39 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 EInvoice.TranDtls objtrans = new EInvoice.TranDtls();
                 objtrans.TaxSch = "GST";
                 objtrans.SupTyp = "B2B";
-                objtrans.RegRev = "Y"; 
+                objtrans.RegRev = "Y";
                 //objtrans.EcmGstin = "null";
                 objtrans.IgstOnIntra = "N";
-
                 Rootlst.TranDtls = objtrans;
-
                 TranDtlslst.Add(objtrans);
-
-                //DocumentDetails
-
-                //DocumentDetails
                 string DCNO = "0";
                 string DcNo = "";
-                cmd = new MySqlCommand("SELECT agentdcno FROM  agenttaxdc WHERE (BranchId = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
-                cmd.Parameters.AddWithValue("@BranchId", AgentId);
-                cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-                cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
-                DataTable dtDcnumber = vdbmngr.SelectQuery(cmd).Tables[0];
                 string dcnumber = "";
-                if (dtDcnumber.Rows.Count > 0)
+                if (type == "invoice")
                 {
-                    dcnumber = dtDcnumber.Rows[0]["agentdcno"].ToString();
-                    DCNO = dcnumber.ToString();
+                    //DocumentDetails
+                    cmd = new MySqlCommand("SELECT MAX(agentdcno) as agentdcno FROM  agenttaxdc WHERE (BranchId = @BranchId)  AND (IndDate BETWEEN @d1 AND @d2) AND (indentno=@indentno) and (agentdcno>0)");
+                    cmd.Parameters.Add("@BranchId", AgentId);
+                    cmd.Parameters.Add("@d1", GetLowDate(fromdate));
+                    cmd.Parameters.Add("@d2", GetHighDate(fromdate));
+                    cmd.Parameters.Add("@indentno", dr["IndentNo"].ToString());
+                    DataTable dtDcnumber = vdbmngr.SelectQuery(cmd).Tables[0];
+                    if (dtDcnumber.Rows.Count > 0)
+                    {
+                        dcnumber = dtDcnumber.Rows[0]["agentdcno"].ToString();
+                        DCNO = dcnumber.ToString();
+                    }
                 }
                 else
                 {
+                    cmd = new MySqlCommand("SELECT tripdata.taxdcno AS DCNo  from tripdata  WHERE (Sno = @tripsno)");
+                    cmd.Parameters.AddWithValue("@tripsno", dcno);
+                    DataTable dtDcnumber = vdbmngr.SelectQuery(cmd).Tables[0];
+                    if (dtDcnumber.Rows.Count > 0)
+                    {
+                        dcnumber = dtDcnumber.Rows[0]["DCNo"].ToString();
+                        DCNO = dcnumber.ToString();
+                    }
                 }
                 //string DCNO = "";
                 DcNo = DCNO;
@@ -44400,12 +44589,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         DcNo = dtsellarcode.Rows[0]["BranchCode"].ToString() + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "T/" + DCNO;
                     }
                 }
-                //DcNo = dtbrnchaddress.Rows[0]["BranchCode"].ToString() + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
                 EInvoice.DocDtls objdocdtls = new EInvoice.DocDtls();
                 objdocdtls.Typ = "INV";
                 objdocdtls.No = DcNo;
                 objdocdtls.Dt = fromdate.ToString("dd/MM/yyyy");
-
                 Rootlst.DocDtls = objdocdtls;
                 DocDtlslst.Add(objdocdtls);
                 string fromstate = ""; string tostate = "";
@@ -44432,7 +44619,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     }
 
                     Rootlst.SellerDtls = objsellar;
-
                     SellerDtlslst.Add(objsellar);
                     EInvoice.DispDtls objdisp = new EInvoice.DispDtls();
                     objdisp.Nm = drselaar["branchname"].ToString();
@@ -44498,52 +44684,65 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     //ShipDtlslst.ShipDtls=objship;
                 }
                 int i = 0;
-
-                double tot_amount = 0;double TPAmount = 0; double PAmount = 0; double total_cgst = 0; double total_sgst = 0; double total_igst = 0; double gtotalamout = 0;
-                foreach (DataRow dritem in Itemtable.Select("sno='" + AgentId + "'"))
+                if (type == "invoice")
                 {
-                    EInvoice.ItemList objitems = new EInvoice.ItemList();
-                    i++;
-                    objitems.SlNo = i.ToString();
-                    objitems.IsServc = "N";
-                    objitems.PrdDesc = dritem["ProductName"].ToString();
-                    objitems.HsnCd = dritem["hsncode"].ToString();
-                    objitems.Barcde = dritem["Itemcode"].ToString();
-
-                    //EInvoice.BchDtls objbatch = new EInvoice.BchDtls();
-                    //objbatch.Nm = dritem["ProductName"].ToString(); ;
-                    //objbatch.Expdt = fromdate.AddDays(-1).ToString("dd/MM/yyyy");
-                    //objbatch.wrDt = fromdate.AddDays(1).ToString("dd/MM/yyyy");
-                    //objitems.BchDtls = objbatch;
-
-
-                    //newrow["uomqty"] = dr["uomqty"].ToString();
-                    float qty = 0;
-                    float.TryParse(dritem["DeliveryQty"].ToString(), out qty);
-                    float rate = 0;
-                    float.TryParse(dritem["Unitcost"].ToString(), out rate);
-
-                    objitems.Qty = Math.Round(qty, 2);
-
-                    double sgstamount = 0;
-                    double cgstamount = 0;
-                    double Igst = 0;
-                    double Igstamount = 0;
-                    double totRate = 0;
-                    double.TryParse(dritem["Igst"].ToString(), out Igst);
-                    double Igstcon = 100 + Igst;
-                    Igstamount = (rate / Igstcon) * Igst;
-                    Igstamount = Math.Round(Igstamount, 2);
-                    totRate = Igstamount;
-                    double Vatrate = rate - totRate;
-                    Vatrate = Math.Round(Vatrate, 2);
-                    //newrow["Rate"] = Vatrate.ToString();
-                    PAmount = qty * Vatrate;
-                    //newrow["Taxable Value"] = Math.Round(PAmount, 2);
-                    double tot_vatamount = (PAmount * Igst) / 100;
-                    if (fromstate == tostate)
+                    double tot_amount = 0; double TPAmount = 0; double PAmount = 0; double total_cgst = 0; double total_sgst = 0; double total_igst = 0; double gtotalamout = 0;
+                    foreach (DataRow dritem in Itemtable.Select("sno='" + AgentId + "'"))
                     {
-                        if (regtype == "Special Economic Zone")
+                        EInvoice.ItemList objitems = new EInvoice.ItemList();
+                        i++;
+                        objitems.SlNo = i.ToString();
+                        objitems.IsServc = "N";
+                        objitems.PrdDesc = dritem["ProductName"].ToString();
+                        objitems.HsnCd = dritem["hsncode"].ToString();
+                        objitems.Barcde = dritem["Itemcode"].ToString();
+                        float qty = 0;
+                        float.TryParse(dritem["DeliveryQty"].ToString(), out qty);
+                        float rate = 0;
+                        float.TryParse(dritem["Unitcost"].ToString(), out rate);
+                        objitems.Qty = Math.Round(qty, 2);
+                        double sgstamount = 0;
+                        double cgstamount = 0;
+                        double Igst = 0;
+                        double Igstamount = 0;
+                        double totRate = 0;
+                        double.TryParse(dritem["Igst"].ToString(), out Igst);
+                        double Igstcon = 100 + Igst;
+                        Igstamount = (rate / Igstcon) * Igst;
+                        Igstamount = Math.Round(Igstamount, 2);
+                        totRate = Igstamount;
+                        double Vatrate = rate - totRate;
+                        Vatrate = Math.Round(Vatrate, 2);
+                        //newrow["Rate"] = Vatrate.ToString();
+                        PAmount = qty * Vatrate;
+                        //newrow["Taxable Value"] = Math.Round(PAmount, 2);
+                        double tot_vatamount = (PAmount * Igst) / 100;
+                        if (fromstate == tostate)
+                        {
+                            if (regtype == "Special Economic Zone")
+                            {
+                                tot_vatamount = Math.Round(tot_vatamount, 2);
+                                objitems.SgstAmt = 0;
+                                objitems.IgstAmt = tot_vatamount;
+                                objitems.CgstAmt = 0;
+                                total_igst += tot_vatamount;
+                            }
+                            else
+                            {
+                                sgstamount = (tot_vatamount / 2);
+                                sgstamount = Math.Round(sgstamount, 2);
+                                cgstamount = (tot_vatamount / 2);
+                                cgstamount = Math.Round(cgstamount, 2);
+                                //newrow["cgst"] = dr["cgst"].ToString();
+                                // newrow["sgst"] = dr["sgst"].ToString();
+                                objitems.SgstAmt = sgstamount;
+                                objitems.IgstAmt = 0;
+                                objitems.CgstAmt = cgstamount;
+                                total_cgst += cgstamount;
+                                total_sgst += sgstamount;
+                            }
+                        }
+                        else
                         {
                             tot_vatamount = Math.Round(tot_vatamount, 2);
                             objitems.SgstAmt = 0;
@@ -44551,83 +44750,201 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             objitems.CgstAmt = 0;
                             total_igst += tot_vatamount;
                         }
+                        TPAmount += PAmount;
+                        tot_amount = PAmount + tot_vatamount;
+                        tot_amount = Math.Round(tot_amount, 2);
+                        gtotalamout += tot_amount;
+
+                        objitems.FreeQty = 0;
+                        objitems.Unit = dritem["Units"].ToString();
+                        objitems.UnitPrice = Vatrate;
+                        objitems.TotAmt = Math.Round(PAmount, 2);
+                        objitems.Discount = 0;
+                        objitems.PreTaxVal = Math.Round(PAmount, 2);
+                        objitems.AssAmt = Math.Round(PAmount, 2);
+                        objitems.GstRt = Convert.ToInt32(Igst);
+
+                        objitems.CesRt = 0;
+                        objitems.CesAmt = 0.0;
+                        objitems.CesNonAdvlAmt = 0;
+                        objitems.StateCesRt = 0;
+                        objitems.StateCesAmt = 0.0;
+                        objitems.StateCesNonAdvlAmt = 0;
+                        objitems.OthChrg = 0;
+                        objitems.TotItemVal = tot_amount;
+                        objitems.OrdLineRef = "Empty";
+                        objitems.OrgCntry = "IN";
+                        objitems.PrdSlNo = "1";
+                        //EInvoice.AttribDtl objattr = new EInvoice.AttribDtl();
+                        //objattr.Nm = "MILK";
+                        //objattr.Val = "1";
+                        //AttribDtllst.Add(objattr);
+                        //objitems.AttribDtls = AttribDtllst;
+                        ItemListlst.Add(objitems);
+                        Rootlst.ItemList = ItemListlst;
+
+                    }
+
+                    EInvoice.ValDtls objval = new EInvoice.ValDtls();
+                    objval.AssVal = Math.Round(TPAmount, 2);
+                    objval.CgstVal = Math.Round(total_cgst, 2);
+                    objval.SgstVal = Math.Round(total_sgst, 2);
+                    objval.IgstVal = Math.Round(total_igst, 2);
+                    objval.CesVal = 0;
+                    objval.StCesVal = 0;
+                    objval.Discount = 0;
+                    objval.OthChrg = 0;
+                    objval.RndOffAmt = 0;
+                    objval.TotInvVal = Math.Round(gtotalamout, 2); ;
+                    objval.TotInvValFc = 0;
+                    Rootlst.ValDtls = objval;
+                    ValDtlslst.Add(objval);
+                }
+                else
+                {
+                    double tot_amount = 0; double TPAmount = 0; double PAmount = 0; double total_cgst = 0; double total_sgst = 0; double total_igst = 0; double gtotalamout = 0;
+                    foreach (DataRow dritem in dtIndent.Select("sno='" + AgentId + "'"))
+                    {
+                        EInvoice.ItemList objitems = new EInvoice.ItemList();
+                        objitems.SlNo = i.ToString();
+                        objitems.IsServc = "N";
+                        objitems.PrdDesc = dritem["ProductName"].ToString();
+                        objitems.HsnCd = dritem["hsncode"].ToString();
+                        objitems.Barcde = dritem["Itemcode"].ToString();
+                        float qty = 0;
+                        float Price = 0;
+                        float rate = 0;
+                        float.TryParse(dritem["DeliveryQty"].ToString(), out qty);
+                        float.TryParse(dritem["Price"].ToString(), out Price);
+                        string UnitCost = dritem["Price"].ToString();
+                        foreach (DataRow drprdt in dtbrnch_prdts.Select("sno='" + dritem["ProductId"].ToString() + "'"))
+                        {
+                            i++;
+
+                            if (DispMode == "Free")
+                            {
+                                rate = 0;
+                                float.TryParse(drprdt["unitprice"].ToString(), out rate);
+                            }
+                            else
+                            {
+                                float.TryParse(drprdt["unitprice"].ToString(), out rate);
+                            }
+                            if (DispMode == "AGENT")
+                            {
+                                String unitprice = drprdt["unitprice"].ToString();
+                                if (unitprice == "0")
+                                {
+                                    unitprice = drprdt["BUnitPrice"].ToString();
+                                }
+                                float.TryParse(unitprice, out rate);
+                            }
+                            if (DispMode == "Others")
+                            {
+                                String unitprice = drprdt["unitprice"].ToString();
+                                if (unitprice == "0")
+                                {
+                                    unitprice = drprdt["BUnitPrice"].ToString();
+                                }
+                                float.TryParse(unitprice, out rate);
+                            }
+                            if (UnitCost == "")
+                            {
+                            }
+                            else
+                            {
+                                rate = Price;
+                            }
+                        }
+                        objitems.Qty = Math.Round(qty, 2);
+                        double sgstamount = 0;
+                        double cgstamount = 0;
+                        double Igst = 0;
+                        double Igstamount = 0;
+                        double totRate = 0;
+                        double.TryParse(dritem["Igst"].ToString(), out Igst);
+                        double Igstcon = 100 + Igst;
+                        Igstamount = (rate / Igstcon) * Igst;
+                        Igstamount = Math.Round(Igstamount, 2);
+                        totRate = Igstamount;
+                        double Vatrate = rate - totRate;
+                        Vatrate = Math.Round(Vatrate, 2);
+                        PAmount = qty * Vatrate;
+                        double tot_vatamount = (PAmount * Igst) / 100;
+                        if (fromstate == tostate)
+                        {
+                            if (regtype == "Special Economic Zone")
+                            {
+                                tot_vatamount = Math.Round(tot_vatamount, 2);
+                                objitems.SgstAmt = 0;
+                                objitems.IgstAmt = tot_vatamount;
+                                objitems.CgstAmt = 0;
+                                total_igst += tot_vatamount;
+                            }
+                            else
+                            {
+                                sgstamount = (tot_vatamount / 2);
+                                sgstamount = Math.Round(sgstamount, 2);
+                                cgstamount = (tot_vatamount / 2);
+                                cgstamount = Math.Round(cgstamount, 2);
+                                //newrow["cgst"] = dr["cgst"].ToString();
+                                // newrow["sgst"] = dr["sgst"].ToString();
+                                objitems.SgstAmt = sgstamount;
+                                objitems.IgstAmt = 0;
+                                objitems.CgstAmt = cgstamount;
+                                total_cgst += cgstamount;
+                                total_sgst += sgstamount;
+                            }
+                        }
                         else
                         {
-                            sgstamount = (tot_vatamount / 2);
-                            sgstamount = Math.Round(sgstamount, 2);
-                            cgstamount = (tot_vatamount / 2);
-                            cgstamount = Math.Round(cgstamount, 2);
-                            //newrow["cgst"] = dr["cgst"].ToString();
-                            // newrow["sgst"] = dr["sgst"].ToString();
-                            objitems.SgstAmt = sgstamount;
-                            objitems.IgstAmt = 0;
-                            objitems.CgstAmt = cgstamount;
-                            total_cgst += cgstamount;
-                            total_sgst += sgstamount;
+                            tot_vatamount = Math.Round(tot_vatamount, 2);
+                            objitems.SgstAmt = 0;
+                            objitems.IgstAmt = tot_vatamount;
+                            objitems.CgstAmt = 0;
+                            total_igst += tot_vatamount;
                         }
+                        TPAmount += PAmount;
+                        tot_amount = PAmount + tot_vatamount;
+                        tot_amount = Math.Round(tot_amount, 2);
+                        gtotalamout += tot_amount;
+                        objitems.FreeQty = 0;
+                        objitems.Unit = dritem["Units"].ToString();
+                        objitems.UnitPrice = Vatrate;
+                        objitems.TotAmt = Math.Round(PAmount, 2);
+                        objitems.Discount = 0;
+                        objitems.PreTaxVal = Math.Round(PAmount, 2);
+                        objitems.AssAmt = Math.Round(PAmount, 2);
+                        objitems.GstRt = Convert.ToInt32(Igst);
+                        objitems.CesRt = 0;
+                        objitems.CesAmt = 0.0;
+                        objitems.CesNonAdvlAmt = 0;
+                        objitems.StateCesRt = 0;
+                        objitems.StateCesAmt = 0.0;
+                        objitems.StateCesNonAdvlAmt = 0;
+                        objitems.OthChrg = 0;
+                        objitems.TotItemVal = tot_amount;
+                        objitems.OrdLineRef = "Empty";
+                        objitems.OrgCntry = "IN";
+                        objitems.PrdSlNo = "1";
+                        ItemListlst.Add(objitems);
+                        Rootlst.ItemList = ItemListlst;
                     }
-                    else
-                    {
-                        tot_vatamount = Math.Round(tot_vatamount, 2);
-                        objitems.SgstAmt = 0;
-                        objitems.IgstAmt = tot_vatamount;
-                        objitems.CgstAmt = 0;
-                        total_igst += tot_vatamount;
-                    }
-                    TPAmount += PAmount;
-                    tot_amount = PAmount + tot_vatamount;
-                    tot_amount = Math.Round(tot_amount, 2);
-                    gtotalamout += tot_amount;
-
-                    objitems.FreeQty = 0;
-                    objitems.Unit = dritem["Units"].ToString();
-                    objitems.UnitPrice = Vatrate;
-                    objitems.TotAmt = Math.Round(PAmount, 2);
-                    objitems.Discount = 0;
-                    objitems.PreTaxVal = Math.Round(PAmount, 2);
-                    objitems.AssAmt = Math.Round(PAmount, 2);
-                    objitems.GstRt = Convert.ToInt32(Igst);
-
-                    objitems.CesRt = 0;
-                    objitems.CesAmt = 0.0;
-                    objitems.CesNonAdvlAmt = 0;
-                    objitems.StateCesRt = 0;
-                    objitems.StateCesAmt = 0.0;
-                    objitems.StateCesNonAdvlAmt = 0;
-                    objitems.OthChrg = 0;
-                    objitems.TotItemVal = tot_amount;
-                    objitems.OrdLineRef = "Empty";
-                    objitems.OrgCntry = "IN";
-                    objitems.PrdSlNo = "1";
-
-
-                    //EInvoice.AttribDtl objattr = new EInvoice.AttribDtl();
-                    //objattr.Nm = "MILK";
-                    //objattr.Val = "1";
-                    //AttribDtllst.Add(objattr);
-                    //objitems.AttribDtls = AttribDtllst;
-                    ItemListlst.Add(objitems);
-                    Rootlst.ItemList = ItemListlst;
-
+                    EInvoice.ValDtls objval = new EInvoice.ValDtls();
+                    objval.AssVal = Math.Round(TPAmount, 2);
+                    objval.CgstVal = Math.Round(total_cgst, 2);
+                    objval.SgstVal = Math.Round(total_sgst, 2);
+                    objval.IgstVal = Math.Round(total_igst, 2);
+                    objval.CesVal = 0;
+                    objval.StCesVal = 0;
+                    objval.Discount = 0;
+                    objval.OthChrg = 0;
+                    objval.RndOffAmt = 0;
+                    objval.TotInvVal = Math.Round(gtotalamout, 2); ;
+                    objval.TotInvValFc = 0;
+                    Rootlst.ValDtls = objval;
+                    ValDtlslst.Add(objval);
                 }
-
-                EInvoice.ValDtls objval = new EInvoice.ValDtls();
-                objval.AssVal = Math.Round(TPAmount, 2);
-                objval.CgstVal = Math.Round(total_cgst,2);
-                objval.SgstVal = Math.Round(total_sgst,2);
-                objval.IgstVal = Math.Round(total_igst,2);
-                objval.CesVal = 0;
-                objval.StCesVal = 0;
-                objval.Discount = 0;
-                objval.OthChrg = 0;
-                objval.RndOffAmt = 0;
-                objval.TotInvVal = Math.Round(gtotalamout, 2); ;
-                objval.TotInvValFc = 0;
-
-                Rootlst.ValDtls = objval;
-                ValDtlslst.Add(objval);
-
-
                 EInvoice.PayDtls objpay = new EInvoice.PayDtls();
                 objpay.Nm = "Empty";
                 objpay.Accdet = "Empty";
@@ -44652,13 +44969,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
                 EInvoice.DocPerdDtls objdocperdtls = new EInvoice.DocPerdDtls();
                 objdocperdtls.InvStDt = fromdate.ToString("dd/MM/yyyy");
-                objdocperdtls.InvEndDt = fromdate.AddDays(-1).ToString("dd/MM/yyyy");
-
+                objdocperdtls.InvEndDt = fromdate.AddDays(1).ToString("dd/MM/yyyy");
                 objref.DocPerdDtls = objdocperdtls;
-
-                //Rootlst.DocPerdDtls=objdocperdtls;
-                //DocDtlslst.Add(objdocperdtls);
-
                 EInvoice.PrecDocDtl objpredocdtls = new EInvoice.PrecDocDtl();
                 objpredocdtls.InvNo = DcNo;
                 objpredocdtls.InvDt = fromdate.ToString("dd/MM/yyyy");
@@ -44682,17 +44994,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 objref.ContrDtls = ContrDtllst;
                 Rootlst.RefDtls = objref;
 
-
-
                 EInvoice.AddlDocDtl objadddocdtls = new EInvoice.AddlDocDtl();
                 objadddocdtls.Url = "https://einv-apisandbox.nic.in";
                 objadddocdtls.Docs = "Milk INvoice";
                 objadddocdtls.Info = "Milk Invoice Details";
                 AddlDocDtllst.Add(objadddocdtls);
-
                 Rootlst.AddlDocDtls = AddlDocDtllst;
-
-
                 EInvoice.ExpDtls objexpdtls = new EInvoice.ExpDtls();
                 objexpdtls.ShipBNo = "Empty";
                 objexpdtls.ShipBDt = fromdate.ToString("dd/MM/yyyy");
@@ -44747,12 +45054,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string status_cd { get; set; }
         public string status_desc { get; set; }
     }
-    private string generate_e_invoice_details(string token, string from_date, string SOID, string AgentID,string empsno, string jsonresponse)
+    private string generate_e_invoice_details(string token,string from_date, string SOID, string AgentID,string empsno, string type,string dcno,string jsonresponse)
     {
         //try
         //{
         EInvoice_Login Elogin = new EInvoice_Login(SOID);
-
         DateTime fromdate = Convert.ToDateTime(from_date);
         vdbmngr = new VehicleDBMgr();
         
@@ -44771,15 +45077,28 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
                 request.Headers.TryAddWithoutValidation("auth-token", token);
                 request.Headers.TryAddWithoutValidation("gstin", Elogin.gstin);
+                var js1 = new JavaScriptSerializer();
+                EInvoice.Root obj1 = js1.Deserialize<EInvoice.Root>(jsonresponse);
+                string TotalValue = obj1.ValDtls.TotInvVal.ToString();
+                string refno = "";
+                if (type == "invoice")
+                {
+                    refno = obj1.DocDtls.No;
+                }
+                else
+                {
+                    refno = dcno;
+                }
+                //string fromdate = obj1.DocDtls.Dt;
+                //DateTime fromdate = Convert.ToDateTime(date);
 
-
+                string stateid = obj1.SellerDtls.Stcd;
                 //Body
                 var httpContent = new StringContent(jsonresponse, Encoding.UTF8, "application/json");
                 request.Content = httpContent;
-                //  request.Content = new StringContent("{"Version":"1.1","TranDtls":{"TaxSch":"GST","SupTyp":"B2B","RegRev":"Y","EcmGstin":null,"IgstOnIntra":"N"},"DocDtls":{"Typ":"INV","No":"MAHI / 10","Dt":"08 / 08 / 2020"},"SellerDtls":{"Gstin":"29AABCT1332L000","LglNm":"ABC company pvt ltd","TrdNm":"NIC Industries","Addr1":"5th block, kuvempu layout","Addr2":"kuvempu layout","Loc":"GANDHINAGAR","Pin":560001,"Stcd":"29","Ph":"9000000000","Em":"abc@gmail.com"},"BuyerDtls":{"Gstin":"29AWGPV7107B1Z1","LglNm":"XYZ company pvt ltd","TrdNm":"XYZ Industries","Pos":"37","Addr1":"7th block, kuvempu layout","Addr2":"kuvempu layout","Loc":"GANDHINAGAR","Pin":560004,"Stcd":"29","Ph":"9000000000","Em":"abc@gmail.com"},"DispDtls":{"Nm":"ABC company pvt ltd","Addr1":"7th block, kuvempu layout","Addr2":"kuvempu layout","Loc":"Banagalore","Pin":518360,"Stcd":"37"},"ShipDtls":{"Gstin":"29AWGPV7107B1Z1","LglNm":"CBE company pvt ltd","TrdNm":"kuvempu layout","Addr1":"7th block, kuvempu layout","Addr2":"kuvempu layout","Loc":"Banagalore","Pin":518360,"Stcd":"37"},"ItemList":[{"SlNo":"1","IsServc":"N","PrdDesc":"Rice","HsnCd":"1001","Barcde":"123456","BchDtls":{"Nm":"123456","Expdt":"01 / 08 / 2020","wrDt":"01 / 09 / 2020"},"Qty":100.345,"FreeQty":10,"Unit":"NOS","UnitPrice":99.545,"TotAmt":9988.84,"Discount":10,"PreTaxVal":1,"AssAmt":9978.84,"GstRt":12,"SgstAmt":0,"IgstAmt":1197.46,"CgstAmt":0,"CesRt":5,"CesAmt":498.94,"CesNonAdvlAmt":10,"StateCesRt":12,"StateCesAmt":1197.46,"StateCesNonAdvlAmt":5,"OthChrg":10,"TotItemVal":12897.7,"OrdLineRef":"3256","OrgCntry":"AG","PrdSlNo":"12345","AttribDtls":[{"Nm":"Rice","Val":"10000"}]}],"ValDtls":{"AssVal":9978.84,"CgstVal":0,"SgstVal":0,"IgstVal":1197.46,"CesVal":508.94,"StCesVal":1202.46,"Discount":10,"OthChrg":20,"RndOffAmt":0.3,"TotInvVal":12908,"TotInvValFc":12897.7},"PayDtls":{"Nm":"ABCDE","Accdet":"5697389713210","Mode":"Cash","Fininsbr":"SBIN11000","Payterm":"100","Payinstr":"Gift","Crtrn":"test","Dirdr":"test","Crday":100,"Paidamt":10000,"Paymtdue":5000},"RefDtls":{"InvRm":"TEST","DocPerdDtls":{"InvStDt":"01 / 08 / 2020","InvEndDt":"01 / 09 / 2020"},"PrecDocDtls":[{"InvNo":"DOC / 002","InvDt":"01 / 08 / 2020","OthRefNo":"123456"}],"ContrDtls":[{"RecAdvRefr":"DOC / 002","RecAdvDt":"01 / 08 / 2020","Tendrefr":"Abc001","Contrrefr":"Co123","Extrefr":"Yo456","Projrefr":"Doc - 456","Porefr":"Doc - 789","PoRefDt":"01 / 08 / 2020"}]},"AddlDocDtls":[{"Url":"https://einv-apisandbox.nic.in","Docs":"Test Doc","Info":"Document Test"}],"ExpDtls":{"ShipBNo":"A-248","ShipBDt":"01/08/2020","Port":"INABG1","RefClm":"N","ForCur":"AED","CntCode":"AE"},"EwbDtls":{"Transid":"12AWGPV7107B1Z1","Transname":"XYZ EXPORTS","Distance":100,"Transdocno":"DOC01","TransdocDt":"01/08/2020","Vehno":"ka123456","Vehtype":"R","TransMode":"1"}}", Encoding.UTF8, "application/json");
                 var response = httpClient.SendAsync(request).Result;
                 var contents = response.Content.ReadAsStringAsync().Result;
-
+                //var contents = "";
                 var js = new JavaScriptSerializer();
                 Response_EInvoice obj = js.Deserialize<Response_EInvoice>(contents);
                 if (obj.status_desc == "GSTR request succeeds")
@@ -44791,20 +45110,23 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     string SignedInvoice = obj.data.SignedInvoice;
                     DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
 
-                    cmd = new MySqlCommand("Insert Into e_invoice (agentid,e_invoiceno,soid,stateid,ack_no,ack_date,invoicedate,signed_qr_code,signedinvoice,status,user_type,created_by,created_date) Values(@BranchId,@agentdcno,@soid,@stateid,@ack_no,@ack_date,@invoicedate,@signed_qr_code,@signedinvoice,@status,@user_type,@created_by,@created_date)");
+                    cmd = new MySqlCommand("Insert Into e_invoice (agentid,e_invoiceno,invoice_amount,soid,stateid,ack_no,ack_date,invoicedate,signed_qr_code,signedinvoice,status,user_type,created_by,created_date,type,refno) Values(@BranchId,@e_invoiceno,@invoice_amount,@soid,@stateid,@ack_no,@ack_date,@invoicedate,@signed_qr_code,@signedinvoice,@status,@user_type,@created_by,@created_date,@type,@refno)");
                     cmd.Parameters.AddWithValue("@BranchId", AgentID);
-                    cmd.Parameters.AddWithValue("@agentdcno", IRN_No);
+                    cmd.Parameters.AddWithValue("@e_invoiceno", IRN_No);
+                    cmd.Parameters.AddWithValue("@invoice_amount", TotalValue);
                     cmd.Parameters.AddWithValue("@soid", SOID);
-                    cmd.Parameters.AddWithValue("@stateid", "36");
+                    cmd.Parameters.AddWithValue("@stateid", stateid);
                     cmd.Parameters.AddWithValue("@ack_no", ackno);
                     cmd.Parameters.AddWithValue("@ack_date", ackdate);
-                    cmd.Parameters.AddWithValue("@invoicedate", GetLowDate(fromdate).AddDays(-1));
+                    cmd.Parameters.AddWithValue("@invoicedate", GetLowDate(fromdate));
                     cmd.Parameters.AddWithValue("@signed_qr_code", SignedQRCode);
                     cmd.Parameters.AddWithValue("@signedinvoice", SignedInvoice);
                     cmd.Parameters.AddWithValue("@status", "R");
                     cmd.Parameters.AddWithValue("@user_type", "R");
                     cmd.Parameters.AddWithValue("@created_by", empsno);
                     cmd.Parameters.AddWithValue("@created_date", ServerDateCurrentdate);
+                    cmd.Parameters.AddWithValue("@type", type);
+                    cmd.Parameters.AddWithValue("@refno", refno);
                     vdbmngr.insert(cmd);
                 }
                 return contents;
@@ -44813,70 +45135,70 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         //}
 
     }
-    private void btn_Click_GetInvoice(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string AgentID = context.Request["AgentID"];
-            string from_date = context.Request["FromDate"];
-            string SOID = context.Request["SOID"];
-            string IRN_No = context.Request["Irn_No"];
-            DateTime fromdate = Convert.ToDateTime(from_date);
-            EInvoice.Root Rootlst = new EInvoice.Root();
+    //private void btn_Click_GetInvoice(HttpContext context)
+    //{
+    //    try
+    //    {
+    //        vdbmngr = new VehicleDBMgr();
+    //        string AgentID = context.Request["AgentID"];
+    //        string from_date = context.Request["FromDate"];
+    //        string SOID = context.Request["SOID"];
+    //        string IRN_No = context.Request["Irn_No"];
+    //        DateTime fromdate = Convert.ToDateTime(from_date);
+    //        EInvoice.Root Rootlst = new EInvoice.Root();
             
-            string authToken = "";
-            authenticate_response newobj =new authenticate_response();
-            newobj = authenticate_e_invoice(SOID);
+    //        string authToken = "";
+    //        authenticate_response newobj =new authenticate_response();
+    //        newobj = authenticate_e_invoice(SOID);
 
-            //if (context.Session["Token"].ToString() == "")
-            //{
-                //newobj = authenticate_e_invoice(gstin, gst_un, gst_pw, client_id, Client_secret);
-            //}
-            //else
-            //{
-                //authToken = context.Session["Token"].ToString();
-            //}
-            string str1 = "";
-            if (newobj.status_cd == "Sucess")
-            {
-                authToken = newobj.data.authtoken;
-                str1 = get_e_envoice_details(authToken, IRN_No,SOID);
-            }
-            string res = GetJson(str1);
-            context.Response.Write(res);
-        }
-        catch (Exception ex)
-        {
-            string response = GetJson(ex.ToString());
-            context.Response.Write(response);
-        }
-    }
-    private string get_e_envoice_details(string token, string IRN_No,string SOID)
-    {
-        EInvoice_Login Elogin = new EInvoice_Login(SOID);
-        using (var httpClient = new HttpClient())
-        {
-            // IRNNUMBER (IRN == Invoice Reference Number ) send dynamically 
-            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/einvoice/type/GETIRN/version/V1_03?param1=" + IRN_No + "&email=naveen.vdmtech%40gmail.com"))
-            {
-                string ip_address = GetLocalIPAddress();
-                if (ip_address == "Error")
-                    ip_address = "182.18.162.51:52144";
-                request.Headers.TryAddWithoutValidation("Accept", "application/json");
-                request.Headers.TryAddWithoutValidation("username", Elogin.username);
-                request.Headers.TryAddWithoutValidation("ip_address", ip_address);
-                request.Headers.TryAddWithoutValidation("client_id", Elogin.client_id);
-                request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
-                request.Headers.TryAddWithoutValidation("auth-token", token);
-                request.Headers.TryAddWithoutValidation("gstin", Elogin.gstin);
+    //        //if (context.Session["Token"].ToString() == "")
+    //        //{
+    //            //newobj = authenticate_e_invoice(gstin, gst_un, gst_pw, client_id, Client_secret);
+    //        //}
+    //        //else
+    //        //{
+    //            //authToken = context.Session["Token"].ToString();
+    //        //}
+    //        string str1 = "";
+    //        if (newobj.status_cd == "Sucess")
+    //        {
+    //            authToken = newobj.data.authtoken;
+    //            str1 = get_e_envoice_details(authToken, IRN_No,SOID);
+    //        }
+    //        string res = GetJson(str1);
+    //        context.Response.Write(res);
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        string response = GetJson(ex.ToString());
+    //        context.Response.Write(response);
+    //    }
+    //}
+    //private string get_e_envoice_details(string token, string IRN_No,string SOID)
+    //{
+    //    EInvoice_Login Elogin = new EInvoice_Login(SOID);
+    //    using (var httpClient = new HttpClient())
+    //    {
+    //        // IRNNUMBER (IRN == Invoice Reference Number ) send dynamically 
+    //        using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/einvoice/type/GETIRN/version/V1_03?param1=" + IRN_No + "&email=naveen.vdmtech%40gmail.com"))
+    //        {
+    //            string ip_address = GetLocalIPAddress();
+    //            if (ip_address == "Error")
+    //                ip_address = "182.18.162.51:52144";
+    //            request.Headers.TryAddWithoutValidation("Accept", "application/json");
+    //            request.Headers.TryAddWithoutValidation("username", Elogin.username);
+    //            request.Headers.TryAddWithoutValidation("ip_address", ip_address);
+    //            request.Headers.TryAddWithoutValidation("client_id", Elogin.client_id);
+    //            request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
+    //            request.Headers.TryAddWithoutValidation("auth-token", token);
+    //            request.Headers.TryAddWithoutValidation("gstin", Elogin.gstin);
 
-                var response = httpClient.SendAsync(request).Result;
-                var contents = response.Content.ReadAsStringAsync().Result;
-                return contents;
-            }
-        }
-    }
+    //            var response = httpClient.SendAsync(request).Result;
+    //            var contents = response.Content.ReadAsStringAsync().Result;
+    //            return contents;
+    //        }
+    //    }
+    //}
     private string cancel_invoice_reference_number(string token, string irnNumber)
     {
 
@@ -45410,7 +45732,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 //request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
                 request.Headers.TryAddWithoutValidation("auth-token", token);
                 request.Headers.TryAddWithoutValidation("gstin", gstin);
-
                 var response = httpClient.SendAsync(request).Result;
                 var contents = response.Content.ReadAsStringAsync().Result;
                 return contents;

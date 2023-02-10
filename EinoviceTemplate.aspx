@@ -137,22 +137,27 @@
             }
         }
 
-
-
         function GenerateClick() {
             var FromDate = document.getElementById('txtFromDate').value;
             if (FromDate == "") {
                 alert("Please From Date");
                 return false;
             }
+            var type = document.getElementById('ddltype').value;
+            if (type == "") {
+                alert("Please select type");
+                return false;
+            }
             var branchID = document.getElementById("ddlsalesOffice").value;
-            var data = { 'operation': 'Get_Agent_Einvoice_Details', 'FromDate': FromDate, 'BranchID': branchID };
+            var data = { 'operation': 'Get_Agent_Einvoice_Details', 'FromDate': FromDate, 'BranchID': branchID, 'type': type };
             var s = function (msg) {
-                if (msg) {
-                    filleAgentdetails(msg);
-                    //spnJsonData.innerHTML = "";
+                if (msg == "Data not Found") {
+                    alert(msg);
+                    $("#divEWayBilldata").html("");
+                    return false;
                 }
                 else {
+                    filleAgentdetails(msg);
                 }
             };
             var e = function (x, h, e) {
@@ -162,38 +167,66 @@
         }
 
         function filleAgentdetails(msg) {
+            var type = document.getElementById('ddltype').value;
             var results = '<div  style="overflow:auto;"><table class="table table-bordered table-hover dataTable no-footer" role="grid" aria-describedby="example2_info">';
-            results += '<thead><tr class="trbgclrcls"><th scope="col" class="thcls">AgentName</th><th scope="col" class="thcls">StateName</th><th scope="col" class="thcls">GstNo</th><th scope="col" class="thcls">TotalQty</th><th scope="col" class="thcls">TotalValue</th><th scope="col" class="thcls">Status</th><th scope="col"></th></tr></thead></tbody>';
+            if (type == "invoice") {
+                results += '<thead><tr class="trbgclrcls"><th scope="col" class="thcls">AgentName</th><th scope="col" class="thcls">StateName</th><th scope="col" class="thcls">GstNo</th><th scope="col" class="thcls">TotalQty</th><th scope="col" class="thcls">TotalValue</th><th scope="col" class="thcls">Status</th><th scope="col"></th></tr></thead></tbody>';
+            }
+            else {
+                results += '<thead><tr class="trbgclrcls"><th scope="col" class="thcls">DcNo</th><th scope="col" class="thcls">DispatchName</th><th scope="col" class="thcls">StateName</th><th scope="col" class="thcls">GstNo</th><th scope="col" class="thcls">TotalQty</th><th scope="col" class="thcls">Status</th><th scope="col"></th></tr></thead></tbody>';
+            }
             var k = 1;
             var l = 0;
             var COLOR = ["#f3f5f7", "#cfe2e0", "", "#cfe2e0"];
             for (var i = 0; i < msg.length; i++) {
                 results += '<tr style="background-color:' + COLOR[l] + '">';
+                if (type == "dc") {
+                    results += '<td scope="row"  class="12" >' + msg[i].dcno + '</td>';
+                }
                 results += '<td scope="row"  class="1" tdmaincls" >' + msg[i].AgentName + '</td>';
                 results += '<td data-title="brandstatus" style = "display:none;" class="2">' + msg[i].AgentId + '</td>';
                 results += '<td data-title="brandstatus" style = "display:none;" class="7">' + msg[i].IRN_NO + '</td>';
                 results += '<td data-title="brandstatus" style = "display:none;" class="8">' + msg[i].signed_qr_code + '</td>';
                 results += '<td data-title="brandstatus" style = "display:none;" class="9">' + msg[i].ack_no + '</td>';
                 results += '<td data-title="brandstatus" style = "display:none;" class="10">' + msg[i].ack_date + '</td>';
+                results += '<td data-title="brandstatus" style = "display:none;" class="13">' + msg[i].dispsno + '</td>';
                 results += '<td data-title="brandstatus"  class="3">' + msg[i].StateName + '</td>';
                 results += '<td data-title="brandstatus"  class="4">' + msg[i].GstNo + '</td>';
-                results += '<td data-title="brandstatus"  class="5">' + msg[i].Totalqty + '</td>';
-                results += '<td data-title="brandstatus"  class="6">' + msg[i].Totalvalue + '</td>';
+                if (type == "dc") {
+                    results += '<td data-title="brandstatus"  class="5">' + msg[i].Totalqty + '</td>';
+                }
+                else {
+                    results += '<td data-title="brandstatus"  class="5">' + msg[i].Totalqty + '</td>';
+                    results += '<td data-title="brandstatus"  class="6">' + msg[i].Totalvalue + '</td>';
+                }
                 var status = msg[i].status;
                 if (status == "R") {
                     status = "Raised"
                 }
-                if (msg[i].status == "R") {
-                    results += '<td data-title="brandstatus"  class="11">' + status + '</td>';
-                    results += '<td data-title="brandstatus"><button type="button" disabled="true" title="Click Here To Generate Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="GenerateEinvoice(this)"><i class="fa fa-file-text"></i></button></td>';
-                    results += '<td data-title="brandstatus"><button type="button" title="Click Here To View Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_Einvoice_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
-
+                if (type == "dc") {
+                    if (msg[i].status == "R") {
+                        results += '<td data-title="brandstatus"  class="11">' + status + '</td>';
+                        results += '<td data-title="brandstatus"><button type="button" disabled="true" title="Click Here To Generate Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="GenerateEinvoice(this)"><i class="fa fa-file-text"></i></button></td>';
+                        results += '<td data-title="brandstatus"><button type="button" title="Click Here To View Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_DC_Einvoice_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
+                    }
+                    else {
+                        results += '<td data-title="brandstatus"  class="11">' + status + '</td>';
+                        results += '<td data-title="brandstatus"><button  type="button" title="Click Here To Generate Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="GenerateEinvoice(this)"><i class="fa fa-file-text"></i></button></td>';
+                        results += '<td data-title="brandstatus"><button type="button"  title="Click Here To View Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_DC_Einvoice_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
+                    } 
                 }
                 else {
-                    results += '<td data-title="brandstatus"  class="11">' + status + '</td>';
-                    results += '<td data-title="brandstatus"><button  type="button" title="Click Here To Generate Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="GenerateEinvoice(this)"><i class="fa fa-file-text"></i></button></td>';
-                    results += '<td data-title="brandstatus"><button type="button" disabled="true" title="Click Here To View Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_Einvoice_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
+                    if (msg[i].status == "R") {
+                        results += '<td data-title="brandstatus"  class="11">' + status + '</td>';
+                        results += '<td data-title="brandstatus"><button type="button" disabled="true" title="Click Here To Generate Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="GenerateEinvoice(this)"><i class="fa fa-file-text"></i></button></td>';
+                        results += '<td data-title="brandstatus"><button type="button" title="Click Here To View Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_Einvoice_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
 
+                    }
+                    else {
+                        results += '<td data-title="brandstatus"  class="11">' + status + '</td>';
+                        results += '<td data-title="brandstatus"><button  type="button" title="Click Here To Generate Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="GenerateEinvoice(this)"><i class="fa fa-file-text"></i></button></td>';
+                        results += '<td data-title="brandstatus"><button type="button" disabled="true" title="Click Here To View Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_Einvoice_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
+                    }
                 }
                 results += '<td data-title="brandstatus"><button type="button" disabled="true" title="Click Here To Cancel Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 removeclass"   onclick="CancelEinvoice(this)"><span class="glyphicon glyphicon-remove-circle" style="top: 0px !important;"></span></button></td></tr>';
                 l = l + 1;
@@ -211,11 +244,16 @@
                 alert("Please From Date");
                 return false;
             }
+            var type = document.getElementById('ddltype').value;
+            if (type == "") {
+                alert("Please select type");
+                return false;
+            }
             var AgentID = $(thisid).parent().parent().children('.2').html();
             var Totvalue = $(thisid).parent().parent().children('.6').html();
             var branchID = document.getElementById("ddlsalesOffice").value;
-
-            var data = { 'operation': 'generate_e_invoice_details', 'AgentID': AgentID, 'FromDate': FromDate, 'SOID': branchID };
+            var dcno = $(thisid).parent().parent().children('.12').html();
+            var data = { 'operation': 'generate_e_invoice_details', 'AgentID': AgentID, 'FromDate': FromDate, 'SOID': branchID, 'dcno': dcno, 'type': type };
             var s = function (msg) {
                 if (msg.length > 0) {
                     alert(msg);
@@ -272,7 +310,7 @@
             var branchID = document.getElementById("ddlsalesOffice").value;
             var ddltype = "Tax";
 
-            var data = { 'operation': 'btnAgentInvoice_click', 'fromdate': fromdate, 'AgentId': AgentID, 'SOID': branchID, 'ddltype': ddltype };
+            var data = { 'operation': 'btnAgent_indent_Invoice_click', 'fromdate': fromdate, 'AgentId': AgentID, 'SOID': branchID, 'ddltype': ddltype };
             var s = function (msg) {
                 if (msg) {
                     if (msg == "Data not found") {
@@ -316,11 +354,7 @@
             document.getElementById('spngstnno').innerHTML = "";
             document.getElementById('spninvoiceno').innerHTML = "";
             document.getElementById('spninvoicedate').innerHTML = "";
-            //            document.getElementById('spnfrmstatename').innerHTML = msg[0].frmstatename;
-            //            document.getElementById('spnstatecode').innerHTML = msg[0].frmstatecode;
-            //document.getElementById('spndateofsupply').innerHTML = "";
             document.getElementById('spnplaceofsupply').innerHTML = "";
-
             document.getElementById('spnfromname').innerHTML = "";
             document.getElementById('spnfromaddress').innerHTML = "";
             document.getElementById('spnfromgstn').innerHTML = "";
@@ -329,7 +363,6 @@
             document.getElementById('spnfromstate').innerHTML = "";
             document.getElementById('spnfromstatecode').innerHTML = "";
             document.getElementById('lblpartyname').innerHTML = "";
-            //            document.getElementById('lblroutename').innerHTML = msg[0].AgentName;lblsignname
             document.getElementById('spn_toaddress').innerHTML = "";
             document.getElementById('lbl_tostate').innerHTML = "";
             document.getElementById('lbl_tostatecode').innerHTML = "";
@@ -348,25 +381,15 @@
                 document.getElementById('spnAddress').innerHTML = msg[0].BranchAddress;
                 document.getElementById('spngstnno').innerHTML = msg[0].fromgstn;
                 document.getElementById('spninvoiceno').innerHTML = msg[0].invoiceno;
-                //document.getElementById('spntempinvoiceno').innerHTML = msg[0].TempInvoice;
-
                 document.getElementById('spninvoicedate').innerHTML = msg[0].invoicedate;
-                //            document.getElementById('spnfrmstatename').innerHTML = msg[0].frmstatename;
-                //            document.getElementById('spnstatecode').innerHTML = msg[0].frmstatecode;
-                //document.getElementById('spndateofsupply').innerHTML = msg[0].invoicedate;
                 document.getElementById('spnplaceofsupply').innerHTML = msg[0].city;
-
                 document.getElementById('spnfromname').innerHTML = msg[0].titlename;
                 document.getElementById('spnfromaddress').innerHTML = msg[0].BranchAddress;
                 document.getElementById('spnfromgstn').innerHTML = msg[0].fromgstn;
                 document.getElementById('spngstnum').innerHTML = msg[0].fromgstn;
-
-
-
                 document.getElementById('spnfromstate').innerHTML = msg[0].frmstatename;
                 document.getElementById('spnfromstatecode').innerHTML = msg[0].frmstatecode;
                 document.getElementById('lblpartyname').innerHTML = msg[0].AgentName;
-                //            document.getElementById('lblroutename').innerHTML = msg[0].AgentName;lblsignname
                 document.getElementById('spn_toaddress').innerHTML = msg[0].AgentAddress;
                 document.getElementById('lbl_tostate').innerHTML = msg[0].tostatename;
                 document.getElementById('lbl_tostatecode').innerHTML = msg[0].tostatecode;
@@ -375,7 +398,6 @@
                 document.getElementById('lblsignname').innerHTML = msg[0].titlename;
                 document.getElementById('lbl_companymobno').innerHTML = msg[0].companyphone;
                 document.getElementById('lbl_companyemail').innerHTML = msg[0].companyemail;
-                //document.getElementById('spninvoicetype').innerHTML = msg[0].dctype;
             }
         }
         var TotalAmount = 0; var totamount = 0;
@@ -483,7 +505,7 @@
 
         function generateBarcode(irn_no) {
 
-            var value = irn_no;
+            var value = "112315053672459";//irn_no;
             var btype = $("input[name=btype]:checked").val();
             var renderer = $("input[name=renderer]:checked").val();
 
@@ -551,7 +573,7 @@
 
         //QR code
         function GenerateQRCode(signed_qr_code) {
-            var data = signed_qr_code;
+            var data = "eyJhbGciOiJSUzI1NiIsImtpZCI6IkI4RDYzRUNCNThFQTVFNkY0QUFDM0Q1MjQ1NDNCMjI0NjY2OUIwRjgiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJ1TlkteTFqcVhtOUtyRDFTUlVPeUpHWnBzUGcifQ.eyJkYXRhIjoie1wiU2VsbGVyR3N0aW5cIjpcIjM2QUFHQ1M2MDIyRjFaSlwiLFwiQnV5ZXJHc3RpblwiOlwiMzZCVkRQRzQ2NDlFMVpPXCIsXCJEb2NOb1wiOlwiV1lSLzIyLTIzVC8zMjMwNlwiLFwiRG9jVHlwXCI6XCJJTlZcIixcIkRvY0R0XCI6XCIxMS8wMS8yMDIzXCIsXCJUb3RJbnZWYWxcIjo5MDkuMDMsXCJJdGVtQ250XCI6MyxcIk1haW5Ic25Db2RlXCI6XCIwNDAzOTAxMFwiLFwiSXJuXCI6XCIzM2FiNGFhNzBhODAzNmNiOWQ0Yjg4ZTlhNWI5MzYyNTIyY2I1ZmNjOWU4ZjY3MmViMzU1NDcyZjY2OWRmZWRjXCIsXCJJcm5EdFwiOlwiMjAyMy0wMS0xMSAxMToxODowMFwifSIsImlzcyI6Ik5JQyJ9.nGdvOpCRKCQsIEgoE54SjoGhjZAVMQQZCd_T7dOMXxorKcmXv5Y9Ti6q1BilLzpDrp1GwnidMS-CoEL83L3YZK5ONOk1AACEuTll6dCpfHNZldeUVOxDo0gmWHkOpPpZMICiW4cXvZEpu6G8FNxrhUgpLCLcQS9XMIpWtEvEv8B4ejvQ0DkRDi61ACTvP-_gq_JKsK8urj37SWI8Ow6Yx69EKfw0iVmNaHKo8Yqm-N5gS1cWXrOnNSu5wS_Zolm38wQPZbWGu8JDIG4rLIjBMeqqNkKi9LujRDKD1OUxHrDy0RDFa2cgw8H71x_vbSPt0YcPq0YEmlx-VOoNNG4gOg"//signed_qr_code;
             var size = "155";
             if (data == "") {
                 alert('please enter a url or text');
@@ -576,6 +598,247 @@
             newWin.document.write('<html><body   onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
             newWin.document.close();
         }
+
+
+
+
+// EInvoice print  for DC
+
+        function View_DC_Einvoice_Click(thisid) {
+            var refdcno = $(thisid).parent().parent().children('.12').html();
+            var dispsno = $(thisid).parent().parent().children('.13').html();
+            //document.getElementById('txt_Refno').value = refdcno;
+            var DcType = "Tax";
+            var Irn_No = $(thisid).parent().parent().children('.7').html();
+            var Ack_No = $(thisid).parent().parent().children('.9').html();
+            var Ack_Date = $(thisid).parent().parent().children('.10').html();
+            var signed_qr_code = $(thisid).parent().parent().children('.8').html();
+
+            var data = { 'operation': 'get_DeliveryChallan_click', 'refdcno': refdcno, 'DcType': DcType };
+            var s = function (msg) {
+                if (msg) {
+                    if (msg.length > 0) {
+                        FillDCMain_details(msg);
+                        GetDC_Products(refdcno + "_" + dispsno);
+
+                        GenerateQRCode(signed_qr_code);
+                        generateBarcode(Ack_No);
+                        document.getElementById('spIrn_No').innerHTML = Irn_No;
+                        document.getElementById('spnAck_No').innerHTML = Ack_No;
+                        document.getElementById('spnAck_Date').innerHTML = Ack_Date;
+                        $("#divPrint").css("display", "block");
+                        $("#btn_Print").css("display", "block");
+                        $('#divMainAddNewRow1').css('display', 'block');
+                        $('#div_itemdetails1').css('display', 'block');
+                        $('#myModal').css('display', 'block');
+                    }
+                }
+                else {
+                }
+            };
+            var e = function (x, h, e) {
+            };
+            $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+            callHandler(data, s, e);
+        }
+        function FillDCMain_details(msg) {
+            clearall();
+            if (msg.length > 0) {
+                document.getElementById('lbltile').innerHTML = msg[0].Title;
+                document.getElementById('spnAddress').innerHTML = msg[0].Address;
+                document.getElementById('spnfromaddress').innerHTML = msg[0].Address;
+                document.getElementById('spngstnno').innerHTML = msg[0].fromgstin;
+                document.getElementById('spnfromgstn').innerHTML = msg[0].fromgstin;
+                document.getElementById('spngstnum').innerHTML = msg[0].fromgstin;
+                document.getElementById('lbl_tostate').innerHTML = msg[0].tostatename;
+                document.getElementById('lbl_tostatecode').innerHTML = msg[0].tostatecode;
+                //document.getElementById('lbl_fromstate').innerHTML = msg[0].fromstatename;
+                //document.getElementById('spnfstate').innerHTML = msg[0].fromstatename;
+                document.getElementById('spnfromstate').innerHTML = msg[0].fromstatename;
+                //document.getElementById('lbl_fromstate_code').innerHTML = msg[0].fromstatecode;
+                document.getElementById('spnfromstatecode').innerHTML = msg[0].fromstatecode;
+                //document.getElementById('lblRefdcno').innerHTML = document.getElementById('txt_Refno').value;
+                document.getElementById('spninvoiceno').innerHTML = msg[0].DcNo;
+                document.getElementById('spninvoicedate').innerHTML = msg[0].assigndate;
+                //document.getElementById('spndateofsupply').innerHTML = msg[0].assigndate;
+                //document.getElementById('lbldisptime').innerHTML = msg[0].PlanTime;
+                document.getElementById('spnplaceofsupply').innerHTML = msg[0].city;
+                //document.getElementById('hdnDespsno').value = msg[0].Dispatchsno;
+                //document.getElementById('lblroutename').innerHTML = msg[0].routename;
+                //document.getElementById('lblvehicleno').innerHTML = msg[0].vehicleno;
+                //document.getElementById('lbldispat').innerHTML = msg[0].Dispatcher;
+                //document.getElementById('lbldcType').innerHTML = msg[0].dctype;
+                document.getElementById('spnfromname').innerHTML = msg[0].Title;
+                document.getElementById('lbl_companymobno').innerHTML = msg[0].companyphone;
+                document.getElementById('lbl_companyemail').innerHTML = msg[0].companyemail;
+                document.getElementById('lblsignname').innerHTML = msg[0].Title;
+                if (msg[0].dispmode == "LOCAL" || msg[0].dispmode == "Staff" || msg[0].dispmode == "Free") {
+                    document.getElementById('lblpartyname').innerHTML = msg[0].partyname;
+                }
+                else {
+                    if (msg[0].dispmode == "AGENT") {
+                        document.getElementById('lblpartyname').innerHTML = msg[0].partyname;
+                        document.getElementById('span_toGSTIN').innerHTML = msg[0].togstin;
+                        document.getElementById('lblvendorphoneno').innerHTML = msg[0].phoneno;
+                        document.getElementById('spn_toaddress').innerHTML = msg[0].AgentAddress;
+                        document.getElementById('lblvendoremail').innerHTML = msg[0].email;
+                    }
+                    else {
+                        document.getElementById('lblpartyname').innerHTML = msg[0].partyname;
+                        document.getElementById('span_toGSTIN').innerHTML = msg[0].togstin;
+                        document.getElementById('lblvendorphoneno').innerHTML = msg[0].phoneno;
+                        document.getElementById('spn_toaddress').innerHTML = msg[0].AgentAddress;
+                        document.getElementById('lblvendoremail').innerHTML = msg[0].email;
+                    }
+                }
+            }
+        }
+        function GetDC_Products(refdcno) {
+            var data = refdcno.split(/_/);
+            var refno = data[0];
+            var Dispatchsno = data[1];
+            //var refno = refdcno;
+
+            //var Dispatchsno = $(thisid).parent().parent().children('.13').html();
+            //var Dispatchsno = dispsno;
+            var DcType = "Tax";
+            var data = { 'operation': 'GetDC_Products', 'refdcno': refno, 'DcType': DcType, 'Dispatchsno': Dispatchsno };
+            var s = function (msg) {
+                if (msg) {
+                    if (msg.length > 0) {
+                        fillDC_Products(msg);
+                    }
+                }
+                else {
+                }
+            };
+            var e = function (x, h, e) {
+            };
+            $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+            callHandler(data, s, e);
+        }
+        function fillDC_Products(msg) {
+            var TaxType = ""; //  document.getElementById('ddlTaxType').value;lblsignname
+            var lbldcType = "Tax";
+            var results = '<div  style="overflow:auto;"><table border="1" id="tbl_po_print" style="width: 100%;" class="table table-bordered table-hover dataTable no-footer">';
+            results += '<thead><tr style="background:antiquewhite;"><th value="#" colspan="1" style = "font-size: 12px;" rowspan="2">Sno</th><th value="Item Code" style = "font-size: 12px;" colspan="1" rowspan="2">Item Code</th><th style = "font-size: 12px;" value="Item Name" colspan="1" rowspan="2">Item Description</th><th style = "font-size: 12px;" value="HSN CODE" colspan="1" rowspan="2">HSN CODE</th><th value="UOM" style = "font-size: 12px;" colspan="1" rowspan="2">UOM</th><th value="Qty" style = "font-size: 12px;" colspan="1" rowspan="2">Qty</th><th value="Rate/Item (Rs.)" style = "font-size: 12px;" colspan="1" rowspan="2">Rate/Item (Rs.)</th><th value="Discount (Rs.)" style = "font-size: 12px;" colspan="1" rowspan="2">Discount (Rs.)</th><th value="Taxable Value" style = "font-size: 12px;" colspan="1" rowspan="2">Taxable Value</th><th value="CGST" style = "font-size: 12px;" colspan="2" rowspan="1">SGST</th><th value="SGST" colspan="2" style = "font-size: 12px;" rowspan="1">CGST</th><th value="IGST" style = "font-size: 12px;" colspan="2" rowspan="1">IGST</th><th value="Taxable Value" style = "font-size: 12px;" colspan="1" rowspan="2">Total Amount</th></tr><tr style="background:antiquewhite;"><th value="%" style = "font-size: 12px;" colspan="1" rowspan="1">%</th><th style = "font-size: 12px;" value="Amt (Rs.)" colspan="1" rowspan="1">Amt (Rs.)</th><th value="%" style = "font-size: 12px;" colspan="1" rowspan="1">%</th><th style = "font-size: 12px;" value="Amt (Rs.)" colspan="1" rowspan="1">Amt (Rs.)</th><th value="%" style = "font-size: 12px;" colspan="1" rowspan="1">%</th><th value="Amt (Rs.)" colspan="1" rowspan="1" style = "font-size: 12px;">Amt (Rs.)</th></tr></thead>';
+            var tot_taxablevalue = 0;
+            var tot_sgstamount = 0;
+            var tot_cgstamount = 0;
+            var tot_igstamount = 0;
+            var tot_totalamount = 0;
+            var tot_qty = 0;
+            for (var i = 0; i < msg.length; i++) {
+                var itemcode = msg[i].itemcode;
+                if (itemcode == "Inventory") {
+                }
+                else {
+                    results += '<tr style="font-size: 12px;">'
+                    results += '<td scope="row" class="1"  style="text-align:center;">' + msg[i].sno + '</td>';
+                    results += '<td scope="row" class="1"  style="text-align:center;">' + msg[i].itemcode + '</td>';
+                    results += '<td data-title="brandstatus" class="2">' + msg[i].ProductName + '</td>';
+                    results += '<td data-title="brandstatus" class="2">' + msg[i].hsncode + '</td>';
+                    results += '<td data-title="brandstatus" class="2">' + msg[i].uom + '</td>';
+                    results += '<td data-title="brandstatus" class="2">' + parseFloat(msg[i].qty).toFixed(2) + '</td>';
+                    results += '<td data-title="brandstatus" class="2">' + msg[i].rate + '</td>';
+                    results += '<td data-title="brandstatus" class="2">' + msg[i].discount + '</td>';
+                    results += '<td data-title="brandstatus" class="2">' + parseFloat(msg[i].taxablevalue).toFixed(2) + '</td>';
+                    tot_qty += parseFloat(msg[i].qty);
+                    tot_taxablevalue += parseFloat(msg[i].taxablevalue);
+                    tot_sgstamount += parseFloat(msg[i].sgstamount);
+                    tot_cgstamount += parseFloat(msg[i].cgstamount);
+                    tot_igstamount += parseFloat(msg[i].igstamount);
+                    tot_totalamount += parseFloat(msg[i].totalamount);
+                    results += '<td data-title="brandstatus" class="2">' + msg[i].sgst + '</td>';
+                    results += '<td data-title="brandstatus" class="2">' + parseFloat(msg[i].sgstamount).toFixed(2) + '</td>';
+                    results += '<td data-title="brandstatus" class="2">' + msg[i].cgst + '</td>';
+                    results += '<td data-title="brandstatus" class="2">' + parseFloat(msg[i].cgstamount).toFixed(2) + '</td>';
+                    results += '<td data-title="brandstatus" class="2">' + msg[i].igst + '</td>';
+                    results += '<td data-title="brandstatus" class="2">' + parseFloat(msg[i].igstamount).toFixed(2) + '</td>';
+                    var total = 0;
+                    results += '<td data-title="brandstatus" class="2">' + parseFloat(msg[i].totalamount).toFixed(2) + '</td></tr>';
+                }
+            }
+            var Total = "Total";
+            results += '<tr>';
+            results += '<td style = "font-size: 12px;text-align:center;background:antiquewhite;" colspan="5"><label>' + Total + '</label></td>';
+            results += '<td style = "font-size: 12px;text-align:center;"><label>' + parseFloat(tot_qty).toFixed(2) + '</label></td>';
+            results += '<td style = "font-size: 12px;text-align:center;background:antiquewhite;" colspan="2"><label></label></td>';
+            results += '<td style = "font-size: 12px;text-align:center;"><label>' + parseFloat(tot_taxablevalue).toFixed(2) + '</label></td>';
+            results += '<td colspan="2" style="text-align:center;font-size: 12px;"><label>' + parseFloat(tot_sgstamount).toFixed(2) + '</label></td>';
+            results += '<td colspan="2" style="text-align:center;font-size: 12px;"><label>' + parseFloat(tot_cgstamount).toFixed(2) + '</label></td>';
+            results += '<td colspan="2" style="text-align:center;font-size: 12px;"><label>' + parseFloat(tot_igstamount).toFixed(2) + '</label></td>';
+            results += '<td style="font-size: 12px;"><label>' + Math.round(tot_totalamount) + '</label></td>';
+            var invname = "Inventory Details";
+            results += '<tr >'
+            results += '<td data-title="brandstatus" class="2"></td>';
+            results += '<td scope="row" class="1" colspan="14" style="text-align:left;font-size: 14px;"><label>' + invname + '</label></td></tr>';
+            for (var i = 0; i < msg.length; i++) {
+                var itemcode = msg[i].itemcode;
+                if (itemcode == "Inventory") {
+                    results += '<tr style="font-size: 12px;">'
+                    results += '<td data-title="brandstatus" class="2"></td>';
+                    results += '<td data-title="brandstatus" class="2"></td>';
+                    results += '<td data-title="brandstatus" class="2">' + msg[i].ProductName + '</td>';
+                    results += '<td data-title="brandstatus" class="2">' + msg[i].qty + '</td>';
+                    results += '<td data-title="brandstatus" colspan="12" class="2"></td></tr>';
+                }
+            }
+            results += '</tr></table></div>';
+            results += '</table></div>';
+            $("#div_itemdetails1").html(results);
+            var roundoff = Math.round(tot_totalamount);
+            document.getElementById('recevied').innerHTML = toWords(parseInt(roundoff)) + " only/-";
+        }
+        var th = ['', 'thousand', 'million', 'billion', 'trillion'];
+
+        var dg = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+
+        var tn = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+
+        var tw = ['Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+        function toWords(s) {
+            s = s.toString();
+            s = s.replace(/[\, ]/g, '');
+            if (s != parseFloat(s)) return 'not a number';
+            var x = s.indexOf('.');
+            if (x == -1) x = s.length;
+            if (x > 15) return 'too big';
+            var n = s.split('');
+            var str = '';
+            var sk = 0;
+            for (var i = 0; i < x; i++) {
+                if ((x - i) % 3 == 2) {
+                    if (n[i] == '1') {
+                        str += tn[Number(n[i + 1])] + ' ';
+                        i++;
+                        sk = 1;
+                    } else if (n[i] != 0) {
+                        str += tw[n[i] - 2] + ' ';
+                        sk = 1;
+                    }
+                } else if (n[i] != 0) {
+                    str += dg[n[i]] + ' ';
+                    if ((x - i) % 3 == 0) str += 'hundred ';
+                    sk = 1;
+                }
+                if ((x - i) % 3 == 1) {
+                    if (sk) str += th[(x - i - 1) / 3] + ' ';
+                    sk = 0;
+                }
+            }
+            if (x != s.length) {
+                var y = s.length;
+                str += 'point ';
+                for (var i = x + 1; i < y; i++) str += dg[n[i]] + ' ';
+            }
+            return str.replace(/\s+/g, ' ');
+
+        }
+
+
+
+
         function callHandler(d, s, e) {
             $.ajax({
                 url: 'DairyFleet.axd',
@@ -615,6 +878,14 @@
                     <div>
                         <table>
                             <tr>
+                                <td>Type
+                            </td>
+                            <td>
+                                <select id="ddltype" class="form-control">
+                                    <option value="invoice">Invoice</option>
+                                    <option value="dc">DC</option>
+                                </select>
+                            </td>
                                 <td class="divsalesOffice" style="display: none;">
                                     <select id="ddlsalesOffice" class="form-control">
                                     </select>
