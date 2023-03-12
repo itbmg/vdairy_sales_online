@@ -210,6 +210,12 @@ public partial class OfferIndent : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@indenttype", routeitype);
             DataTable dtble = vdm.SelectQuery(cmd).Tables[0];
 
+
+            cmd = new MySqlCommand("SELECT modifiedroutes.RouteName, branchdata.sno AS BSno, branchdata.BranchName, ROUND(SUM(offer_indents_sub.offer_indent_qty), 2) AS DeliveryQty, ROUND(SUM(offer_indents_sub.offer_indent_qty * offer_indents_sub.unit_price), 2) AS SaleValue, offer_indents_sub.unit_price, productsdata.sno, productsdata.ProductName, products_category.Categoryname, brnchprdt.Rank FROM offer_indents_sub INNER JOIN (SELECT idoffer_indents, idoffers_assignment, salesoffice_id, route_id, agent_id, indent_date, indents_id, IndentType, I_modified_by FROM offer_indents WHERE (indent_date BETWEEN @starttime AND @endtime) AND (IndentType = @indenttype)) offerindents ON offer_indents_sub.idoffer_indents = offerindents.idoffer_indents INNER JOIN productsdata ON offer_indents_sub.product_id = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN (SELECT branch_sno, product_sno, unitprice, flag, Rank FROM branchproducts WHERE (branch_sno = @BranchID)) brnchprdt ON productsdata.sno = brnchprdt.product_sno RIGHT OUTER JOIN modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno ON offerindents.agent_id = branchdata.sno WHERE (modifiedroutes.Sno = @RouteID) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @endtime) OR (modifiedroutes.Sno = @RouteID) AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) GROUP BY branchdata.sno, productsdata.sno ORDER BY brnchprdt.Rank");
+            cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate));
+            cmd.Parameters.AddWithValue("@endtime", GetHighDate(todate));
+
+
             if (dtble.Rows.Count > 0)
             {
                 DataView view = new DataView(dtble);

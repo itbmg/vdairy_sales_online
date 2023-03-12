@@ -212,7 +212,7 @@
                     else {
                         results += '<td data-title="brandstatus"  class="11">' + status + '</td>';
                         results += '<td data-title="brandstatus"><button  type="button" title="Click Here To Generate Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="GenerateEinvoice(this)"><i class="fa fa-file-text"></i></button></td>';
-                        results += '<td data-title="brandstatus"><button type="button"  title="Click Here To View Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_DC_Einvoice_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
+                        results += '<td data-title="brandstatus"><button type="button" disabled="true" title="Click Here To View Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_DC_Einvoice_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
                     } 
                 }
                 else {
