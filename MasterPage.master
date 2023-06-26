@@ -700,10 +700,10 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                 <li id="li31"><a href="HeadOfAcMaster.aspx">Head Of Accounts</a></li>
                                
                                 <li id="Helpermaster" style="display: none;"><a href="Helpermaster.aspx">Helper Master</a></li>
-                                <li id="liproductclubbing" style="display: none;"><a href="ProductClubbing.aspx">Product Clubbing</a></li>
-                                <li id="liincentivestructure" style="display: none;" ><a href="incentivestructure.aspx">
+                                <li id="liproductclubbing"><a href="ProductClubbing.aspx">Product Clubbing</a></li>
+                                <li id="liincentivestructure" ><a href="incentivestructure.aspx">
                                     Incentive Structure</a></li>
-                                <li id="li178" class="more" style="min-height: 25px;display: none;"><a href="#">Incentive Master</a>
+                                <li id="li178" class="more" style="min-height: 25px;"><a href="#">Incentive Master</a>
                                     <div class="drop3">
                                         <ul id="ul23">
                                             <li id="li179"><a href="generalincentivestructure.aspx">General Incentive Management</a></li>
@@ -730,7 +730,6 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                   <li id="lisales"><a href="SalesTypeManagement.aspx">Sales Type Master</a></li>
                                  <li id="liAddress"><a href="AddressMaster.aspx">Mini Master</a></li>
                                 <li id="liinventory"><a href="IventoryManagement.aspx">Inventory Master</a></li>
-                                     
                             </ul>
                         </div>
                     </li>
