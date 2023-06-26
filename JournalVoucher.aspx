@@ -432,7 +432,9 @@
 //            var ddlPaymentType = document.getElementById('ddlPaymentType').value;
             var ddltransactiontype = document.getElementById('ddltransactiontype').value;
             var PaidDate = document.getElementById('datepicker').value;
-            ddlPaymentType = "Journal Voucher"
+            ddlPaymentType = "Journal Voucher";
+            collectiontype = "Journal Voucher";
+            chequeDate = "";
             txtChequeNo = document.getElementById('txtChequeNo').value;
             if (txtChequeNo == "") {
                 alert("Enter Journal Voucher");
@@ -441,7 +443,7 @@
             var Head = document.getElementById("combobox");
             HeadSno = Head.options[Head.selectedIndex].value;
             var HeadOfAccount = Head.options[Head.selectedIndex].text;
-            var data = { 'operation': 'btnCollectionAmountClick', 'HeadSno': HeadSno, 'BranchID': ddlAgentName, 'Amount': AmountReceived, 'Remarks': Remarks, 'PaymentType': ddlPaymentType, 'PaidDate': PaidDate, 'ChequeNo': txtChequeNo, 'ddltransactiontype': ddltransactiontype, 'soid': soid };
+            var data = { 'operation': 'BtnCashAmountClick', 'HeadSno': HeadSno, 'BranchID': ddlAgentName, 'Amount': AmountReceived, 'Remarks': Remarks, 'PaymentType': ddlPaymentType, 'PaidDate': PaidDate, 'ChequeNo': txtChequeNo, 'ddltransactiontype': ddltransactiontype, 'soid': soid, 'collectiontype': collectiontype, 'chequeDate': chequeDate };
             var s = function (msg) {
                 if (msg) {
                     alert(msg);

@@ -21,8 +21,7 @@
     <div>
         <asp:UpdateProgress ID="updateProgress1" runat="server">
             <ProgressTemplate>
-                <div style="position: fixed; text-align: center; height: 100%; width: 100%; top: 0;
-                    right: 0; left: 0; z-index: 9999; background-color: #FFFFFF; opacity: 0.7;">
+                <div style="position: fixed; text-align: center; height: 100%; width: 100%; top: 0; right: 0; left: 0; z-index: 9999; background-color: #FFFFFF; opacity: 0.7;">
                     <asp:Image ID="imgUpdateProgress" runat="server" ImageUrl="thumbnails/loading.gif"
                         Style="padding: 10px; position: absolute; top: 40%; left: 40%; z-index: 99999;" />
                 </div>
@@ -30,8 +29,7 @@
         </asp:UpdateProgress>
     </div>
     <section class="content-header">
-        <h1>
-            Rate Master<small>Preview</small>
+        <h1>Rate Master<small>Preview</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i>Operations</a></li>
@@ -48,38 +46,41 @@
             <div class="box-body">
                 <table style="width: 100%;">
                     <tr>
-                         <td>
-                                    <asp:Panel ID="PBranch" runat="server">
-                                        <asp:DropDownList ID="ddlSalesOffice" runat="server" CssClass="form-control">
-                                        </asp:DropDownList>
-                                    </asp:Panel>
-                                </td>
-                                <td style="width: 5px;">
-                                </td>
-                         <td>
-                        <asp:Label ID="lblctxtdat" runat="server">Date:</asp:Label>
-                    </td>
-                    <td>
-                    </td>
-                    <td style="float: left; width: 20%;">
-                        <asp:TextBox ID="txtdate" runat="server" Width="205px" CssClass="inputText"></asp:TextBox>
-                        <asp:CalendarExtender ID="enddate_CalendarExtender" runat="server" Enabled="True"
-                            TargetControlID="txtdate" Format="dd-MM-yyyy HH:mm">
-                        </asp:CalendarExtender>
-                    </td>
+                        <td>
+                            <asp:Panel ID="PBranch" runat="server">
+                                <asp:DropDownList ID="ddlSalesOffice" runat="server" CssClass="form-control">
+                                </asp:DropDownList>
+                            </asp:Panel>
+                        </td>
+                        <td style="width: 5px;"></td>
+                        <td>
+                            <asp:Label ID="lblctxtdat" runat="server">Date:</asp:Label>
+                        </td>
+                        <td></td>
+                        <td style="width: 5px;"></td>
+                        <td>
+                            <asp:TextBox ID="txtFromdate" runat="server" Width="205px" CssClass="form-control"></asp:TextBox>
+                            <asp:CalendarExtender ID="enddate_CalendarExtender" runat="server" Enabled="True"
+                                TargetControlID="txtFromdate" Format="dd-MM-yyyy HH:mm">
+                            </asp:CalendarExtender>
+                        </td>
+                        <td style="width: 5px;"></td>
+                        <td>
+                            <asp:TextBox ID="txtTodate" runat="server" Width="205px" CssClass="form-control"></asp:TextBox>
+                            <asp:CalendarExtender ID="CalendarExtender1" runat="server" Enabled="True" TargetControlID="txtTodate"
+                                Format="dd-MM-yyyy HH:mm">
+                            </asp:CalendarExtender>
+                        </td>
                         <td style="float: left; width: 20%;">
                             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                                 <ContentTemplate>
                                     <asp:Button ID="btnGenerate" Text="Generate" runat="server" CssClass="btn btn-primary"
-                                        OnClick="btnGenerate_Click" /></ContentTemplate>
+                                        OnClick="btnGenerate_Click" />
+                                </ContentTemplate>
                             </asp:UpdatePanel>
                         </td>
-                        <td style="float: right;">
-                            <asp:Button ID="Button3" Text="Export To Excel" runat="server" CssClass="btn btn-primary"
-                                OnClick="btn_Export_Click" />
-                        </td>
-                         <td style="width:5px;">
-                        </td>
+                       
+                        <td style="width: 5px;"></td>
                         <td style="width: 40%;">
                             <asp:FileUpload ID="FileUploadToServer" runat="server" Style="height: 25px; font-size: 16px;" />&nbsp;&nbsp;
                         </td>
@@ -113,15 +114,17 @@
                         <table align="center">
                             <tr>
                                 <td align="center">
-                                    <asp:Button ID="BtnSave" Text="Save"  runat="server" CssClass="btn btn-primary"
+                                    <asp:Button ID="BtnSave" Text="Save" runat="server" Visible="false" CssClass="btn btn-primary"
                                         OnClick="btn_WIDB_Click" />
                                 </td>
                             </tr>
                         </table>
                         <br />
-                        <asp:Button ID="btnPrint" CssClass="btn btn-primary" Text="Print" OnClientClick="javascript:CallPrint('divPrint');"
+                        <asp:Button ID="btnPrint" CssClass="btn btn-primary" Text="Print"  OnClientClick="javascript:CallPrint('divPrint');"
                             runat="Server" />
                         <asp:Label ID="lblmsg" runat="server" ForeColor="Red" Text="" Font-Size="20px"></asp:Label>
+                            <asp:Button ID="Button3" Text="Export To Excel" runat="server" Visible="false" CssClass="btn btn-primary"
+                                OnClick="btn_Export_Click" />
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </div>

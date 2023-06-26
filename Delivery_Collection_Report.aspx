@@ -72,6 +72,14 @@
                     <ContentTemplate>
                         <table>
                             <tr>
+                                 <td>
+                                    <asp:Label ID="labeltype" runat="server">AgentWise</asp:Label>
+                                     </td>
+                                <td>
+                                <asp:CheckBox ID="chkReport" runat="server" CssClass="form-control" AutoPostBack="True"></asp:CheckBox>
+                                </td>
+                                 <td style="width: 5px;">
+                                </td>
                                 <td>
                                     <asp:Panel ID="PPlant" runat="server" Visible="false">
                                         <asp:DropDownList ID="ddlPlant" runat="server" CssClass="form-control" AutoPostBack="True"

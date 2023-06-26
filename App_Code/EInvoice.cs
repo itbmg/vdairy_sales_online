@@ -183,7 +183,7 @@ public class EInvoice
         public EwbDtls EwbDtls { get; set; }
     }
 
-    
+
     public class SellerDtls
     {
         public string Gstin { get; set; }
@@ -234,5 +234,78 @@ public class EInvoice
         public double TotInvValFc { get; set; }
     }
 
+    public double ConvertingLtrs(string qty, string uomqty, string rate)
+    {
+        //double[] ltrQty_ltrRate = new double[2];
+        double givenqty = 0;
+        double.TryParse(qty, out givenqty);
+        double givenrate = 0;
+        double.TryParse(rate, out givenrate);
+        double givenuomqty = 0;
+        double.TryParse(uomqty, out givenuomqty);
 
+        //double perltrCost = 0;
+        //perltrCost = (1000 / givenuomqty) * givenrate;
+        //perltrCost = Math.Round(perltrCost, 2);
+
+        double ltrqty = 0;
+        ltrqty = givenqty * givenuomqty / 1000;
+
+        //ltrQty_ltrRate[0] = ltrqty;
+        return ltrqty;
+    }
+    public double Converting_Ltr_rate(string qty, string uomqty, string rate)
+    {
+        double givenqty = 0;
+        double.TryParse(qty, out givenqty);
+        double givenrate = 0;
+        double.TryParse(rate, out givenrate);
+        double givenuomqty = 0;
+        double.TryParse(uomqty, out givenuomqty);
+
+        double perltrCost = 0;
+        perltrCost = (1000 / givenuomqty) * givenrate;
+        perltrCost = Math.Round(perltrCost, 2);
+        return perltrCost;
+    }
+    public double ConvertingPackets(string qty, string uomqty, string rate)
+    {
+        double givenqty = 0;
+        double.TryParse(qty, out givenqty);
+        double givenrate = 0;
+        double.TryParse(rate, out givenrate);
+        double givenuomqty = 0;
+        double.TryParse(uomqty, out givenuomqty);
+
+
+
+        //double pktrate = 0;
+        //pktrate = (givenrate * givenuomqty) / 1000;
+        //pktrate = Math.Round(pktrate, 2);
+
+        double pktqty = 0;
+        pktqty = givenqty * 1000 / givenuomqty;
+        pktqty = Math.Round(pktqty, 2);
+
+        //PktQty_pktRate[0] = pktqty;
+        //PktQty_pktRate[1] = pktrate;
+        return pktqty;
+    }
+
+    public double Converting_Packet_rate(string qty, string uomqty, string rate)
+    {
+        double givenqty = 0;
+        double.TryParse(qty, out givenqty);
+        double givenrate = 0;
+        double.TryParse(rate, out givenrate);
+        double givenuomqty = 0;
+        double.TryParse(uomqty, out givenuomqty);
+
+
+        double pktrate = 0;
+        pktrate = (givenrate * givenuomqty) / 1000;
+        pktrate = Math.Round(pktrate, 2);
+        return pktrate;
+    }
+   
 }

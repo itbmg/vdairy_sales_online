@@ -411,21 +411,21 @@ public partial class Order_Report : System.Web.UI.Page
 
                         if (dr["Categoryname"].ToString() == "MILK")
                         {
-                            double.TryParse(dr["uomqty"].ToString(), out uom);
-                            double milkqty = totindqty * uom / 1000;
-                            milktotal += milkqty;
+                            //double.TryParse(dr["uomqty"].ToString(), out uom);
+                            //double milkqty = totindqty * uom / 1000;
+                            milktotal += totindqty;
 
                         }
                         if (dr["Categoryname"].ToString() == "CURD" || dr["Categoryname"].ToString() == "Curd Buckets" || dr["Categoryname"].ToString() == "Curd Cups" || dr["Categoryname"].ToString() == "ButterMilk")
                         {
-                            double.TryParse(dr["uomqty"].ToString(), out uom);
-                            double curdqty = totindqty * uom / 1000;
-                            curdtotal += curdqty;
+                            //double.TryParse(dr["uomqty"].ToString(), out uom);
+                            //double curdqty = totindqty * uom / 1000;
+                            curdtotal += totindqty;
                         }
                     }
                     newrow["Total Milk"] = milktotal;
                     newrow["Total Curd"] = curdtotal;
-                    newrow["Total Indent"] = total;
+                    newrow["Total Indent"] = milktotal+ curdtotal;
                     Report.Rows.Add(newrow);
                     i++;
                 }

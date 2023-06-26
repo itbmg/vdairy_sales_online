@@ -12,71 +12,109 @@
                             </td>
                         </tr>-->
             <tr>
-                <td style="width: 20%; height: 20px; color: #2f3293; font-size: 12px; font-weight: bold;
+                <td style="width: 12%; height: 20px; color: #2f3293; font-size: 12px; font-weight: bold;
                     text-align: center;">
                     Indent No
                     <br />
                 </td>
-                <td style="width: 20%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                <td style="width: 12%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
                     color: #2f3293;">
                     Product Name
                     <br />
                 </td>
-                <td style="width: 20%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                <td style="width: 12%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
                     color: #2f3293;">
                     Ind Qty
                     <br />
                 </td>
-                <td style="width: 20%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+
+                <td style="width: 12%;text-align: center; height: 20px; font-size: 18px; font-weight: bold;
+                    color: #2f3293;">
+                    <b> Qty(Pkts)</b>
+                    <br />
+                </td>
+                <td style="width: 12%;text-align: center; height: 20px; font-size: 18px; font-weight: bold;
+                    color: #2f3293;">
+                    <b> Tubs</b>
+                    <br />
+                </td>
+                <td style="width: 12%; text-align: center; height: 20px; font-size: 18px; font-weight: bold;
+                    color: #2f3293; padding: 0px 0px 0px 2%;">
+                    <b>  Qty(Ltrs/kgs)</b>
+                    <br />
+                </td>
+                <td style="width: 12%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
                     color: #2f3293;">
                     Rate
                     <br />
                 </td>
-                <td style="width: 20%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+                <td style="width: 12%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
                     color: #2f3293;">
-                    Del Qty
+                    Total
                     <br />
                 </td>
+                <!--<td style="width: 20%; text-align: center; height: 20px; font-size: 12px; font-weight: bold;
+        color: #2f3293;">
+        Del Qty
+        <br />
+    </td>-->
 
             </tr>
         </thead>
         <tbody>
             {#foreach $T as data}
             <tr class="tblrowcolor">
-                <td style="width: 20%; height: 30px; vertical-align: middle; font-size: 12px; font-weight: 500;
+                <td style="width: 12%; height: 30px; vertical-align: middle; font-size: 12px; font-weight: 500;
                     text-align: center; padding: 0px 0px 0px 3px">
                     <span id="txtIndentNo" style="font-size: 15px; color: Red;"><b>{ $T.data.IndentNo }</span>
                 </td>
-                <td style="width: 20%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
+                <td style="width: 12%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
                     color: Gray;">
                     <span id="txtProductName" style="font-size: 15px; color: Red;" class="ProductClass"><b>{ $T.data.ProductName }</b></span>
                     <input type="hidden" id="hdnProductSno" value="{ $T.data.Product_sno }" />
 
                 </td>
-                <td style="width: 20%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                <td style="width: 12%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
                     color: Gray;" align="center">
-                    <span id="txtunitQty" style="font-size: 15px; color: Red;"><b>{ $T.data.unitQty }</b></span>
-
+                    <span id="SpnPkts_UnitQty" style="font-size: 15px; color: Red;"><b>{ $T.data.pkt_qty }</b></span>
                 </td>
-                <td style="width: 20%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                <!------------<td style="width: 20%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+        color: Gray;" align="center">
+        <input type="number" id="txtDeliveryQty" value="{ $T.data.DeliveryQty }" style="width: 80%; height: 34px; font-size: 16px;
+            border: 1px solid gray; border-radius: 6px 6px 6px 6px;" placeholder="Enter Del Qty" />
+    </td>---------->
+                <td style="width: 12%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
                     color: Gray;" align="center">
-                    <input type="number" id="txtUnitCost" value="{ $T.data.UnitCost }" style="width: 80%; height: 34px; font-size: 16px;
-                        border: 1px solid gray; border-radius: 6px 6px 6px 6px;" placeholder="Enter Del Qty" />
-                    <!--<span id="txtUnitCost" style="font-size: 15px; color: Red;"  ><b>{ $T.data.UnitCost }</b></span>-->
-
+                    <input type="number" id="txtPkts_Dqty" value="{ $T.data.pkt_dqty }" onkeyup="OrderPktQtyChange(this);" class="Unitqtyclass" style="width:100%;height:34px;border:1px solid gray; border-radius:6px 6px 6px 6px;font-size:16px;" placeholder="Enter { $T.data.Units }" />
+                    <input type="hidden" id="hdnPkt_UnitQty" value="{ $T.data.pkt_qty }" class="pkt_qtyclass" style="width:100%;height:34px;border:1px solid gray; border-radius:6px 6px 6px 6px;font-size:16px;" placeholder="Enter { $T.data.Units }" />
                 </td>
-                <td style="width: 20%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                <td style="width: 12%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
                     color: Gray;" align="center">
-                    <input type="number" id="txtDeliveryQty" value="{ $T.data.DeliveryQty }" style="width: 80%; height: 34px; font-size: 16px;
-                        border: 1px solid gray; border-radius: 6px 6px 6px 6px;" placeholder="Enter Del Qty" />
+                    <input type="number" id="txtTubQty" value="{ $T.data.tubQty }" onkeyup="OrderTubQtyChange(this);" class="Unittubqtyclass" style="width:100%;height:34px;border:1px solid gray; border-radius:6px 6px 6px 6px;font-size:16px;" placeholder="Enter Tubs" />
+                    <input type="hidden" id="hdnUnitQty" value="{ $T.data.Unitqty }" />
+                    <input type="hidden" id="hdnUnits" value="{ $T.data.Units }" />
+                    <input type="hidden" id="hdnQty" value="{ $T.data.invqty }" />
+                    <input type="hidden" id="hdninvQty" value="{ $T.data.invqty }" />
+                </td>
+                <td style="width: 12%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center; color: Gray;" align="center">
+
+                    <span style="width: 100%; font-size: 16px; color: Black; font-weight: bold;" ID="txtLtrQty"><b>{ $T.data.ltr_Qty }</b></span>
+                    <input type="hidden" id="hdnltr_Unitqty" value="{ $T.data.ltr_UnitQty }" />
+                    <!--<input type="number" id="txtUnitQty" value="{ $T.data.orderunitqty }" onkeyup="OrderUnitChange(this);" class="Unitqtyclass"   style="width:100%;height:34px;border:1px solid gray; border-radius:6px 6px 6px 6px;font-size:16px;" placeholder="Enter { $T.data.Units }" />-->
+                </td>
+                <td style="width: 12%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <span id="txtPkt_rate" style="font-size: 15px; color: Red;"><b>{ $T.data.pkt_rate }</b></span>
+
+                    <!--<span id="txtPkt_rate" value="{ $T.data.pkt_rate }" style="width: 80%; height: 34px; font-size: 16px;
+        border: 1px solid gray; border-radius: 6px 6px 6px 6px;" placeholder="Enter Pkt Rate" />-->
+                    <span id="txtLtr_rate" style="display:none; font-size: 15px; color: Red;"><b>{ $T.data.Ltr_rate }</b></span>
+                </td>
+                <td style="width: 12%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
+                    color: Gray;" align="center">
+                    <span id="txtTotal_Value" class="clsTotal" style="font-size: 15px; color: Red; font-weight: bold;"><b>{ $T.data.Total }</b></span>
                 </td>
 
-                <td>
-                </td>
-                <!--<td>
-                        <input type="button" id="Button2" value="Refresh" onclick="btnPlantTripRefreshClick();" style="width:100px;height:24px;font-size:14px;" class="ContinueButton"/>
-                    </td>
-                -->
             </tr>
             {#/for}
             <tr>
@@ -91,32 +129,50 @@
 
                 <td style="width: 14%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
                     color: Gray;">
+                    <span style="font-size: 18px; color: Blue;font-weight:bold;">Total:</span>
                 </td>
                 <td style="width: 14%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
                     color: Gray;display:none;">
                 </td>
                 <td style="width: 14%; height: 30px;  vertical-align: middle; text-align: center;
                     color: Gray;" align="center">
-                    <span style="font-size: 18px; color: Blue;font-weight:bold;">Total:</span>
+                    <span style="font-size: 16px; color: Red;font-weight:bold;" id="txt_TotalPkts"></span>
                 </td>
                 <td style="width: 14%; font-size: 11px; height: 30px; color: Gray; vertical-align: middle;
                     text-align: center;" align="center">
-                    <span style="font-size: 16px; color: Red;font-weight:bold;" id="txt_RetunQty"></span>
+                </td>
+                <td style="width: 14%; font-size: 11px; height: 30px; color: Gray; vertical-align: middle;
+                    text-align: center;" align="center">
+                </td>
+                <td style="width: 14%; font-size: 11px; height: 30px; color: Gray; vertical-align: middle;
+                    text-align: center;" align="center">
+                </td>
+                <td style="width: 14%; font-size: 11px; height: 30px; color: Gray; vertical-align: middle;
+                    text-align: center;" align="center">
+                    <span style="font-size: 16px; color: Red;font-weight:bold;" id="txt_TotalAmount"></span>
                 </td>
                 <!--  <td style="width: 20%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
-                      color: Gray;">
-                      <span style="font-size: 14px; color: Red;font-weight:bold;" id="txt_ExtraQty"></span>
-                  </td>-->
+        color: Gray;">
+        <span style="font-size: 14px; color: Red;font-weight:bold;" id="txt_ExtraQty"></span>
+    </td>-->
             </tr>
         </tbody>
     </table>
-    <table style="width: 100%; height: 16%;padding-left:40%;" align="center">
+    <div align="center">
+        <span style="color: Red; font-size: 18px;font-weight:bold;"><b>Inventory</b></span>
+    </div>
+
+    <div align="center">
+        <span style="color: Red; font-size: 18px; font-weight: bold;"><b>Inventory Collection</b></span>
+    </div>
+
+    <!--<table style="width: 100%; height: 16%;padding-left:40%;" align="center">
         <tr>
             <td>
                 <input type="button" id="Button1" value="Update" onclick="btnEditIndentSaveClick();" class="btn btn-primary" />
             </td>
-        </tr>
-    </table>
+            </tr>
+    </table>-->
     <div id="divDeliveryProducts" class="pickupclass" style="text-align: center; height: 100%;
         width: 100%; position: absolute; display: none; left: 0%; top: 0%; z-index: 99999;
         background: rgba(192, 192, 192, 0.7);">

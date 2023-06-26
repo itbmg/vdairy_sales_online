@@ -359,23 +359,23 @@ public partial class Report : System.Web.UI.Page
                                 if (dr["Categoryname"].ToString() == "MILK")
                                 {
                                     double.TryParse(drindt["unitQty"].ToString(), out qtyvalue);
-                                    double.TryParse(drindt["uomqty"].ToString(), out uom);
-                                    double milkqty = qtyvalue * uom / 1000;
-                                    total += milkqty;
+                                    //double.TryParse(drindt["uomqty"].ToString(), out uom);
+                                    //double milkqty = qtyvalue * uom / 1000;
+                                    total += qtyvalue;
                                 }
                                 if (dr["Categoryname"].ToString() == "CURD" || dr["Categoryname"].ToString() == "Curd Cups" || dr["Categoryname"].ToString() == "Curd Buckets")
                                 {
                                     double.TryParse(drindt["unitQty"].ToString(), out curdqtyvalue);
-                                    double.TryParse(drindt["uomqty"].ToString(), out uom);
-                                    double curdqty = curdqtyvalue * uom / 1000;
-                                    totalcurd += curdqty;
+                                    //double.TryParse(drindt["uomqty"].ToString(), out uom);
+                                    //double curdqty = curdqtyvalue * uom / 1000;
+                                    totalcurd += curdqtyvalue;
                                 }
                                 if (dr["Categoryname"].ToString() == "ButterMilk")
                                 {
                                     double.TryParse(drindt["unitQty"].ToString(), out BMqtyvalue);
-                                    double.TryParse(drindt["uomqty"].ToString(), out uom);
-                                    double buttermilkqty = BMqtyvalue * uom / 1000;
-                                    totalbuttermilk += buttermilkqty;
+                                    //double.TryParse(drindt["uomqty"].ToString(), out uom);
+                                    //double buttermilkqty = BMqtyvalue * uom / 1000;
+                                    totalbuttermilk += BMqtyvalue;
                                 }
                             }
                             foreach (DataRow droffer in dt_offertble.Select("ProductName='" + dr["ProductName"].ToString() + "' AND RouteName='" + branch["RouteName"].ToString() + "'"))

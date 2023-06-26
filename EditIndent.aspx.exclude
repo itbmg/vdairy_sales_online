@@ -1,6 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="NewEditLeaks.aspx.cs" Inherits="NewEditLeaks" %>
-
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
+    CodeFile="EditIndent.aspx.cs" Inherits="EditIndent" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <script src="js/jquery-1.4.4.js" type="text/javascript"></script>
     <script src="Js/JTemplate.js?v=3000" type="text/javascript"></script>
     <script src="js/jquery.blockUI.js?v=3005" type="text/javascript"></script>
@@ -41,8 +41,8 @@
         $(function () {
             //FillRoutes();
             FillSalesOffice();
-
-            $("#datepicker").datepicker({ dateFormat: 'yy-mm-dd', numberOfMonths: 1, showButtonPanel: false, maxDate: '+13M +0D',
+            $("#datepicker").datepicker({
+                dateFormat: 'yy-mm-dd', numberOfMonths: 1, showButtonPanel: false, maxDate: '+13M +0D',
                 onSelect: function (selectedDate) {
                     GetEditIndentValues();
                 }
@@ -92,27 +92,24 @@
             }
         }
         function ddlSalesOfficeChange(ID) {
-            ddl_loaddata();
-            //var BranchID = ID.value;
-            //var data = { 'operation': 'GetDespatches', 'BranchID': BranchID };
-            //var s = function (msg) {
-            //    if (msg) {
-            //        if (msg == "Session Expired") {
-            //            alert(msg);
-            //            window.location = "Login.aspx";
-            //        }
-            //        bindRoutes(msg);
-            //    }
-            //    else {
-            //    }
-            //};
-            //var e = function (x, h, e) {
-            //};
-            //$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
-            //callHandler(data, s, e);
+            var BranchID = ID.value;
+            var data = { 'operation': 'GetDespatches', 'BranchID': BranchID };
+            var s = function (msg) {
+                if (msg) {
+                    if (msg == "Session Expired") {
+                        alert(msg);
+                        window.location = "Login.aspx";
+                    }
+                    bindRoutes(msg);
+                }
+                else {
+                }
+            };
+            var e = function (x, h, e) {
+            };
+            $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+            callHandler(data, s, e);
         }
-        
-
         function FillRoutes() {
             var BranchID = document.getElementById('ddlSalesOffice').value;
             var data = { 'operation': 'GetDespatches', 'BranchID': BranchID };
@@ -151,11 +148,8 @@
                 if (msg) {
                     BindBranchName(msg);
                     $('#divFillScreen').removeTemplate();
-                    $('#divFillScreen').setTemplateURL('EditLeaksAndReturns3.htm');
+                    $('#divFillScreen').setTemplateURL('IndentEdit.htm');
                     $('#divFillScreen').processTemplate();
-                    $('#divInventory').removeTemplate();
-                    $('#divInventory').setTemplateURL('EditDcInventory1.htm');
-                    $('#divInventory').processTemplate();
                 }
                 else {
                 }
@@ -167,41 +161,6 @@
         }
         function ddlAgentNameChange() {
             GetEditIndentValues();
-        }
-        function ddl_loaddata() {
-            var BranchID = document.getElementById('ddlSalesOffice').value;
-            var EditType = document.getElementById('ddledittype').value;
-            if (EditType == "Sales Office") {
-                filldispatches();
-            }
-            if (EditType == "Routes") {
-                FillRoutes();
-            }
-        }
-        var EditType = "";
-        function ddlEdittypeChange(d) {
-            EditType = d.options[d.selectedIndex].text;
-            if (EditType == "Sales Office") {
-                filldispatches();
-            }
-            if (EditType == "Routes") {
-                FillRoutes();
-            }
-        }
-        function filldispatches() {
-            var BranchID = document.getElementById('ddlSalesOffice').value;
-            var data = { 'operation': 'GetPuffDespatches', 'BranchID': BranchID };
-            var s = function (msg) {
-                if (msg) {
-                    bindRoutes(msg);
-                }
-                else {
-                }
-            };
-            var e = function (x, h, e) {
-            };
-            $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
-            callHandler(data, s, e);
         }
         function BindBranchName(msg) {
             document.getElementById('ddlBranchName').options.length = "";
@@ -222,123 +181,6 @@
                     veh.appendChild(opt);
                 }
             }
-        }
-        function GetEditIndentValues() {
-            
-            var ddlSalesOffice = document.getElementById('ddlSalesOffice').value;
-            if (ddlSalesOffice == "select" || ddlSalesOffice == "select") {
-                alert("Please Select SalesOffice");
-                return false;
-            }
-            var ddlRouteName = document.getElementById('ddlRouteName').value;
-            if (ddlRouteName == "Select Route Name" || ddlRouteName == "") {
-                alert("Please Select Route Name");
-                return false;
-            }
-            var txtDate = document.getElementById('datepicker').value;
-            if (txtDate == "") {
-                alert("Please Select Date");
-                return false;
-            }
-            var ddledittype = document.getElementById('ddledittype').value;
-            if (ddledittype == "Select") {
-                alert("Select Edit Type");
-                return false;
-            }
-            
-            var data = { 'operation': 'GetEditLeaksReturnsClick', 'RouteID': ddlRouteName, 'soid': ddlSalesOffice, 'IndDate': txtDate, 'ddledittype': ddledittype };
-            var s = function (msg) {
-                if (msg) {
-                    $('#divFillScreen').removeTemplate();
-                    $('#divFillScreen').setTemplateURL('EditLeaksAndReturns3.htm');
-                    $('#divFillScreen').processTemplate(msg);
-                    geteditinventoryvalues();
-                }
-                else {
-                }
-            };
-            var e = function (x, h, e) {
-            };
-            $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
-            callHandler(data, s, e);
-        }
-        function geteditinventoryvalues() {
-            var ddlRouteName = document.getElementById('ddlRouteName').value;
-            if (ddlRouteName == "Select Route Name" || ddlRouteName == "") {
-                alert("Please Select Route Name");
-                return false;
-            }
-            var txtDate = document.getElementById('datepicker').value;
-            if (txtDate == "") {
-                alert("Please Select Date");
-                return false;
-            }
-            var ddledittype = document.getElementById('ddledittype').value;
-            if (ddledittype == "Select") {
-                alert("Select Edit Type");
-                return false;
-            }
-            var data = { 'operation': 'GetEditInventoryClick', 'RouteID': ddlRouteName, 'IndDate': txtDate, 'ddledittype': ddledittype };
-            var s = function (msg) {
-                if (msg) {
-
-                    $('#divInventory').removeTemplate();
-                    $('#divInventory').setTemplateURL('EditReturnDcInv.htm');
-                    $('#divInventory').processTemplate(msg);
-                }
-                else {
-                }
-            };
-            var e = function (x, h, e) {
-            };
-            $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
-            callHandler(data, s, e);
-        }
-        function btnEditLeaksReturnsClick(id) {
-            var txtDate = document.getElementById('datepicker').value;
-            if (txtDate == "") {
-                alert("Please Select Date");
-                return false;
-            }
-            var rows = $("#table_Indent_details tr:gt(0)");
-            var Indentdetails = new Array();
-            $(rows).each(function (i, obj) {
-               // if ($(this).find('#txtIndentNo').text() != "" && $(this).find('#hdnProductSno').text() != "") {
-                Indentdetails.push({ Tripid: $(this).find('#txtIndentNo').text(), EntryDate: $(this).find('#txtdate').text(), TableType: $(this).find('#hdntabletype').val(), Branch_id: $(this).find('#hdnbranchid').val(), Productsno: $(this).find('#hdnProductSno').val(), LeakQty: $(this).find('#txtleak').val(), PLQty: $(this).find('#hdnleak').val(), ShortQty: $(this).find('#txtShortQty').val(), PSQty: $(this).find('#hdnShortQty').val(), FreeQty: $(this).find('#txtfreeqty').val(), PFQty: $(this).find('#hdnfreeqty').val(), ReturnQty: $(this).find('#txtreturnqty').val(), PRQty: $(this).find('#hdnreturnqty').val() });
-               // }
-            });
-            var rows1 = $("#table_Returninventory_details tr:gt(0)");
-            var Inventorydetails = new Array();
-            $(rows1).each(function (i, obj) {
-                //                if ($(this).find('#txtproduct').val() != "") {
-                Inventorydetails.push({ Tripid: $(this).find('#hdntripid').val(),  InventorySno: $(this).find('#hdnProductSno').val(), Branchid: $(this).find('#hdnbranchid').val(), Qty: $(this).find('#txtInvQty').val(), PrevInvQty: $(this).find('#hdnprevqty').val() });
-                //                }
-            });
-            var ddlRouteName = document.getElementById('ddlRouteName').value;
-            var ddlSalesOffice = document.getElementById('ddlSalesOffice').value;
-            var ddledittype = document.getElementById('ddledittype').value;
-            if (ddledittype == "Select") {
-                alert("Select Edit Type");
-                return false;
-            }
-            var data = { 'operation': 'btnEditLeaksSaveClick', 'data': Indentdetails, 'invdata': Inventorydetails, 'refno': ddlRouteName, 'indentdate': txtDate, 'edittype': ddledittype, 'BranchID': ddlSalesOffice };
-            var s = function (msg) {
-                if (msg) {
-                    alert(msg);
-                    $('#divFillScreen').removeTemplate();
-                    $('#divFillScreen').setTemplateURL('EditLeaksAndReturns3.htm');
-                    $('#divFillScreen').processTemplate();
-                    $('#divInventory').removeTemplate();
-                    $('#divInventory').setTemplateURL('EditReturnDcInv.htm');
-                    $('#divInventory').processTemplate();
-                }
-                else {
-                }
-            };
-            var e = function (x, h, e) {
-            };
-            $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
-            CallHandlerUsingJson(data, s, e);
         }
         function AddNewRowDelivers() {
             FillCategeoryname();
@@ -453,6 +295,9 @@
                 }
             }
         }
+        function DeliversCloseClick() {
+            $('#divDeliveryProducts').css('display', 'none');
+        }
         function btnDeliversAddClick() {
             var CategoryName = document.getElementById('cmb_brchprdt_Catgry_name').value;
             if (CategoryName == "select" || CategoryName == "") {
@@ -471,20 +316,41 @@
             }
             AddRowDelivers();
         }
+        var UnitPrice;
+        var Units;
+        var UnitQty;
+        var QtyUnit;
+        var orderunitRate;
+        var Description;
+        var ProductSno = 0;
+        function ProductNameChane(sno) {
+            ProductSno = sno.value;
+            var BranchID = document.getElementById('ddlBranchName').value;
+            var data = { 'operation': 'GetProductNamechange', 'ProductSno': ProductSno, 'BranchID': BranchID };
+            var s = function (msg) {
+                if (msg) {
+                    UnitPrice = msg[0].orderunitRate;
 
+                }
+                else {
+                }
+            };
+            var e = function (x, h, e) {
+            };
+            $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+            callHandler(data, s, e);
+        }
         var DeliverTable;
         function AddRowDelivers() {
             DeliverTable = [];
             var txtProductName = "";
             var txtProductSno = "";
-            var txtdate = "";
+            var txtqty = "";
             var txtIndentNo = 0;
+            var ddlDelivered = "";
             var DIndentNo = 0;
+            var txtCost = 0;
             var HdnIndentSno = 0;
-            var txtLeak = 0;
-            var txtFree = 0;
-            var txtShort = 0;
-            var txtReturn = 0;
             var indentcount = 0;
             var rows = $("#table_Indent_details tr:gt(0)");
             var Product = document.getElementById('cmb_productname');
@@ -503,36 +369,112 @@
             }
             //            $('#hdnIndent').val(txtIndentNo);
             $(rows).each(function (i, obj) {
-                txtProductName = $(this).find('#txtProductName').text();
-                txtProductSno = $(this).find('#hdnProductSno').val();
-                txtLeak = $(this).find('#txtleak').val();
-                txtShort = $(this).find('#txtShortQty').val();
-                txtFree = $(this).find('#txtfreeqty').val();
-                txtReturn = $(this).find('#txtreturnqty').val();
                 if ($(this).find('#txtProductName').text() != "") {
+                    txtProductName = $(this).find('#txtProductName').text();
+                    txtProductSno = $(this).find('#hdnProductSno').val();
                     txtIndentNo = $(this).find('#txtIndentNo').text();
-                    txtdate = $(this).find('#txtdate').text();
                     if (indentcount == 0) {
                         DIndentNo = txtIndentNo;
                         indentcount++;
                     }
-                    DeliverTable.push({ Dcno: txtIndentNo, Entrydate: txtdate, Productname: txtProductName, productid: txtProductSno, Leaks: txtLeak, Shorts: txtShort, Free: txtFree, Returns: txtReturn });
+                    txtqty = $(this).find('#txtunitQty').text();
+                    ddlDelivered = $(this).find('#txtDeliveryQty').val();
+                    txtCost = $(this).find('#txtUnitCost').val();
+                    DeliverTable.push({ ProductName: txtProductName, Product_sno: txtProductSno, IndentNo: txtIndentNo, unitQty: txtqty, DeliveryQty: ddlDelivered, UnitCost: txtCost });
                 }
             });
             var hdnISno = 0;
             var Delivered = "";
             var Qty = 0;
             var hdnISno = 0;
-            var txtLeak = 0;
-            var txtFree = 0;
-            var txtShort = 0;
-            var txtReturn = 0;
-            DeliverTable.push({ Dcno: txtIndentNo, Entrydate: txtdate, Productname: ProductName, productid: ProductSno, Leaks: txtLeak, Shorts: txtShort, Free: txtFree, Returns: txtReturn });
-            $('#divFillScreen').setTemplateURL('EditLeaksAndReturns3.htm');
+            var Cost = 0;
+
+            var leak = 0;
+            var DQty = 0;
+            var RQty = 0;
+            DeliverTable.push({ ProductName: ProductName, Product_sno: ProductSno, IndentNo: DIndentNo, unitQty: Qty, DeliveryQty: DQty, UnitCost: UnitPrice });
+            $('#divFillScreen').setTemplateURL('IndentEdit.htm');
             $('#divFillScreen').processTemplate(DeliverTable);
+
+
         }
-        function DeliversCloseClick() {
-            $('#divDeliveryProducts').css('display', 'none');
+        function GetEditIndentValues() {
+            var ddlRouteName = document.getElementById('ddlRouteName').value;
+            if (ddlRouteName == "Select Route Name" || ddlRouteName == "") {
+                alert("Please Select Route Name");
+                return false;
+            }
+            var BranchName = document.getElementById('ddlBranchName').value;
+            if (BranchName == "Select Agent Name" || BranchName == "") {
+                alert("Please Select Agent Name");
+                return false;
+            }
+            var soid = document.getElementById('ddlSalesOffice').value;
+            if (BranchName == "select" || BranchName == "") {
+                alert("Please Select Sales Office");
+                return false;
+            }
+            
+            var txtDate = document.getElementById('datepicker').value;
+            if (txtDate == "") {
+                alert("Please Select Date");
+                return false;
+            }
+            var data = {
+                'operation': 'GetEditIndentValuesClick', 'RouteID': ddlRouteName, 'BranchID': BranchName, 'IndDate': txtDate, 'soid': soid};
+            var s = function (msg) {
+                if (msg) {
+                    $('#divFillScreen').removeTemplate();
+                    $('#divFillScreen').setTemplateURL('IndentEdit.htm');
+                    $('#divFillScreen').processTemplate(msg);
+                }
+                else {
+                }
+            };
+            var e = function (x, h, e) {
+            };
+            $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+            callHandler(data, s, e);
+        }
+        function btnEditIndentSaveClick(id) {
+            var txtDate = document.getElementById('datepicker').value;
+            if (txtDate == "") {
+                alert("Please Select Date");
+                return false;
+            }
+            var rows = $("#table_Indent_details tr:gt(0)");
+            var Indentdetails = new Array();
+            $(rows).each(function (i, obj) {
+                if ($(this).find('#txtProductName').text() != "") {
+                    Indentdetails.push({ Productsno: $(this).find('#hdnProductSno').val(), Product: $(this).find('#txtProductName').text(), DelQty: $(this).find('#txtDeliveryQty').val(), Rate: $(this).find('#txtUnitCost').val(), IndentNo: $(this).find('#txtIndentNo').text() });
+                }
+            });
+            //            var IndentNo = $(id).closest("tr").find('#txtIndentNo').text();
+            //            var ProductSno = $(id).closest("tr").find('#hdnProductSno').val();
+            //            var UnitCost = $(id).closest("tr").find('#txtUnitCost').val();
+            //            var DelQty = $(id).closest("tr").find('#txtDeliveryQty').val();
+            //            if (UnitCost == "") {
+            //                alert("Please Enter Rate");
+            //                return false;
+            //            }
+            //            if (DelQty == "") {
+            //                alert("Please Enter Del Qty");
+            //                return false;
+            //            }
+            var BranchName = document.getElementById('ddlBranchName').value;
+            var ddlRouteName = document.getElementById('ddlRouteName').value;
+            var data = { 'operation': 'btnEditIndentSaveClick', 'data': Indentdetails, 'BranchID': BranchName, 'refno': ddlRouteName, 'indentdate': txtDate };
+            var s = function (msg) {
+                if (msg) {
+                    alert(msg);
+                }
+                else {
+                }
+            };
+            var e = function (x, h, e) {
+            };
+            $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+            CallHandlerUsingJson(data, s, e);
         }
         function CallHandlerUsingJson(d, s, e) {
             $.ajax({
@@ -562,63 +504,62 @@
         }
     </script>
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-     <section class="content-header">
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <section class="content-header">
         <h1>
-            Edit Leaks<small>Preview</small>
+            Edit Indent<small>Preview</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i>Operations</a></li>
-            <li><a href="#">Edit Leaks</a></li>
+            <li><a href="#">Edit Indent</a></li>
         </ol>
     </section>
     <section class="content">
         <div class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title">
-                    <i style="padding-right: 5px;" class="fa fa-cog"></i>Edit Leaks Details
+                    <i style="padding-right: 5px;" class="fa fa-cog"></i>Edit Indent Details
                 </h3>
             </div>
             <div class="box-body">
                 <table align="center">
                     <tr>
                         <td>
-                            <label>Sales Office</label>
+                         <label for="lblBranch">
+                            Sales Office
+                            </label>
                         </td>
-                        <td style="height:40px;">
+                        <td style="height: 40px;">
                             <select id="ddlSalesOffice" class="form-control" onchange="ddlSalesOfficeChange(this);">
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label>
-                                Edit Type</label>
-                        </td>
-                        <td style="height:40px;">
-                            <select id="ddledittype" class="form-control" onchange="ddlEdittypeChange(this);">
-                                <option>Select</option>
-                                <option>Sales Office</option>
-                                <option>Routes</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td >
                             <label for="lblBranch">
                                 Route Name</label>
                         </td>
-                        <td style="height:40px;">
-                            <select id="ddlRouteName" class="form-control" onchange="ddlAgentNameChange(this);">
+                        <td style="height: 40px;">
+                            <select id="ddlRouteName" class="form-control" onchange="ddlRouteNameChange(this);">
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <td >
+                        <td>
+                            <label for="lblBranch">
+                                Agent Name</label>
+                        </td>
+                        <td style="height: 40px;">
+                            <select id="ddlBranchName" class="form-control" onchange="ddlAgentNameChange(this);">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <label for="lblBranch">
                                 Indent Date</label>
                         </td>
-                        <td style="height:40px;">
+                        <td style="height: 40px;">
                             <input type="date" id="datepicker" placeholder="DD-MM-YYYY" class="form-control" />
                         </td>
                     </tr>
@@ -626,16 +567,13 @@
                         <td>
                         </td>
                         <td>
-                            <input type="button" id="Button1" value="Get Leaks" class="btn btn-primary" onclick="GetEditIndentValues();" />
+                            <input type="button" id="Button1" value="GET Indent" class="btn btn-primary" onclick="GetEditIndentValues();" />
                         </td>
                     </tr>
                 </table>
                 <div id="divFillScreen">
                 </div>
-                <div id="divInventory">
-                </div>
             </div>
         </div>
     </section>
 </asp:Content>
-

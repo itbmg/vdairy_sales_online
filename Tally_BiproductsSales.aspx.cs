@@ -149,7 +149,7 @@ public partial class Tally_BiproductsSales : System.Web.UI.Page
             lbl_selfromdate.Text = fromdate.ToString("dd/MM/yyyy");
             lblRoutName.Text = ddlSalesOffice.SelectedItem.Text;
             Session["filename"] = ddlSalesOffice.SelectedItem.Text + " Tally Sales " + fromdate.ToString("dd/MM/yyyy");
-            cmd = new MySqlCommand("SELECT  products_category.sno AS categoryid, branchdata.regtype, branchdata.tbranchname, branchdata_1.sno, branchdata.BranchName,branchdata.stateid, branchdata.sno AS BSno, indent.IndentType, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, indents_subtable.UnitCost, productsdata.tproduct, productsdata.ProductName,productsdata.hsncode,productsdata.igst,productsdata.sgst,productsdata.cgst, productsdata.Units, productsdata.sno AS productsno, branchdata_1.SalesOfficeID, products_category.tcategory, branchproducts.VatPercent FROM (SELECT IndentNo, Branch_id, I_date, Status, IndentType FROM indents WHERE (I_date BETWEEN @starttime AND @endtime) AND (Status <> 'D')) indent INNER JOIN branchdata ON indent.Branch_id = branchdata.sno INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchdata branchdata_1 ON branchmappingtable.SuperBranch = branchdata_1.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchproducts ON branchmappingtable.SuperBranch = branchproducts.branch_sno AND productsdata.sno = branchproducts.product_sno WHERE (branchmappingtable.SuperBranch = @BranchID)  AND (indents_subtable.DeliveryQty <> 0) OR  (branchdata_1.SalesOfficeID = @SOID) AND (indents_subtable.DeliveryQty <> 0) GROUP BY productsdata.sno, BSno, branchmappingtable.SuperBranch, productsdata.igst ORDER BY branchdata.BranchName");
+            cmd = new MySqlCommand("SELECT  products_category.sno AS categoryid, branchdata.regtype, branchdata.tbranchname, branchdata_1.sno, branchdata.BranchName,branchdata.stateid, branchdata.sno AS BSno, indent.IndentType, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, indents_subtable.UnitCost,indents_subtable.IndentNo, productsdata.tproduct, productsdata.ProductName,productsdata.hsncode,productsdata.igst,productsdata.sgst,productsdata.cgst, productsdata.Units, productsdata.sno AS productsno, branchdata_1.SalesOfficeID, products_category.tcategory, branchproducts.VatPercent FROM (SELECT IndentNo, Branch_id, I_date, Status, IndentType FROM indents WHERE (I_date BETWEEN @starttime AND @endtime) AND (Status <> 'D')) indent INNER JOIN branchdata ON indent.Branch_id = branchdata.sno INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchdata branchdata_1 ON branchmappingtable.SuperBranch = branchdata_1.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchproducts ON branchmappingtable.SuperBranch = branchproducts.branch_sno AND productsdata.sno = branchproducts.product_sno WHERE (branchmappingtable.SuperBranch = @BranchID)  AND (indents_subtable.DeliveryQty <> 0) OR  (branchdata_1.SalesOfficeID = @SOID) AND (indents_subtable.DeliveryQty <> 0) GROUP BY productsdata.sno, BSno, branchmappingtable.SuperBranch, productsdata.igst ORDER BY branchdata.BranchName");
             if (Session["salestype"].ToString() == "Plant")
             {
                 string BranchID = ddlSalesOffice.SelectedValue;
@@ -268,14 +268,7 @@ public partial class Tally_BiproductsSales : System.Web.UI.Page
                             {
                                 //if (NoOfdays < 2)
                                 //{
-                                if (ddlSalesOffice.SelectedValue == "572" || ddlSalesOffice.SelectedValue == "3")
-                                {
-                                    ddlSalesOffice.SelectedValue = "7";
-                                }
-                                else if (ddlSalesOffice.SelectedValue == "4626")
-                                {
-                                    ddlSalesOffice.SelectedValue = "159";
-                                }
+
                                 cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM agentdc WHERE (soid = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
                                 cmd.Parameters.AddWithValue("@BranchId", ddlSalesOffice.SelectedValue);
                                 cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril).AddDays(-1));
@@ -328,40 +321,20 @@ public partial class Tally_BiproductsSales : System.Web.UI.Page
                             {
                                 DCNO = "" + countdc;
                             }
-                            if (ddlSalesOffice.SelectedValue == "306")
+
+                            if (fromdate.Month > 3)
                             {
-                                if (fromdate.AddDays(1).Month > 3)
-                                {
-                                    DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DCNO;
-                                }
-                                else
-                                {
-                                    if (fromdate.AddDays(1).Month <= 3)
-                                    {
-                                        DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DCNO;
-                                    }
-                                    else
-                                    {
-                                        DCNO = Branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "N/" + DCNO;
-                                    }
-                                }
+                                DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DCNO;
                             }
                             else
                             {
-                                if (fromdate.Month > 3)
+                                if (fromdate.Month <= 3)
                                 {
                                     DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DCNO;
                                 }
                                 else
                                 {
-                                    if (fromdate.Month <= 3)
-                                    {
-                                        DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DCNO;
-                                    }
-                                    else
-                                    {
-                                        DCNO = Branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "N/" + DCNO;
-                                    }
+                                    DCNO = Branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "N/" + DCNO;
                                 }
                             }
                             newrow["Customer Name"] = branch["tBranchName"].ToString();
@@ -508,14 +481,7 @@ public partial class Tally_BiproductsSales : System.Web.UI.Page
                                     {
                                         //if (NoOfdays < 2)
                                         //{
-                                        if (ddlSalesOffice.SelectedValue == "572" || ddlSalesOffice.SelectedValue == "3")
-                                        {
-                                            ddlSalesOffice.SelectedValue = "7";
-                                        }
-                                        else if (ddlSalesOffice.SelectedValue == "4626")
-                                        {
-                                            ddlSalesOffice.SelectedValue = "159";
-                                        }
+
                                         cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM agentdc WHERE (soid = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
                                         cmd.Parameters.AddWithValue("@BranchId", ddlSalesOffice.SelectedValue);
                                         cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril).AddDays(-1));
@@ -568,40 +534,20 @@ public partial class Tally_BiproductsSales : System.Web.UI.Page
                                     {
                                         DCNO = "" + countdc;
                                     }
-                                    if (ddlSalesOffice.SelectedValue == "306")
+
+                                    if (fromdate.Month > 3)
                                     {
-                                        if (fromdate.AddDays(1).Month > 3)
-                                        {
-                                            DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DCNO;
-                                        }
-                                        else
-                                        {
-                                            if (fromdate.AddDays(1).Month <= 3)
-                                            {
-                                                DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DCNO;
-                                            }
-                                            else
-                                            {
-                                                DCNO = Branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "N/" + DCNO;
-                                            }
-                                        }
+                                        DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DCNO;
                                     }
                                     else
                                     {
-                                        if (fromdate.Month > 3)
+                                        if (fromdate.Month <= 3)
                                         {
                                             DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DCNO;
                                         }
                                         else
                                         {
-                                            if (fromdate.Month <= 3)
-                                            {
-                                                DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DCNO;
-                                            }
-                                            else
-                                            {
-                                                DCNO = Branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "N/" + DCNO;
-                                            }
+                                            DCNO = Branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "N/" + DCNO;
                                         }
                                     }
                                     newrow["Customer Name"] = branch["tBranchName"].ToString();
@@ -815,14 +761,7 @@ public partial class Tally_BiproductsSales : System.Web.UI.Page
                                     }
                                     else
                                     {
-                                        if (ddlSalesOffice.SelectedValue == "572" || ddlSalesOffice.SelectedValue == "3")
-                                        {
-                                            ddlSalesOffice.SelectedValue = "7";
-                                        }
-                                        else if (ddlSalesOffice.SelectedValue == "4626")
-                                        {
-                                            ddlSalesOffice.SelectedValue = "159";
-                                        }
+
                                         //if (NoOfdays < 2)
                                         //{
                                         cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM agenttaxdc WHERE (soid = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
@@ -877,54 +816,28 @@ public partial class Tally_BiproductsSales : System.Web.UI.Page
                                     {
                                         DCNO = "" + countdc;
                                     }
-                                    if (ddlSalesOffice.SelectedValue == "306")
-                                    {
-                                        if (fromdate.AddDays(1).Month > 3)
-                                        {
-                                            DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
 
-                                        }
-                                        else
-                                        {
-                                            if (fromdate.AddDays(1).Month <= 3)
-                                            {
-                                                DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
-                                            }
-                                            else
-                                            {
-                                                DCNO = Branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "T/" + DCNO;
-                                            }
-                                        }
+                                    if (fromdate.Month > 3)
+                                    {
+                                        DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
                                     }
                                     else
                                     {
-                                        if (fromdate.Month > 3)
+                                        if (fromdate.Month <= 3)
                                         {
                                             DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
                                         }
                                         else
                                         {
-                                            if (fromdate.Month <= 3)
-                                            {
-                                                DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
-                                            }
-                                            else
-                                            {
-                                                DCNO = Branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "T/" + DCNO;
-                                            }
+                                            DCNO = Branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "T/" + DCNO;
                                         }
                                     }
+
                                     // DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
                                     newrow["Customer Name"] = branch["tBranchName"].ToString();
                                     newrow["Invoce No."] = DCNO;
-                                    if (ddlSalesOffice.SelectedValue == "306")
-                                    {
-                                        newrow["Invoice Date"] = fromdate.AddDays(1).ToString("dd-MMM-yyyy");
-                                    }
-                                    else
-                                    {
-                                        newrow["Invoice Date"] = fromdate.ToString("dd-MMM-yyyy");
-                                    }
+
+                                    newrow["Invoice Date"] = fromdate.ToString("dd-MMM-yyyy");
                                     newrow["HSN CODE"] = branch["hsncode"].ToString();
                                     newrow["Item Name"] = branch["tProduct"].ToString();
                                     double igst = 0;
@@ -1095,14 +1008,14 @@ public partial class Tally_BiproductsSales : System.Web.UI.Page
                                 }
                                 else
                                 {
-                                    if (ddlSalesOffice.SelectedValue == "572" || ddlSalesOffice.SelectedValue == "3")
-                                    {
-                                        ddlSalesOffice.SelectedValue = "7";
-                                    }
-                                    else if (ddlSalesOffice.SelectedValue == "4626")
-                                    {
-                                        ddlSalesOffice.SelectedValue = "159";
-                                    }
+                                    //if (ddlSalesOffice.SelectedValue == "572" || ddlSalesOffice.SelectedValue == "3")
+                                    //{
+                                    //    ddlSalesOffice.SelectedValue = "7";
+                                    //}
+                                    //else if (ddlSalesOffice.SelectedValue == "4626")
+                                    //{
+                                    //    ddlSalesOffice.SelectedValue = "159";
+                                    //}
                                     //if (NoOfdays < 2)
                                     //{
                                     cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM agenttaxdc WHERE (soid = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
@@ -1157,54 +1070,27 @@ public partial class Tally_BiproductsSales : System.Web.UI.Page
                                 {
                                     DCNO = "" + countdc;
                                 }
-                                if (ddlSalesOffice.SelectedValue == "306")
-                                {
-                                    if (fromdate.AddDays(1).Month > 3)
-                                    {
-                                        DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
 
-                                    }
-                                    else
-                                    {
-                                        if (fromdate.AddDays(1).Month <= 3)
-                                        {
-                                            DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
-                                        }
-                                        else
-                                        {
-                                            DCNO = Branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "T/" + DCNO;
-                                        }
-                                    }
+                                if (fromdate.Month > 3)
+                                {
+                                    DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
                                 }
                                 else
                                 {
-                                    if (fromdate.Month > 3)
+                                    if (fromdate.Month <= 3)
                                     {
                                         DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
                                     }
                                     else
                                     {
-                                        if (fromdate.Month <= 3)
-                                        {
-                                            DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
-                                        }
-                                        else
-                                        {
-                                            DCNO = Branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "T/" + DCNO;
-                                        }
+                                        DCNO = Branchcode + "/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "T/" + DCNO;
                                     }
                                 }
                                 // DCNO = Branchcode + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
                                 newrow["Customer Name"] = branch["tBranchName"].ToString();
                                 newrow["Invoce No."] = DCNO;
-                                if (ddlSalesOffice.SelectedValue == "306")
-                                {
-                                    newrow["Invoice Date"] = fromdate.AddDays(1).ToString("dd-MMM-yyyy");
-                                }
-                                else
-                                {
-                                    newrow["Invoice Date"] = fromdate.ToString("dd-MMM-yyyy");
-                                }
+
+                                newrow["Invoice Date"] = fromdate.ToString("dd-MMM-yyyy");
                                 newrow["HSN CODE"] = branch["hsncode"].ToString();
                                 newrow["Item Name"] = branch["tProduct"].ToString();
                                 double igst = 0;

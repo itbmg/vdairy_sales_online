@@ -190,8 +190,8 @@ public partial class IncentiveReport : System.Web.UI.Page
                     }
                     DateTime dtprevdate = new DateTime();
                     dtprevdate = DateTime.Parse(todt);
-                    if (fromdate > dtprevdate)
-                    {
+                    //if (fromdate > dtprevdate)
+                    //{
                         //cmd = new MySqlCommand("SELECT productsdata.sno,productsdata.ProductName, product_clubbing.ClubName, incentive_structure.StructureName, product_clubbing.sno AS clubbingsno FROM incentive_structure INNER JOIN incentive_struct_sub ON incentive_structure.sno = incentive_struct_sub.is_sno INNER JOIN product_clubbing ON incentive_struct_sub.clubbingID = product_clubbing.sno INNER JOIN subproductsclubbing ON product_clubbing.sno = subproductsclubbing.Clubsno INNER JOIN productsdata ON subproductsclubbing.Productid = productsdata.sno WHERE (incentive_structure.sno = @StructureID)");
                         cmd = new MySqlCommand("SELECT productsdata.sno, productsdata.ProductName, product_clubbing.ClubName, incentive_structure.StructureName, product_clubbing.sno AS clubbingsno,products_category.Categoryname, products_subcategory.category_sno FROM incentive_structure INNER JOIN incentive_struct_sub ON incentive_structure.sno = incentive_struct_sub.is_sno INNER JOIN product_clubbing ON incentive_struct_sub.clubbingID = product_clubbing.sno INNER JOIN subproductsclubbing ON product_clubbing.sno = subproductsclubbing.Clubsno INNER JOIN productsdata ON subproductsclubbing.Productid = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (incentive_structure.sno = @StructureID) ");
                         cmd.Parameters.AddWithValue("@StructureID", ddlstructure.SelectedValue);
@@ -275,7 +275,7 @@ public partial class IncentiveReport : System.Web.UI.Page
                                             newrow[dr["ProductName"].ToString()] = DeliveryQty;
                                             // Total += DeliveryQty * UnitCost;
                                             int.TryParse(dr["categorysno"].ToString(), out categorysno);
-                                            if (categorysno == 9)
+                                            if (categorysno == 1)
                                             {
                                                 string invsno = dr["invsno"].ToString();
                                                 if (invsno == "4")
@@ -304,7 +304,7 @@ public partial class IncentiveReport : System.Web.UI.Page
                                         double prdtQty = 0;
                                         double.TryParse(drtotprdt["DeliveryQty"].ToString(), out prdtQty);
                                         prdtQty = Math.Round(prdtQty, 2);
-                                        if (drtotprdt["categorysno"].ToString() == "9")
+                                        if (drtotprdt["categorysno"].ToString() == "1")
                                         {
                                             double prdtamt = 0;
                                             double.TryParse(drtotprdt["Amount"].ToString(), out prdtamt);
@@ -387,7 +387,7 @@ public partial class IncentiveReport : System.Web.UI.Page
                             dtTotincentive.Columns.Add("TotalAmount").DataType = typeof(Double);
 
                             string clubbingname = "";
-                            string categoryserial = "9";
+                            string categoryserial = "1";
                             float milkincentive = 0;
 
                             DataView incentiveview = new DataView(dtincentivestructure);
@@ -427,7 +427,7 @@ public partial class IncentiveReport : System.Web.UI.Page
                                 newrow["DiscountSlot"] = sltamt;
                                 newrow["TotalAmount"] = Math.Round(totalsale * slotamt, 2);
 
-                                if (categoryserial == "9")
+                                if (categoryserial == "1")
                                 {
                                     milkincentive += (float)Math.Round(totalsale * slotamt, 2);
                                 }
@@ -604,11 +604,11 @@ public partial class IncentiveReport : System.Web.UI.Page
 
                         }
 
-                    }
-                    else
-                    {
-                        lblmsg.Text = "Please select Correct FromDate";
-                    }
+                    //}
+                    //else
+                    //{
+                    //    lblmsg.Text = "Please select Correct FromDate";
+                    //}
                 }
                 else
                 {
@@ -708,7 +708,7 @@ public partial class IncentiveReport : System.Web.UI.Page
                                         // Total += DeliveryQty * UnitCost;
                                         int.TryParse(dr["categorysno"].ToString(), out categorysno);
 
-                                        if (categorysno == 9)
+                                        if (categorysno == 1)
                                         {
                                             string invsno = dr["invsno"].ToString();
                                             if (invsno == "4")
@@ -739,7 +739,7 @@ public partial class IncentiveReport : System.Web.UI.Page
                                     double.TryParse(drtotprdt["DeliveryQty"].ToString(), out prdtQty);
                                     prdtQty = Math.Round(prdtQty, 2);
 
-                                    if (drtotprdt["categorysno"].ToString() == "9")
+                                    if (drtotprdt["categorysno"].ToString() == "1")
                                     {
                                         double prdtamt = 0;
                                         double.TryParse(drtotprdt["Amount"].ToString(), out prdtamt);
@@ -820,7 +820,7 @@ public partial class IncentiveReport : System.Web.UI.Page
                         dtTotincentive.Columns.Add("TotalAmount").DataType = typeof(Double);
 
                         string clubbingname = "";
-                        string categoryserial = "9";
+                        string categoryserial = "1";
                         float milkincentive = 0;
 
                         DataView incentiveview = new DataView(dtincentivestructure);
@@ -859,7 +859,7 @@ public partial class IncentiveReport : System.Web.UI.Page
                             newrow["DiscountSlot"] = sltamt;
                             newrow["TotalAmount"] = Math.Round(totalsale * slotamt, 2);
 
-                            if (categoryserial == "9")
+                            if (categoryserial == "1")
                             {
                                 milkincentive += (float)Math.Round(totalsale * slotamt, 2);
                             }
@@ -1066,7 +1066,7 @@ public partial class IncentiveReport : System.Web.UI.Page
                                         // Total += DeliveryQty * UnitCost;
                                         int.TryParse(dr["categorysno"].ToString(), out categorysno);
 
-                                        if (categorysno == 9)
+                                        if (categorysno == 1)
                                         {
                                             string invsno = dr["invsno"].ToString();
                                             if (invsno == "4")
@@ -1097,7 +1097,7 @@ public partial class IncentiveReport : System.Web.UI.Page
                                     double.TryParse(drtotprdt["DeliveryQty"].ToString(), out prdtQty);
                                     prdtQty = Math.Round(prdtQty, 2);
 
-                                    if (drtotprdt["categorysno"].ToString() == "9")
+                                    if (drtotprdt["categorysno"].ToString() == "1")
                                     {
                                         double prdtamt = 0;
                                         double.TryParse(drtotprdt["Amount"].ToString(), out prdtamt);
@@ -1131,28 +1131,6 @@ public partial class IncentiveReport : System.Web.UI.Page
                             }
                         }
                         Report.Rows.Add(newvartical);
-                        //string productnames = "";
-                        //if (dtincentivestructure.Rows.Count > 0)
-                        //{
-                        //    foreach (DataColumn dc in Report.Columns)
-                        //    {
-                        //        DataRow[] drstr = dtincentivestructure.Select("ProductName='" + dc.ToString() + "'");
-                        //        if (drstr.Length > 0)
-                        //        {
-                        //        }
-                        //        else
-                        //        {
-                        //            if (dc.ToString() == "IndentDate" || dc.ToString() == "Total  Ltrs")
-                        //            {
-                        //            }
-                        //            else
-                        //            {
-                        //                productnames += dc.ToString() + " ,";
-                        //            }
-                        //        }
-                        //    }
-                        //}
-                        //lbl_warn.Text = productnames;
                         foreach (DataColumn col in Report.Columns)
                         {
                             string Pname = col.ToString();
@@ -1179,51 +1157,9 @@ public partial class IncentiveReport : System.Web.UI.Page
                         dtTotincentive.Columns.Add("TotalAmount").DataType = typeof(Double);
 
                         string clubbingname = "";
-                        string categoryserial = "9";
+                        string categoryserial = "1";
                         float milkincentive = 0;
 
-                        //DataView incentiveview = new DataView(dtincentivestructure);
-                        // DataTable dticentive = incentiveview.ToTable(true, "ClubName", "clubbingsno");
-
-                        //cmd = new MySqlCommand("SELECT ROUND(SUM(indents_subtable.DeliveryQty), 2) AS deliveryqty,subproductsclubbing. FROM indents INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN subproductsclubbing ON indents_subtable.Product_sno = subproductsclubbing.Productid WHERE (indents.Branch_id = @selectedbrnch) AND (indents_subtable.D_date BETWEEN @d1 AND @d2)");
-                        //cmd = new MySqlCommand("SELECT result.deliveryqty, result.ClubName, result.Clubsno, slabs.SlotQty, slabs.Amt FROM (SELECT ROUND(SUM(indents_subtable.DeliveryQty), 2) AS deliveryqty, subproductsclubbing.Clubsno, product_clubbing.ClubName FROM indents INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN subproductsclubbing ON indents_subtable.Product_sno = subproductsclubbing.Productid INNER JOIN product_clubbing ON subproductsclubbing.Clubsno = product_clubbing.sno WHERE (indents.Branch_id = @selectedbrnch) AND (indents.I_date BETWEEN @d1 AND @d2) GROUP BY subproductsclubbing.Clubsno) result INNER JOIN slabs ON result.Clubsno = slabs.club_sno");
-                        //cmd.Parameters.AddWithValue("@selectedbrnch", ddlAgentName.SelectedValue);
-                        //cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-                        //cmd.Parameters.AddWithValue("@d2", GetHighDate(todate.AddDays(-1)));
-                        //DataTable dtclubtotal = vdm.SelectQuery(cmd).Tables[0];
-                        //foreach (DataRow drincetiveclub in dticentive.Rows)
-                        //{
-                        //    float avgsale = 0;
-                        //    float slotqty = 0;
-                        //    float slotamt = 0;
-                        //    float totalsale = 0;
-                        //    string sltamt = "";
-                        //    clubbingname = drincetiveclub["ClubName"].ToString();
-                        //    //categoryserial = drincetiveclub["category_sno"].ToString();
-                        //    foreach (DataRow drdtclubtotal in dtclubtotal.Select("Clubsno='" + drincetiveclub["clubbingsno"].ToString() + "'"))
-                        //    {
-                        //        float.TryParse(drdtclubtotal["deliveryqty"].ToString(), out totalsale);
-                        //        avgsale = (totalsale / count);
-                        //        float.TryParse(drdtclubtotal["SlotQty"].ToString(), out slotqty);
-                        //        if (avgsale > slotqty)
-                        //        {
-                        //            float.TryParse(drdtclubtotal["Amt"].ToString(), out slotamt);
-                        //            sltamt = drdtclubtotal["Amt"].ToString();
-                        //        }
-                        //    }
-                        //    DataRow newrow = dtTotincentive.NewRow();
-                        //    newrow["ClubbingName"] = clubbingname;
-                        //    newrow["TotalSale"] = Math.Round(totalsale, 2);
-                        //    newrow["AverageSale"] = Math.Round(avgsale, 2);
-                        //    newrow["DiscountSlot"] = sltamt;
-                        //    newrow["TotalAmount"] = Math.Round(totalsale * slotamt, 2);
-
-                        //    if (categoryserial == "9")
-                        //    {
-                        //        milkincentive += (float)Math.Round(totalsale * slotamt, 2);
-                        //    }
-                        //    dtTotincentive.Rows.Add(newrow);
-                        //}
                         double totalmilksale = 0;
                         string leak = txtleakage.Text;
                         leakpercentage = (float)Convert.ToDouble(leak);
@@ -1391,7 +1327,7 @@ public partial class IncentiveReport : System.Web.UI.Page
                                         // Total += DeliveryQty * UnitCost;
                                         int.TryParse(dr["categorysno"].ToString(), out categorysno);
 
-                                        if (categorysno == 9)
+                                        if (categorysno == 1)
                                         {
                                             string invsno = dr["invsno"].ToString();
                                             if (invsno == "4")
@@ -1421,7 +1357,7 @@ public partial class IncentiveReport : System.Web.UI.Page
                                     double prdtQty = 0;
                                     double.TryParse(drtotprdt["DeliveryQty"].ToString(), out prdtQty);
                                     prdtQty = Math.Round(prdtQty, 2);
-                                    if (drtotprdt["categorysno"].ToString() == "9")
+                                    if (drtotprdt["categorysno"].ToString() == "1")
                                     {
                                         double prdtamt = 0;
                                         double.TryParse(drtotprdt["Amount"].ToString(), out prdtamt);
@@ -1503,7 +1439,7 @@ public partial class IncentiveReport : System.Web.UI.Page
                         dtTotincentive.Columns.Add("TotalAmount").DataType = typeof(Double);
 
                         string clubbingname = "";
-                        string categoryserial = "9";
+                        string categoryserial = "1";
                         float milkincentive = 0;
 
                         DataView incentiveview = new DataView(dtincentivestructure);
@@ -1542,7 +1478,7 @@ public partial class IncentiveReport : System.Web.UI.Page
                             newrow["DiscountSlot"] = sltamt;
                             newrow["TotalAmount"] = Math.Round(totalsale * slotamt, 2);
 
-                            if (categoryserial == "9")
+                            if (categoryserial == "1")
                             {
                                 milkincentive += (float)Math.Round(totalsale * slotamt, 2);
                             }

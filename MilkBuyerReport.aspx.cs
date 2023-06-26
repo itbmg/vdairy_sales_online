@@ -155,13 +155,19 @@ public partial class MilkBuyerReport : System.Web.UI.Page
         DateTime dtfrm = fromdate;
         lblDate.Text = dtfrm.ToString("dd/MM/yyyy");
         fromdate = fromdate.AddDays(-1);
-
+        DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdm.conn);
         cmd = new MySqlCommand("SELECT SUM(collections.AmountPaid) AS amount, branchmappingtable.SuperBranch, branchdata.sno, branchdata.BranchName FROM collections INNER JOIN branchdata ON collections.Branchid = branchdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (collections.PaymentType = 'Cheque') AND (collections.CheckStatus = @CheckStatus) AND (collections.tripId IS NULL) AND (branchmappingtable.SuperBranch = @SuperBranch) GROUP BY branchdata.sno, branchdata.BranchName");
         cmd.Parameters.AddWithValue("@CheckStatus", 'P');
         cmd.Parameters.AddWithValue("@SuperBranch", ddlSalesOffice.SelectedValue);
         DataTable dtcheque = vdm.SelectQuery(cmd).Tables[0];
 
-        cmd = new MySqlCommand("SELECT branchaccounts.BranchId, branchaccounts.Amount, branchaccounts.FineAmount, branchaccounts.Dtripid, branchaccounts.Ctripid, branchaccounts.SaleValue,branchmappingtable.SuperBranch FROM branchaccounts INNER JOIN branchmappingtable ON branchaccounts.BranchId = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @BranchID)");
+        //cmd = new MySqlCommand("SELECT agent_bal_trans.agentid as BranchId, agent_bal_trans.clo_balance,branchmappingtable.SuperBranch FROM branchaccounts INNER JOIN branchmappingtable ON branchaccounts.BranchId = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @BranchID)");
+        //cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
+        //DataTable dtagentbalance = vdm.SelectQuery(cmd).Tables[0];
+
+        cmd = new MySqlCommand("SELECT agent_bal_trans.agentid as BranchId, agent_bal_trans.clo_balance,branchmappingtable.SuperBranch FROM agent_bal_trans INNER JOIN branchmappingtable ON agent_bal_trans.agentid = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @BranchID) AND (agent_bal_trans.inddate BETWEEN @d1 AND @d2)");
+        cmd.Parameters.AddWithValue("@d1", GetLowDate(ServerDateCurrentdate).AddDays(-1));
+        cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate).AddDays(-1));
         cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
         DataTable dtagentbalance = vdm.SelectQuery(cmd).Tables[0];
 
@@ -222,7 +228,7 @@ public partial class MilkBuyerReport : System.Web.UI.Page
             }
             else
             {
-                cmd = new MySqlCommand("SELECT  branchroutes.srname,branchroutes.RouteName,branchdata.BranchName,branchdata.sno as Branchid,branchdata.SalesRepresentative, tempduetrasactions.ClosingBalance, salestypemanagement.salestype FROM branchmappingtable INNER JOIN tempduetrasactions ON branchmappingtable.SubBranch = tempduetrasactions.AgentId INNER JOIN branchdata ON tempduetrasactions.AgentId = branchdata.sno INNER JOIN salestypemanagement ON branchdata.SalesType = salestypemanagement.sno INNER JOIN branchroutes ON tempduetrasactions.RouteId = branchroutes.Sno WHERE (branchmappingtable.SuperBranch = @BranchID) AND (branchdata.flag = 1) and (salestypemanagement.sno=@SalesType) AND (tempduetrasactions.IndentDate BETWEEN @d1 AND @d2) GROUP BY branchdata.BranchName, salestypemanagement.salestype, branchroutes.RouteName order by salestypemanagement.salestype, branchroutes.RouteName");
+                cmd = new MySqlCommand("SELECT  branchroutes.srname,branchroutes.RouteName,branchdata.BranchName,branchdata.sno as Branchid,branchdata.SalesRepresentative, agent_bal_trans.clo_balance, salestypemanagement.salestype FROM branchroutes inner join  branchroutesubtable ON branchroutes.sno=branchroutesubtable.RefNo INNER JOIN branchmappingtable on branchroutesubtable.BranchID= branchmappingtable.SubBranch INNER JOIN agent_bal_trans ON branchmappingtable.SubBranch= agent_bal_trans.agentid INNER JOIN branchdata ON agent_bal_trans.agentid=branchdata.sno INNER JOIN salestypemanagement ON branchdata.SalesType = salestypemanagement.sno WHERE (branchmappingtable.SuperBranch = @BranchID) AND (branchdata.flag = 1) and (salestypemanagement.sno=@SalesType) AND (agent_bal_trans.inddate BETWEEN @d1 AND @d2) GROUP BY branchdata.BranchName, salestypemanagement.salestype, branchroutes.RouteName order by salestypemanagement.salestype, branchroutes.RouteName");
             }
             cmd.Parameters.AddWithValue("@SalesType", dr["sno"].ToString());
             cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
@@ -430,7 +436,7 @@ public partial class MilkBuyerReport : System.Web.UI.Page
                     }
                     double amount = 0;
                     double netdue = 0;
-                    double.TryParse(drbranch["ClosingBalance"].ToString(), out amount);
+                    double.TryParse(drbranch["clo_balance"].ToString(), out amount);
                     //if (amount > 0)
                     //{
                     newrow["Due"] = amount;
@@ -639,6 +645,10 @@ public partial class MilkBuyerReport : System.Web.UI.Page
     {
         if (e.Row.RowType == DataControlRowType.Header)
         {
+            e.Row.Cells[7].Visible = false;
+            e.Row.Cells[8].Visible = false;
+            e.Row.Cells[9].Visible = false;
+            e.Row.Cells[10].Visible = false;
             if (ddltype.SelectedValue == "With incentive")
             {
                 e.Row.Cells[12].Width = new Unit("850px");
@@ -651,6 +661,10 @@ public partial class MilkBuyerReport : System.Web.UI.Page
         }
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
+            e.Row.Cells[7].Visible = false;
+            e.Row.Cells[8].Visible = false;
+            e.Row.Cells[9].Visible = false;
+            e.Row.Cells[10].Visible = false;
             if (e.Row.Cells[1].Text == "AGENTS")
             {
                 e.Row.BackColor = System.Drawing.Color.Aquamarine;

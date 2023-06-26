@@ -231,6 +231,7 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                 $('#ligheestocktransfer').css('display', 'block ');
                 $('#libiprdtsinward').css('display', 'block ');
                 $('#Li_biprdtsclosing').css('display', 'block ');
+                $('#liproductclubbing').css('display', 'block ');
                 $('#liincentivestructure').css('display', 'block ');
                 $('#liIncentive').css('display', 'block ');
                 $('#li156').css('display', 'none ');
@@ -245,6 +246,7 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                 $('#ligheestocktransfer').css('display', 'block ');
                 $('#libiprdtsinward').css('display', 'block ');
                 $('#Li_biprdtsclosing').css('display', 'block ');
+                $('#liproductclubbing').css('display', 'block ');
                 $('#liincentivestructure').css('display', 'block ');
                 $('#liIncentive').css('display', 'block ');
                 $('#li156').css('display', 'none ');
@@ -263,6 +265,7 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                 $('#ligheestocktransfer').css('display', 'block ');
                 $('#libiprdtsinward').css('display', 'block ');
                 $('#Li_biprdtsclosing').css('display', 'block ');
+                $('#liproductclubbing').css('display', 'block ');
                 $('#liincentivestructure').css('display', 'block ');
                 $('#liIncentive').css('display', 'none ');
                 $('#li156').css('display', 'none ');
@@ -703,7 +706,7 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                 <li id="liproductclubbing"><a href="ProductClubbing.aspx">Product Clubbing</a></li>
                                 <li id="liincentivestructure" ><a href="incentivestructure.aspx">
                                     Incentive Structure</a></li>
-                                <li id="li178" class="more" style="min-height: 25px;"><a href="#">Incentive Master</a>
+                                <li id="li178" class="more" style="min-height: 25px;display: none;"><a href="#">Incentive Master</a>
                                     <div class="drop3">
                                         <ul id="ul23">
                                             <li id="li179"><a href="generalincentivestructure.aspx">General Incentive Management</a></li>
@@ -856,7 +859,7 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                                 <li id="li12"><a href="Routewisesaleqty.aspx">Route Wise Sale Qty</a></li>
                                                 <li id="lisalesofficecollection"><a href="SalesOfficeCollection.aspx">SalesOffice Collections</a></li>
                                                 <li id="liroutewisecollections"><a href="RouteWiseCollections.aspx">Route Wise Collections</a></li>
-                                                <li id="liAgentTransaction"><a href="AgentTransaction.aspx">Agent Statement</a></li>
+                                                <li id="liAgentTransaction"><a href="NewAgentStatement.aspx">Agent Statement</a></li>
                                               <%--  <li id="li47"><a href="TotalReport.aspx">Sangam Report</a></li>--%>
                                                 <li id="liRouteWiseActivity"><a href="RouteWiseActivity.aspx">Route Wise Activity</a></li>
                                                 <li id="liSalesOfficewiseActivity"><a href="SalesOfficeWiseActivity.aspx">SalesOffice

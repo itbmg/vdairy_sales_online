@@ -880,23 +880,15 @@ public partial class TotalDCReport : System.Web.UI.Page
             ///Ravi
             ///274854
             string bid = Session["branch"].ToString();
-            cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,ProductInfo.ProductName,ProductInfo.Categoryname, ProductInfo.Qty,ProductInfo.ProductSno,ProductInfo.uomqty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode,TripInfo.Route_id FROM (SELECT tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode,dispatch.Route_id FROM            branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE        (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, ProductName, Sno,ProductSno, Qty,uomqty FROM (SELECT products_category.Categoryname, productsdata.ProductName,productsdata.Qty as uomqty,productsdata.sno as ProductSno, tripdata_1.Sno, tripsubdata.Qty FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno order by TripInfo.Sno");
+            cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,ProductInfo.ProductName,ProductInfo.Categoryname, ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM            branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE        (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, ProductName, Sno, Qty FROM (SELECT products_category.Categoryname, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty FROM            tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
             //cmd = new MySqlCommand("SELECT tripdata.Sno,tripdata.Dcno, tripsubdata.Qty, productsdata.ProductName, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, products_category.Categoryname,dispatch.DispType, dispatch.DispMode FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchdata ON dispatch.Branch_Id = branchdata.sno WHERE (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2) OR (tripdata.AssignDate BETWEEN @d1 AND @d2) AND (branchdata.SalesOfficeID = @SOID)");
             cmd.Parameters.AddWithValue("@branch", Session["branch"]);
             cmd.Parameters.AddWithValue("@SOID", Session["branch"]);
             cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
             cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate));
             DataTable dtble = vdm.SelectQuery(cmd).Tables[0];
-
-
-            //Regarding adding offer qty we added in the existing report
-            cmd = new MySqlCommand("SELECT modifiedroutes.RouteName,modifiedroutes.sno as Route_ID, branchdata.sno AS BSno, branchdata.BranchName, ROUND(SUM(offer_indents_sub.offer_indent_qty), 2) AS DeliveryQty, ROUND(SUM(offer_indents_sub.offer_indent_qty * offer_indents_sub.unit_price), 2) AS SaleValue, offer_indents_sub.unit_price, productsdata.sno as ProductSno, productsdata.ProductName,productsdata.Qty as uomqty, products_category.Categoryname, brnchprdt.Rank FROM offer_indents_sub INNER JOIN (SELECT idoffer_indents, idoffers_assignment, salesoffice_id, route_id, agent_id, indent_date, indents_id, IndentType, I_modified_by FROM offer_indents WHERE (indent_date BETWEEN @starttime AND @endtime) AND (IndentType = @indenttype)) offerindents ON offer_indents_sub.idoffer_indents = offerindents.idoffer_indents INNER JOIN productsdata ON offer_indents_sub.product_id = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN (SELECT branch_sno, product_sno, unitprice, flag, Rank FROM branchproducts WHERE (branch_sno = @BranchID)) brnchprdt ON productsdata.sno = brnchprdt.product_sno RIGHT OUTER JOIN modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno ON offerindents.agent_id = branchdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @endtime) and offer_indents_sub.offer_indent_qty <>'0' OR (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) and offer_indents_sub.offer_indent_qty <>'0' GROUP BY productsdata.sno ORDER BY brnchprdt.Rank");
-            cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate));
-            cmd.Parameters.AddWithValue("@endtime", GetHighDate(Todate));
-            cmd.Parameters.AddWithValue("@BranchID", Session["branch"]);
-            cmd.Parameters.AddWithValue("@indenttype", "Indent1");
-            DataTable dt_offerIndent = vdm.SelectQuery(cmd).Tables[0];
-
+            //cmd = new MySqlCommand("SELECT products_category.Categoryname, products_subcategory.SubCatName, branchproducts.Rank, productsdata.ProductName, branchproducts.branch_sno FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno INNER JOIN empmanage ON tripdata.DEmpId = empmanage.Sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata.AssignDate BETWEEN @d1 AND @d2) AND (empmanage.Branch = @BranchID) AND (branchproducts.branch_sno = @Branch) GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
+            //cmd = new MySqlCommand("SELECT products_category.Categoryname, products_subcategory.SubCatName, branchproducts.Rank, productsdata.ProductName, branchproducts.branch_sno FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata.AssignDate BETWEEN @d1 AND @d2) AND (branchproducts.branch_sno = @Branch) AND (tripdata.BranchID = @BranchID) GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
             cmd = new MySqlCommand("SELECT products_category.Categoryname, products_subcategory.SubCatName, branchproducts.Rank, productsdata.ProductName, branchproducts.branch_sno FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata.AssignDate BETWEEN @d1 AND @d2) AND (branchproducts.branch_sno = @Branch)  GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
             //cmd.Parameters.AddWithValue("@Flag", "1");
             cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
@@ -929,7 +921,6 @@ public partial class TotalDCReport : System.Web.UI.Page
                 // DataTable distincttable = view.ToTable(true, "DispName", "VehicleNo", "Sno", "Status", "I_Date", "Dcno");
                 DataTable distincttable = view.ToTable(true, "DispName", "VehicleNo", "Sno", "Status", "I_Date", "Dcno", "DispType", "DispMode");
                 int i = 1;
-                int count = distincttable.Rows.Count;
                 foreach (DataRow branch in distincttable.Rows)
                 {
                     if (branch["Status"].ToString() == "C")
@@ -1031,145 +1022,36 @@ public partial class TotalDCReport : System.Web.UI.Page
                         newrow["DC Date"] = ChangedTime;
                         double total = 0;
                         double totalcurdandBM = 0;
-                        double totmilk_ltr = 0;
-                        double totcurd_ltr = 0;
-                        double totbutter_ltr = 0;
-
-                        double Off_total = 0;
-                        double Off_totalcurdandBM = 0;
-                        double Off_totmilk_ltr = 0;
-                        double Off_totcurd_ltr = 0;
-                        double Off_totbutter_ltr = 0;
-
                         foreach (DataRow dr in dtble.Rows)
                         {
                             if (branch["Sno"].ToString() == dr["Sno"].ToString())
                             {
                                 double assqty = 0;
                                 double curdBm = 0;
-                                double offerqty = 0;
                                 double Buttermilk = 0;
                                 double AssignQty = 0;
-                                double milk_ltr = 0;
-                                double curd_ltr = 0;
-                                // for offer we are comparing based on routeid
-                                //we are implemented logic for offer here we are dividing offer qty and actual qty based dc quantity.
-                                //here we are dividing offer total and actual total from the total dc qty
-                                //this if we are divided offer qty from the dc qty
-                                if (dr["Route_id"].ToString() != "0" && dr["Route_id"].ToString() != "")
+                                double.TryParse(dr["Qty"].ToString(), out AssignQty);
+                                newrow[dr["ProductName"].ToString()] = AssignQty;
+                                if (dr["Categoryname"].ToString() == "MILK")
                                 {
-                                    double dqty = 0;
-                                    double actualqty = 0;
-                                    DataRow[] drofferarr = dt_offerIndent.Select("Route_id='" + dr["Route_id"].ToString() + "'AND ProductSno='" + dr["ProductSno"].ToString() + "'");
-                                    if (drofferarr.Length > 0)
-                                    {
-                                        foreach (DataRow droffer in dt_offerIndent.Select("Route_id='" + dr["Route_id"].ToString() + "'AND ProductSno='" + dr["ProductSno"].ToString() + "'"))
-                                        {
-                                            double Off_assqty = 0;
-                                            double Off_curdBm = 0;
-                                            double Off_Buttermilk = 0;
-                                            double offqty = 0;
-                                            double offuom = 0;
-                                            if (droffer["ProductSno"].ToString() == dr["ProductSno"].ToString())
-                                            {
-                                                double.TryParse(dr["Qty"].ToString(), out AssignQty);
-                                                double.TryParse(droffer["DeliveryQty"].ToString(), out dqty);
-                                                actualqty = AssignQty - dqty;
-                                                if (droffer["Categoryname"].ToString() == "MILK")
-                                                {
-                                                    double.TryParse(droffer["DeliveryQty"].ToString(), out Off_assqty);
-                                                    double.TryParse(droffer["uomqty"].ToString(), out offuom);
-                                                    double M_ltr = Off_assqty * offuom / 1000;
-                                                    Off_totmilk_ltr += M_ltr;
-                                                    Off_total += Off_assqty;
-                                                }
-                                                if (droffer["Categoryname"].ToString() == "CURD" || droffer["Categoryname"].ToString() == "OTHERS" || droffer["Categoryname"].ToString() == "Curd Cups" || droffer["Categoryname"].ToString() == "Curd Buckets")
-                                                {
-                                                    double.TryParse(droffer["DeliveryQty"].ToString(), out Off_curdBm);
-                                                    double.TryParse(droffer["uomqty"].ToString(), out offuom);
-                                                    double Cu_ltr = Off_curdBm * offuom / 1000;
-                                                    Off_totcurd_ltr += Cu_ltr;
-                                                    Off_totalcurdandBM += Off_curdBm;
-                                                }
-                                                if (droffer["Categoryname"].ToString() == "ButterMilk")
-                                                {
-                                                    double.TryParse(droffer["DeliveryQty"].ToString(), out Off_Buttermilk);
-                                                    double.TryParse(droffer["uomqty"].ToString(), out offuom);
-                                                    double butter_ltr = Off_Buttermilk * offuom / 1000;
-                                                    Off_totbutter_ltr += butter_ltr;
-                                                    Off_totalcurdandBM += Off_Buttermilk;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        double.TryParse(dr["Qty"].ToString(), out actualqty);
-                                    }
-                                    double uom = 0;
-                                    newrow[dr["ProductName"].ToString()] = actualqty;
-                                    if (dr["Categoryname"].ToString() == "MILK")
-                                    {
-                                        double.TryParse(dr["Qty"].ToString(), out assqty);
-                                        double.TryParse(dr["uomqty"].ToString(), out uom);
-                                        double M_ltr = assqty * uom / 1000;
-                                        totmilk_ltr += M_ltr;
-                                        total += assqty;
-                                    }
-                                    if (dr["Categoryname"].ToString() == "CURD" || dr["Categoryname"].ToString() == "OTHERS" || dr["Categoryname"].ToString() == "Curd Cups" || dr["Categoryname"].ToString() == "Curd Buckets")
-                                    {
-                                        double.TryParse(dr["Qty"].ToString(), out curdBm);
-                                        double.TryParse(dr["uomqty"].ToString(), out uom);
-                                        double Cu_ltr = curdBm * uom / 1000;
-                                        totcurd_ltr += Cu_ltr;
-                                        totalcurdandBM += curdBm;
-                                    }
-                                    if (dr["Categoryname"].ToString() == "ButterMilk")
-                                    {
-                                        double.TryParse(dr["Qty"].ToString(), out Buttermilk);
-                                        double.TryParse(dr["uomqty"].ToString(), out uom);
-                                        double butter_ltr = Buttermilk * uom / 1000;
-                                        totbutter_ltr += butter_ltr;
-                                        totalcurdandBM += Buttermilk;
-                                    }
+                                    double.TryParse(dr["Qty"].ToString(), out assqty);
+                                    total += assqty;
                                 }
-                                else
+                                if (dr["Categoryname"].ToString() == "CURD" || dr["Categoryname"].ToString() == "OTHERS" || dr["Categoryname"].ToString() == "Curd Cups" || dr["Categoryname"].ToString() == "Curd Buckets")
                                 {
-                                    double dqty = 0;
-                                    double actualqty = 0;
-                                    double.TryParse(dr["Qty"].ToString(), out actualqty);
-                                    double uom = 0;
-                                    newrow[dr["ProductName"].ToString()] = actualqty;
-                                    if (dr["Categoryname"].ToString() == "MILK")
-                                    {
-                                        double.TryParse(dr["Qty"].ToString(), out assqty);
-                                        double.TryParse(dr["uomqty"].ToString(), out uom);
-                                        double M_ltr = assqty * uom / 1000;
-                                        totmilk_ltr += M_ltr;
-                                        total += assqty;
-                                    }
-                                    if (dr["Categoryname"].ToString() == "CURD" || dr["Categoryname"].ToString() == "OTHERS" || dr["Categoryname"].ToString() == "Curd Cups" || dr["Categoryname"].ToString() == "Curd Buckets")
-                                    {
-                                        double.TryParse(dr["Qty"].ToString(), out curdBm);
-                                        double.TryParse(dr["uomqty"].ToString(), out uom);
-                                        double Cu_ltr = curdBm * uom / 1000;
-                                        totcurd_ltr += Cu_ltr;
-                                        totalcurdandBM += curdBm;
-                                    }
-                                    if (dr["Categoryname"].ToString() == "ButterMilk")
-                                    {
-                                        double.TryParse(dr["Qty"].ToString(), out Buttermilk);
-                                        double.TryParse(dr["uomqty"].ToString(), out uom);
-                                        double butter_ltr = Buttermilk * uom / 1000;
-                                        totbutter_ltr += butter_ltr;
-                                        totalcurdandBM += Buttermilk;
-                                    }
+                                    double.TryParse(dr["Qty"].ToString(), out curdBm);
+                                    totalcurdandBM += curdBm;
+                                }
+                                if (dr["Categoryname"].ToString() == "ButterMilk")
+                                {
+                                    double.TryParse(dr["Qty"].ToString(), out Buttermilk);
+                                    totalcurdandBM += Buttermilk;
                                 }
                             }
                         }
-                        newrow["Total Milk"] = totmilk_ltr - Off_totmilk_ltr;
-                        newrow["Total Curd&BM"] = (totcurd_ltr + totbutter_ltr) - (Off_totcurd_ltr + Off_totbutter_ltr);
-                        newrow["Total Lts"] = (totmilk_ltr + totcurd_ltr + totbutter_ltr) - (Off_totmilk_ltr + Off_totcurd_ltr + Off_totbutter_ltr);
+                        newrow["Total Milk"] = total;
+                        newrow["Total Curd&BM"] = totalcurdandBM;
+                        newrow["Total Lts"] = total + totalcurdandBM;
                         double cans = 0;
                         foreach (DataRow drinv in dtissuedinv.Rows)
                         {
@@ -1200,52 +1082,7 @@ public partial class TotalDCReport : System.Web.UI.Page
                         i++;
                     }
                 }
-                //here added newrow at the end of the datatable for adding offer qty 
-                DataRow newrow1 = Report.NewRow();
-                newrow1["Route Name"] = "Offers";
-                double Off_total1 = 0;
-                double Off_totalcurdandBM1 = 0;
-                double Off_totmilk_ltr1 = 0;
-                double Off_totcurd_ltr1 = 0;
-                double Off_totbutter_ltr1 = 0;
-                foreach (DataRow droff in dt_offerIndent.Rows)
-                {
-                    double Off_assqty = 0;
-                    double Off_curdBm = 0;
-                    double Off_Buttermilk = 0;
-                    double offqty = 0;
-                    double offuom = 0;
-                    double.TryParse(droff["DeliveryQty"].ToString(), out offqty);
-                    newrow1[droff["ProductName"].ToString()] = offqty;
-                    if (droff["Categoryname"].ToString() == "MILK")
-                    {
-                        double.TryParse(droff["DeliveryQty"].ToString(), out Off_assqty);
-                        double.TryParse(droff["uomqty"].ToString(), out offuom);
-                        double M_ltr = Off_assqty * offuom / 1000;
-                        Off_totmilk_ltr1 += M_ltr;
-                        Off_total1 += Off_assqty;
-                    }
-                    if (droff["Categoryname"].ToString() == "CURD" || droff["Categoryname"].ToString() == "OTHERS" || droff["Categoryname"].ToString() == "Curd Cups" || droff["Categoryname"].ToString() == "Curd Buckets")
-                    {
-                        double.TryParse(droff["DeliveryQty"].ToString(), out Off_curdBm);
-                        double.TryParse(droff["uomqty"].ToString(), out offuom);
-                        double Cu_ltr = Off_curdBm * offuom / 1000;
-                        Off_totcurd_ltr1 += Cu_ltr;
-                        Off_totalcurdandBM1 += Off_curdBm;
-                    }
-                    if (droff["Categoryname"].ToString() == "ButterMilk")
-                    {
-                        double.TryParse(droff["DeliveryQty"].ToString(), out Off_Buttermilk);
-                        double.TryParse(droff["uomqty"].ToString(), out offuom);
-                        double butter_ltr = Off_Buttermilk * offuom / 1000;
-                        Off_totbutter_ltr1 += butter_ltr;
-                        Off_totalcurdandBM1 += Off_Buttermilk;
-                    }
-                }
-                newrow1["Total Milk"] = Off_totmilk_ltr1;
-                newrow1["Total Curd&BM"] = Off_totcurd_ltr1 + Off_totbutter_ltr1;
-                newrow1["Total Lts"] = Off_totmilk_ltr1 + Off_totcurd_ltr1 + Off_totbutter_ltr1;
-                Report.Rows.Add(newrow1);
+
                 foreach (var column in Report.Columns.Cast<DataColumn>().ToArray())
                 {
                     if (Report.AsEnumerable().All(dr => dr.IsNull(column)))
