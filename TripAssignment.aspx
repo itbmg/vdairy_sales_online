@@ -16,15 +16,13 @@
         });
     </script>
     <style type="text/css">
-        
-        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button
-        {
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
-         .btn
-        {
-            padding:6px;
+
+        .btn {
+            padding: 6px;
         }
     </style>
     <script type="text/javascript">
@@ -479,9 +477,9 @@
                 error: e
             });
         }
-//        function GetPrintDetails() {
-////            window.location = "DeliveryChallanReport.aspx";
-//        }
+        //        function GetPrintDetails() {
+        ////            window.location = "DeliveryChallanReport.aspx";
+        //        }
         function btnPlantTripRefreshClick() {
             document.getElementById('ddlEmployee').value = "";
             document.getElementById('txtVehicleNo').value = "";
@@ -1102,8 +1100,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <section class="content-header">
-        <h1>
-            Trip Assignment<small>Preview</small>
+        <h1>Trip Assignment<small>Preview</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i>Operations</a></li>
@@ -1123,15 +1120,13 @@
                         <div>
                             <table>
                                 <tr>
-                                    <td id="divTime" style="display: none;">
-                                        Date <span id="txtTime" style="color: Blue; font-size: 18px; font-weight: bold;">
-                                        </span>
+                                    <td id="divTime" style="display: none;">Date <span id="txtTime" style="color: Blue; font-size: 18px; font-weight: bold;"></span>
                                     </td>
                                     <td>
-                                       <label>    Route Name</label> <span id="txtDispName" style="color: Red; font-size: 18px; font-weight: bold;">
-                                        </span>
+                                        <label>Route Name</label>
+                                        <span id="txtDispName" style="color: Red; font-size: 18px; font-weight: bold;"></span>
                                     </td>
-                                    <td style="width:6px;"></td>
+                                    <td style="width: 6px;"></td>
                                     <td>
                                         <label>
                                             Vehicle No</label>
@@ -1139,19 +1134,17 @@
                                     <td>
                                         <select id="txtVehicleNo" class="form-control">
                                         </select>
-                                        <span id="txtVehicle" style="color: Red; font-size: 18px; font-weight: bold; display: none;">
-                                        </span>
+                                        <span id="txtVehicle" style="color: Red; font-size: 18px; font-weight: bold; display: none;"></span>
                                     </td>
-                                    <td style="width:6px;"></td>
-                                    <td id="lblEmp">
-                                    </td>
+                                    <td style="width: 6px;"></td>
+                                    <td id="lblEmp"></td>
                                     <td id="divEmp">
                                         <select id="ddlEmployee" class="form-control">
                                         </select>
                                     </td>
-                                    <td style="width:6px;"></td>
+                                    <td style="width: 6px;"></td>
                                     <td>
-                                        <input type="button" id="btnclick" value="Click Here" class="btn btn-primary" onclick="btnclickhere();"/>
+                                        <input type="button" id="btnclick" value="Click Here" class="btn btn-primary" onclick="btnclickhere();" />
                                     </td>
                                     <td>
                                         <input type="button" id="btn_getlayout" value="Get Layout" onclick="btngetlayoutclick();"
@@ -1176,6 +1169,11 @@
                                 </tr>
                             </table>
                         </div>
+                        <div style="left: 0%; text-align: center;">
+                            <span style="font-size: 26px; font-weight: bold; color: #0252aa;">Dispatch Advice
+                              </span>
+                            
+                       </div>
                         <div id="divFillScreen">
                         </div>
                         <div id="divInventory">
@@ -1197,13 +1195,13 @@
                     </div>
                 </div>
                 <%--<button type="button" class="btn btn-primary" style="margin-right: 5px;" onclick="GetPrintDetails();"><i class="fa fa-print"></i> Print</button>--%>
-              <%--  <a target="_blank" id="BtnPrintDetails" class="btn btn-primary" style="text-decoration: none;
+                <%--  <a target="_blank" id="BtnPrintDetails" class="btn btn-primary" style="text-decoration: none;
                     width: 156px; height: 30px; font-size: 14px;" onclick="GetPrintDetails();">Get Print
                     Details </a>--%>
                 <br />
                 <div id="LoadPrint" style="display: none;">
                     <asp:Button ID="btnPrint" CssClass="btn btn-primary" Text="Print" OnClientClick="javascript:CallPrint('divPrint');"
-                        runat="Server"  />
+                        runat="Server" />
                 </div>
                 <div style="width: 100%;">
                     <div id="vehlayout" style="float: left; width: 60%;">
@@ -1214,13 +1212,11 @@
                 <div id="areaToPrint" align="center" style="width: 21.0cm; height: 29.7cm; background-color: White;"
                     hidden="hidden">
                     <style type="text/css">
-                        @page
-                        {
+                        @page {
                             margin: 0;
                         }
                     </style>
-                    <div align="center" style="color: #0252aa; font-weight: bold; font-size: x-large;
-                        top: 50px; position: relative;">
+                    <div align="center" style="color: #0252aa; font-weight: bold; font-size: x-large; top: 50px; position: relative;">
                         SRI VYSHNAVI DAIRY SPECIALITIES (P) LTD TRIP ASSIGNMENT LAYOUT
                     </div>
                     <div style="height: 120px; width: 100%;">
