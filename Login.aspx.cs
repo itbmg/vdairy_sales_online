@@ -24,7 +24,7 @@ public partial class Login : System.Web.UI.Page
     public string username, pwd;
     protected void Page_Load(object sender, EventArgs e)
     {
-        
+
         vdm = new VehicleDBMgr();
         var Empid = Request.QueryString["id"];
         username = string.Empty;
@@ -44,7 +44,7 @@ public partial class Login : System.Web.UI.Page
         catch (Exception ex)
         {
         }
- 
+
     }
     protected void btnLogin_Click(object sender, EventArgs e)
     {
@@ -63,38 +63,7 @@ public partial class Login : System.Web.UI.Page
             string LevelType = "";
             if (dtemp.Rows.Count > 0)
             {
-                //cmd = new MySqlCommand("SELECT branchmappingtable.SuperBranch, branchdata.BranchName, branchdata.stateid, branchdata.gstno, branchdata.statename, statemastar.statename AS BranchState, statemastar.gststatecode FROM branchmappingtable INNER JOIN empmanage ON branchmappingtable.SubBranch = empmanage.Branch INNER JOIN branchdata ON empmanage.Branch = branchdata.sno INNER JOIN statemastar ON branchdata.stateid = statemastar.sno WHERE (empmanage.UserName = @UN)");
-                //cmd.Parameters.Add("@UN", UserName);
-                //DataTable dtBranch = vdm.SelectQuery(cmd).Tables[0];
-                //string PlantID = "";
-                //string Branch = dtemp.Rows[0]["Branch"].ToString();
-                //if (dtBranch.Rows.Count > 0)
-                //{
-                //    PlantID = dtBranch.Rows[0]["SuperBranch"].ToString();
-                //    Session["SuperBranch"] = dtBranch.Rows[0]["SuperBranch"].ToString();
-                //    if (PlantID == "172" || Branch == "172" || PlantID == "1801" || Branch == "1801" || PlantID == "3625" || Branch == "3625" || Branch == "3919")
-                //    {
-                //        Session["TitleName"] = "SRI VYSHNAVI DAIRY SPECIALITIES (P) LTD";
-                //        if (Branch == "3625")
-                //        {
-                //            Session["Address"] = "No : 170/1B, M.G.R Nagar,Manapakkam,Chennai,TamilNadu (State),PinCode: 600116,TIN No:33140842508,</n>Toll Free No:1800 270 8800 ";
-                //            Session["TinNo"] = "33140842508";
-                //        }
-                //        else
-                //        {
-                //            Session["Address"] = "R.S.No:381/2,Punabaka village Post,Pellakuru Mandal,Nellore District -524129., ANDRAPRADESH (State).Phone: 9440622077, Fax: 044 – 26177799.";
-                //            Session["TinNo"] = "37921042267";
-                //        }
-                //    }
-                //    else
-                //    {
-                //        Session["TitleName"] = "SRI VYSHNAVI FOODS (P) LTD";
-                //        Session["Address"] = " Near Ayyappa Swamy Temple, Shasta Nagar, WYRA-507165,KHAMMAM (District), TELANGANA (State).Phone: 08749 – 251326, Fax: 08749 – 252198.";
-                //        Session["TinNo"] = "36550160129";
-                //    }
-                //    Session["BranchName"] = dtBranch.Rows[0]["BranchName"].ToString();
-                //}
-                //Session["EmpSno"] = dtemp.Rows[0]["sno"].ToString();
+
                 DateTime Currentdate = VehicleDBMgr.GetTime(vdm.conn);
                 string hostName = Dns.GetHostName(); // Retrive the Name of HOST
                 //get ip address and device type
@@ -135,33 +104,9 @@ public partial class Login : System.Web.UI.Page
                 cmd.Parameters.Add("@devicetype", devicetype);
                 cmd.Parameters.Add("@status", "1");
                 vdm.insert(cmd);
-                //End
-
-                //Session["gstin"] = dtBranch.Rows[0]["gstno"].ToString();
-                //Session["statename"] = dtBranch.Rows[0]["BranchState"].ToString();
-                //Session["statecode"] = dtBranch.Rows[0]["gststatecode"].ToString();
                 //Session["stateid"] = dtBranch.Rows[0]["stateid"].ToString();
                 Session["UserSno"] = dtemp.Rows[0]["Sno"].ToString();
-                //Session["userdata_sno"] = dtemp.Rows[0]["UserData_sno"].ToString();
-                //Session["UserName"] = dtemp.Rows[0]["UserName"].ToString();
-                //Session["EmpName"] = dtemp.Rows[0]["EmpName"].ToString();
-                //if ("232" == dtemp.Rows[0]["Sno"].ToString())
-                //{
-                //    Session["branch"] = "172";
-                //    Session["salestype"] = "Plant";
-                //}
-                //else
-                //{
 
-                //    Session["branch"] = dtemp.Rows[0]["Branch"].ToString();
-                //    Session["salestype"] = dtemp.Rows[0]["salestype"].ToString();
-                //}
-                //Session["empid"] = dtemp.Rows[0]["Sno"].ToString();
-                //Session["LevelType"] = dtemp.Rows[0]["LevelType"].ToString();
-                //Session["GroupLogin"] = dtemp.Rows[0]["grouplogin"].ToString();
-                //Session["branchname"] = dtemp.Rows[0]["BranchName"].ToString();
-
-                //string ModuleId = "1";
                 string empid = dtemp.Rows[0]["Sno"].ToString();
                 //Session["moduleid"] = ModuleId;
                 LevelType = dtemp.Rows[0]["LevelType"].ToString();
@@ -269,26 +214,11 @@ public partial class Login : System.Web.UI.Page
                         {
                             PlantID = dtBranch.Rows[0]["SuperBranch"].ToString();
                             Session["SuperBranch"] = dtBranch.Rows[0]["SuperBranch"].ToString();
-                            if (PlantID == "172" || Branch == "172" || PlantID == "1801" || Branch == "1801" || PlantID == "3625" || Branch == "3625" || Branch == "3919")
-                            {
-                                Session["TitleName"] = "SRI VYSHNAVI DAIRY SPECIALITIES (P) LTD";
-                                if (Branch == "3625")
-                                {
-                                    Session["Address"] = "No : 170/1B, M.G.R Nagar,Manapakkam,Chennai,TamilNadu (State),PinCode: 600116,TIN No:33140842508,</n>Toll Free No:1800 270 8800 ";
-                                    Session["TinNo"] = "33140842508";
-                                }
-                                else
-                                {
-                                    Session["Address"] = "R.S.No:381/2,Punabaka village Post,Pellakuru Mandal,Nellore District -524129., ANDRAPRADESH (State).Phone: 9440622077, Fax: 044 – 26177799.";
-                                    Session["TinNo"] = "37921042267";
-                                }
-                            }
-                            else
-                            {
-                                Session["TitleName"] = "SRI VYSHNAVI FOODS (P) LTD";
-                                Session["Address"] = " Near Ayyappa Swamy Temple, Shasta Nagar, WYRA-507165,KHAMMAM (District), TELANGANA (State).Phone: 08749 – 251326, Fax: 08749 – 252198.";
-                                Session["TinNo"] = "36550160129";
-                            }
+
+                            Session["TitleName"] = "SRI VYSHNAVI FOODS (P) LTD";
+                            Session["Address"] = " Near Ayyappa Swamy Temple, Shasta Nagar, WYRA-507165,KHAMMAM (District), TELANGANA (State).Phone: 08749 – 251326, Fax: 08749 – 252198.";
+                            Session["TinNo"] = "36550160129";
+
                             Session["BranchName"] = dtBranch.Rows[0]["BranchName"].ToString();
                         }
                         Session["EmpSno"] = dtemp.Rows[0]["sno"].ToString();
@@ -392,7 +322,7 @@ public partial class Login : System.Web.UI.Page
         }
         return clearText;
     }
-  
+
     protected void sessionsclick_Close(object sender, EventArgs e)
     {
         //this.AlertBox.Visible = false;
