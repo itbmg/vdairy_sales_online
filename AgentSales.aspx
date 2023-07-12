@@ -338,7 +338,7 @@
                         window.location.assign("Login.aspx");
                     }
                     $('#divFillScreen').removeTemplate();
-                    $('#divFillScreen').setTemplateURL('TripRoutes5.htm');
+                    $('#divFillScreen').setTemplateURL('TripRoutes6.htm');
                     $('#divFillScreen').processTemplate();
                     $('#divInventory').removeTemplate();
                     $('#divInventory').setTemplateURL('TripInventory.htm');

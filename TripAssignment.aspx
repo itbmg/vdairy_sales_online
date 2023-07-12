@@ -120,7 +120,6 @@
         var CheckStatus = "";
         function btnclickhere() {
             GetBranchProducts();
-            GetBranchInventory();
         }
         function FillRouteName() {
             var data = { 'operation': 'get_Plant_TripRoutes' };
@@ -155,6 +154,7 @@
             var s = function (msg) {
                 if (msg) {
                     GetProducts(msg);
+                    GetBranchInventory();
                 }
                 else {
                 }
@@ -183,7 +183,6 @@
                         $('#LoadPrint').css('display', 'block');
                         $('#btn_getlayout').css('display', 'block');
                         $('#divtblexaxis').css('display', 'block');
-                        layoutproducts();
                     }
                     else {
                         $('#divTime').css('display', 'none');
@@ -191,7 +190,6 @@
                         $('#LoadPrint').css('display', 'none');
                         $('#btn_getlayout').css('display', 'none');
                         $('#divtblexaxis').css('display', 'none');
-                        //                        layoutproducts();
                     }
                 }
                 else {
@@ -238,140 +236,40 @@
         }
         function GetProducts(msg) {
             $('#divFillScreen').removeTemplate();
-            $('#divFillScreen').setTemplateURL('TripRoutes5.htm');
+            $('#divFillScreen').setTemplateURL('TripRoutes6.htm');
             $('#divFillScreen').processTemplate(msg);
-            getTripValues();
+            getTripValuesCalculation();
         }
-        function gettubscans() {
-            var tottub = 0;
-            var totcan = 0;
-            var totcDecimal = 0;
-            $('.tottubsclass').each(function (i, obj) {
-                var tottubsclass = $(this).text();
-                if (tottubsclass == "" || tottubsclass == "0") {
-                }
-                else {
-                    var tubqtys = $(this).closest('tr').find('#txttubs').text();
-                    tubqtys = parseFloat(tubqtys).toFixed(2);
-                    tottub += tubqtys;
-                }
-            });
-            document.getElementById('txt_tubs').innerHTML = tottub;
-            $('.totExtraltrs').each(function (i, obj) {
-                var totExtraltrs = $(this).text();
-                if (totExtraltrs == "" || totExtraltrs == "0") {
-                }
-                else {
-                    var ltrs = $(this).closest('tr').find('#txtExtraltrs').text();
-                    ltrs = parseFloat(ltrs).toFixed(2);
-                    totextraltr += ltrs;
-                }
-            });
-            document.getElementById('txt_Extraltr').innerHTML = totextraltr;
-            $('.totcansclass').each(function (i, obj) {
-                var totcansclass = $(this).text();
-                if (totcansclass == "" || totcansclass == "0") {
-                }
-                else {
-                    var cansqtys = $(this).closest('tr').find('#txtcans').text();
-                    cansqtys = parseFloat(cansqtys).toFixed(2);
-                    totcan += cansqtys;
-                }
-            });
-            document.getElementById('txt_cans').innerHTML = totcan;
-        }
-        function getTripValues() {
-            var tot = 0;
-            var totc = 0;
-            var totcDecimal = 0;
-            $('.totqtyclass').each(function (i, obj) {
-                var totqtyclass = $(this).val();
-                var orderunits = $(this).closest('tr').find('#prdtunits').val();
-                var orderqty = $(this).closest('tr').find('#prdtinvqty').val();
-                var prdtname = $(this).closest('tr').find('#txtproduct').text();
-                if (orderunits == "ltr") {
-                    totc = parseFloat(totqtyclass / orderqty);
-                    $(this).closest('tr').find('#txtcans').text(totc);
-                }
-                if (orderunits == "kgs") {
-                    totc = parseFloat(totqtyclass / orderqty);
-                    totc = parseFloat(totc).toFixed(2);
-                    $(this).closest('tr').find('#txtcans').text(totc);
-                }
-                if (orderunits == "ml") {
-                    if (prdtname == "CURD175") {
-                        totc = Math.floor(totqtyclass / 10.5);
-                        totcDecimal = (totqtyclass % 10.5);
-                        totcDecimal = parseFloat(totcDecimal).toFixed(2);
-                        totc = parseFloat(totc).toFixed(2);
-                        $(this).closest('tr').find('#txttubs').text(totc);
-                        $(this).closest('tr').find('#txtExtraltrs').text(totcDecimal);
-                    }
-                    else {
-                        totc = Math.floor(totqtyclass / orderqty);
-                        totc = parseFloat(totc).toFixed(2);
-                        totcDecimal = (totqtyclass % orderqty);
-                        totcDecimal = parseFloat(totcDecimal).toFixed(2);
-                        $(this).closest('tr').find('#txttubs').text(totc);
-                        $(this).closest('tr').find('#txtExtraltrs').text(totcDecimal);
-                    }
-                }
-                if (orderunits == "gms") {
+        function getTripValuesCalculation() {
 
-                }
-                if (totqtyclass == "" || totqtyclass == "0") {
-                }
-                else {
-                    var orderqtys = $(this).closest('tr').find('#txtProductQty').val();
-                    tot += parseInt(orderqtys);
-                }
-            });
-            document.getElementById('txt_RetunQty').innerHTML = tot;
-            var tottub = 0;
-            var totcan = 0;
-            var totextraltr = 0;
-            $('.tottubsclass').each(function (i, obj) {
-                var tottubsclass = $(this).text();
-                if (tottubsclass == "" || tottubsclass == "0") {
-                }
-                else {
-                    var tubqtys = $(this).closest('tr').find('#txttubs').text();
-                    tottub += parseFloat(tubqtys);
-                }
-            });
-            document.getElementById('txt_tubs').innerHTML = tottub;
-            $('.totExtraltrs').each(function (i, obj) {
-                var totExtraltrs = $(this).text();
-                if (totExtraltrs == "" || totExtraltrs == "0") {
-                }
-                else {
-                    var ltrs = $(this).closest('tr').find('#txtExtraltrs').text();
-                    ltrs = parseFloat(ltrs).toFixed(2);
-                    totextraltr += parseFloat(ltrs);
-                }
-            });
-            document.getElementById('txt_Extraltr').innerHTML = totextraltr;
-            $('.totcansclass').each(function (i, obj) {
-                var totcansclass = $(this).text();
-                if (totcansclass == "" || totcansclass == "0") {
-                }
-                else {
-                    var cansqtys = $(this).closest('tr').find('#txtcans').text();
-                    cansqtys = parseFloat(cansqtys).toFixed(2);
-                    totcan += parseFloat(cansqtys);
-                }
-            });
-            document.getElementById('txt_cans').innerHTML = totcan;
-        }
-        function onchangeindentqty() {
-            getTripValues();
         }
         function GetInventory(msg) {
             $('#divInventory').removeTemplate();
             $('#divInventory').setTemplateURL('TripInventory.htm');
             $('#divInventory').processTemplate(msg);
+            GetInventoryCalculation();
         }
-        //        divInventory
+        function GetInventoryCalculation() {
+            var SumInvQty = 0;
+            $('.totinvclass').each(function (i, obj) {
+                SumInvQty = 0;
+                var hdnProductSno = $(this).closest('tr').find('#hdnProductSno').val();
+                $('.Unitqtyclass').each(function (i, obj) {
+                    var tubqty = $(this).closest('tr').find('#txtTubQty').val();
+                    var invsno = $(this).closest('tr').find('#hdnInvSno').val();
+                    if (tubqty == "" || tubqty == "0") {
+                    }
+                    else {
+                        if (hdnProductSno == invsno) {
+                            SumInvQty += parseFloat(tubqty);
+                        }
+
+                    }
+                });
+                $(this).closest('tr').find('#txtInvQty').val(parseFloat(SumInvQty).toFixed(0));
+            });
+        }
+
         function btnPlantTripsaveclick() {
             document.getElementById("BtnSave").disabled = true;
             var datatab = [];
@@ -397,7 +295,7 @@
                     tot_qty = parseFloat(hdn_editqty) + parseFloat(txtProductQty);
                     if (tot_qty > 0) {
                         var Product = 0;
-                        Orderdetails.push({ ProductSno: $(this).find('#hdnProductSno').val(), Product: Product, Qty: $(this).find('#txtProductQty').val(), RemainingQty: $(this).find('#txtremainingqty').text() });
+                        Orderdetails.push({ ProductSno: $(this).find('#hdnProductSno').val(), Product: Product, Qty: $(this).find('#txtProductQty').val(), tub_qty: $(this).find('#txtTubQty').val(), pkt_qty: $(this).find('#txtQtypkts').val() });
                     }
                 }
             });
@@ -416,7 +314,6 @@
                     }
                 }
             }
-            //table_inventory_details
             Operationvalues = "D";
             var Data = { 'operation': 'btnPlantTripSaveClick', 'data': Orderdetails, 'invdata': inventorydetails, 'EmpID': Employee, 'routename': DispSno, 'Permissions': Operationvalues, 'VehicleNo': txtVehicleN };
             var s = function (msg) {
@@ -428,7 +325,7 @@
                     }
                     if (msg == "Data Successfully Saved") {
                         $('#divFillScreen').removeTemplate();
-                        $('#divFillScreen').setTemplateURL('TripRoutes5.htm');
+                        $('#divFillScreen').setTemplateURL('TripRoutes6.htm');
                         $('#divFillScreen').processTemplate(datatab);
                         $('#divInventory').removeTemplate();
                         $('#divInventory').setTemplateURL('TripInventory.htm');
@@ -438,7 +335,7 @@
                     }
                     if (msg == "Data Successfully Updated") {
                         $('#divFillScreen').removeTemplate();
-                        $('#divFillScreen').setTemplateURL('TripRoutes5.htm');
+                        $('#divFillScreen').setTemplateURL('TripRoutes6.htm');
                         $('#divFillScreen').processTemplate(datatab);
                         $('#divInventory').removeTemplate();
                         $('#divInventory').setTemplateURL('TripInventory.htm');
@@ -477,9 +374,6 @@
                 error: e
             });
         }
-        //        function GetPrintDetails() {
-        ////            window.location = "DeliveryChallanReport.aspx";
-        //        }
         function btnPlantTripRefreshClick() {
             document.getElementById('ddlEmployee').value = "";
             document.getElementById('txtVehicleNo').value = "";
@@ -533,568 +427,119 @@
             newWin.document.write('<html><body   onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
             newWin.document.close();
         }
-        function btngetlayoutclick() {
-            var x = document.getElementById('txt_xaxis').value;
-            var y = document.getElementById('txt_yaxis').value;
-            var z = document.getElementById('txt_zaxis').value;
-            var totalqty = document.getElementById('txt_inputcapacity').value;
-            x = parseInt(x);
-            y = parseInt(y);
-            z = parseInt(z);
-            totalqty = parseInt(totalqty);
-            var grndcpcty = x * y;
-            var totalcpcty = x * y * z;
-            if (totalqty > totalcpcty) {
-                alert("Quantity exceeded.");
-                return;
+
+        // Calculation for all the Pkts,Tubs,Ltr/kgs
+        function OrderPktQtyChange(PktQty) {
+            if (PktQty.value == "") {
+
             }
-            createTable(x, y);
-            var filledrowsqty = totalqty / grndcpcty;
-            filledrowsqty = parseInt(filledrowsqty);
-            var remaining = totalqty % grndcpcty;
-            var remaincount = 1;
-            for (var i = 0; i < x; i++) {
-                for (var j = 0; j < y; j++) {
-                    var elemnt = $('.x' + i + 'y' + j);
-                    if (remaincount <= remaining) {
-                        elemnt.html(filledrowsqty + 1);
-                        elemnt.val(filledrowsqty + 1);
-                        remaincount++;
-                    }
-                    else {
-                        elemnt.html(filledrowsqty);
-                        elemnt.val(filledrowsqty);
-                    }
-                }
+            else {
+                var invQty = $(PktQty).closest("tr").find("#hdninvQty").val();
+                var unitQty = $(PktQty).closest("tr").find("#hdnUnitQty").val();
+                var pktval = PktQty.value;
+                var totltr = parseFloat(pktval * unitQty);
+                var totltrvalue = parseFloat(totltr / 1000);
+                var totaltub = parseFloat(pktval / invQty);
+                $(PktQty).closest("tr").find("#txtDupUnitQty").text(parseFloat(totltrvalue).toFixed(2))
+                $(PktQty).closest("tr").find("#txtProductQty").val(parseFloat(totltrvalue).toFixed(2))
+                // $(PktQty).closest("tr").find("#txtLtrQty").val(parseFloat(totltrvalue).toFixed(2))
+                //  $(PktQty).closest("tr").find("#hdnltrQty").val(parseFloat(totltrvalue).toFixed(2))
+                $(PktQty).closest("tr").find("#txtTubQty").val(parseFloat(totaltub).toFixed(2));
+                var val = parseFloat(totltrvalue).toFixed(2);
+                OrderUnitChange(PktQty);
+                GetInventoryCalculation();
             }
         }
-
-        function cellclick(id) {
-            var subtbl = $('#tblsubdiv');
-            for (var k = 0, subrow; subrow = subtbl[0].rows[k]; k++) {
-                subtbl[0].rows[k].cells[1].childNodes[0].value = "";
+        function OrderTubQtyChange(TubQty) {
+            if (TubQty.value == "") {
             }
-            var celltext = $(id).html();
-            var cellval = $(id).val();
-            cellval = parseInt(cellval);
-            var n = celltext.indexOf("-");
-            if (n > -1) {
-                var checkcontainer = celltext.indexOf("\n");
-                if (checkcontainer > -1) {
-                    var spltdval = celltext.split("\n");
-                    for (var a = 0; a < spltdval.length; a++) {
-                        var splittedval = spltdval[a].split("-");
-                        if (typeof splittedval[1] === "undefined") {
-                        }
-                        else {
-                            var subtbl = $('#tblsubdiv');
-                            for (var k = 0, subrow; subrow = subtbl[0].rows[k]; k++) {
-                                var product = subtbl[0].rows[k].cells[0].innerText;
-                                var prdct = ' ' + product + ' ';
-                                var spltdprdct = splittedval[1];
-                                var spltdprdctvalue = splittedval[0];
-                                spltdprdctvalue = parseInt(spltdprdctvalue);
-                                if (prdct == spltdprdct) {
-                                    subtbl[0].rows[k].cells[1].childNodes[0].value = spltdprdctvalue;
-                                }
-                            }
-                        }
-                    }
-
-                    var background = $(id).css('background-color');
-                    if (background == "rgb(221, 213, 255)") {
-                        $(id).css('background-color', 'rgb(255, 255, 204)');
+            else {
+                var invQty = $(TubQty).closest("tr").find("#hdninvQty").val();
+                var unitQty = $(TubQty).closest("tr").find("#hdnUnitQty").val();
+                var tubval = TubQty.value;
+                var totalpkts = parseFloat(tubval * invQty);
+                var totltr = parseFloat(totalpkts * unitQty);
+                var totltrvalue = parseFloat(totltr / 1000);
+                $(TubQty).closest("tr").find("#txtQtypkts").val(parseFloat(totltrvalue).toFixed(2));
+                $(TubQty).closest("tr").find("#txtDupUnitQty").text(parseFloat(totltrvalue).toFixed(2))
+                $(TubQty).closest("tr").find("#txtProductQty").val(parseFloat(totltrvalue).toFixed(2))
+                //$(TubQty).closest("tr").find("#txtLtrQty").val(parseFloat(totltrvalue).toFixed(2))
+                //$(TubQty).closest("tr").find("#hdnltrQty").val(parseFloat(totltrvalue).toFixed(2))
+                //   $(TubQty).closest("tr").find("#txtQtypkts").val(parseFloat(totalpkts).toFixed(2));
+                var val = parseFloat(totltrvalue).toFixed(2);
+                OrderUnitChange(TubQty);
+                GetInventoryCalculation();
+            }
+        }
+        function OrderUnitChange(UnitQty) {
+            var totalqty;
+            var qty = 0.0;
+            var Rate = 0;
+            var rate = 0;
+            var total = 0;
+            var totalltr = 0;
+            var TotalRate = 0;
+            var cnt = 0;
+            if (UnitQty.value == "") {
+                //$(UnitQty).closest("tr").find("#txtOrderTotal").text(parseFloat(total).toFixed(2));
+                $('.Unitqtyclass').each(function (i, obj) {
+                    var qtyclass = $(this).closest('tr').find('#txtQtypkts').val();
+                    if (qtyclass == "" || qtyclass == "0") {
                     }
                     else {
-                        var subtbl = $('#tblsubdiv');
-                        for (var k = 0, subrow; subrow = subtbl[0].rows[k]; k++) {
-                            subtbl[0].rows[k].cells[1].childNodes[0].value = "";
-                        }
-                        $(id).css('background-color', 'rgb(221, 213, 255)');
+                        totalltr += parseFloat(qtyclass);
+
+                        cnt++;
                     }
+                });
+                //  document.getElementById('txt_totqty').innerHTML = parseFloat(totalltr).toFixed(2);
+                //$('.rateclass').each(function (i, obj) {
+                //    rate += parseFloat($(this).text());
+                //});
+                //var Floatrate = rate.toFixed(2)
+                // document.getElementById('txt_totRate').innerHTML = parseFloat(Floatrate).toFixed(2);
+                $('.totalQtyclass').each(function (i, obj) {
+                    total += parseFloat($(this).text());
+                });
+                document.getElementById('txt_QtyLtr').innerHTML = parseFloat(total).toFixed(2);
+                return false;
+            }
+            var Qty = $(UnitQty).closest("tr").find("#hdnUnitQty").val();
+            var Units = $(UnitQty).closest("tr").find("#hdnUnits").val();
+            var Units = $(UnitQty).closest("tr").find("#hdnUnits").val();
+            var unitqty = $(UnitQty).closest("tr").find("#txtQtypkts").val();
+            if (Units == "ml") {
+                totalqty = parseFloat(unitqty);
+            }
+            if (Units == "ltr") {
+                totalqty = parseInt(unitqty);
+            }
+            if (Units == "gms") {
+                totalqty = parseFloat(unitqty);
+            }
+            if (Units == "kgs") {
+                totalqty = parseInt(unitqty);
+            }
+            if (Units == "Pkts") {
+                totalqty = parseInt(unitqty);
+            }
+            $(UnitQty).closest("tr").find("#hdnQty").val(totalqty)
+            //cnt = 0;
+            $('.Unitqtyclass').each(function (i, obj) {
+                var qtyclass = $(this).closest('tr').find('#txtQtypkts').val();
+                if (qtyclass == "" || qtyclass == "0") {
                 }
                 else {
-                    var splittedval = celltext.split("-");
-                    if (typeof splittedval[1] === "undefined") {
-                        var background = $(id).css('background-color');
-                        if (background == "rgb(255, 255, 204)") {
-                            $(id).css('background-color', '#FFFFFC');
-                        }
-                        else {
-                            $(id).css('background-color', 'rgb(255, 255, 204)');
-                        }
-                    }
-                    else {
-                        var subtbl = $('#tblsubdiv');
-                        for (var k = 0, subrow; subrow = subtbl[0].rows[k]; k++) {
-                            var prdct = ' ' + subtbl[0].rows[k].cells[0].innerText;
-                            var spltdprdct = splittedval[1];
-                            var spltdprdctvalue = splittedval[0];
-                            spltdprdctvalue = parseInt(spltdprdctvalue);
-                            if (prdct == spltdprdct) {
-                                subtbl[0].rows[k].cells[1].childNodes[0].value = spltdprdctvalue;
-                            }
-                        }
-                        var background = $(id).css('background-color');
-                        if (background == "rgb(255, 255, 204)") {
-                            if (cellval == spltdprdctvalue) {
-                                $(id).css('background-color', 'rgb(180, 245, 234)');
-                            }
-                            else {
-                                $(id).css('background-color', 'rgb(243, 207, 200)');
-                            }
-                        }
-                        else {
-                            $(id).css('background-color', 'rgb(255, 255, 204)');
-                        }
-                    }
+                    totalltr += parseInt(qtyclass);
+                    cnt++;
                 }
-            }
-            else {
-                var background = $(id).css('background-color');
-                if (background == "rgb(255, 255, 204)") {
-                    $(id).css('background-color', '#FFFFFC');
-                }
-                else {
-                    $(id).css('background-color', 'rgb(255, 255, 204)');
-                }
-            }
-        }
-
-        function onproductclick(thisid) {
-            var slctdproductqty = 0;
-            var slctdcellsqty = 0;
-            var clickedprdctname = $(thisid).html();
-            if (clickedprdctname != "Remove") {
-                var clickedprdctcnt = $(thisid).parent('td').next('td').next('td');
-                var slctdproductqty = $(clickedprdctcnt).find('span').html();
-                var tbllayout = $('#tbllayout');
-                slctdproductqty = parseInt(slctdproductqty);
-                if (slctdproductqty > 0) {
-                    if (typeof tbllayout[0] === "undefined") {
-                    }
-                    else {
-                        for (var i = 0, row; row = tbllayout[0].rows[i]; i++) {
-                            for (var j = 0, cell; cell = tbllayout[0].rows[i].cells[j]; j++) {
-                                if (tbllayout[0].rows[i].cells[j].style.backgroundColor == "rgb(255, 255, 204)") {
-                                    var cellvalue = tbllayout[0].rows[i].cells[j].value;
-                                    var celltext = tbllayout[0].rows[i].cells[j].innerHTML;
-                                    cellvalue = parseInt(cellvalue);
-                                    var checkcontainer = celltext.indexOf("\n");
-                                    if (checkcontainer > -1) {
-                                        var spltdval = celltext.split("\n");
-                                        for (var a = 0; a < spltdval.length; a++) {
-                                            var splittedval = spltdval[a].split("-");
-                                            if (typeof splittedval[1] === "undefined") {
-                                            }
-                                            else {
-                                                var subtbl = $('#tblsubdiv');
-                                                for (var k = 0, subrow; subrow = subtbl[0].rows[k]; k++) {
-                                                    var product = subtbl[0].rows[k].cells[0].innerText;
-                                                    var productqty = subtbl[0].rows[k].cells[2].innerText;
-                                                    productqty = parseInt(productqty);
-                                                    var prdct = ' ' + product + ' ';
-                                                    var spltdprdct = splittedval[1];
-                                                    var spltdprdctvalue = splittedval[0];
-                                                    spltdprdctvalue = parseInt(spltdprdctvalue);
-                                                    if (prdct == spltdprdct) {
-                                                        var addprdctvls = productqty + spltdprdctvalue;
-                                                        subtbl[0].rows[k].cells[2].childNodes[0].innerHTML = addprdctvls;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    else {
-                                        var n = celltext.indexOf("-");
-                                        if (n > -1) {
-                                            var splittedval = celltext.split("-");
-                                            if (typeof splittedval[1] === "undefined") {
-                                            }
-                                            else {
-                                                var subtbl = $('#tblsubdiv');
-                                                for (var k = 0, subrow; subrow = subtbl[0].rows[k]; k++) {
-                                                    var prdct = ' ' + subtbl[0].rows[k].cells[0].innerText;
-                                                    var productqty = subtbl[0].rows[k].cells[2].innerText;
-                                                    productqty = parseInt(productqty);
-                                                    var spltdprdct = splittedval[1];
-                                                    var spltdprdctvalue = splittedval[0];
-                                                    spltdprdctvalue = parseInt(spltdprdctvalue);
-                                                    if (prdct == spltdprdct) {
-                                                        var addprdctvls = productqty + spltdprdctvalue;
-                                                        subtbl[0].rows[k].cells[2].childNodes[0].innerHTML = addprdctvls;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    slctdcellsqty += cellvalue;
-                                    if (slctdproductqty >= slctdcellsqty) {
-                                        tbllayout[0].rows[i].cells[j].innerHTML = cellvalue + " - " + clickedprdctname;
-                                        tbllayout[0].rows[i].cells[j].style.backgroundColor = "rgb(180, 245, 234)";
-                                    }
-                                    else {
-                                        var tempremain = slctdproductqty + cellvalue - slctdcellsqty;
-                                        if (tempremain > 0) {
-                                            tbllayout[0].rows[i].cells[j].innerHTML = tempremain + " - " + clickedprdctname;
-                                            tbllayout[0].rows[i].cells[j].style.backgroundColor = "rgb(243, 207, 200)";
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        var remain = 0;
-                        if (slctdproductqty >= slctdcellsqty) {
-                            remain = slctdproductqty - slctdcellsqty;
-                        }
-                        $(clickedprdctcnt).find('span').html(remain);
-                    }
-                }
-            }
-            else {
-                var tbllayout = $('#tbllayout');
-                for (var i = 0, row; row = tbllayout[0].rows[i]; i++) {
-                    for (var j = 0, cell; cell = tbllayout[0].rows[i].cells[j]; j++) {
-                        if (tbllayout[0].rows[i].cells[j].style.backgroundColor == "rgb(255, 255, 204)") {
-                            var cellvalue = tbllayout[0].rows[i].cells[j].value;
-                            var celltext = tbllayout[0].rows[i].cells[j].innerHTML;
-                            cellvalue = parseInt(cellvalue);
-                            var checkcontainer = celltext.indexOf("\n");
-                            if (checkcontainer > -1) {
-                                var spltdval = celltext.split("\n");
-                                for (var m = 0; m < spltdval.length; m++) {
-                                    var splittedval = spltdval[m].split("-");
-                                    if (typeof splittedval[1] === "undefined") {
-                                    }
-                                    else {
-                                        var subtbl = $('#tblsubdiv');
-                                        for (var k = 0, subrow; subrow = subtbl[0].rows[k]; k++) {
-                                            var product = subtbl[0].rows[k].cells[0].innerText;
-                                            var productqty = subtbl[0].rows[k].cells[2].innerText;
-                                            productqty = parseInt(productqty);
-                                            var prdct = ' ' + product + ' ';
-                                            var spltdprdct = splittedval[1];
-                                            var spltdprdctvalue = splittedval[0];
-                                            spltdprdctvalue = parseInt(spltdprdctvalue);
-                                            if (prdct == spltdprdct) {
-                                                var addprdctvls = productqty + spltdprdctvalue;
-                                                subtbl[0].rows[k].cells[2].childNodes[0].innerHTML = addprdctvls;
-                                                tbllayout[0].rows[i].cells[j].innerHTML = tbllayout[0].rows[i].cells[j].value;
-                                                tbllayout[0].rows[i].cells[j].style.backgroundColor = "#FFFFFC";
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            else {
-                                var n = celltext.indexOf("-");
-                                if (n > -1) {
-                                    var splittedval = celltext.split("-");
-                                    if (typeof splittedval[1] === "undefined") {
-                                    }
-                                    else {
-                                        var subtbl = $('#tblsubdiv');
-                                        for (var k = 0, subrow; subrow = subtbl[0].rows[k]; k++) {
-                                            var prdct = ' ' + subtbl[0].rows[k].cells[0].innerText;
-                                            var productqty = subtbl[0].rows[k].cells[2].innerText;
-                                            productqty = parseInt(productqty);
-                                            var spltdprdct = splittedval[1];
-                                            var spltdprdctvalue = splittedval[0];
-                                            spltdprdctvalue = parseInt(spltdprdctvalue);
-                                            if (prdct == spltdprdct) {
-                                                var addprdctvls = productqty + spltdprdctvalue;
-                                                subtbl[0].rows[k].cells[2].childNodes[0].innerHTML = addprdctvls;
-                                                tbllayout[0].rows[i].cells[j].innerHTML = tbllayout[0].rows[i].cells[j].value;
-                                                tbllayout[0].rows[i].cells[j].style.backgroundColor = "#FFFFFC";
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            var subtbl = $('#tblsubdiv');
-            for (var k = 0, subrow; subrow = subtbl[0].rows[k]; k++) {
-                subtbl[0].rows[k].cells[1].childNodes[0].value = "";
-            }
-        }
-
-        function layoutproducts() {
-            var subdiv = $('#vehsublayput');
-            var productstbl = $('#tabledetails');
-            if (typeof productstbl[0] === "undefined") {
-            }
-            else {
-                var subdivhtml = '<table id="tblsubdiv">';
-                for (var i = 1, row; row = productstbl[0].rows[i]; i++) {
-                    var product = $(row).find('#txtproduct').html();
-                    var productqty = $(row).find('#txttubs').html();
-                    productqty = parseInt(productqty);
-                    if (productqty > 0) {
-                        var pdctval = product.substring(3, product.length);
-                        product = pdctval.substring(0, pdctval.length - 4);
-                        subdivhtml += '<tr><td><span style="cursor:pointer;" onclick="onproductclick(this)">' + product + '</span></td><td><input onkeyup="runScript(this)"/></td><td><span>' + productqty + '</span></td></tr>';
-                    }
-                }
-                subdivhtml += '<tr><td><span style="cursor:pointer;font-weight:bold;" onclick="onproductclick(this)">Remove</span></td><td><input style="display:none;"/></td><td><span style="display:none;">0</span></td></tr>';
-                subdivhtml += '</table>';
-                subdivhtml += '<input type="button" value="Split" style="width:100px;height:30px;font-weight:bold;font-size:15px;background-color: #2a73a6;color:white; border-radius:3px 3px 3px 3px;" onclick="btnsplitclick()"/>';
-                subdivhtml += '<input type="button" value="Done" style="width:100px;height:30px;font-weight:bold;font-size:15px;background-color: #2a73a6;color:white; border-radius:3px 3px 3px 3px;" onclick="btnsaveclick()"/>';
-                subdivhtml += '<input type="button" value="Print" style="width:100px;height:30px;font-weight:bold;font-size:15px;background-color: #2a73a6;color:white; border-radius:3px 3px 3px 3px;" onclick="btnprintclick()"/>';
-                subdiv.html(subdivhtml);
-            }
-        }
-
-        function btnsaveclick() {
-            var tbllayout = $('#tbllayout');
-            if (typeof tbllayout[0] === "undefined") {
-            }
-            else {
-                var finalstring = new Array();
-                for (var i = 0, row; row = tbllayout[0].rows[i]; i++) {
-                    for (var j = 0, cell; cell = tbllayout[0].rows[i].cells[j]; j++) {
-                        var cellclass = tbllayout[0].rows[i].cells[j].className;
-                        var cellvalue = tbllayout[0].rows[i].cells[j].value;
-                        var celltext = tbllayout[0].rows[i].cells[j].innerHTML;
-                        cellvalue = parseInt(cellvalue);
-                        var checkcontainer = celltext.indexOf("-");
-                        if (checkcontainer > -1) {
-                            finalstring.push({ cellcss: cellclass, cellvalue: celltext });
-                        }
-                    }
-                }
-                var data = { 'operation': 'vehlayoutsave', 'tripid': '1', 'layoutstring': finalstring };
-                var s = function (msg) {
-                    if (msg) {
-                        if (msg.length > 0) {
-                            alert(msg);
-                        }
-                        else {
-                            alert("Error occurred,please try again.");
-                        }
-                    }
-                    else {
-                    }
-                };
-                var e = function (x, h, e) {
-                };
-                $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
-                CallHandlerUsingJson(data, s, e);
-            }
-        }
-
-        function btnprintclick() {
-
-            //var tble = document.getElementById("vehlayout").innerHTML;
-            var tble = document.getElementById("tbllayout");
-            document.getElementById("printdata").innerHTML = tble.outerHTML;
-            //div.innerHTML = tble;
-
-
-            var divToPrint = document.getElementById('areaToPrint');
-            var newWin = window.open('about:blank');
-            //        setTimeout(function () {
-            //            if (!newWin || newWin.outerHeight === 0) {
-            //                //First Checking Condition Works For IE & Firefox
-            //                //Second Checking Condition Works For Chrome
-            //                alert("Popup Blocker is enabled! Please add this site to your exception list.");
-
-            //            } else {
-
-            newWin.document.write(divToPrint.innerHTML);
-            newWin.print();
-            newWin.close();
-
-            //            }
-            //        }, 1000);
-        }
-
-
-
-
-        function runScript(id) {
-            var txtval = $(id).val();
-            var clickedprdctcnt = $(id).parent('td').next('td');
-            var lblval = $(clickedprdctcnt).find('span').html();
-            txtval = parseInt(txtval);
-            lblval = parseInt(lblval);
-            if (id.value < 0) id.value = 0;
-            if (id.value > lblval) {
-                //                alert("Entered input exceeds product quantity.");
-                var sss = id.value.length - 1;
-                id.value = id.value.substring(0, sss);
-            }
-        }
-
-        function createTable(num_rows, num_cols) {
-            // var num_rows = document.getElementById('rows').value;
-            // var num_cols = document.getElementById('cols').value;
-            var headtbl = '<table id="headtbl">\n';
-            headtbl += '<tr>';
-            for (var j = 0; j < num_cols; j++) {
-                headtbl += '<td style="text-align:center;width:62px;"><input type="checkbox" onclick="checkclick(this)" id=h0' + j + ' />';
-                headtbl += '</td>'
-            }
-            headtbl += '</tr>\n</table>';
-
-            var theader = '<table id="tbllayout" border="1">\n';
-            var tbody = "";
-            for (var i = 0; i < num_rows; i++) {
-                tbody += '<tr>';
-                for (var j = 0; j < num_cols; j++) {
-                    tbody += '<td style="background-color: #FFFFFC; width:60px;height:60px;text-align:center;color:Green; font-size:11px;" onclick="cellclick(this)" class=x' + i + 'y' + j + '>';
-                    tbody += '</td>'
-                }
-                tbody += '</tr>\n';
-            }
-            var tfooter = '</table>';
-            document.getElementById('vehlayout').innerHTML = headtbl + theader + tbody + tfooter;
-        }
-
-        function checkclick(thisid) {
-            var chkbox = $(thisid);
-            var checkedid = chkbox[0].id;
-            checkedid = checkedid.substring(2, 3);
-            checkedid = parseInt(checkedid);
-            var tbllayout = $('#tbllayout');
-            if (typeof tbllayout[0] === "undefined") {
-            }
-            else {
-                for (var i = 0, row; row = tbllayout[0].rows[i]; i++) {
-                    for (var j = 0, cell; cell = tbllayout[0].rows[i].cells[j]; j++) {
-                        if (checkedid == j) {
-                            if (thisid.checked) {
-                                if (tbllayout[0].rows[i].cells[j].style.backgroundColor == "rgb(255, 255, 252)" || tbllayout[0].rows[i].cells[j].style.backgroundColor == "#FFFFFC") {
-                                    tbllayout[0].rows[i].cells[j].style.backgroundColor = "rgb(255, 255, 204)";
-                                }
-                            }
-                            else {
-                                if (tbllayout[0].rows[i].cells[j].style.backgroundColor == "rgb(255, 255, 204)") {
-                                    tbllayout[0].rows[i].cells[j].style.backgroundColor = "#FFFFFC";
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        function btnsplitclick() {
-            var tbllayout = $('#tbllayout');
-            var selectedcellscnt = 0;
-            if (typeof tbllayout[0] === "undefined") {
-            }
-            else {
-                for (var i = 0, row; row = tbllayout[0].rows[i]; i++) {
-                    for (var j = 0, cell; cell = tbllayout[0].rows[i].cells[j]; j++) {
-                        if (tbllayout[0].rows[i].cells[j].style.backgroundColor == "rgb(255, 255, 204)") {
-                            selectedcellscnt++;
-                        }
-                    }
-                }
-                if (selectedcellscnt > 1) {
-                    alert("Please select only one cell to split.");
-                    return;
-                }
-                else {
-                    var prdctscnt = 0;
-                    var prdctstrng = "";
-                    for (var i = 0, row; row = tbllayout[0].rows[i]; i++) {
-                        for (var j = 0, cell; cell = tbllayout[0].rows[i].cells[j]; j++) {
-                            if (tbllayout[0].rows[i].cells[j].style.backgroundColor == "rgb(255, 255, 204)") {
-                                var cellvalue = tbllayout[0].rows[i].cells[j].value;
-                                cellvalue = parseInt(cellvalue);
-                                var subtbl = $('#tblsubdiv');
-                                for (var k = 0, subrow; subrow = subtbl[0].rows[k]; k++) {
-                                    var product = subtbl[0].rows[k].cells[0].innerText;
-                                    var productqty = subtbl[0].rows[k].cells[1].childNodes[0].value;
-                                    var totproductqty = subtbl[0].rows[k].cells[2].innerText;
-                                    productqty = parseInt(productqty);
-                                    if (productqty > 0) {
-                                        prdctscnt += productqty;
-                                        prdctstrng += productqty + ' - ' + product + ' \n';
-                                    }
-                                }
-                                if (prdctscnt <= cellvalue) {
-                                    var celltext = tbllayout[0].rows[i].cells[j].innerHTML;
-                                    cellvalue = parseInt(cellvalue);
-                                    var checkcontainer = celltext.indexOf("\n");
-                                    if (checkcontainer > -1) {
-                                        var spltdval = celltext.split("\n");
-                                        for (var m = 0; m < spltdval.length; m++) {
-                                            var splittedval = spltdval[m].split("-");
-                                            if (typeof splittedval[1] === "undefined") {
-                                            }
-                                            else {
-                                                var subtbl = $('#tblsubdiv');
-                                                for (var k = 0, subrow; subrow = subtbl[0].rows[k]; k++) {
-                                                    var product = subtbl[0].rows[k].cells[0].innerText;
-                                                    var productqty = subtbl[0].rows[k].cells[2].innerText;
-                                                    productqty = parseInt(productqty);
-                                                    var prdct = ' ' + product + ' ';
-                                                    var spltdprdct = splittedval[1];
-                                                    var spltdprdctvalue = splittedval[0];
-                                                    spltdprdctvalue = parseInt(spltdprdctvalue);
-                                                    if (prdct == spltdprdct) {
-                                                        var addprdctvls = productqty + spltdprdctvalue;
-                                                        subtbl[0].rows[k].cells[2].childNodes[0].innerHTML = addprdctvls;
-                                                        tbllayout[0].rows[i].cells[j].innerHTML = tbllayout[0].rows[i].cells[j].value;
-                                                        tbllayout[0].rows[i].cells[j].style.backgroundColor = "#FFFFFC";
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    else {
-                                        var n = celltext.indexOf("-");
-                                        if (n > -1) {
-                                            var splittedval = celltext.split("-");
-                                            if (typeof splittedval[1] === "undefined") {
-                                            }
-                                            else {
-                                                var subtbl = $('#tblsubdiv');
-                                                for (var k = 0, subrow; subrow = subtbl[0].rows[k]; k++) {
-                                                    var prdct = ' ' + subtbl[0].rows[k].cells[0].innerText;
-                                                    var productqty = subtbl[0].rows[k].cells[2].innerText;
-                                                    productqty = parseInt(productqty);
-                                                    var spltdprdct = splittedval[1];
-                                                    var spltdprdctvalue = splittedval[0];
-                                                    spltdprdctvalue = parseInt(spltdprdctvalue);
-                                                    if (prdct == spltdprdct) {
-                                                        var addprdctvls = productqty + spltdprdctvalue;
-                                                        subtbl[0].rows[k].cells[2].childNodes[0].innerHTML = addprdctvls;
-                                                        tbllayout[0].rows[i].cells[j].innerHTML = tbllayout[0].rows[i].cells[j].value;
-                                                        tbllayout[0].rows[i].cells[j].style.backgroundColor = "#FFFFFC";
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    for (var k = 0, subrow; subrow = subtbl[0].rows[k]; k++) {
-                                        var product = subtbl[0].rows[k].cells[0].innerText;
-                                        var productqty = subtbl[0].rows[k].cells[1].childNodes[0].value;
-                                        var totproductqty = subtbl[0].rows[k].cells[2].innerText;
-                                        productqty = parseInt(productqty);
-                                        if (productqty > 0) {
-                                            var remain = 0;
-                                            remain = totproductqty - productqty;
-                                            subtbl[0].rows[k].cells[2].childNodes[0].innerHTML = remain;
-                                            subtbl[0].rows[k].cells[1].childNodes[0].value = "";
-                                        }
-                                    }
-                                    tbllayout[0].rows[i].cells[j].innerHTML = prdctstrng;
-                                    tbllayout[0].rows[i].cells[j].style.backgroundColor = "rgba(221, 213, 255, 1)";
-                                }
-                                else {
-                                    alert("Selected quantity exceeds the limit of the cell.\nPlease give proper input.");
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            });
+            //document.getElementById('txt_totqty').innerHTML = parseFloat(totalltr).toFixed(2);
+            //total = 0;
+            //$('.totalclass').each(function (i, obj) {
+            //    total += parseFloat($(this).text());
+            //});
+            //document.getElementById('txt_total').innerHTML = parseFloat(total).toFixed(2);
         }
     </script>
 </asp:Content>
@@ -1146,85 +591,53 @@
                                     <td>
                                         <input type="button" id="btnclick" value="Click Here" class="btn btn-primary" onclick="btnclickhere();" />
                                     </td>
-                                    <td>
-                                        <input type="button" id="btn_getlayout" value="Get Layout" onclick="btngetlayoutclick();"
-                                            style="width: 100px; height: 24px; font-size: 14px; display: none;" />
-                                    </td>
+
                                 </tr>
                             </table>
-                            <table id="divtblexaxis" style="display: none;">
+
+                            <div id="divFillScreen">
+                            </div>
+                            <div id="divInventory">
+                            </div>
+                        </div>
+                        <div>
+                            <table id="table_trip_gridview" style="padding-left: 38%">
                                 <tr>
                                     <td>
-                                        <input id="txt_xaxis" value="8" />
-                                    </td>
-                                    <td>
-                                        <input id="txt_yaxis" value="6" />
-                                    </td>
-                                    <td>
-                                        <input id="txt_zaxis" value="10" />
-                                    </td>
-                                    <td>
-                                        <input id="txt_inputcapacity" value="400" />
+                                        <div id="divtripass" style="padding-left: 5%; width: 90%; cursor: pointer;">
+                                            <table id="grd_tripassignment">
+                                            </table>
+                                            <div id="trippage">
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                        <div style="left: 0%; text-align: center;">
-                            <span style="font-size: 26px; font-weight: bold; color: #0252aa;">Dispatch Advice
-                              </span>
-                            
-                       </div>
-                        <div id="divFillScreen">
+                    </div>
+
+                    <br />
+                    <div id="LoadPrint" style="display: none;">
+                        <asp:Button ID="btnPrint" CssClass="btn btn-primary" Text="Print" OnClientClick="javascript:CallPrint('divPrint');"
+                            runat="Server" />
+                    </div>
+
+                    <div id="areaToPrint" align="center" style="width: 21.0cm; height: 29.7cm; background-color: White;"
+                        hidden="hidden">
+                        <style type="text/css">
+                            @page {
+                                margin: 0;
+                            }
+                        </style>
+                        <div align="center" style="color: #0252aa; font-weight: bold; font-size: x-large; top: 50px; position: relative;">
+                            SRI VYSHNAVI DAIRY SPECIALITIES (P) LTD TRIP ASSIGNMENT LAYOUT
                         </div>
-                        <div id="divInventory">
+                        <div style="height: 120px; width: 100%;">
                         </div>
-                    </div>
-                    <div>
-                        <table id="table_trip_gridview" style="padding-left: 38%">
-                            <tr>
-                                <td>
-                                    <div id="divtripass" style="padding-left: 5%; width: 90%; cursor: pointer;">
-                                        <table id="grd_tripassignment">
-                                        </table>
-                                        <div id="trippage">
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <%--<button type="button" class="btn btn-primary" style="margin-right: 5px;" onclick="GetPrintDetails();"><i class="fa fa-print"></i> Print</button>--%>
-                <%--  <a target="_blank" id="BtnPrintDetails" class="btn btn-primary" style="text-decoration: none;
-                    width: 156px; height: 30px; font-size: 14px;" onclick="GetPrintDetails();">Get Print
-                    Details </a>--%>
-                <br />
-                <div id="LoadPrint" style="display: none;">
-                    <asp:Button ID="btnPrint" CssClass="btn btn-primary" Text="Print" OnClientClick="javascript:CallPrint('divPrint');"
-                        runat="Server" />
-                </div>
-                <div style="width: 100%;">
-                    <div id="vehlayout" style="float: left; width: 60%;">
-                    </div>
-                    <div id="vehsublayput" style="float: right; width: 40%;">
-                    </div>
-                </div>
-                <div id="areaToPrint" align="center" style="width: 21.0cm; height: 29.7cm; background-color: White;"
-                    hidden="hidden">
-                    <style type="text/css">
-                        @page {
-                            margin: 0;
-                        }
-                    </style>
-                    <div align="center" style="color: #0252aa; font-weight: bold; font-size: x-large; top: 50px; position: relative;">
-                        SRI VYSHNAVI DAIRY SPECIALITIES (P) LTD TRIP ASSIGNMENT LAYOUT
-                    </div>
-                    <div style="height: 120px; width: 100%;">
-                    </div>
-                    <div align="center" style="width: 100%;" id="printdata">
+                        <div align="center" style="width: 100%;" id="printdata">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </section>
 </asp:Content>

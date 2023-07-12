@@ -190,7 +190,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "intialize_branchesmanages_salestype":
                     intialize_branchesmanages_salestype(context);
                     break;
-                    ///complete 02/01/2023
+                ///complete 02/01/2023
                 case "intialize_branchesproducts_branchname":
                     intialize_branchesproducts_branchname(context);
                     break;
@@ -285,7 +285,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "Gettripinventory_manage":
                     Gettripinventory_manage(context);
                     break;
-                    ///complete
+                ///complete
                 case "Inventory_Purchase_manage":
                     Inventory_Purchase_manage(context);
                     break;
@@ -382,7 +382,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "updatedivslots":
                     updatedivslots(context);
                     break;
-                
+
                 case "get_branch_clubbings":
                     get_branch_clubbings(context);
                     break;
@@ -425,7 +425,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "GetSalesOffice":
                     GetSalesOffice(context);
                     break;
-               
+
                 case "GetSalesOfficeEmployee":
                     GetSalesOfficeEmployee(context);
                     break;
@@ -1190,7 +1190,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             DataTable dtinvmonitor_Collected = vdbmngr.SelectQuery(cmd).Tables[0];
                             if (dtinvmonitor_Collected.Rows.Count > 0)
                             {
-                               
+
                             }
                             else
                             {
@@ -9063,7 +9063,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             IndDate += newdate + ",";
                             count++;
                         }
-                       
+
                         IndDate = IndDate.Substring(0, IndDate.Length - 1);
                         getLineChart.IndentDate = IndDate;
                         getLineChart.dqty = DelQty;
@@ -9178,7 +9178,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             IndDate += newdate + ",";
                             count++;
                         }
-                       
+
                         IndDate = IndDate.Substring(0, IndDate.Length - 1);
                         getLineChart.IndentDate = IndDate;
                         getLineChart.dqty = DelQty;
@@ -10792,7 +10792,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     newrow["Uom"] = dr["Units"].ToString();
                                     float pktqty = 0;
                                     float tubqty = 0;
-                                    float qty = 0; 
+                                    float qty = 0;
                                     float.TryParse(dr["IndentQty"].ToString(), out qty);
                                     float.TryParse(dr["pkt_qty"].ToString(), out pktqty);
                                     float.TryParse(dr["tub_qty"].ToString(), out tubqty);
@@ -10863,7 +10863,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         newrow["Qty(tubs)"] = Math.Round(tubqty, 2);
                                         newrow["Qty"] = Math.Round(qty, 2);
                                         //newrow["Qty"] = Math.Round(qty, 2);
-                                       
+
                                     }
                                     else
                                     {
@@ -12803,10 +12803,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 }
                             }
                             //DcNo = dtbrnchaddress.Rows[0]["BranchCode"].ToString() + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DCNO;
-                           
+
                             if (j == 0)
                             {
-                                newrow["invoiceno"] = nontaxdc +"_____"+taxdc;//DcNo;
+                                newrow["invoiceno"] = nontaxdc + "_____" + taxdc;//DcNo;
                                 newrow["TempInvoice"] = countdc;
                                 j++;
                             }
@@ -14702,8 +14702,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             EInvoice obj = new EInvoice();
                                             if (dr["Units"].ToString() == "Nos")
                                             {
-                                                 double.TryParse(dr["Qty"].ToString(), out pkt_qty);
-                                                 double.TryParse(dr["Qty"].ToString(), out ltrqty);
+                                                double.TryParse(dr["Qty"].ToString(), out pkt_qty);
+                                                double.TryParse(dr["Qty"].ToString(), out ltrqty);
                                                 pkt_qty = pkt_qty;
                                                 ltrqty = ltrqty;
                                                 ltr_rate = rate;
@@ -14727,7 +14727,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             //perltrCost = (1000 / UomQty) * rate;
                                             //perltrCost = Math.Round(perltrCost, 2);
                                             //rate = perltrCost;
-                                            newrow["pkt_qty"]= pkt_qty;
+                                            newrow["pkt_qty"] = pkt_qty;
                                             newrow["Discount"] = 0;
                                             double PAmount = 0;
                                             double tot_vatamount = 0;
@@ -14906,7 +14906,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
                                             pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
                                         }
-                                       
+
                                         rate = pkt_rate;
 
                                         //double UomQty = 0;
@@ -24699,7 +24699,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
         catch (Exception ex)
         {
-           
+
         }
     }
     private void GetSpecialDispatches(HttpContext context)
@@ -26263,7 +26263,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public float orderunitRate { get; set; }
         public string Desciption { get; set; }
         public string invqty { get; set; }
-        
+
     }
     private void GetEditInventoryValues(HttpContext context)
     {
@@ -26636,9 +26636,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string tubQty { get; set; }
         public string pkt_rate { get; set; }
         public string Ltr_rate { get; set; }
-        
+
         public string Total { get; set; }
-        
+
         public string ltr_UnitQty { get; set; }
         public string ltr_Qty { get; set; }
         public string Qty { get; set; }
@@ -31227,7 +31227,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         }
                                         else
                                         {
-                                            
+
                                         }
                                     }
                                 }
@@ -31383,7 +31383,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     }
                                     else
                                     {
-                                        
+
                                     }
                                 }
                             }
@@ -31832,7 +31832,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string pkt_rate { get; set; }
         public string tub_qty { get; set; }
         public string uom { get; set; }
-        
+
     }
     class offerorderdetails
     {
@@ -32561,7 +32561,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             int Sno = 0;
             string branch = context.Session["branch"].ToString();
             DataTable dtproductsdata = new DataTable();
-            cmd = new MySqlCommand("SELECT   productsdata.invqty,productsdata.sno, productsdata.ProductName, productsdata.Units, invmaster.Qty, productsdata.Inventorysno,  invmaster.InvName FROM  productsdata INNER JOIN invmaster ON productsdata.Inventorysno = invmaster.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno WHERE (branchproducts.branch_sno = @BranchID) AND (branchproducts.flag = @FLAG)  ORDER BY branchproducts.Rank");
+            cmd = new MySqlCommand("SELECT   productsdata.invqty,productsdata.sno,productsdata.Qty as UnitQty, productsdata.ProductName, productsdata.Units, invmaster.Qty, productsdata.Inventorysno,  invmaster.InvName FROM  productsdata INNER JOIN invmaster ON productsdata.Inventorysno = invmaster.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno WHERE (branchproducts.branch_sno = @BranchID) AND (branchproducts.flag = @FLAG)  ORDER BY branchproducts.Rank");
             cmd.Parameters.AddWithValue("@FLAG", "1");
             cmd.Parameters.AddWithValue("@BranchID", context.Session["SOBranchId"].ToString());
             dtproductsdata = vdbmngr.SelectQuery(cmd).Tables[0];
@@ -32571,10 +32571,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             dtallProducts.Columns.Add("TotalQty");
             dtallProducts.Columns.Add("Units");
             dtallProducts.Columns.Add("Qty");
+            dtallProducts.Columns.Add("UnitQty");
             dtallProducts.Columns.Add("Inventorysno");
             dtallProducts.Columns.Add("InvName");
-            dtallProducts.Columns.Add("Tubs");
-            dtallProducts.Columns.Add("Cans");
+            dtallProducts.Columns.Add("TubQty");
+            dtallProducts.Columns.Add("PktQty");
             foreach (DataRow dr in dtproductsdata.Rows)
             {
                 DataRow newRow = dtallProducts.NewRow();
@@ -32582,11 +32583,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 newRow["ProductName"] = dr["ProductName"].ToString();
                 newRow["TotalQty"] = "0";
                 newRow["Units"] = dr["Units"].ToString();
+                newRow["UnitQty"] = dr["UnitQty"].ToString();
                 newRow["Qty"] = dr["invqty"].ToString();
                 newRow["Inventorysno"] = dr["Inventorysno"].ToString();
                 newRow["InvName"] = dr["InvName"].ToString();
-                newRow["Tubs"] = "0";
-                newRow["Cans"] = "0";
+                //newRow["Tubs"] = "0";
+                //newRow["Cans"] = "0";
                 dtallProducts.Rows.Add(newRow);
             }
             DataView dv = dtallProducts.DefaultView;
@@ -32604,7 +32606,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 empid = "";
                 empid = dtcheck.Rows[0]["EmpId"].ToString();
                 vehcleno = dtcheck.Rows[0]["VehicleNo"].ToString();
-                cmd = new MySqlCommand("SELECT productsdata.sno,productsdata.ProductName,productsdata.ifdflag, tripsubdata.Qty AS TotalQty FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno WHERE (tripdata.Sno = @tripid)");
+                cmd = new MySqlCommand("SELECT productsdata.sno,productsdata.ProductName,productsdata.ifdflag, tripsubdata.Qty AS TotalQty,tripsubdata.pkt_qty,tripsubdata.tub_qty  FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno WHERE (tripdata.Sno = @tripid)");
                 cmd.Parameters.AddWithValue("@tripid", tripid);
                 DataTable dttripprdt = vdbmngr.SelectQuery(cmd).Tables[0];
                 foreach (DataRow drtripprdt in dttripprdt.Rows)
@@ -32618,15 +32620,17 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             float qtycpy = 0;
                             float.TryParse(drprdtcpy["TotalQty"].ToString(), out qtycpy);
                             float totalqty = qty + qtycpy;
-                            float invqty = 0;
-                            foreach (DataRow drinvsno in dtallProducts1.Rows)
-                            {
-                                if (drprdtcpy["Inventorysno"].ToString() == drinvsno["Inventorysno"].ToString())
-                                {
-                                    float.TryParse(drprdtcpy["Qty"].ToString(), out invqty);
-                                    drprdtcpy["Cans"] = totalqty / invqty;
-                                }
-                            }
+                            //float invqty = 0;
+                            //foreach (DataRow drinvsno in dtallProducts1.Rows)
+                            //{
+                            //    if (drprdtcpy["Inventorysno"].ToString() == drinvsno["Inventorysno"].ToString())
+                            //    {
+                            //        float.TryParse(drprdtcpy["Qty"].ToString(), out invqty);
+                            //        drprdtcpy["Cans"] = totalqty / invqty;
+                            //    }
+                            //}
+                            drprdtcpy["TubQty"] = drtripprdt["tub_qty"].ToString();
+                            drprdtcpy["PktQty"] = drtripprdt["pkt_qty"].ToString();
                             drprdtcpy["TotalQty"] = totalqty;
                         }
                         else
@@ -32647,7 +32651,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     DataTable dtProducts = new DataTable();
                     DataTable dtofferProducts = new DataTable();
                     DataTable dtprdtcpy = new DataTable();
-                    cmd = new MySqlCommand("SELECT branchroutes.RouteName, ROUND(SUM(indents_subtable.unitQty),2) AS TotalQty,indents.IndentType, productsdata.sno, productsdata.ProductName,productsdata.ifdflag FROM branchroutes INNER JOIN branchroutesubtable ON branchroutes.Sno = branchroutesubtable.RefNo INNER JOIN branchdata ON branchroutesubtable.BranchID = branchdata.sno INNER JOIN indents ON branchdata.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (branchroutes.Sno = '" + routeid + "') and indents.Status<>@st and indents.IndentType=@itype and (indents.I_date BETWEEN @d1 AND @d2)  GROUP BY productsdata.ProductName ");
+                    cmd = new MySqlCommand("SELECT branchroutes.RouteName, ROUND(SUM(indents_subtable.unitQty),2) AS TotalQty,ROUND(SUM(indents_subtable.tub_qty),2) AS tub_qty,ROUND(SUM(indents_subtable.pkt_qty),2) AS pkt_qty,indents.IndentType, productsdata.sno, productsdata.ProductName,productsdata.ifdflag FROM branchroutes INNER JOIN branchroutesubtable ON branchroutes.Sno = branchroutesubtable.RefNo INNER JOIN branchdata ON branchroutesubtable.BranchID = branchdata.sno INNER JOIN indents ON branchdata.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (branchroutes.Sno = '" + routeid + "') and indents.Status<>@st and indents.IndentType=@itype and (indents.I_date BETWEEN @d1 AND @d2)  GROUP BY productsdata.ProductName ");
                     cmd.Parameters.AddWithValue("@st", "D");
                     cmd.Parameters.AddWithValue("@d1", GetLowDate(Currentdate));
                     cmd.Parameters.AddWithValue("@d2", GetHighDate(Currentdate));
@@ -32679,17 +32683,19 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 float qtycpy = 0;
                                 float.TryParse(drprdtcpy["TotalQty"].ToString(), out qtycpy);
                                 float totalqty = qty + qtycpy;
-                                float invqty = 0;
-                                foreach (DataRow drinvsno in dtallProducts1.Rows)
-                                {
-                                    if (drprdtcpy["Inventorysno"].ToString() == drinvsno["Inventorysno"].ToString())
-                                    {
-                                        float.TryParse(drprdtcpy["Qty"].ToString(), out invqty);
-                                        drprdtcpy["Cans"] = totalqty / invqty;
+                                //float invqty = 0;
+                                //foreach (DataRow drinvsno in dtallProducts1.Rows)
+                                //{
+                                //    if (drprdtcpy["Inventorysno"].ToString() == drinvsno["Inventorysno"].ToString())
+                                //    {
+                                //        float.TryParse(drprdtcpy["Qty"].ToString(), out invqty);
+                                //        drprdtcpy["Cans"] = totalqty / invqty;
 
-                                        string invName = drprdtcpy["InvName"].ToString();
-                                    }
-                                }
+                                //        string invName = drprdtcpy["InvName"].ToString();
+                                //    }
+                                //}
+                                drprdtcpy["TubQty"] = drprdt["tub_qty"].ToString();
+                                drprdtcpy["PktQty"] = drprdt["pkt_qty"].ToString();
                                 drprdtcpy["TotalQty"] = totalqty + TotalofferQty;
                             }
                             else
@@ -32704,8 +32710,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             Report.Columns.Add("Productsno");
             Report.Columns.Add("ProductName");
             Report.Columns.Add("TotalQty");
-            Report.Columns.Add("tubs");
-            Report.Columns.Add("cans");
+            //Report.Columns.Add("tubs");
+            //Report.Columns.Add("cans");
             Report.Columns.Add("units");
             Report.Columns.Add("InvName");
             Report.Columns.Add("qty");
@@ -32730,10 +32736,18 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         double.TryParse(dr["TotalQty"].ToString(), out TotalQty);
                         TotalQty = Math.Round(TotalQty, 2);
                         getProducts.TotalQty = TotalQty.ToString();
+                        getProducts.orderunitqty = TotalQty.ToString();
+                        getProducts.Unitqty = dr["UnitQty"].ToString();
+                        getProducts.Units = dr["Units"].ToString();
+                        getProducts.invqty = dr["Qty"].ToString();
+                        getProducts.tubQty = dr["TubQty"].ToString();
+                        getProducts.Qtypkts = dr["PktQty"].ToString();
                         getProducts.Productsno = dr["sno"].ToString();
-                        getProducts.tubs = dr["Tubs"].ToString();
-                        getProducts.cans = dr["Cans"].ToString();
-                        getProducts.units = dr["InvName"].ToString();
+                        //getProducts.tubs = dr["Tubs"].ToString();
+                        //getProducts.cans = dr["Cans"].ToString();
+                        int InvSno = 0;
+                        int.TryParse(dr["Inventorysno"].ToString(), out InvSno);
+                        getProducts.InvSno = InvSno;
                         getProducts.InvName = dr["InvName"].ToString();
                         getProducts.qty = dr["Qty"].ToString();
                         getProducts.empid = empid;
@@ -32742,9 +32756,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         newrow["Productsno"] = dr["sno"].ToString();
                         newrow["ProductName"] = dr["ProductName"].ToString();
                         newrow["TotalQty"] = dr["TotalQty"].ToString();
-                        newrow["tubs"] = dr["Tubs"].ToString();
-                        newrow["cans"] = dr["Cans"].ToString();
-                        newrow["units"] = dr["InvName"].ToString();
+                        //newrow["tubs"] = dr["Tubs"].ToString();
+                        //newrow["cans"] = dr["Cans"].ToString();
+                        // newrow["units"] = dr["InvName"].ToString();
                         newrow["InvName"] = dr["InvName"].ToString();
                         newrow["qty"] = dr["Qty"].ToString();
                         newrow["empid"] = empid;
@@ -32766,11 +32780,19 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     double.TryParse(dr["TotalQty"].ToString(), out TotalQty);
                     TotalQty = Math.Round(TotalQty, 2);
                     getProducts.TotalQty = TotalQty.ToString();
+                    getProducts.orderunitqty = TotalQty.ToString();
+                    getProducts.Unitqty = dr["UnitQty"].ToString();
+                    getProducts.Units = dr["Units"].ToString();
+                    getProducts.invqty = dr["Qty"].ToString();
+                    getProducts.tubQty = dr["TubQty"].ToString();
+                    getProducts.Qtypkts = dr["PktQty"].ToString();
                     getProducts.Productsno = dr["sno"].ToString();
-                    getProducts.tubs = dr["Tubs"].ToString();
-                    getProducts.cans = dr["Cans"].ToString();
-                    // getProducts.units = dr["Units"].ToString();
-                    getProducts.units = dr["InvName"].ToString();
+                    //getProducts.tubs = dr["Tubs"].ToString();
+                    //getProducts.cans = dr["Cans"].ToString();
+                    //   getProducts.units = dr["InvName"].ToString();
+                    int InvSno = 0;
+                    int.TryParse(dr["Inventorysno"].ToString(), out InvSno);
+                    getProducts.InvSno = InvSno;
                     getProducts.InvName = dr["InvName"].ToString();
                     getProducts.qty = dr["Qty"].ToString();
                     getProducts.empid = empid;
@@ -32779,9 +32801,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     newrow["Productsno"] = dr["sno"].ToString();
                     newrow["ProductName"] = dr["ProductName"].ToString();
                     newrow["TotalQty"] = dr["TotalQty"].ToString();
-                    newrow["tubs"] = dr["Tubs"].ToString();
-                    newrow["cans"] = dr["Cans"].ToString();
-                    newrow["units"] = dr["InvName"].ToString();
+                    //newrow["tubs"] = dr["Tubs"].ToString();
+                    //newrow["cans"] = dr["Cans"].ToString();
+                    //  newrow["units"] = dr["InvName"].ToString();
                     newrow["InvName"] = dr["InvName"].ToString();
                     newrow["qty"] = dr["Qty"].ToString();
                     newrow["empid"] = empid;
@@ -33478,6 +33500,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     {
         public string ProductName { set; get; }
         public string TotalQty { set; get; }
+        public string orderunitqty { set; get; }
+        public string Unitqty { set; get; }
+        public string Units { set; get; }
+        public string invqty { set; get; }
+        public string Qtypkts { set; get; }
+        public string tubQty { set; get; }
         public string empid { set; get; }
         public float Avail_prdtQty { set; get; }
         public string Productsno { set; get; }
@@ -33499,6 +33527,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string KgPrice { set; get; }
         public string TotalOfferQty { set; get; }
         public string InvName { set; get; }
+        public int InvSno { set; get; }
     }
     private void Get_SpL_Employe(HttpContext context)
     {
@@ -33951,7 +33980,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             cmd = new MySqlCommand("SELECT   sno, SubCat_sno, ProductName, Qty, Units, UnitPrice, Flag, UserData_sno, Rank, Inventorysno, VatPercent, Product_type, tproduct, sangam_flag, Itemcode, images,specification, materialtype, perunitprice, hsncode, igst, cgst, sgst, gsttaxcategory, pieces, invqty, description, ifdflag FROM productsdata WHERE (sno = @productsno)");
                             cmd.Parameters.AddWithValue("@productsno", o.Productsno);
                             DataTable dtproduct = vdbmngr.SelectQuery(cmd).Tables[0];
-                            cmd = new MySqlCommand("insert into tripsubdata (Tripdata_Sno,ProductId,Qty,DeliverQty)values(@Tripdata_Sno,@ProductId,@Qty,@deliverqty)");
+                            cmd = new MySqlCommand("insert into tripsubdata (Tripdata_Sno,ProductId,Qty,DeliverQty,pkt_qty,tub_qty)values(@Tripdata_Sno,@ProductId,@Qty,@deliverqty,@pkt_qty,@tub_qty)");
                             cmd.Parameters.AddWithValue("@Tripdata_Sno", Tripdata_Sno);
                             cmd.Parameters.AddWithValue("@ProductId", o.Productsno);
                             float qty;
@@ -33959,6 +33988,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             cmd.Parameters.AddWithValue("@Qty", qty);
                             float delqty = 0;
                             cmd.Parameters.AddWithValue("@deliverqty", delqty);
+                            float pktQty;
+                            float.TryParse(o.pkt_qty, out pktQty);
+                            cmd.Parameters.AddWithValue("@pkt_qty", pktQty);
+                            float tubQty;
+                            float.TryParse(o.tub_qty, out tubQty);
+                            cmd.Parameters.AddWithValue("@tub_qty", tubQty);
                             vdbmngr.insert(cmd);
                         }
                     }
@@ -34044,7 +34079,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     {
                         if (o.Qty != "0")
                         {
-                            cmd = new MySqlCommand("update tripsubdata set Tripdata_Sno=@Tripdata_Sno,ProductId=@ProductId,Qty=@Qty,DeliverQty=@deliverqty where Tripdata_Sno=@Tripdata_Sno and ProductId=@ProductId");
+                            cmd = new MySqlCommand("update tripsubdata set Tripdata_Sno=@Tripdata_Sno,ProductId=@ProductId,Qty=@Qty,DeliverQty=@deliverqty,pkt_qty=@pkt_qty,tub_qty=@tub_qty where Tripdata_Sno=@Tripdata_Sno and ProductId=@ProductId");
                             cmd.Parameters.AddWithValue("@Tripdata_Sno", tripid);
                             cmd.Parameters.AddWithValue("@ProductId", o.Productsno);
                             float qty;
@@ -34052,13 +34087,21 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             cmd.Parameters.AddWithValue("@Qty", qty);
                             float delqty = 0;
                             cmd.Parameters.AddWithValue("@deliverqty", delqty);
+                            float pktQty;
+                            float.TryParse(o.pkt_qty, out pktQty);
+                            cmd.Parameters.AddWithValue("@pkt_qty", pktQty);
+                            float tubQty;
+                            float.TryParse(o.tub_qty, out tubQty);
+                            cmd.Parameters.AddWithValue("@tub_qty", tubQty);
                             if (vdbmngr.Update(cmd) == 0)
                             {
-                                cmd = new MySqlCommand("insert into tripsubdata (Tripdata_Sno,ProductId,Qty,DeliverQty)values(@Tripdata_Sno,@ProductId,@Qty,@deliverqty)");
+                                cmd = new MySqlCommand("insert into tripsubdata (Tripdata_Sno,ProductId,Qty,DeliverQty,pkt_qty,tub_qty)values(@Tripdata_Sno,@ProductId,@Qty,@deliverqty,@pkt_qty,@tub_qty)");
                                 cmd.Parameters.AddWithValue("@Tripdata_Sno", tripid);
                                 cmd.Parameters.AddWithValue("@ProductId", o.Productsno);
                                 cmd.Parameters.AddWithValue("@Qty", qty);
                                 cmd.Parameters.AddWithValue("@deliverqty", delqty);
+                                cmd.Parameters.AddWithValue("@pkt_qty", pktQty);
+                                cmd.Parameters.AddWithValue("@tub_qty", tubQty);
                                 vdbmngr.insert(cmd);
                             }
                         }
@@ -34096,38 +34139,38 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     vdbmngr.insert(cmd);
                                 }
                             }
-                            cmd = new MySqlCommand("Update inventory_monitor Set Qty=Qty-@Qty where BranchId=@BranchId and Inv_Sno=@Inv_Sno");
-                            cmd.Parameters.AddWithValue("@Inv_Sno", iv.InventorySno);
-                            cmd.Parameters.AddWithValue("@Qty", qty);
-                            cmd.Parameters.AddWithValue("@BranchId", context.Session["branch"].ToString());
-                            if (vdbmngr.Update(cmd) == 0)
-                            {
-                                cmd = new MySqlCommand("Insert into inventory_monitor(Qty,Inv_Sno,BranchId) values(@Qty,@Inv_Sno,@BranchId)");
-                                cmd.Parameters.AddWithValue("@Qty", qty);
-                                cmd.Parameters.AddWithValue("@Inv_Sno", iv.InventorySno);
-                                cmd.Parameters.AddWithValue("@BranchId", context.Session["branch"].ToString());
-                                vdbmngr.insert(cmd);
-                            }
-                            cmd = new MySqlCommand("update invtransactions12 set Qty=@Qty,DOE=@DOE where FromTran=@From and B_Inv_Sno=@B_Inv_Sno and EmpID=@EmpID and ToTran=@To and TransType=@TransType");
-                            cmd.Parameters.AddWithValue("@B_Inv_Sno", iv.InventorySno);
-                            cmd.Parameters.AddWithValue("@Qty", qty);
-                            cmd.Parameters.AddWithValue("@DOE", ServerDateCurrentdate);
-                            cmd.Parameters.AddWithValue("@From", context.Session["branch"].ToString());
-                            cmd.Parameters.AddWithValue("@TransType", "3");
-                            cmd.Parameters.AddWithValue("@EmpID", context.Session["UserSno"].ToString());
-                            cmd.Parameters.AddWithValue("@To", tripid);
-                            if (vdbmngr.Update(cmd) == 0)
-                            {
-                                cmd = new MySqlCommand("Insert into  invtransactions12(B_Inv_Sno,Qty,DOE,EmpID,FromTran,ToTran,TransType) values(@B_Inv_Sno,@Qty,@DOE,@EmpID,@From,@To,@TransType)");
-                                cmd.Parameters.AddWithValue("@B_Inv_Sno", iv.InventorySno);
-                                cmd.Parameters.AddWithValue("@Qty", qty);
-                                cmd.Parameters.AddWithValue("@DOE", ServerDateCurrentdate);
-                                cmd.Parameters.AddWithValue("@From", context.Session["branch"].ToString());
-                                cmd.Parameters.AddWithValue("@TransType", "3");
-                                cmd.Parameters.AddWithValue("@EmpID", context.Session["UserSno"].ToString());
-                                cmd.Parameters.AddWithValue("@To", tripid);
-                                vdbmngr.insert(cmd);
-                            }
+                            //cmd = new MySqlCommand("Update inventory_monitor Set Qty=Qty-@Qty where BranchId=@BranchId and Inv_Sno=@Inv_Sno");
+                            //cmd.Parameters.AddWithValue("@Inv_Sno", iv.InventorySno);
+                            //cmd.Parameters.AddWithValue("@Qty", qty);
+                            //cmd.Parameters.AddWithValue("@BranchId", context.Session["branch"].ToString());
+                            //if (vdbmngr.Update(cmd) == 0)
+                            //{
+                            //    cmd = new MySqlCommand("Insert into inventory_monitor(Qty,Inv_Sno,BranchId) values(@Qty,@Inv_Sno,@BranchId)");
+                            //    cmd.Parameters.AddWithValue("@Qty", qty);
+                            //    cmd.Parameters.AddWithValue("@Inv_Sno", iv.InventorySno);
+                            //    cmd.Parameters.AddWithValue("@BranchId", context.Session["branch"].ToString());
+                            //    vdbmngr.insert(cmd);
+                            //}
+                            //cmd = new MySqlCommand("update invtransactions12 set Qty=@Qty,DOE=@DOE where FromTran=@From and B_Inv_Sno=@B_Inv_Sno and EmpID=@EmpID and ToTran=@To and TransType=@TransType");
+                            //cmd.Parameters.AddWithValue("@B_Inv_Sno", iv.InventorySno);
+                            //cmd.Parameters.AddWithValue("@Qty", qty);
+                            //cmd.Parameters.AddWithValue("@DOE", ServerDateCurrentdate);
+                            //cmd.Parameters.AddWithValue("@From", context.Session["branch"].ToString());
+                            //cmd.Parameters.AddWithValue("@TransType", "3");
+                            //cmd.Parameters.AddWithValue("@EmpID", context.Session["UserSno"].ToString());
+                            //cmd.Parameters.AddWithValue("@To", tripid);
+                            //if (vdbmngr.Update(cmd) == 0)
+                            //{
+                            //    cmd = new MySqlCommand("Insert into  invtransactions12(B_Inv_Sno,Qty,DOE,EmpID,FromTran,ToTran,TransType) values(@B_Inv_Sno,@Qty,@DOE,@EmpID,@From,@To,@TransType)");
+                            //    cmd.Parameters.AddWithValue("@B_Inv_Sno", iv.InventorySno);
+                            //    cmd.Parameters.AddWithValue("@Qty", qty);
+                            //    cmd.Parameters.AddWithValue("@DOE", ServerDateCurrentdate);
+                            //    cmd.Parameters.AddWithValue("@From", context.Session["branch"].ToString());
+                            //    cmd.Parameters.AddWithValue("@TransType", "3");
+                            //    cmd.Parameters.AddWithValue("@EmpID", context.Session["UserSno"].ToString());
+                            //    cmd.Parameters.AddWithValue("@To", tripid);
+                            //    vdbmngr.insert(cmd);
+                            //}
                         }
                     }
                 }
@@ -36244,9 +36287,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             //}
             //else
             //{
-                cmd = new MySqlCommand("select sno,Categoryname from products_category where flag=@flag and userdata_sno=@username");
-                cmd.Parameters.AddWithValue("@username", context.Session["userdata_sno"].ToString());
-                cmd.Parameters.AddWithValue("@flag", "1");
+            cmd = new MySqlCommand("select sno,Categoryname from products_category where flag=@flag and userdata_sno=@username");
+            cmd.Parameters.AddWithValue("@username", context.Session["userdata_sno"].ToString());
+            cmd.Parameters.AddWithValue("@flag", "1");
             //}
             foreach (DataRow dr in vdbmngr.SelectQuery(cmd).Tables[0].Rows)
             {
@@ -36262,8 +36305,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             //}
             //else
             //{
-                cmd = new MySqlCommand("SELECT products_category.Categoryname, products_subcategory.SubCatName,products_subcategory.category_sno,products_subcategory.sno, productsdata.*  FROM productsdata RIGHT OUTER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno RIGHT OUTER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (products_category.flag<>0) AND (products_subcategory.Flag<>0) AND products_category.userdata_sno=@username");
-                cmd.Parameters.AddWithValue("@username", context.Session["userdata_sno"].ToString());
+            cmd = new MySqlCommand("SELECT products_category.Categoryname, products_subcategory.SubCatName,products_subcategory.category_sno,products_subcategory.sno, productsdata.*  FROM productsdata RIGHT OUTER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno RIGHT OUTER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (products_category.flag<>0) AND (products_subcategory.Flag<>0) AND products_category.userdata_sno=@username");
+            cmd.Parameters.AddWithValue("@username", context.Session["userdata_sno"].ToString());
             //}
             DataTable dt = vdbmngr.SelectQuery(cmd).Tables[0];
             context.Session["getcategorynames"] = dt;
@@ -36332,15 +36375,15 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             //}
             //else
             //{
-                categorys = productdata.DefaultView.ToTable(true, "category_sno", "SubCatName", "sno");
-                DataRow[] subcatgry = categorys.Select("category_sno=" + catgryname + "");
-                foreach (DataRow dr in subcatgry)
-                {
-                    initializedataclass initializedata = new initializedataclass();
-                    initializedata.subcategorynames = dr["SubCatName"].ToString();
-                    initializedata.sno = dr["sno"].ToString();
-                    initializedatalist.Add(initializedata);
-                }
+            categorys = productdata.DefaultView.ToTable(true, "category_sno", "SubCatName", "sno");
+            DataRow[] subcatgry = categorys.Select("category_sno=" + catgryname + "");
+            foreach (DataRow dr in subcatgry)
+            {
+                initializedataclass initializedata = new initializedataclass();
+                initializedata.subcategorynames = dr["SubCatName"].ToString();
+                initializedata.sno = dr["sno"].ToString();
+                initializedatalist.Add(initializedata);
+            }
             //}
             if (initializedatalist != null)
             {
@@ -36669,19 +36712,19 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             //}
             //else
             //{
-                cmd = new MySqlCommand("select Categoryname,flag,sno,tcategory,categorycode From products_category Where userdata_sno= @username");
-                cmd.Parameters.AddWithValue("@username", context.Session["userdata_sno"]);
-                DataTable dt = vdbmngr.SelectQuery(cmd).Tables[0];
-                foreach (DataRow dr in dt.Rows)
-                {
-                    Producttype GetProducttype = new Producttype();
-                    GetProducttype.Categoryname = dr["Categoryname"].ToString();
-                    GetProducttype.tcategory = dr["tcategory"].ToString();
-                    GetProducttype.categorycode = dr["categorycode"].ToString();
-                    GetProducttype.flag = dr["flag"].ToString();
-                    GetProducttype.sno = dr["sno"].ToString();
-                    Productlist.Add(GetProducttype);
-                }
+            cmd = new MySqlCommand("select Categoryname,flag,sno,tcategory,categorycode From products_category Where userdata_sno= @username");
+            cmd.Parameters.AddWithValue("@username", context.Session["userdata_sno"]);
+            DataTable dt = vdbmngr.SelectQuery(cmd).Tables[0];
+            foreach (DataRow dr in dt.Rows)
+            {
+                Producttype GetProducttype = new Producttype();
+                GetProducttype.Categoryname = dr["Categoryname"].ToString();
+                GetProducttype.tcategory = dr["tcategory"].ToString();
+                GetProducttype.categorycode = dr["categorycode"].ToString();
+                GetProducttype.flag = dr["flag"].ToString();
+                GetProducttype.sno = dr["sno"].ToString();
+                Productlist.Add(GetProducttype);
+            }
             //}
             string response = GetJson(Productlist);
             context.Response.Write(response);
@@ -36780,20 +36823,20 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             //}
             //else
             //{
-                cmd = new MySqlCommand("SELECT products_subcategory.SubCatName, products_category.Categoryname, products_subcategory.description,products_subcategory.Flag,products_subcategory.sno FROM  products_category INNER JOIN products_subcategory ON products_category.sno = products_subcategory.category_sno WHERE products_subcategory.userdata_sno=@username");
-                cmd.Parameters.AddWithValue("@username", username);
-                DataTable dt = vdbmngr.SelectQuery(cmd).Tables[0];
-                foreach (DataRow dr in dt.Rows)
-                {
-                    subcategytype Getsubcattype = new subcategytype();
-                    Getsubcattype.subcatname = dr["SubCatName"].ToString();
-                    Getsubcattype.Categoryname = dr["Categoryname"].ToString();
-                    Getsubcattype.flag = dr["Flag"].ToString();
-                    Getsubcattype.sno = dr["sno"].ToString();
-                    Getsubcattype.catgrysno = dr["categoryname"].ToString();
-                    Getsubcattype.description = dr["description"].ToString();
-                    subcatlist.Add(Getsubcattype);
-                }
+            cmd = new MySqlCommand("SELECT products_subcategory.SubCatName, products_category.Categoryname, products_subcategory.description,products_subcategory.Flag,products_subcategory.sno FROM  products_category INNER JOIN products_subcategory ON products_category.sno = products_subcategory.category_sno WHERE products_subcategory.userdata_sno=@username");
+            cmd.Parameters.AddWithValue("@username", username);
+            DataTable dt = vdbmngr.SelectQuery(cmd).Tables[0];
+            foreach (DataRow dr in dt.Rows)
+            {
+                subcategytype Getsubcattype = new subcategytype();
+                Getsubcattype.subcatname = dr["SubCatName"].ToString();
+                Getsubcattype.Categoryname = dr["Categoryname"].ToString();
+                Getsubcattype.flag = dr["Flag"].ToString();
+                Getsubcattype.sno = dr["sno"].ToString();
+                Getsubcattype.catgrysno = dr["categoryname"].ToString();
+                Getsubcattype.description = dr["description"].ToString();
+                subcatlist.Add(Getsubcattype);
+            }
             //}
             string response = GetJson(subcatlist);
             context.Response.Write(response);
@@ -44301,7 +44344,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     gtotalamout += tot_amount;
                     obj_items.taxableAmount = Convert.ToInt32(PAmount); ;
                     Itemlistlst.Add(obj_items);
-                    
+
                 }
 
                 //obj_root.totalValue = Math.Round(TPAmount, 2); 
@@ -44425,10 +44468,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     #region "E Invoice"
     public class EInvoice_Products
     {
-        
+
         public string dcno { get; set; }
         public string dispsno { get; set; }
-        
+
         public string AgentName { get; set; }
         public string IRN_NO { get; set; }
         public string AgentId { get; set; }
@@ -44508,7 +44551,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             {
                 cmd = new MySqlCommand("SELECT   SalesType from branchdata where sno=@sno");
                 cmd.Parameters.AddWithValue("@sno", soid);
-               DataTable dt = vdbmngr.SelectQuery(cmd).Tables[0];
+                DataTable dt = vdbmngr.SelectQuery(cmd).Tables[0];
 
                 if (dt.Rows[0]["salestype"].ToString() == "23")
                 {
@@ -44801,7 +44844,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 //string response = Get_e_invoice_JsonData(AgentID, from_date, SOID);
                 var jsonresponse = JsonConvert.DeserializeObject<EInvoice.Root>(response);
                 string empsno = context.Session["UserSno"].ToString();
-                str1 = generate_e_invoice_details(authToken, from_date, SOID, AgentID, empsno, type, dcno,response);
+                str1 = generate_e_invoice_details(authToken, from_date, SOID, AgentID, empsno, type, dcno, response);
                 //str1 = generate_e_invoice_details(authToken, from_date, SOID, AgentID, empsno, response);
                 var js = new JavaScriptSerializer();
                 Response_EInvoice obj = js.Deserialize<Response_EInvoice>(str1);
@@ -45541,14 +45584,14 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string status_cd { get; set; }
         public string status_desc { get; set; }
     }
-    private string generate_e_invoice_details(string token,string from_date, string SOID, string AgentID,string empsno, string type,string dcno,string jsonresponse)
+    private string generate_e_invoice_details(string token, string from_date, string SOID, string AgentID, string empsno, string type, string dcno, string jsonresponse)
     {
         //try
         //{
         EInvoice_Login Elogin = new EInvoice_Login(SOID);
         DateTime fromdate = Convert.ToDateTime(from_date);
         vdbmngr = new VehicleDBMgr();
-        
+
         using (var httpClient = new HttpClient())
         {
             using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/GENERATE/version/V1_03?email=naveen.vdmtech%40gmail.com"))
@@ -45633,7 +45676,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     //        string IRN_No = context.Request["Irn_No"];
     //        DateTime fromdate = Convert.ToDateTime(from_date);
     //        EInvoice.Root Rootlst = new EInvoice.Root();
-            
+
     //        string authToken = "";
     //        authenticate_response newobj =new authenticate_response();
     //        newobj = authenticate_e_invoice(SOID);
@@ -45807,10 +45850,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     dtmarch = DateTime.Parse(march);
                 }
             }
-            string  BranchID = context.Request["BranchID"];
+            string BranchID = context.Request["BranchID"];
             string ddltype = context.Request["ddltype"];
             DataTable dtble = new DataTable();
-            List <EWayClass> Solist = new List<EWayClass>();
+            List<EWayClass> Solist = new List<EWayClass>();
             if (ddltype == "R")
             {
                 cmd = new MySqlCommand("SELECT  ROUND(SUM(indents_subtable.DeliveryQty)) AS DeliveryQty,ROUND(SUM(indents_subtable.DeliveryQty*indents_subtable.UnitCost)) AS TotalAmount,productsdata.SubCat_sno, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName,branchdata.gstno FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno <>'' and branchdata.gstno <>'0') and (productsdata.igst <>'' and productsdata.igst<>'0') OR (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno <>'' and branchdata.gstno <>'0') and (productsdata.igst <>'' and productsdata.igst<>'0') GROUP BY  branchdata.sno ORDER BY branchdata.sno");
@@ -45930,7 +45973,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         //obj.GeneratedBy = Elogin.gstin;
 
                         if (ddltype == "R")
-                        { 
+                        {
                             obj.Irn = dritem["irn_no"].ToString();
                         }
                     }
@@ -45977,7 +46020,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-    
+
     //public class Irn_EwayBill
     //{
     //    public string Irn { get; set; }
@@ -46095,7 +46138,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     DcNo = "WYR/" + dtapril.AddYears(-1).ToString("yy") + "-" + dtmarch.AddYears(-1).ToString("yy") + "T/" + DCNO;
                 }
             }
-            EWayClass  ewayobj = new EWayClass();
+            EWayClass ewayobj = new EWayClass();
 
 
             ewayobj.Irn = irn;
@@ -46109,7 +46152,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             ewayobj.VehType = "R";
             EwayList.Add(ewayobj);
             authenticate_response newobj = authenticate_e_invoice(SOID);
-            var str1 = "";var str2 = "";
+            var str1 = ""; var str2 = "";
             if (newobj.status_cd == "Sucess")
             {
                 var authToken = newobj.data.authtoken;
@@ -46157,7 +46200,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 string ip_address = GetLocalIPAddress();
                 if (ip_address == "Error")
                     ip_address = "182.18.162.51:52144";
-                
+
                 request.Headers.TryAddWithoutValidation("Accept", "application/json");
                 request.Headers.TryAddWithoutValidation("username", Elogin.username);
                 request.Headers.TryAddWithoutValidation("ip_address", ip_address);
