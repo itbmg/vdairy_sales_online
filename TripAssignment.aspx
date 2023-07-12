@@ -460,12 +460,12 @@
                 var totalpkts = parseFloat(tubval * invQty);
                 var totltr = parseFloat(totalpkts * unitQty);
                 var totltrvalue = parseFloat(totltr / 1000);
-                $(TubQty).closest("tr").find("#txtQtypkts").val(parseFloat(totltrvalue).toFixed(2));
+                // $(TubQty).closest("tr").find("#txtQtypkts").val(parseFloat(totltrvalue).toFixed(2));
                 $(TubQty).closest("tr").find("#txtDupUnitQty").text(parseFloat(totltrvalue).toFixed(2))
                 $(TubQty).closest("tr").find("#txtProductQty").val(parseFloat(totltrvalue).toFixed(2))
                 //$(TubQty).closest("tr").find("#txtLtrQty").val(parseFloat(totltrvalue).toFixed(2))
                 //$(TubQty).closest("tr").find("#hdnltrQty").val(parseFloat(totltrvalue).toFixed(2))
-                //   $(TubQty).closest("tr").find("#txtQtypkts").val(parseFloat(totalpkts).toFixed(2));
+                $(TubQty).closest("tr").find("#txtQtypkts").val(parseFloat(totalpkts).toFixed(2));
                 var val = parseFloat(totltrvalue).toFixed(2);
                 OrderUnitChange(TubQty);
                 GetInventoryCalculation();
