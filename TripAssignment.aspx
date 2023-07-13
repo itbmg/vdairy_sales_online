@@ -445,6 +445,16 @@
                 // $(PktQty).closest("tr").find("#txtLtrQty").val(parseFloat(totltrvalue).toFixed(2))
                 //  $(PktQty).closest("tr").find("#hdnltrQty").val(parseFloat(totltrvalue).toFixed(2))
                 $(PktQty).closest("tr").find("#txtTubQty").val(parseFloat(totaltub).toFixed(2));
+                var tot_ltr = 0;
+                $('.totalQtyclass').each(function (i, obj) {
+                    var qtyltr = $(this).closest('tr').find('#txtProductQty').val();
+                    if (qtyltr == "" || qtyltr == "0") {
+                    }
+                    else {
+                        tot_ltr += parseFloat(qtyltr);
+                    }
+                });
+                document.getElementById('txt_QtyLtr').innerHTML = parseFloat(tot_ltr).toFixed(2);
                 var val = parseFloat(totltrvalue).toFixed(2);
                 OrderUnitChange(PktQty);
                 GetInventoryCalculation();
@@ -466,6 +476,16 @@
                 //$(TubQty).closest("tr").find("#txtLtrQty").val(parseFloat(totltrvalue).toFixed(2))
                 //$(TubQty).closest("tr").find("#hdnltrQty").val(parseFloat(totltrvalue).toFixed(2))
                 $(TubQty).closest("tr").find("#txtQtypkts").val(parseFloat(totalpkts).toFixed(2));
+                var tot_ltr = 0;
+                $('.totalQtyclass').each(function (i, obj) {
+                    var qtyltr = $(this).closest('tr').find('#txtProductQty').val();
+                    if (qtyltr == "" || qtyltr == "0") {
+                    }
+                    else {
+                        tot_ltr += parseFloat(qtyltr);
+                    }
+                });
+                document.getElementById('txt_QtyLtr').innerHTML = parseFloat(tot_ltr).toFixed(2);
                 var val = parseFloat(totltrvalue).toFixed(2);
                 OrderUnitChange(TubQty);
                 GetInventoryCalculation();
