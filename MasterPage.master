@@ -662,9 +662,9 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
         </div>
         <div style="width: 100%;" id="maindiv">
             <div id="leftdiv" class="control-sidebar control-sidebar-dark control-sidebar-open"
-                style="height: 100%; width: 14%; background: none; left: 0%; top: 18px;">
-                <div id="main" class="leftNav">
-                    <ul id="nav">
+                style="height: 100%; width: 11%; background: none; left: 0%; top: 18px;">
+                <div id="main" class="leftNav" >
+                    <ul id="nav" style="padding-left: 4%;">
                         <li id="lidashboard"><a href="#"><i class="fa fa-dashboard"></i>&nbsp Dash Board</a>
                             <div class="drop">
                                 <ul>
@@ -1022,7 +1022,7 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                 </ul>
             </div>
         </div>
-        <div id="rightdiv" style="float: right; width: 86%; position: relative; z-index: 100">
+        <div id="rightdiv" style="float: right; width: 89%; position: relative; z-index: 100">
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
             </asp:ContentPlaceHolder>
         </div>
