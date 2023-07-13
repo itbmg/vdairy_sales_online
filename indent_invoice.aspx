@@ -16,8 +16,6 @@
             position: absolute;
             z-index: 1;
         }
-
-       
     </style>
     <script type="text/javascript">
         function CallPrint(strid) {
@@ -125,7 +123,51 @@
         }
         function ddlDispNameChanged(id) {
             FillAgentName(id.value);
+            fillIndentType();
         }
+
+        function fillIndentType() {
+            var RouteId = document.getElementById('ddlDispName').value;
+            var data = { 'operation': 'GetIndentType', 'RouteId': RouteId };
+            var s = function (msg) {
+                if (msg) {
+                    if (msg == "Session Expired") {
+                        alert(msg);
+                        window.location = "Login.aspx";
+                    }
+                    if (msg.length > 1) {
+                        $('#DivIndentType').css('display', 'block');
+                        BindIndentType(msg);
+                    }
+                    else {
+                        BindIndentType(msg);
+                        $('#DivIndentType').css('display', 'none');
+                    }
+                }
+                else {
+                }
+            };
+            var e = function (x, h, e) {
+            };
+            $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+            callHandler(data, s, e);
+        }
+
+        function BindIndentType(msg) {
+            var ddlIndentType = document.getElementById('ddlIndentType');
+            var length = ddlIndentType.options.length;
+            ddlIndentType.options.length = null;
+            var opt = document.createElement('option');
+            for (var i = 0; i < msg.length; i++) {
+                if (msg[i].IndentType != null) {
+                    var opt = document.createElement('option');
+                    opt.innerHTML = msg[i].IndentType;
+                    opt.value = msg[i].IndentType;
+                    ddlIndentType.appendChild(opt);
+                }
+            }
+        }
+
         function FillAgentName(RouteID) {
             var data = { 'operation': 'GetAgents', 'RouteID': RouteID };
             var s = function (msg) {
@@ -165,12 +207,13 @@
             var fromdate = document.getElementById('txtFrom_date').value;
             var AgentId = document.getElementById('ddlAgentName').value;
             var ddlSalesOffice = document.getElementById('ddlSalesOffice').value;
+            var ddlIndentType = document.getElementById('ddlIndentType').value;
             if (fromdate == "") {
                 alert("Please select from date");
                 return false;
             }
             var DcType = document.getElementById('ddltype').value;
-            var data = { 'operation': 'btnAgent_indent_Invoice_click', 'fromdate': fromdate, 'AgentId': AgentId, 'SOID': ddlSalesOffice, 'DcType': DcType };
+            var data = { 'operation': 'btnAgent_indent_Invoice_click', 'fromdate': fromdate, 'AgentId': AgentId, 'SOID': ddlSalesOffice, 'DcType': DcType, 'IndentType': ddlIndentType };
             var s = function (msg) {
                 if (msg) {
                     if (msg == "Data not found") {
@@ -421,6 +464,11 @@
                             </select>
                         </td>
                         <td style="width: 5px;"></td>
+                        <td id="DivIndentType" style="display: none;">
+                            <select id="ddlIndentType" class="form-control">
+                            </select>
+                        </td>
+                        <td style="width: 5px;"></td>
                         <td>
                             <select id="ddlAgentName" class="form-control">
                             </select>
@@ -448,7 +496,7 @@
                 <br />
                 <div id="divPrint" style="display: none; height: 50%;">
                     <div class="content">
-                        
+
                         <div style="border: 2px solid gray;">
                             <div style="width: 17%; float: right; padding-top: 5px;">
                                 <img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="100px" height="72px" />
