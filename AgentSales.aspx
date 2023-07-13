@@ -338,10 +338,10 @@
                         window.location.assign("Login.aspx");
                     }
                     $('#divFillScreen').removeTemplate();
-                    $('#divFillScreen').setTemplateURL('TripRoutes6.htm');
+                    $('#divFillScreen').setTemplateURL('AgentProducts2.htm');
                     $('#divFillScreen').processTemplate();
                     $('#divInventory').removeTemplate();
-                    $('#divInventory').setTemplateURL('TripInventory.htm');
+                    $('#divInventory').setTemplateURL('AgentInventory.htm');
                     $('#divInventory').processTemplate();
                     alert(msg);
                 }

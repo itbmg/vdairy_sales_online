@@ -91,6 +91,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             switch (request)
             {
                 #region "SALES TYPE MANAGEMENT"
+                case "GetIndentType":
+                    GetIndentType(context);
+                    break;
                 case "Get_Voucher_Print_Details":
                     Get_Voucher_Print_Details(context);
                     break;
@@ -1087,6 +1090,38 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string RouteSno { set; get; }
         public string btnvalue { set; get; }
         public string inddate { set; get; }
+    }
+
+    private void GetIndentType(HttpContext context)
+    {
+        try
+        {
+            vdbmngr = new VehicleDBMgr();
+            string RouteId = context.Request["RouteId"];
+            List<IndentClas> Indentlist = new List<IndentClas>();
+            cmd = new MySqlCommand("SELECT dispatch_sub.IndentType FROM dispatch INNER JOIN dispatch_sub ON dispatch.sno = dispatch_sub.dispatch_sno WHERE (dispatch.Route_id = @Route_id) group by dispatch_sub.IndentType");
+            cmd.Parameters.AddWithValue("@Route_id", RouteId);
+            DataTable dtIndentType = vdbmngr.SelectQuery(cmd).Tables[0];
+            foreach (DataRow dr in dtIndentType.Rows)
+            {
+                string indent = dr["IndentType"].ToString();
+                if (indent != "")
+                {
+                    IndentClas getIndentType = new IndentClas();
+                    getIndentType.IndentType = dr["IndentType"].ToString();
+                    Indentlist.Add(getIndentType);
+                }
+            }
+            string response = GetJson(Indentlist);
+            context.Response.Write(response);
+        }
+        catch
+        {
+        }
+    }
+    class IndentClas
+    {
+        public string IndentType { get; set; }
     }
     private void CollectioninventrySaveClick(HttpContext context)
     {
@@ -11544,10 +11579,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             Report = new DataTable();
             string titlename = context.Session["TitleName"].ToString();
             string SOID = context.Request["SOID"];
-            //if (SOID == "572" || SOID == "3")
-            //{
-            //    SOID = "158";
-            //}
             string AgentId = context.Request["AgentId"];
             string from_date = context.Request["FromDate"];
             string ddltype = context.Request["ddltype"];
@@ -11579,7 +11610,16 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 dtmarch = DateTime.Parse(march);
 
             }
-
+            if (SOID == "3")
+            {
+                string IndentType = context.Request["IndentType"];
+                cmd = new MySqlCommand("SELECT SUM(indents_subtable.tub_qty) as tub_qty,SUM(indents_subtable.pkt_dqty) as pkt_dqty,indents_subtable.pkt_rate,SUM(indents_subtable.pkt_qty) as pkt_qty,indents_subtable.IndentNo,sum(indents_subtable.DeliveryQty * indents_subtable.UnitCost )AS Amount,IFNULL(branchproducts.VatPercent, 0) AS VatPercent,productsdata.sno AS ProductSno,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName,productsdata.description, SUM(indents_subtable.DeliveryQty) AS DeliveryQty,SUM(indents_subtable.unitQty) AS IndentQty,sum(indents_subtable.unitQty * indents_subtable.UnitCost )AS indAmount, indents_subtable.UnitCost, DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate,branchdata.stateid, productsdata.itemcode,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.SubCat_sno as subcatid FROM  productsdata INNER JOIN indents_subtable ON productsdata.sno = indents_subtable.Product_sno INNER JOIN indents ON indents_subtable.IndentNo = indents.IndentNo INNER JOIN  branchdata ON indents.Branch_id = branchdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchproducts ON branchmappingtable.SuperBranch = branchproducts.branch_sno AND productsdata.sno = branchproducts.product_sno WHERE indents.IndentType =@IndentType and (indents.I_date BETWEEN @d1 AND @d2) AND (branchdata.sno = @BranchID) AND (indents_subtable.DeliveryQty>0)  GROUP BY productsdata.ProductName,productsdata.igst ORDER BY branchproducts.Rank");
+                cmd.Parameters.AddWithValue("@IndentType", IndentType);
+            }
+            else
+            {
+                cmd = new MySqlCommand("SELECT SUM(indents_subtable.tub_qty) as tub_qty,SUM(indents_subtable.pkt_dqty) as pkt_dqty,indents_subtable.pkt_rate,SUM(indents_subtable.pkt_qty) as pkt_qty,indents_subtable.IndentNo,sum(indents_subtable.DeliveryQty * indents_subtable.UnitCost )AS Amount,IFNULL(branchproducts.VatPercent, 0) AS VatPercent,productsdata.sno AS ProductSno,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName,productsdata.description, SUM(indents_subtable.DeliveryQty) AS DeliveryQty,SUM(indents_subtable.unitQty) AS IndentQty,sum(indents_subtable.unitQty * indents_subtable.UnitCost )AS indAmount, indents_subtable.UnitCost, DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate,branchdata.stateid, productsdata.itemcode,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.SubCat_sno as subcatid FROM  productsdata INNER JOIN indents_subtable ON productsdata.sno = indents_subtable.Product_sno INNER JOIN indents ON indents_subtable.IndentNo = indents.IndentNo INNER JOIN  branchdata ON indents.Branch_id = branchdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchproducts ON branchmappingtable.SuperBranch = branchproducts.branch_sno AND productsdata.sno = branchproducts.product_sno WHERE (indents.I_date BETWEEN @d1 AND @d2) AND (branchdata.sno = @BranchID) AND (indents_subtable.DeliveryQty>0)  GROUP BY productsdata.ProductName,productsdata.igst ORDER BY branchproducts.Rank");
+            }
             cmd = new MySqlCommand("SELECT SUM(indents_subtable.tub_qty) as tub_qty,SUM(indents_subtable.pkt_dqty) as pkt_dqty,indents_subtable.pkt_rate,SUM(indents_subtable.pkt_qty) as pkt_qty,indents_subtable.IndentNo,sum(indents_subtable.DeliveryQty * indents_subtable.UnitCost )AS Amount,IFNULL(branchproducts.VatPercent, 0) AS VatPercent,productsdata.sno AS ProductSno,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName,productsdata.description, SUM(indents_subtable.DeliveryQty) AS DeliveryQty,SUM(indents_subtable.unitQty) AS IndentQty,sum(indents_subtable.unitQty * indents_subtable.UnitCost )AS indAmount, indents_subtable.UnitCost, DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate,branchdata.stateid, productsdata.itemcode,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.SubCat_sno as subcatid FROM  productsdata INNER JOIN indents_subtable ON productsdata.sno = indents_subtable.Product_sno INNER JOIN indents ON indents_subtable.IndentNo = indents.IndentNo INNER JOIN  branchdata ON indents.Branch_id = branchdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchproducts ON branchmappingtable.SuperBranch = branchproducts.branch_sno AND productsdata.sno = branchproducts.product_sno WHERE (indents.I_date BETWEEN @d1 AND @d2) AND (branchdata.sno = @BranchID) AND (indents_subtable.DeliveryQty>0)  GROUP BY productsdata.ProductName,productsdata.igst ORDER BY branchproducts.Rank");
             cmd.Parameters.AddWithValue("@BranchID", AgentId);
             cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate).AddDays(-1));
@@ -11923,10 +11963,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     }
                                 }
                             }
-                            //DcNo = dtbranchcode.Rows[0]["BranchCode"].ToString() + "/" + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DCNO;
                             newrow["invoiceno"] = DcNo;
                             newrow["TempInvoice"] = countdc;
-
                             Report.Rows.Add(newrow);
                         }
                         else
@@ -11952,9 +11990,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     newrow["HSN Code"] = dr["hsncode"].ToString();
                                     newrow["Uom"] = dr["Units"].ToString();
                                     newrow["uomqty"] = dr["uomqty"].ToString();
-
-
-
                                     float qty = 0; float rate = 0;
                                     if (AgentId == "7804" && dr["ProductSno"].ToString() == "240")
                                     {
@@ -38458,47 +38493,19 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             context.Response.Write(response);
         }
     }
-    private void vehlayoutsave(HttpContext context)
-    {
-        try
-        {
-            vdbmngr = new VehicleDBMgr();
-            string msg = "";
-            var js = new JavaScriptSerializer();
-            var title1 = context.Request.Params[1];
-            Orders obj = js.Deserialize<Orders>(title1);
-            string tripid = obj.tripid;
-            foreach (layoutstringcls o in obj.layoutstring)
-            {
-                if (o.cellcss != null)
-                {
-                    cmd = new MySqlCommand("insert into triplayout(Tripid, Cellcode, Cellvalue) values (@Tripid, @Cellcode, @Cellvalue)");
-                    cmd.Parameters.AddWithValue("@Tripid", tripid);
-                    cmd.Parameters.AddWithValue("@Cellcode", o.cellcss);
-                    cmd.Parameters.AddWithValue("@Cellvalue", o.cellvalue);
-                    vdbmngr.insert(cmd);
-                }
-            }
-            msg = "Data inserted successfully";
-            string response = GetJson(msg);
-            context.Response.Write(response);
-        }
-        catch (Exception ex)
-        {
-            string response = GetJson("Error\n" + ex.Message);
-            context.Response.Write(response);
-        }
-    }
+
     private static string GetJson(object obj)
     {
         JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
         return jsonSerializer.Serialize(obj);
     }
+
     private static object GetUnJson(string obj)
     {
         JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
         return jsonSerializer.Deserialize(obj, Type.GetType("System.Object"));
     }
+
     private void savestateDetails(HttpContext context)
     {
         try
@@ -38572,9 +38579,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     {
         try
         {
-            //string MobNo;
-
-
             DateTime fromdate = DateTime.Now;
             vdbmngr = new VehicleDBMgr();
             DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
@@ -38639,7 +38643,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             WebClient client = new WebClient();
                             //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
 
-
                             string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + MobNo + "&msg=%20" + ProductName + "TotalQty =" + TotalQty + "(" + diffproduct + ")" + "&type=1";
                             Stream data = client.OpenRead(baseurl);
                             StreamReader reader = new StreamReader(data);
@@ -38661,18 +38664,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             reader.Close();
                         }
 
-                        //string message = "" + MobNo + " " + ProductName + "TotalQty =" + TotalQty + "(" + diffproduct + ")" + "";
-                        //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                        //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                        //cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
-                        //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                        //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                        //cmd.Parameters.AddWithValue("@msg", message);
-                        //cmd.Parameters.AddWithValue("@mobileno", MobNo);
-                        //cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
-                        //cmd.Parameters.AddWithValue("@branchname", DispatchName);
-                        //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                        //vdbmngr.insert(cmd);
                     }
                     else
                     {
@@ -38712,19 +38703,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         reader.Close();
                                     }
 
-                                    //string message = "" + MobNo + " " + ProductName + " TotalQty =" + TotalQty + "(" + diffproduct + ")" + " ";
-
-                                    //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                                    //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                                    //cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
-                                    //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                                    //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                                    //cmd.Parameters.AddWithValue("@msg", message);
-                                    //cmd.Parameters.AddWithValue("@mobileno", MobNo);
-                                    //cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
-                                    //cmd.Parameters.AddWithValue("@branchname", DispatchName);
-                                    //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                    //vdbmngr.insert(cmd);
                                 }
                             }
                         }
@@ -38812,18 +38790,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             data1.Close();
                             reader1.Close();
                         }
-                        //string message = " " + subcategoryName + " TotalQty =" + SubCategoryTotalQty + "(" + prevsubdiff + ")" + " ";
-                        //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                        //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                        //cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
-                        //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                        //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                        //cmd.Parameters.AddWithValue("@msg", message);
-                        //cmd.Parameters.AddWithValue("@mobileno", MobNo);
-                        //cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
-                        //cmd.Parameters.AddWithValue("@branchname", DispatchName);
-                        //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                        //vdbmngr.insert(cmd);
+
                     }
                     else
                     {
@@ -38866,18 +38833,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         reader1.Close();
                                     }
 
-                                    //string message = "" + subcategoryName + " TotalQty =" + SubCategoryTotalQty + "(" + prevsubdiff + ")" + " ";
-                                    //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                                    //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                                    //cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
-                                    //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                                    //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                                    //cmd.Parameters.AddWithValue("@msg", message);
-                                    //cmd.Parameters.AddWithValue("@mobileno", MobNo);
-                                    //cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
-                                    //cmd.Parameters.AddWithValue("@branchname", DispatchName);
-                                    //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                    //vdbmngr.insert(cmd);
                                 }
                             }
                         }
@@ -39366,19 +39321,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             reader2.Close();
                         }
 
-                        //string message = " " + subcategoryName1 + " ";
-                        //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                        //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                        //cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
-                        //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                        //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                        //cmd.Parameters.AddWithValue("@msg", message);
-                        //cmd.Parameters.AddWithValue("@mobileno", MobNo);
-                        //cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
-                        //cmd.Parameters.AddWithValue("@branchname", DispatchName);
-                        //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                        //vdbmngr.insert(cmd);
-
                     }
                     else
                     {
@@ -39415,18 +39357,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         reader2.Close();
                                     }
 
-                                    //string message = " " + subcategoryName1 + " ";
-                                    //// string text = message.Replace("\n", "\n" + System.Environment.NewLine);
-                                    //cmd = new MySqlCommand("insert into smsinfo (agentid,branchid,mainbranch,msg,mobileno,msgtype,branchname,doe) values (@agentid,@branchid,@mainbranch,@msg,@mobileno,@msgtype,@branchname,@doe)");
-                                    //cmd.Parameters.AddWithValue("@agentid", context.Session["branch"].ToString());
-                                    //cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                                    //cmd.Parameters.AddWithValue("@mainbranch", context.Session["SuperBranch"].ToString());
-                                    //cmd.Parameters.AddWithValue("@msg", message);
-                                    //cmd.Parameters.AddWithValue("@mobileno", MobNo);
-                                    //cmd.Parameters.AddWithValue("@msgtype", "TripEdnd");
-                                    //cmd.Parameters.AddWithValue("@branchname", DispatchName);
-                                    //cmd.Parameters.AddWithValue("@doe", ServerDateCurrentdate);
-                                    //vdbmngr.insert(cmd);
                                 }
                             }
                         }
@@ -39690,7 +39620,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             //else
             //{
             cmd.Parameters.AddWithValue("@dispatchSno", ddlRouteName);
-            //}
+            //}GetIndentType
             cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
             cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate.AddDays(-1)));
             DataTable dtsyncstatus = vdm.SelectQuery(cmd).Tables[0];

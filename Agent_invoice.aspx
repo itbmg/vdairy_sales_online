@@ -12,12 +12,10 @@
     <script src="js/1.8.6.jquery.ui.min.js" type="text/javascript"></script>
     <link href="Css/VyshnaviStyles.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
-        #content
-        {
+        #content {
             position: absolute;
             z-index: 1;
         }
-       
     </style>
     <script type="text/javascript">
         function CallPrint(strid) {
@@ -30,8 +28,7 @@
                 newWin.document.write('<html><body   onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
                 newWin.document.close();
             }
-            else
-            {
+            else {
                 alert("Please check Invoice Number");
                 return false;
             }
@@ -124,8 +121,52 @@
                 }
             }
         }
+
+        function fillIndentType() {
+            var RouteId = document.getElementById('ddlDispName').value;
+            var data = { 'operation': 'GetIndentType', 'RouteId': RouteId };
+            var s = function (msg) {
+                if (msg) {
+                    if (msg == "Session Expired") {
+                        alert(msg);
+                        window.location = "Login.aspx";
+                    }
+                    if (msg.length > 1) {
+                        $('#DivIndentType').css('display', 'block');
+                        BindIndentType(msg);
+                    }
+                    else {
+                        BindIndentType(msg);
+                        $('#DivIndentType').css('display', 'none');
+                    }
+                }
+                else {
+                }
+            };
+            var e = function (x, h, e) {
+            };
+            $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+            callHandler(data, s, e);
+        }
+
+        function BindIndentType(msg) {
+            var ddlIndentType = document.getElementById('ddlIndentType');
+            var length = ddlIndentType.options.length;
+            ddlIndentType.options.length = null;
+            var opt = document.createElement('option');
+            for (var i = 0; i < msg.length; i++) {
+                if (msg[i].IndentType != null) {
+                    var opt = document.createElement('option');
+                    opt.innerHTML = msg[i].IndentType;
+                    opt.value = msg[i].IndentType;
+                    ddlIndentType.appendChild(opt);
+                }
+            }
+        }
+
         function ddlDispNameChanged(id) {
             FillAgentName(id.value);
+            fillIndentType();
         }
         function FillAgentName(RouteID) {
             var data = { 'operation': 'GetAgents', 'RouteID': RouteID };
@@ -167,11 +208,12 @@
             var AgentId = document.getElementById('ddlAgentName').value;
             var ddlSalesOffice = document.getElementById('ddlSalesOffice').value;
             var ddltype = document.getElementById('ddltype').value;
+            var ddlIndentType = document.getElementById('ddlIndentType').value;
             if (fromdate == "") {
                 alert("Please select from date");
                 return false;
             }
-            var data = { 'operation': 'btnAgentInvoice_click', 'fromdate': fromdate, 'AgentId': AgentId, 'SOID': ddlSalesOffice, 'ddltype': ddltype };
+            var data = { 'operation': 'btnAgentInvoice_click', 'fromdate': fromdate, 'AgentId': AgentId, 'SOID': ddlSalesOffice, 'ddltype': ddltype, 'IndentType': ddlIndentType };
             var s = function (msg) {
                 if (msg) {
                     if (msg == "Data not found") {
@@ -214,7 +256,7 @@
             document.getElementById('spnfromaddress').innerHTML = "";
             document.getElementById('spnfromgstn').innerHTML = "";
             document.getElementById('spngstnum').innerHTML = "";
-            
+
             document.getElementById('spnfromstate').innerHTML = "";
             document.getElementById('spnfromstatecode').innerHTML = "";
             document.getElementById('lblpartyname').innerHTML = "";
@@ -238,7 +280,7 @@
                 document.getElementById('spngstnno').innerHTML = msg[0].fromgstn;
                 document.getElementById('spninvoiceno').innerHTML = msg[0].invoiceno;
                 //document.getElementById('spntempinvoiceno').innerHTML = msg[0].TempInvoice;
-                
+
                 document.getElementById('spninvoicedate').innerHTML = msg[0].invoicedate;
                 //            document.getElementById('spnfrmstatename').innerHTML = msg[0].frmstatename;
                 //            document.getElementById('spnstatecode').innerHTML = msg[0].frmstatecode;
@@ -250,7 +292,7 @@
                 document.getElementById('spnfromgstn').innerHTML = msg[0].fromgstn;
                 document.getElementById('spngstnum').innerHTML = msg[0].fromgstn;
 
-                
+
 
                 document.getElementById('spnfromstate').innerHTML = msg[0].frmstatename;
                 document.getElementById('spnfromstatecode').innerHTML = msg[0].frmstatecode;
@@ -375,8 +417,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <section class="content-header">
-        <h1>
-            Agent Invoice<small>Preview</small>
+        <h1>Agent Invoice<small>Preview</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i>Masters</a></li>
@@ -397,33 +438,33 @@
                             <select id="ddlSalesOffice" class="form-control" onchange="ddlSalesOfficeChanged(this);">
                             </select>
                         </td>
-                        <td style="width: 5px;">
-                        </td>
+                        <td style="width: 5px;"></td>
                         <td>
                             <select id="ddlDispName" class="form-control" onchange="ddlDispNameChanged(this);">
                             </select>
                         </td>
-                        <td style="width: 5px;">
+                        <td style="width: 5px;" ></td>
+                        <td id="DivIndentType" style="display: none;">
+                            <select id="ddlIndentType" class="form-control">
+                            </select>
                         </td>
+                        <td style="width: 5px;"></td>
                         <td>
                             <select id="ddlAgentName" class="form-control">
                             </select>
                         </td>
-                        <td style="width: 5px;">
-                        </td>
+                        <td style="width: 5px;"></td>
                         <td>
                             <select id="ddltype" class="form-control">
                                 <option value="NonTax">NonTax</option>
                                 <option value="Tax">Tax</option>
                             </select>
                         </td>
-                        <td style="width: 5px;">
-                        </td>
+                        <td style="width: 5px;"></td>
                         <td>
                             <input type="date" id="txtFrom_date" class="form-control" />
                         </td>
-                        <td style="width: 5px;">
-                        </td>
+                        <td style="width: 5px;"></td>
                         <td>
                             <button type="button" class="btn btn-primary" style="margin-right: 5px;" onclick="btnAgentInvoice_click()">
                                 <i class="fa fa-refresh"></i>Get Details
@@ -435,25 +476,24 @@
                 <br />
                 <div id="divPrint" style="display: none; height: 50%;">
                     <div class="content">
-                       
+
                         <div style="border: 2px solid gray;">
                             <div style="width: 17%; float: right; padding-top: 5px;">
                                 <img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="100px" height="72px" />
                                 <br />
                             </div>
                             <div style="border: 1px solid gray;">
-                                <div style="font-family: Arial; font-size: 20px; font-weight: bold; color: Black;
-                                    text-align: center;">
+                                <div style="font-family: Arial; font-size: 20px; font-weight: bold; color: Black; text-align: center;">
                                     <span id="lbltile"></span>
                                     <br />
                                 </div>
                                 <div style="width: 73%; padding-left: 12%; text-align: center;">
                                     <span id="spnAddress" style="font-size: 14px;"></span>
                                     <br />
-                                    <label style="font-size: 12px;font-weight: bold !important;">
-                                         GSTIN :</label>
-                        <span id="spngstnum" style="font-size: 11px;font-weight: bold !important;"></span>
-                        <br />
+                                    <label style="font-size: 12px; font-weight: bold !important;">
+                                        GSTIN :</label>
+                                    <span id="spngstnum" style="font-size: 11px; font-weight: bold !important;"></span>
+                                    <br />
                                     <%--<span id="Span1" style="font-size: 11px; font-weight: bold;">Website: www.vyshnavi.in</span>--%>
                                     <br />
                                     <br />
@@ -464,8 +504,7 @@
                                     <br />
                                 </div>
                             </div>
-                            <div align="center" style="border-bottom: 1px solid gray; border-top: 1px solid gray;
-                                background: antiquewhite;">
+                            <div align="center" style="border-bottom: 1px solid gray; border-top: 1px solid gray; background: antiquewhite;">
                                 <span style="font-size: 18px; font-weight: bold;" id="spninvoicetype"></span>
                             </div>
                             <div style="width: 100%;">
@@ -510,7 +549,7 @@
                                             <label style="font-size: 12px;">
                                                 Invoice No :</label>
                                             <span id="spninvoiceno" style="font-size: 14px;"></span>
-                                            <span id="spntempinvoiceno" style="display:none;"></span>
+                                            <span id="spntempinvoiceno" style="display: none;"></span>
                                             <br />
                                             <label style="font-size: 12px;">
                                                 Invoice Date :</label>
@@ -597,8 +636,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div style="font-family: Arial; font-weight: bold; color: Black; text-align: center;
-                                border: 2px solid gray;">
+                            <div style="font-family: Arial; font-weight: bold; color: Black; text-align: center; border: 2px solid gray;">
                                 <br />
                             </div>
                             <div id="div_itemdetails">
@@ -609,18 +647,15 @@
                                 </label>
                                 <label>
                                     Rs.</label>
-                                <span id="recevied" onclick="test.rnum.value = toWords(test.inum.value);" value="To Words">
-                                </span>
+                                <span id="recevied" onclick="test.rnum.value = toWords(test.inum.value);" value="To Words"></span>
                             </table>
                             <br />
                             <br />
                             <br />
                             <table style="width: 100%;">
                                 <tr>
-                                    <td style="width: 25%;" colspan="3">
-                                    </td>
-                                    <td style="width: 50%;">
-                                        For <span id="lblsignname" style="font-weight: bold; font-size: 12px;"></span>
+                                    <td style="width: 25%;" colspan="3"></td>
+                                    <td style="width: 50%;">For <span id="lblsignname" style="font-weight: bold; font-size: 12px;"></span>
                                         <br />
                                         <br />
                                         <br />
