@@ -81,6 +81,8 @@
                     <%--<a href="ForgetPassWord.aspx">Forgot PassWord</a>--%>
                 </div>
                 <span style="font-size: 14px;">Powered by <strong>Vyshnavi Dairy</strong></span>
+                <br />
+                <span style="font-size: 14px;">Beta Version <strong>1.0</strong></span>
 
                 <br />
                 <br />

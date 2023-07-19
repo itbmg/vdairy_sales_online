@@ -671,7 +671,7 @@
         var PaymentType = "";
         function ddlPaymentTypeChange(Payment) {
             PaymentType = Payment.options[Payment.selectedIndex].text;
-            if (PaymentType == "Cash" || paymenttype == "PhonePay" ) {
+            if (PaymentType == "Cash" || PaymentType == "PhonePay" ) {
                 $('.divChequeclass').css('display', 'none');
                 $('.divChequeDateclass').css('display', 'none');
                 $('.divBankclass').css('display', 'none');
@@ -683,7 +683,7 @@
             if (PaymentType == "Bank Transfer") {
                 $('.divChequeclass').css('display', 'none');
                 $('.divChequeDateclass').css('display', 'none');
-                $('.divBankclass').css('display', 'table-row');
+                $('.divBankclass').css('display', 'block');
                 $('.divfinanceaccno').css('display', 'table-row');
                 $('#tdDenomination').css('display', 'none');
                 $('.clsclosingbalance').css('display', 'block ');

@@ -238,10 +238,20 @@
             $('#divFillScreen').removeTemplate();
             $('#divFillScreen').setTemplateURL('TripRoutes6.htm');
             $('#divFillScreen').processTemplate(msg);
+            
             getTripValuesCalculation();
         }
         function getTripValuesCalculation() {
-
+            var tot_ltr = 0;
+            $('.totalQtyclass').each(function (i, obj) {
+                var qtyltr = $(this).closest('tr').find('#txtProductQty').val();
+                if (qtyltr == "" || qtyltr == "0") {
+                }
+                else {
+                    tot_ltr += parseFloat(qtyltr);
+                }
+            });
+            document.getElementById('txt_QtyLtr').innerHTML = parseFloat(tot_ltr).toFixed(2);
         }
         function GetInventory(msg) {
             $('#divInventory').removeTemplate();

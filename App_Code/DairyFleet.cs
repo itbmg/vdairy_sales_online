@@ -115,6 +115,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 case "get_bank_details":
                     get_bank_details(context);
                     break;
+
+                case "get_finance_AccNos":
+                    get_finance_AccNos(context);
+                    break;
+                    
                 case "save_customerdocument":
                     save_customerdocument(context);
                     break;
@@ -9918,6 +9923,33 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             string Response = GetJson(ex.Message);
             context.Response.Write(Response);
 
+        }
+    }
+    private void get_finance_AccNos(HttpContext context)
+    {
+        try
+        {
+            vdbmngr = new VehicleDBMgr();
+            cmd = new MySqlCommand("SELECT sno, bankid,  branchname, accountno, accounttype, status, doe, createdby FROM  bankaccountno_master");
+            DataTable dtIndent = vdbmngr.SelectQuery(cmd).Tables[0];
+            List<accountnumberscls> indentlist = new List<accountnumberscls>();
+            foreach (DataRow dr in dtIndent.Rows)
+            {
+                accountnumberscls Getindent = new accountnumberscls();
+                Getindent.sno = dr["sno"].ToString();
+                Getindent.bankid = dr["bankid"].ToString();
+                Getindent.branchname = dr["branchname"].ToString();
+                Getindent.accountno = dr["accountno"].ToString();
+                Getindent.status = dr["status"].ToString();
+                Getindent.doe = dr["doe"].ToString();
+                Getindent.createdby = dr["createdby"].ToString();
+                indentlist.Add(Getindent);
+            }
+            string response = GetJson(indentlist);
+            context.Response.Write(response);
+        }
+        catch
+        {
         }
     }
     private void get_Employees_leveltypes(HttpContext context)
@@ -27238,7 +27270,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string Cost { get; set; }
         public string totalAmount { get; set; }
     }
-    public class faaccountnumberscls
+    public class accountnumberscls
     {
         public string sno { get; set; }
         public string bankid { get; set; }
@@ -38241,7 +38273,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     private void Gettripinventory_manage(HttpContext context)
     {
         try
-        {
+        { 
             vdbmngr = new VehicleDBMgr();
             DataTable dt = new DataTable();
             DataTable dtallinv = new DataTable();
@@ -38252,13 +38284,13 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             if (context.Session["tripid"] != "")
             {
                 string tripid = context.Session["tripid"].ToString();
-                cmd = new MySqlCommand("SELECT tripinvdata.Qty, invmaster.InvName, invmaster.sno FROM tripdata INNER JOIN tripinvdata ON tripdata.Sno = tripinvdata.Tripdata_sno INNER JOIN invmaster ON tripinvdata.invid = invmaster.sno WHERE (tripdata.Sno = @tripid) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)");
+                cmd = new MySqlCommand("SELECT tripinvdata.Qty, invmaster.InvName, invmaster.sno FROM tripdata INNER JOIN tripinvdata ON tripdata.Sno = tripinvdata.Tripdata_sno INNER JOIN invmaster ON tripinvdata.invid = invmaster.sno WHERE (tripdata.Sno = @tripid) AND (tripdata.AssignDate BETWEEN @d1 AND @d2) order by invmaster.sno");
                 cmd.Parameters.AddWithValue("@tripid", context.Session["tripid"].ToString());
                 cmd.Parameters.AddWithValue("@d1", GetLowDate(todaydt));
                 cmd.Parameters.AddWithValue("@d2", GetHighDate(todaydt));
                 dt = vdbmngr.SelectQuery(cmd).Tables[0];
 
-                cmd = new MySqlCommand("SELECT invmaster.InvName, invmaster.flag, invmaster.sno FROM invmaster INNER JOIN inventory_monitor ON invmaster.sno = inventory_monitor.Inv_Sno WHERE (inventory_monitor.BranchId = @BranchID)");
+                cmd = new MySqlCommand("SELECT invmaster.InvName, invmaster.flag, invmaster.sno FROM invmaster INNER JOIN inventory_monitor ON invmaster.sno = inventory_monitor.Inv_Sno WHERE (inventory_monitor.BranchId = @BranchID) order by invmaster.sno");
                 cmd.Parameters.AddWithValue("@BranchID", BranchID);
                 dtassigned_inv = vdbmngr.SelectQuery(cmd).Tables[0];
                 dtallinv = new DataTable();
@@ -38293,7 +38325,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             }
             else
             {
-                cmd = new MySqlCommand("SELECT invmaster.InvName, invmaster.flag, invmaster.sno FROM invmaster INNER JOIN inventory_monitor ON invmaster.sno = inventory_monitor.Inv_Sno WHERE (inventory_monitor.BranchId = @BranchID)");
+                cmd = new MySqlCommand("SELECT invmaster.InvName, invmaster.flag, invmaster.sno FROM invmaster INNER JOIN inventory_monitor ON invmaster.sno = inventory_monitor.Inv_Sno WHERE (inventory_monitor.BranchId = @BranchID) order by invmaster.sno");
                 cmd.Parameters.AddWithValue("@BranchID", BranchID);
                 dt = vdbmngr.SelectQuery(cmd).Tables[0];
                 dtallinv = new DataTable();
