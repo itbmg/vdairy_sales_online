@@ -24848,7 +24848,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
             vdbmngr = new VehicleDBMgr();
             List<Products> Productslist = new List<Products>();
-            cmd = new MySqlCommand("SELECT   productsdata.invqty,productsdata.sno, productsdata.ProductName, productsdata.Units, invmaster.Qty, productsdata.Inventorysno,  invmaster.InvName FROM  productsdata INNER JOIN invmaster ON productsdata.Inventorysno = invmaster.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno WHERE (branchproducts.branch_sno = @BranchID) AND (branchproducts.flag = @flag) ORDER BY branchproducts.Rank");
+            cmd = new MySqlCommand("SELECT   productsdata.invqty,productsdata.sno,productsdata.Units,productsdata.Qty,productsdata.ProductName, productsdata.Units, productsdata.Inventorysno,  invmaster.InvName FROM  productsdata INNER JOIN invmaster ON productsdata.Inventorysno = invmaster.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno WHERE (branchproducts.branch_sno = @BranchID) AND (branchproducts.flag = @flag) ORDER BY branchproducts.Rank");
             cmd.Parameters.AddWithValue("@flag", "1");
             cmd.Parameters.AddWithValue("@BranchID", context.Session["branch"].ToString());
             DataTable dtProducts = vdbmngr.SelectQuery(cmd).Tables[0];
@@ -24863,9 +24863,13 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 getProducts.tubs = "0";
                 getProducts.cans = "0";
                 getProducts.units = dr["InvName"].ToString();
-                getProducts.qty = dr["invqty"].ToString();
+                getProducts.qty = "0";
                 getProducts.empid = "0";
                 getProducts.vehcleno = "0";
+                getProducts.orderunitqty = "0";
+                getProducts.Units = dr["Units"].ToString();
+                getProducts.Unitqty = dr["Qty"].ToString();
+                getProducts.invqty = dr["invqty"].ToString();
                 Productslist.Add(getProducts);
             }
             string response = GetJson(Productslist);
@@ -32651,6 +32655,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 newRow["TotalQty"] = "0";
                 newRow["Units"] = dr["Units"].ToString();
                 newRow["UnitQty"] = dr["UnitQty"].ToString();
+
+
+
+
                 newRow["Qty"] = dr["invqty"].ToString();
                 newRow["Inventorysno"] = dr["Inventorysno"].ToString();
                 newRow["InvName"] = dr["InvName"].ToString();
@@ -34807,37 +34815,40 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 {
                     if (o.Qty != "0" || o.offerqty != "0")
                     {
-                        cmd = new MySqlCommand("insert into tripsubdata (Tripdata_Sno,ProductId,Qty,DeliverQty,offerqty)values(@Tripdata_Sno,@ProductId,@Qty,@deliverqty,@offerqty)");
+                        cmd = new MySqlCommand("insert into tripsubdata (Tripdata_Sno,ProductId,Qty,DeliverQty,offerqty,pkt_qty,tub_qty)values(@Tripdata_Sno,@ProductId,@Qty,@deliverqty,@offerqty,@pkt_qty,@tub_qty)");
                         cmd.Parameters.AddWithValue("@Tripdata_Sno", TripSno);
                         cmd.Parameters.AddWithValue("@ProductId", o.Productsno);
-                        double ltr_qty = 0;
-                        double UomQty = 0;
-                        double pktqty = 0;
-                        double DeliveryQty = 0;
+                        //double ltr_qty = 0;
+                        //double UomQty = 0;
+                        //double pktqty = 0;
+                        //double DeliveryQty = 0;
 
-                        if (o.uom == "Nos")
-                        {
-                            double.TryParse(o.Unitsqty, out DeliveryQty);
-                            ltr_qty = Math.Round(DeliveryQty, 2);
-                            double.TryParse(o.PktQty, out pktqty);
-                            pktqty = Math.Round(pktqty, 2);
-                        }
-                        else
-                        {
-                            double.TryParse(o.Unitsqty, out DeliveryQty);
-                            DeliveryQty = Math.Round(DeliveryQty, 2);
+                        //if (o.uom == "Nos")
+                        //{
+                        //    double.TryParse(o.Unitsqty, out DeliveryQty);
+                        //    ltr_qty = Math.Round(DeliveryQty, 2);
+                        //    double.TryParse(o.PktQty, out pktqty);
+                        //    pktqty = Math.Round(pktqty, 2);
+                        //}
+                        //else
+                        //{
+                        //    double.TryParse(o.Unitsqty, out DeliveryQty);
+                        //    DeliveryQty = Math.Round(DeliveryQty, 2);
 
-                            double.TryParse(o.PktQty, out pktqty);
-                            pktqty = Math.Round(pktqty, 2);
-                            double.TryParse(o.UomQty, out UomQty);
-                            ltr_qty = pktqty * UomQty / 1000;
-                            ltr_qty = Math.Round(ltr_qty, 2);
-                        }
+                        //    double.TryParse(o.PktQty, out pktqty);
+                        //    pktqty = Math.Round(pktqty, 2);
+                        //    double.TryParse(o.UomQty, out UomQty);
+                        //    ltr_qty = pktqty * UomQty / 1000;
+                        //    ltr_qty = Math.Round(ltr_qty, 2);
+                        //}
 
 
-                        float manuftreming_qty = 0;
-                        float.TryParse(o.RemainingQty, out manuftreming_qty);
-                        cmd.Parameters.AddWithValue("@Qty", ltr_qty);
+                        //float manuftreming_qty = 0;
+                        //float.TryParse(o.RemainingQty, out manuftreming_qty);
+                        //cmd.Parameters.AddWithValue("@Qty", ltr_qty);
+                        cmd.Parameters.AddWithValue("@Qty", o.Qty);
+                        cmd.Parameters.AddWithValue("@pkt_qty", o.PktQty);
+                        cmd.Parameters.AddWithValue("@tub_qty", o.tubQty);
                         float delqty = 0;
                         cmd.Parameters.AddWithValue("@deliverqty", delqty);
                         cmd.Parameters.AddWithValue("@offerqty", o.offerqty);
@@ -34874,48 +34885,59 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         cmd = new MySqlCommand("insert into indents_subtable (IndentNo,Product_sno,Status,unitQty,UnitCost,OTripId,DtripID,DeliveryQty,D_date,tub_qty,pkt_qty,pkt_dqty,pkt_rate)values(@IndentNo,@Product_sno,@Status,@unitQty,@UnitCost,@OTripId,@DtripID,@DeliveryQty,@D_date,@tubqty,@pktqty,@pkt_dqty,@pkt_rate)");
                         cmd.Parameters.AddWithValue("@IndentNo", IndentNo);
                         cmd.Parameters.AddWithValue("@Product_sno", o.Productsno);
+                        //double UnitCost = 0;
+                        //double perltrCost = 0;
+                        //double unitQty = 0;
+                        //double tubqty = 0;
+                        //double.TryParse(o.UnitCost, out UnitCost);
+                        //UnitCost = Math.Round(UnitCost, 2);
+                        //if (o.uom == "Nos")
+                        //{
+                        //    double.TryParse(o.UnitCost, out perltrCost);
+                        //    UnitCost = Math.Round(perltrCost, 2);
+                        //    double.TryParse(o.Unitsqty, out unitQty);
+                        //    unitQty = Math.Round(unitQty, 2);
+
+                        //}
+                        //else
+                        //{
+                        //    double.TryParse(o.Unitsqty, out DeliveryQty);
+                        //    DeliveryQty = Math.Round(DeliveryQty, 2);
+
+
+                        //    double.TryParse(o.tubQty, out tubqty);
+                        //    tubqty = Math.Round(tubqty, 2);
+                        //    perltrCost = (1000 / UomQty) * UnitCost;
+                        //    perltrCost = Math.Round(perltrCost, 2);
+                        //}
+
+                        //double.TryParse(o.UomQty, out UomQty);
+                        double DeliveryQty = 0;
+                        double.TryParse(o.Qty, out DeliveryQty);
+                        double ltr_qty = 0;
+                        double.TryParse(o.Qty, out ltr_qty);
+                        ltr_qty = Math.Round(ltr_qty, 2);
+                        string pktqty = o.Unitsqty;
+                        string UomQty = o.UomQty;
+                        string pkt_rate = o.UnitCost;
+                        EInvoice obj1 = new EInvoice();
+                        double perltrCost = obj1.Converting_Ltr_rate(pktqty,  UomQty,  pkt_rate);
+                        
                         double UnitCost = 0;
-                        double perltrCost = 0;
-                        double unitQty = 0;
-                        double tubqty = 0;
                         double.TryParse(o.UnitCost, out UnitCost);
                         UnitCost = Math.Round(UnitCost, 2);
-                        if (o.uom == "Nos")
-                        {
-                            double.TryParse(o.UnitCost, out perltrCost);
-                            UnitCost = Math.Round(perltrCost, 2);
-                            double.TryParse(o.Unitsqty, out unitQty);
-                            unitQty = Math.Round(unitQty, 2);
-
-                        }
-                        else
-                        {
-                            double.TryParse(o.Unitsqty, out DeliveryQty);
-                            DeliveryQty = Math.Round(DeliveryQty, 2);
-
-
-                            double.TryParse(o.tubQty, out tubqty);
-                            tubqty = Math.Round(tubqty, 2);
-                            perltrCost = (1000 / UomQty) * UnitCost;
-                            perltrCost = Math.Round(perltrCost, 2);
-                        }
-
-
 
                         cmd.Parameters.AddWithValue("@UnitCost", perltrCost);
-
-                        //cmd.Parameters.AddWithValue("@tubqty", tubqty);
-                        //cmd.Parameters.AddWithValue("@pktqty", pktqty);
-                        cmd.Parameters.AddWithValue("@unitQty", unitQty);
-                        cmd.Parameters.AddWithValue("@DeliveryQty", ltr_qty);
+                        cmd.Parameters.AddWithValue("@unitQty", o.Qty);
+                        cmd.Parameters.AddWithValue("@DeliveryQty", o.Qty);
                         cmd.Parameters.AddWithValue("@Status", "Delivered");
                         cmd.Parameters.AddWithValue("@OTripId", TripSno);
                         cmd.Parameters.AddWithValue("@DtripID", TripSno);
                         cmd.Parameters.AddWithValue("@D_date", ServerDateCurrentdate.AddDays(1));
-                        cmd.Parameters.AddWithValue("@tubqty", tubqty);
-                        cmd.Parameters.AddWithValue("@pktqty", unitQty);
+                        cmd.Parameters.AddWithValue("@tubqty", o.tubQty);
+                        cmd.Parameters.AddWithValue("@pktqty", pktqty);
                         cmd.Parameters.AddWithValue("@pkt_dqty", pktqty);
-                        cmd.Parameters.AddWithValue("@pkt_rate", UnitCost);
+                        cmd.Parameters.AddWithValue("@pkt_rate", pkt_rate);
                         if (DeliveryQty != 0.0)
                         {
                             vdbmngr.insert(cmd);
@@ -35669,7 +35691,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 {
                     if (o.Qty != "0")
                     {
-                        cmd = new MySqlCommand("insert into tripsubdata (Tripdata_Sno,ProductId,Qty,DeliverQty)values(@Tripdata_Sno,@ProductId,@Qty,@deliverqty)");
+                        cmd = new MySqlCommand("insert into tripsubdata (Tripdata_Sno,ProductId,Qty,DeliverQty,pkt_qty,tub_qty)values(@Tripdata_Sno,@ProductId,@Qty,@deliverqty,@pkt_qty,@tub_qty)");
                         cmd.Parameters.AddWithValue("@Tripdata_Sno", TripSno);
                         cmd.Parameters.AddWithValue("@ProductId", o.Productsno);
                         float qty;
@@ -35679,6 +35701,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         cmd.Parameters.AddWithValue("@Qty", qty);
                         float delqty = 0;
                         cmd.Parameters.AddWithValue("@deliverqty", delqty);
+                        cmd.Parameters.AddWithValue("@pkt_qty", o.pkt_qty);
+                        cmd.Parameters.AddWithValue("@tub_qty", o.tub_qty);
                         vdbmngr.insert(cmd);
                         string AunitPrice = "0";
                         double UnitCost = 0;
@@ -35746,21 +35770,33 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     }
                                 }
                             }
-                            cmd = new MySqlCommand("insert into indents_subtable (IndentNo,Product_sno,Status,unitQty,UnitCost,OTripId,DtripID,DeliveryQty)values(@IndentNo,@Product_sno,@Status,@unitQty,@UnitCost,@OTripId,@DtripID,@DeliveryQty)");
+                            cmd = new MySqlCommand("insert into indents_subtable (IndentNo,Product_sno,Status,unitQty,UnitCost,OTripId,DtripID,DeliveryQty,pkt_qty,pkt_dqty,pkt_rate,tub_qty)values(@IndentNo,@Product_sno,@Status,@unitQty,@UnitCost,@OTripId,@DtripID,@DeliveryQty,@pkt_qty,@pkt_dqty,@pkt_rate,@tub_qty)");
                             cmd.Parameters.AddWithValue("@IndentNo", IndentNo);
                             cmd.Parameters.AddWithValue("@Product_sno", o.Productsno);
                             double.TryParse(AunitPrice, out UnitCost);
                             UnitCost = Math.Round(UnitCost, 2);
-                            cmd.Parameters.AddWithValue("@UnitCost", UnitCost);
+                            //cmd.Parameters.AddWithValue("@UnitCost", UnitCost);
                             double unitQty = 0;
                             double DeliveryQty = 0;
                             double.TryParse(o.Qty, out DeliveryQty);
                             DeliveryQty = Math.Round(DeliveryQty, 2);
-                            cmd.Parameters.AddWithValue("@unitQty", unitQty);
-                            cmd.Parameters.AddWithValue("@DeliveryQty", DeliveryQty);
+
+                            string pktqty = o.pkt_qty;
+                            string UomQty = o.UomQty;
+                            string pkt_rate = UnitCost.ToString();
+                            EInvoice obj1 = new EInvoice();
+                            double perltrCost = obj1.Converting_Ltr_rate(pktqty, UomQty, pkt_rate);
+
+                            cmd.Parameters.AddWithValue("@UnitCost", perltrCost);
+                            cmd.Parameters.AddWithValue("@unitQty", o.Qty);
+                            cmd.Parameters.AddWithValue("@DeliveryQty", o.Qty);
                             cmd.Parameters.AddWithValue("@Status", "Delivered");
                             cmd.Parameters.AddWithValue("@OTripId", TripSno);
                             cmd.Parameters.AddWithValue("@DtripID", TripSno);
+                            cmd.Parameters.AddWithValue("@pkt_qty", o.pkt_qty);
+                            cmd.Parameters.AddWithValue("@pkt_dqty", o.pkt_qty);
+                            cmd.Parameters.AddWithValue("@pkt_rate", UnitCost);
+                            cmd.Parameters.AddWithValue("@tub_qty", o.tub_qty);
                             double amount = DeliveryQty * UnitCost;
                             remarks += ProductName + ",Qty=" + DeliveryQty.ToString() + ",Amount=" + amount.ToString() + ",";
                             totalamount += amount;

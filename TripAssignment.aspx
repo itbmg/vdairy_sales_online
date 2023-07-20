@@ -300,7 +300,6 @@
                 if ($(this).find('#txtProductQty').val() != "") {
                     var hdn_editqty = $(this).find('#hdn_editqty').val();
                     var txtProductQty = $(this).find('#txtProductQty').val();
-
                     var tot_qty = 0;
                     tot_qty = parseFloat(hdn_editqty) + parseFloat(txtProductQty);
                     if (tot_qty > 0) {
