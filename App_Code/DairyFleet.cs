@@ -32679,6 +32679,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 newRow["sno"] = dr["sno"].ToString();
                 newRow["ProductName"] = dr["ProductName"].ToString();
                 newRow["TotalQty"] = "0";
+                newRow["TubQty"] = "0";
+                newRow["PktQty"] = "0";
                 newRow["Units"] = dr["Units"].ToString();
                 newRow["UnitQty"] = dr["UnitQty"].ToString();
 
@@ -32798,13 +32800,13 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 float pktqty = 0;
                                 float.TryParse(drprdt["pkt_qty"].ToString(), out pktqty);
                                 float Pktqtycpy = 0;
-                                float.TryParse(drprdtcpy["pkt_qty"].ToString(), out Pktqtycpy);
+                                float.TryParse(drprdtcpy["PktQty"].ToString(), out Pktqtycpy);
                                 float totalPktqty = pktqty + Pktqtycpy;
 
                                 float tubqty = 0;
                                 float.TryParse(drprdt["tub_qty"].ToString(), out tubqty);
                                 float tubqtycpy = 0;
-                                float.TryParse(drprdtcpy["tub_qty"].ToString(), out tubqtycpy);
+                                float.TryParse(drprdtcpy["TubQty"].ToString(), out tubqtycpy);
                                 float totaltubqty = tubqty + tubqtycpy;
 
                                 drprdtcpy["TubQty"] = totaltubqty;
