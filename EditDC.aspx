@@ -255,7 +255,7 @@
                     tot_qty = parseFloat(hdn_editqty) + parseFloat(txtProductQty);
                     if (tot_qty > 0) {
                         var Product = 0;
-                        Orderdetails.push({ ProductSno: $(this).find('#hdnProductSno').val(), Product: Product, Qty: $(this).find('#txtProductQty').val(), RemainingQty: $(this).find('#txtremainingqty').text() });
+                        Orderdetails.push({ ProductSno: $(this).find('#hdnProductSno').val(), Product: Product, Qty: $(this).find('#txtProductQty').val(),  tub_qty: $(this).find('#txtTubQty').val(), pkt_qty: $(this).find('#txtQtypkts').val() });
                     }
                 }
             });
@@ -313,6 +313,123 @@
                 cache: true,
                 success: s,
                 error: e
+            });
+        }
+
+        // Calculation for all the Pkts,Tubs,Ltr/kgs
+        function OrderPktQtyChange(PktQty) {
+            if (PktQty.value == "") {
+
+            }
+            else {
+                var invQty = $(PktQty).closest("tr").find("#hdninvQty").val();
+                var unitQty = $(PktQty).closest("tr").find("#hdnUnitQty").val();
+                var pktval = PktQty.value;
+                var totltr = parseFloat(pktval * unitQty);
+                var totltrvalue = parseFloat(totltr / 1000);
+                var totaltub = parseFloat(pktval / invQty);
+                $(PktQty).closest("tr").find("#txtDupUnitQty").text(parseFloat(totltrvalue).toFixed(2))
+                $(PktQty).closest("tr").find("#txtProductQty").val(parseFloat(totltrvalue).toFixed(2))
+                $(PktQty).closest("tr").find("#txtTubQty").val(parseFloat(totaltub).toFixed(2));
+                var tot_ltr = 0;
+                $('.totalQtyclass').each(function (i, obj) {
+                    var qtyltr = $(this).closest('tr').find('#txtProductQty').val();
+                    if (qtyltr == "" || qtyltr == "0") {
+                    }
+                    else {
+                        tot_ltr += parseFloat(qtyltr);
+                    }
+                });
+                document.getElementById('txt_QtyLtr').innerHTML = parseFloat(tot_ltr).toFixed(2);
+                var val = parseFloat(totltrvalue).toFixed(2);
+                OrderUnitChange(PktQty);
+                GetInventoryCalculation();
+            }
+        }
+        function OrderTubQtyChange(TubQty) {
+            if (TubQty.value == "") {
+            }
+            else {
+                var invQty = $(TubQty).closest("tr").find("#hdninvQty").val();
+                var unitQty = $(TubQty).closest("tr").find("#hdnUnitQty").val();
+                var tubval = TubQty.value;
+                var totalpkts = parseFloat(tubval * invQty);
+                var totltr = parseFloat(totalpkts * unitQty);
+                var totltrvalue = parseFloat(totltr / 1000);
+                $(TubQty).closest("tr").find("#txtDupUnitQty").text(parseFloat(totltrvalue).toFixed(2))
+                $(TubQty).closest("tr").find("#txtProductQty").val(parseFloat(totltrvalue).toFixed(2))
+                $(TubQty).closest("tr").find("#txtQtypkts").val(parseFloat(totalpkts).toFixed(2));
+                var tot_ltr = 0;
+                $('.totalQtyclass').each(function (i, obj) {
+                    var qtyltr = $(this).closest('tr').find('#txtProductQty').val();
+                    if (qtyltr == "" || qtyltr == "0") {
+                    }
+                    else {
+                        tot_ltr += parseFloat(qtyltr);
+                    }
+                });
+                document.getElementById('txt_QtyLtr').innerHTML = parseFloat(tot_ltr).toFixed(2);
+                var val = parseFloat(totltrvalue).toFixed(2);
+                OrderUnitChange(TubQty);
+                GetInventoryCalculation();
+            }
+        }
+        function OrderUnitChange(UnitQty) {
+            var totalqty;
+            var qty = 0.0;
+            var Rate = 0;
+            var rate = 0;
+            var total = 0;
+            var totalltr = 0;
+            var TotalRate = 0;
+            var cnt = 0;
+            if (UnitQty.value == "") {
+                //$(UnitQty).closest("tr").find("#txtOrderTotal").text(parseFloat(total).toFixed(2));
+                $('.Unitqtyclass').each(function (i, obj) {
+                    var qtyclass = $(this).closest('tr').find('#txtQtypkts').val();
+                    if (qtyclass == "" || qtyclass == "0") {
+                    }
+                    else {
+                        totalltr += parseFloat(qtyclass);
+
+                        cnt++;
+                    }
+                });
+                
+                $('.totalQtyclass').each(function (i, obj) {
+                    total += parseFloat($(this).text());
+                });
+                document.getElementById('txt_QtyLtr').innerHTML = parseFloat(total).toFixed(2);
+                return false;
+            }
+            var Qty = $(UnitQty).closest("tr").find("#hdnUnitQty").val();
+            var Units = $(UnitQty).closest("tr").find("#hdnUnits").val();
+            var Units = $(UnitQty).closest("tr").find("#hdnUnits").val();
+            var unitqty = $(UnitQty).closest("tr").find("#txtQtypkts").val();
+            if (Units == "ml") {
+                totalqty = parseFloat(unitqty);
+            }
+            if (Units == "ltr") {
+                totalqty = parseInt(unitqty);
+            }
+            if (Units == "gms") {
+                totalqty = parseFloat(unitqty);
+            }
+            if (Units == "kgs") {
+                totalqty = parseInt(unitqty);
+            }
+            if (Units == "Pkts") {
+                totalqty = parseInt(unitqty);
+            }
+            $(UnitQty).closest("tr").find("#hdnQty").val(totalqty)
+            $('.Unitqtyclass').each(function (i, obj) {
+                var qtyclass = $(this).closest('tr').find('#txtQtypkts').val();
+                if (qtyclass == "" || qtyclass == "0") {
+                }
+                else {
+                    totalltr += parseInt(qtyclass);
+                    cnt++;
+                }
             });
         }
        
