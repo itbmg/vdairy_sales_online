@@ -14636,11 +14636,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             }
             if (DispType == "Free")
             {
-                cmd = new MySqlCommand("SELECT tripsubdata.ProductId, productsdata.Itemcode,productsdata.SubCat_sno as subcatid, productsdata.hsncode, productsdata.igst, productsdata.cgst, productsdata.sgst, productsdata.Units,productsdata.qty as uomqty, productsdata.ProductName, productsdata.VatPercent,  tripsubdata.Price, ROUND(tripsubdata.Qty, 2) AS Qty, tripdata.AssignDate, tripdata.BranchID FROM tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno WHERE (tripdata.Sno = @tripdataId) GROUP BY productsdata.ProductName");
+                cmd = new MySqlCommand("SELECT tripsubdata.ProductId, productsdata.Itemcode,productsdata.SubCat_sno as subcatid, productsdata.hsncode, productsdata.igst, productsdata.cgst, productsdata.sgst, productsdata.Units,productsdata.qty as uomqty, productsdata.ProductName, productsdata.VatPercent,  tripsubdata.Price, ROUND(tripsubdata.Qty, 2) AS Qty,ROUND(tripsubdata.pkt_qty, 2) AS pkt_qty, tripdata.AssignDate, tripdata.BranchID FROM tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno WHERE (tripdata.Sno = @tripdataId) GROUP BY productsdata.ProductName");
             }
             else
             {
-                cmd = new MySqlCommand("SELECT tripsubdata.ProductId,productsdata.itemcode,productsdata.SubCat_sno as subcatid,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName, productsdata.VatPercent, branchproducts.VatPercent AS vp, tripsubdata.Price, ROUND(tripsubdata.Qty, 2) AS Qty,tripdata.AssignDate, tripdata.BranchID, branchproducts_1.VatPercent AS plantvp FROM tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno INNER JOIN branchproducts branchproducts_1 ON tripdata.BranchID = branchproducts_1.branch_sno AND branchproducts.product_sno = branchproducts_1.product_sno WHERE (tripdata.Sno = @tripdataId) AND (branchproducts.branch_sno = @BranchID) GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
+                cmd = new MySqlCommand("SELECT tripsubdata.ProductId,productsdata.itemcode,productsdata.SubCat_sno as subcatid,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName, productsdata.VatPercent, branchproducts.VatPercent AS vp, tripsubdata.Price, ROUND(tripsubdata.Qty, 2) AS Qty,ROUND(tripsubdata.pkt_qty, 2) AS pkt_qty,tripdata.AssignDate, tripdata.BranchID, branchproducts_1.VatPercent AS plantvp FROM tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno INNER JOIN branchproducts branchproducts_1 ON tripdata.BranchID = branchproducts_1.branch_sno AND branchproducts.product_sno = branchproducts_1.product_sno WHERE (tripdata.Sno = @tripdataId) AND (branchproducts.branch_sno = @BranchID) GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
             }
             cmd.Parameters.AddWithValue("@BranchID", branchsno);
             cmd.Parameters.AddWithValue("@tripdataId", TripId);
@@ -14769,7 +14769,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             EInvoice obj = new EInvoice();
                                             if (dr["Units"].ToString() == "Nos")
                                             {
-                                                double.TryParse(dr["Qty"].ToString(), out pkt_qty);
+                                                double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
                                                 double.TryParse(dr["Qty"].ToString(), out ltrqty);
                                                 pkt_qty = pkt_qty;
                                                 ltrqty = ltrqty;
@@ -14956,7 +14956,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         EInvoice obj = new EInvoice();
                                         if (dr["Units"].ToString() == "Nos")
                                         {
-                                            double.TryParse(dr["Qty"].ToString(), out pkt_qty);
+                                            double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
                                             double.TryParse(dr["Qty"].ToString(), out ltrqty);
                                             pkt_qty = pkt_qty;
                                             ltrqty = ltrqty;
