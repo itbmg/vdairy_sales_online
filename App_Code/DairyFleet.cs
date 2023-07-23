@@ -24069,7 +24069,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 VehicleNo = "";
                 Status = "";
             }
-            cmd = new MySqlCommand("SELECT productsdata.sno, productsdata.ProductName, productsdata.Units,productsdata.Qty as UnitQty,  invmaster.Qty FROM productsdata INNER JOIN invmaster ON productsdata.Inventorysno = invmaster.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno WHERE (branchproducts.branch_sno = @BranchID) AND (branchproducts.FLAG=@FLAG) ORDER BY branchproducts.Rank");
+            cmd = new MySqlCommand("SELECT productsdata.sno, productsdata.ProductName, productsdata.Units,productsdata.Qty as UnitQty,  productsdata.invqty FROM productsdata INNER JOIN invmaster ON productsdata.Inventorysno = invmaster.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno WHERE (branchproducts.branch_sno = @BranchID) AND (branchproducts.FLAG=@FLAG) ORDER BY branchproducts.Rank");
             cmd.Parameters.AddWithValue("@FLAG", "1");
             cmd.Parameters.AddWithValue("@BranchID", BranchID);
             DataTable dtproductsdata = vdbmngr.SelectQuery(cmd).Tables[0];

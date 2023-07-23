@@ -308,20 +308,22 @@
         var TotVat = 0.0;
         function filldetails(msg, Aagent_Inventary) {
             var results = '<div  ><table border="1" id="tbl_po_print" style="width: 100%;" class="table table-bordered table-hover dataTable no-footer">';
-            results += '<thead><tr style="background:antiquewhite;"><th value="#" colspan="1" style = "font-size: 12px;" rowspan="2">Sno</th><th value="Item Code" style = "font-size: 12px;" colspan="1" rowspan="2">Item Code</th><th style = "font-size: 12px;" value="Item Name" colspan="1" rowspan="2">Item Description</th><th style = "font-size: 12px;" value="HSN CODE" colspan="1" rowspan="2">HSN CODE</th><th value="UOM" style = "font-size: 12px;" colspan="1" rowspan="2">UOM</th><th value="Qty" style = "font-size: 12px;" colspan="1" rowspan="2">Qty(packet)</th><th value="Qty" style = "font-size: 12px;" colspan="1" rowspan="2">Qty(crates/tubs)</th><th value="Qty" style = "font-size: 12px;" colspan="1" rowspan="2">Qty(ltrs/kgs)</th><th value="Rate/Item (Rs.)" style = "font-size: 12px;" colspan="1" rowspan="2">Rate/Item (Rs.)</th><th value="Discount (Rs.)" style = "font-size: 12px;" colspan="1" rowspan="2">Discount (Rs.)</th><th value="Taxable Value" style = "font-size: 12px;" colspan="1" rowspan="2">Taxable Value</th><th value="CGST" style = "font-size: 12px;" colspan="2" rowspan="1">SGST</th><th value="SGST" colspan="2" style = "font-size: 12px;" rowspan="1">CGST</th><th value="IGST" style = "font-size: 12px;" colspan="2" rowspan="1">IGST</th><th value="Taxable Value" style = "font-size: 12px;" colspan="1" rowspan="2">Total Amount</th></tr><tr style="background:antiquewhite;"><th value="%" style = "font-size: 12px;" colspan="1" rowspan="1">%</th><th style = "font-size: 12px;" value="Amt (Rs.)" colspan="1" rowspan="1">Amt (Rs.)</th><th value="%" style = "font-size: 12px;" colspan="1" rowspan="1">%</th><th style = "font-size: 12px;" value="Amt (Rs.)" colspan="1" rowspan="1">Amt (Rs.)</th><th value="%" style = "font-size: 12px;" colspan="1" rowspan="1">%</th><th value="Amt (Rs.)" colspan="1" rowspan="1" style = "font-size: 12px;">Amt (Rs.)</th></tr></thead>';
+            results += '<thead><tr style="background:antiquewhite;"><th value="#" colspan="1" style = "font-size: 12px;" rowspan="2">Sno</th><th value="Item Code" style = "font-size: 12px;" colspan="1" rowspan="2">Item Code</th><th style = "font-size: 12px;" value="Item Name" colspan="1" rowspan="2">Item Description</th><th style ="font-size: 12px;" value="HSN CODE" colspan="1" rowspan="2">HSN CODE</th><th value="UOM" style = "display:none;font-size: 12px;" colspan="1" rowspan="2">UOM</th><th value="Qty" style = "font-size: 12px;" colspan="1" rowspan="2">Qty(packet)</th><th value="Qty" style = "font-size: 12px;" colspan="1" rowspan="2">Qty(crates/tubs)</th><th value="Qty" style = "font-size: 12px;" colspan="1" rowspan="2">Qty(ltrs/kgs)</th><th value="Rate/Item (Rs.)" style = "font-size: 12px;" colspan="1" rowspan="2">Rate/Item (Rs.)</th><th value="Discount (Rs.)" style = "font-size: 12px;" colspan="1" rowspan="2">Discount (Rs.)</th><th value="Taxable Value" style = "font-size: 12px;" colspan="1" rowspan="2">Taxable Value</th><th value="CGST" style = "font-size: 12px;" colspan="2" rowspan="1">SGST</th><th value="SGST" colspan="2" style = "font-size: 12px;" rowspan="1">CGST</th><th value="IGST" style = "font-size: 12px;" colspan="2" rowspan="1">IGST</th><th value="Taxable Value" style = "font-size: 12px;" colspan="1" rowspan="2">Total Amount</th></tr><tr style="background:antiquewhite;"><th value="%" style = "font-size: 12px;" colspan="1" rowspan="1">%</th><th style = "font-size: 12px;" value="Amt (Rs.)" colspan="1" rowspan="1">Amt (Rs.)</th><th value="%" style = "font-size: 12px;" colspan="1" rowspan="1">%</th><th style = "font-size: 12px;" value="Amt (Rs.)" colspan="1" rowspan="1">Amt (Rs.)</th><th value="%" style = "font-size: 12px;" colspan="1" rowspan="1">%</th><th value="Amt (Rs.)" colspan="1" rowspan="1" style = "font-size: 12px;">Amt (Rs.)</th></tr></thead>';
             var tot_taxablevalue = 0;
             var tot_sgstamount = 0;
             var tot_cgstamount = 0;
             var tot_igstamount = 0;
             var tot_totalamount = 0;
             var tot_qty = 0;
+            var Tot_pkt_qty = 0;
+            var Tot_tubqty = 0;
             for (var i = 0; i < msg.length; i++) {
                 results += '<tr style="font-size: 12px;">'
                 results += '<td scope="row" class="1"  style="text-align:center;">' + msg[i].sno + '</td>';
                 results += '<td scope="row" class="1"  style="text-align:center;">' + msg[i].itemcode + '</td>';
                 results += '<td data-title="brandstatus" class="2">' + msg[i].ProductName + '</td>';
                 results += '<td data-title="brandstatus" class="2">' + msg[i].hsncode + '</td>';
-                results += '<td data-title="brandstatus" class="2">' + msg[i].uom + '</td>';
+                results += '<td data-title="brandstatus" style="display:none;" class="2">' + msg[i].uom + '</td>';
                 results += '<td data-title="brandstatus" class="2">' + parseFloat(msg[i].pktqty).toFixed(2) + '</td>';
                 results += '<td data-title="brandstatus" class="2">' + parseFloat(msg[i].tubqty).toFixed(2) + '</td>';
                 results += '<td data-title="brandstatus"  class="2">' + parseFloat(msg[i].qty).toFixed(2) + '</td>';
@@ -329,6 +331,8 @@
                 results += '<td data-title="brandstatus" class="2">' + msg[i].discount + '</td>';
                 results += '<td data-title="brandstatus" class="2">' + parseFloat(msg[i].taxablevalue).toFixed(2) + '</td>';
                 tot_qty += parseFloat(msg[i].qty);
+                Tot_pkt_qty += parseFloat(msg[i].pktqty);
+                Tot_tubqty += parseFloat(msg[i].tubqty);
                 tot_taxablevalue += parseFloat(msg[i].taxablevalue);
                 tot_sgstamount += parseFloat(msg[i].sgstamount);
                 tot_cgstamount += parseFloat(msg[i].cgstamount);
@@ -345,9 +349,11 @@
             }
             var Total = "Total";
             results += '<tr>';
-            results += '<td style = "font-size: 12px;text-align:center;background:antiquewhite;" colspan="5"><label>' + Total + '</label></td>';
+            results += '<td style = "font-size: 12px;text-align:center;background:antiquewhite;" colspan="4"><label>' + Total + '</label></td>';
+            results += '<td style = "font-size: 12px;text-align:center;"><label>' + parseFloat(Tot_pkt_qty).toFixed(2) + '</label></td>';
+            results += '<td style = "font-size: 12px;text-align:center;"><label>' + parseFloat(Tot_tubqty).toFixed(2) + '</label></td>';
             results += '<td style = "font-size: 12px;text-align:center;"><label>' + parseFloat(tot_qty).toFixed(2) + '</label></td>';
-            results += '<td style = "font-size: 12px;text-align:center;background:antiquewhite;" colspan="4"><label></label></td>';
+            results += '<td style = "font-size: 12px;text-align:center;background:antiquewhite;" colspan="2"><label></label></td>';
             results += '<td style = "font-size: 12px;text-align:center;"><label>' + parseFloat(tot_taxablevalue).toFixed(2) + '</label></td>';
             results += '<td colspan="2" style="text-align:center;font-size: 12px;"><label>' + parseFloat(tot_sgstamount).toFixed(2) + '</label></td>';
             results += '<td colspan="2" style="text-align:center;font-size: 12px;"><label>' + parseFloat(tot_cgstamount).toFixed(2) + '</label></td>';
