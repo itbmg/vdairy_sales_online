@@ -32733,13 +32733,13 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             //    }
                             //}
                             float pktqty = 0;
-                            float.TryParse(drprdt["pkt_qty"].ToString(), out pktqty);
+                            float.TryParse(drtripprdt["pkt_qty"].ToString(), out pktqty);
                             float Pktqtycpy = 0;
                             float.TryParse(drprdtcpy["PktQty"].ToString(), out Pktqtycpy);
                             float totalPktqty = pktqty + Pktqtycpy;
 
                             float tubqty = 0;
-                            float.TryParse(drprdt["tub_qty"].ToString(), out tubqty);
+                            float.TryParse(drtripprdt["tub_qty"].ToString(), out tubqty);
                             float tubqtycpy = 0;
                             float.TryParse(drprdtcpy["TubQty"].ToString(), out tubqtycpy);
                             float totaltubqty = tubqty + tubqtycpy;
