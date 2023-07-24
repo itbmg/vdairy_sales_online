@@ -24115,7 +24115,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 newRow["ProductName"] = dr["ProductName"].ToString();
                 newRow["TotalQty"] = "0";
                 newRow["Units"] = dr["Units"].ToString();
-                newRow["Qty"] = dr["Qty"].ToString();
+                newRow["Qty"] = dr["invqty"].ToString();
                 newRow["UnitQty"] = dr["UnitQty"].ToString();
                 dtallProducts.Rows.Add(newRow);
             }
@@ -24173,7 +24173,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             string response = GetJson(Productslist);
             context.Response.Write(response);
         }
-        catch
+        catch(Exception ex)
         {
         }
     }
