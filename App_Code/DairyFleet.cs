@@ -14778,13 +14778,19 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             }
                                             else
                                             {
-                                                pkt_qty = obj.ConvertingPackets(dr["Qty"].ToString(), dr["Uomqty"].ToString(), rate.ToString());
+                                                //pkt_qty = obj.ConvertingPackets(dr["Qty"].ToString(), dr["Uomqty"].ToString(), rate.ToString());
 
-                                                ltr_rate = obj.Converting_Ltr_rate(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
+                                                //ltr_rate = obj.Converting_Ltr_rate(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
 
-                                                ltrqty = obj.ConvertingLtrs(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
+                                                //ltrqty = obj.ConvertingLtrs(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
 
-                                                pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
+                                                //pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
+                                                double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
+                                                double.TryParse(dr["Qty"].ToString(), out ltrqty);
+                                                pkt_qty = pkt_qty;
+                                                ltrqty = ltrqty;
+                                                //ltr_rate = rate;
+                                                pkt_rate = rate;
                                             }
 
                                             rate = pkt_rate;
@@ -14965,13 +14971,19 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         }
                                         else
                                         {
-                                            pkt_qty = obj.ConvertingPackets(dr["Qty"].ToString(), dr["Uomqty"].ToString(), rate.ToString());
+                                            //pkt_qty = obj.ConvertingPackets(dr["Qty"].ToString(), dr["Uomqty"].ToString(), rate.ToString());
 
-                                            ltr_rate = obj.Converting_Ltr_rate(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
+                                            //ltr_rate = obj.Converting_Ltr_rate(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
 
-                                            ltrqty = obj.ConvertingLtrs(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
+                                            //ltrqty = obj.ConvertingLtrs(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
 
-                                            pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
+                                            //pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
+                                            double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
+                                            double.TryParse(dr["Qty"].ToString(), out ltrqty);
+                                            pkt_qty = pkt_qty;
+                                            ltrqty = ltrqty;
+                                            //ltr_rate = rate;
+                                            pkt_rate = rate;
                                         }
 
                                         rate = pkt_rate;
@@ -15209,13 +15221,19 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     }
                                     else
                                     {
-                                        pkt_qty = obj.ConvertingPackets(dr["Qty"].ToString(), dr["Uomqty"].ToString(), rate.ToString());
+                                        //pkt_qty = obj.ConvertingPackets(dr["Qty"].ToString(), dr["Uomqty"].ToString(), rate.ToString());
 
-                                        ltr_rate = obj.Converting_Ltr_rate(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
+                                        //ltr_rate = obj.Converting_Ltr_rate(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
 
-                                        ltrqty = obj.ConvertingLtrs(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
+                                        //ltrqty = obj.ConvertingLtrs(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
 
-                                        pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
+                                        //pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
+                                        double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
+                                        double.TryParse(dr["Qty"].ToString(), out ltrqty);
+                                        pkt_qty = pkt_qty;
+                                        ltrqty = ltrqty;
+                                        //ltr_rate = rate;
+                                        pkt_rate = rate;
                                     }
                                     rate = pkt_rate;
                                     ////added by akbar ltrcost
@@ -15387,13 +15405,19 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             }
                                             else
                                             {
-                                                pkt_qty = obj.ConvertingPackets(dr["Qty"].ToString(), dr["Uomqty"].ToString(), rate.ToString());
+                                                //pkt_qty = obj.ConvertingPackets(dr["Qty"].ToString(), dr["Uomqty"].ToString(), rate.ToString());
 
-                                                ltr_rate = obj.Converting_Ltr_rate(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
+                                                //ltr_rate = obj.Converting_Ltr_rate(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
 
-                                                ltrqty = obj.ConvertingLtrs(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
+                                                //ltrqty = obj.ConvertingLtrs(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
 
-                                                pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
+                                                //pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
+                                                double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
+                                                double.TryParse(dr["Qty"].ToString(), out ltrqty);
+                                                pkt_qty = pkt_qty;
+                                                ltrqty = ltrqty;
+                                                //ltr_rate = rate;
+                                                pkt_rate = rate;
                                             }
                                             rate = pkt_rate;
                                             ////added by akbar ltrcost
