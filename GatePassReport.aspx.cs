@@ -112,11 +112,12 @@ public partial class GatePassReport : System.Web.UI.Page
             DataTable Report = new DataTable();
             Report.Columns.Add("Sno");
             Report.Columns.Add("Product Name");
-            Report.Columns.Add("Qty");
+            Report.Columns.Add("LtrQty", typeof(Double));
+            Report.Columns.Add("PktQty", typeof(Double));
             Report.Columns.Add("Crates");
             Report.Columns.Add("Cans");
             Report.Columns.Add("Bags");
-            cmd = new MySqlCommand("SELECT   gatepassdeatails.sno, gatepassdeatails.gatepassno, gatepassdeatails.doe, gatepassdeatails.vehicleno, gatepassdeatails.routename, gatepassdeatails.partyname, ROUND(SUM(tripsubdata.pkt_qty), 2) AS Qty,tripdata.DCNo,tripdata.BranchID,tripdata.Sno AS tripSno,  productsdata.ProductName, products_category.Categoryname FROM gatepassdeatails INNER JOIN gatepass_subtable ON gatepassdeatails.sno = gatepass_subtable.gatepass_refno INNER JOIN tripdata ON gatepass_subtable.refdcno = tripdata.Sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (gatepassdeatails.sno = @GatePassID) AND (products_category.sno = 1) AND (productsdata.Inventorysno = 1) GROUP BY products_category.Categoryname ORDER BY productsdata.Rank");
+            cmd = new MySqlCommand("SELECT   gatepassdeatails.sno, gatepassdeatails.gatepassno, gatepassdeatails.doe, gatepassdeatails.vehicleno, gatepassdeatails.routename, gatepassdeatails.partyname, ROUND(SUM(tripsubdata.pkt_qty), 2) AS PktQty,ROUND(SUM(tripsubdata.Qty), 2) AS LtrQty,tripdata.DCNo,tripdata.BranchID,tripdata.Sno AS tripSno,  productsdata.ProductName, products_category.Categoryname FROM gatepassdeatails INNER JOIN gatepass_subtable ON gatepassdeatails.sno = gatepass_subtable.gatepass_refno INNER JOIN tripdata ON gatepass_subtable.refdcno = tripdata.Sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (gatepassdeatails.sno = @GatePassID) AND (products_category.sno = 1) AND (productsdata.Inventorysno = 1) GROUP BY products_category.Categoryname ORDER BY productsdata.Rank");
             cmd.Parameters.AddWithValue("@GatePassID", txt_gatePassid.Text);
             DataTable dtProducts = vdm.SelectQuery(cmd).Tables[0];
             int i = 1;
@@ -126,11 +127,12 @@ public partial class GatePassReport : System.Web.UI.Page
                 DataRow newrow = Report.NewRow();
                 newrow["Sno"] = i++.ToString();
                 newrow["Product Name"] = "Milk";
-                newrow["Qty"] = dr["Qty"].ToString();
+                newrow["LtrQty"] = dr["LtrQty"].ToString();
+                newrow["PktQty"] = dr["PktQty"].ToString();
                 gpno = dr["gatepassno"].ToString();
                 Report.Rows.Add(newrow);
             }
-            cmd = new MySqlCommand("SELECT gatepassdeatails.sno, gatepassdeatails.gatepassno, gatepassdeatails.doe, gatepassdeatails.vehicleno, gatepassdeatails.routename, gatepassdeatails.partyname, ROUND(SUM(tripsubdata.pkt_qty), 2) AS Qty, tripdata.DCNo, tripdata.BranchID, tripdata.Sno AS tripSno, productsdata.ProductName, products_category.Categoryname, branchproducts.Rank FROM gatepassdeatails INNER JOIN gatepass_subtable ON gatepassdeatails.sno = gatepass_subtable.gatepass_refno INNER JOIN tripdata ON gatepass_subtable.refdcno = tripdata.Sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno WHERE (gatepassdeatails.sno = @GatePassID) AND (products_category.sno = 1) AND (productsdata.Inventorysno = 2) AND (branchproducts.branch_sno = @branchid) GROUP BY productsdata.Inventorysno ORDER BY branchproducts.Rank");
+            cmd = new MySqlCommand("SELECT gatepassdeatails.sno, gatepassdeatails.gatepassno, gatepassdeatails.doe, gatepassdeatails.vehicleno, gatepassdeatails.routename, gatepassdeatails.partyname, ROUND(SUM(tripsubdata.pkt_qty), 2) AS PktQty,ROUND(SUM(tripsubdata.Qty), 2) AS LtrQty, tripdata.DCNo, tripdata.BranchID, tripdata.Sno AS tripSno, productsdata.ProductName, products_category.Categoryname, branchproducts.Rank FROM gatepassdeatails INNER JOIN gatepass_subtable ON gatepassdeatails.sno = gatepass_subtable.gatepass_refno INNER JOIN tripdata ON gatepass_subtable.refdcno = tripdata.Sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno WHERE (gatepassdeatails.sno = @GatePassID) AND (products_category.sno = 1) AND (productsdata.Inventorysno = 2) AND (branchproducts.branch_sno = @branchid) GROUP BY productsdata.Inventorysno ORDER BY branchproducts.Rank");
 
             //cmd = new MySqlCommand("SELECT    gatepassdeatails.sno, gatepassdeatails.gatepassno, gatepassdeatails.doe, gatepassdeatails.vehicleno, gatepassdeatails.routename, gatepassdeatails.partyname, ROUND(SUM(tripsubdata.Qty), 2) AS Qty,tripdata.DCNo,tripdata.BranchID, tripsubdata.Qty,tripdata.Sno AS tripSno,  productsdata.ProductName, products_category.Categoryname  FROM gatepassdeatails INNER JOIN gatepass_subtable ON gatepassdeatails.sno = gatepass_subtable.gatepass_refno INNER JOIN tripdata ON gatepass_subtable.refdcno = tripdata.Sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (gatepassdeatails.sno = @GatePassID) AND (products_category.sno = 9) AND (productsdata.Inventorysno = 4) GROUP BY productsdata.ProductName ORDER BY productsdata.Rank");
             cmd.Parameters.AddWithValue("@branchid", Session["branch"]);
@@ -142,7 +144,8 @@ public partial class GatePassReport : System.Web.UI.Page
                 DataRow newrow = Report.NewRow();
                 newrow["Sno"] = i++.ToString();
                 newrow["Product Name"] = "Milk Cans";
-                newrow["Qty"] = dr["Qty"].ToString();
+                newrow["LtrQty"] = dr["LtrQty"].ToString();
+                newrow["PktQty"] = dr["PktQty"].ToString();
                 gpno = dr["gatepassno"].ToString();
                 Report.Rows.Add(newrow);
             }
@@ -152,7 +155,7 @@ public partial class GatePassReport : System.Web.UI.Page
             DataTable dtbranchaddress = vdm.SelectQuery(cmd).Tables[0];
 
             lblAddress.Text = dtbranchaddress.Rows[0]["doorno"].ToString() + "," + dtbranchaddress.Rows[0]["street"].ToString() + "," + dtbranchaddress.Rows[0]["area"].ToString() + "," + dtbranchaddress.Rows[0]["mandal"].ToString() + "," + dtbranchaddress.Rows[0]["city"].ToString() + "," + dtbranchaddress.Rows[0]["district"].ToString() + " District -" + dtbranchaddress.Rows[0]["pincode"].ToString() + ",State:" + dtbranchaddress.Rows[0]["BranchState"].ToString() + ",Phone:" + dtbranchaddress.Rows[0]["phonenumber"].ToString();
-            cmd = new MySqlCommand("SELECT       gatepassdeatails.sno, gatepassdeatails.gatepassno, gatepassdeatails.doe, gatepassdeatails.vehicleno, gatepassdeatails.routename, gatepassdeatails.partyname, ROUND(SUM(tripsubdata.pkt_qty), 2) AS Qty, tripdata.DCNo, tripdata.BranchID,  tripdata.Sno AS tripSno, productsdata.ProductName, products_category.Categoryname FROM gatepassdeatails INNER JOIN gatepass_subtable ON gatepassdeatails.sno = gatepass_subtable.gatepass_refno INNER JOIN tripdata ON gatepass_subtable.refdcno = tripdata.Sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno WHERE  (gatepassdeatails.sno = @GatePassID) AND (products_category.sno <> 1) AND (branchproducts.branch_sno = @branchid) GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
+            cmd = new MySqlCommand("SELECT       gatepassdeatails.sno, gatepassdeatails.gatepassno, gatepassdeatails.doe, gatepassdeatails.vehicleno, gatepassdeatails.routename, gatepassdeatails.partyname, ROUND(SUM(tripsubdata.pkt_qty), 2) AS PktQty,ROUND(SUM(tripsubdata.Qty), 2) AS LtrQty, tripdata.DCNo, tripdata.BranchID,  tripdata.Sno AS tripSno, productsdata.ProductName, products_category.Categoryname FROM gatepassdeatails INNER JOIN gatepass_subtable ON gatepassdeatails.sno = gatepass_subtable.gatepass_refno INNER JOIN tripdata ON gatepass_subtable.refdcno = tripdata.Sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno WHERE  (gatepassdeatails.sno = @GatePassID) AND (products_category.sno <> 1) AND (branchproducts.branch_sno = @branchid) GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
             cmd.Parameters.AddWithValue("@branchid", Session["branch"]);
             
             //cmd = new MySqlCommand("SELECT    gatepassdeatails.sno, gatepassdeatails.gatepassno, gatepassdeatails.doe, gatepassdeatails.vehicleno, gatepassdeatails.routename, gatepassdeatails.partyname, ROUND(SUM(tripsubdata.Qty), 2) AS Qty,tripdata.DCNo,tripdata.BranchID, tripsubdata.Qty,tripdata.Sno AS tripSno,  productsdata.ProductName, products_category.Categoryname FROM gatepassdeatails INNER JOIN gatepass_subtable ON gatepassdeatails.sno = gatepass_subtable.gatepass_refno INNER JOIN tripdata ON gatepass_subtable.refdcno = tripdata.Sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (gatepassdeatails.sno = @GatePassID) AND (products_category.sno <> 9) GROUP BY productsdata.ProductName ORDER BY productsdata.Rank");
@@ -164,10 +167,28 @@ public partial class GatePassReport : System.Web.UI.Page
                 DataRow newrow = Report.NewRow();
                 newrow["Sno"] = i++.ToString();
                 newrow["Product Name"] = dr["ProductName"].ToString();
-                newrow["Qty"] = dr["Qty"].ToString();
+                newrow["LtrQty"] = dr["LtrQty"].ToString();
+                newrow["PktQty"] = dr["PktQty"].ToString();
                 gpno = dr["gatepassno"].ToString();
                 Report.Rows.Add(newrow);
             }
+            DataRow newvartical2 = Report.NewRow();
+            newvartical2["Product Name"] = "Total";
+            double val = 0.0;
+            foreach (DataColumn dc in Report.Columns)
+            {
+                if (dc.DataType == typeof(Double))
+                {
+                    val = 0.0;
+                    double.TryParse(Report.Compute("sum([" + dc.ToString() + "])", "[" + dc.ToString() + "]<>'0'").ToString(), out val);
+                    if (val > 0)
+                    {
+                        newvartical2[dc.ToString()] = val;
+                    }
+                }
+            }
+            Report.Rows.Add(newvartical2);
+            
             lblGatePassNo.Text = gpno.ToString();
             DataRow newvartical1 = Report.NewRow();
             newvartical1["Sno"] = "Inventory";
@@ -201,7 +222,7 @@ public partial class GatePassReport : System.Web.UI.Page
                 lblName.Text = nametbl.Rows[0]["Partyname"].ToString();
             }
             DataRow newvartical = Report.NewRow();
-            newvartical["Sno"] = "DC No";
+            newvartical["Sno"] = "Ref No / Dc No";
             newvartical["Product Name"] = "";
             Report.Rows.Add(newvartical);
             int k = 1;
@@ -270,15 +291,31 @@ public partial class GatePassReport : System.Web.UI.Page
                 {
                     DcNo = "PNR" + DcNo;
                 }
-                newrow["Qty"] = dr["Sno"].ToString() + " / " + DcNo;
+                newrow["Product Name"] = dr["Sno"].ToString() + " / " + DcNo;
                 Report.Rows.Add(newrow);
             }
+            
+
+
             grdReports.DataSource = Report;
             grdReports.DataBind();
             pnlHide.Visible = true;
         }
-        catch
+        catch(Exception ex)
         {
+
         }
+    }
+    private string GetSpace(string p)
+    {
+        int i = 0;
+        for (; i < p.Length; i++)
+        {
+            if (char.IsNumber(p[i]))
+            {
+                break;
+            }
+        }
+        return p.Substring(0, i) + " " + p.Substring(i, p.Length - i);
     }
 }
