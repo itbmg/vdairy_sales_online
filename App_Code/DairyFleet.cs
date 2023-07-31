@@ -15212,7 +15212,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     EInvoice obj = new EInvoice();
                                     if (dr["Units"].ToString() == "Nos")
                                     {
-                                        double.TryParse(dr["Qty"].ToString(), out pkt_qty);
+                                        double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
                                         double.TryParse(dr["Qty"].ToString(), out ltrqty);
                                         pkt_qty = pkt_qty;
                                         ltrqty = ltrqty;
@@ -15396,7 +15396,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             EInvoice obj = new EInvoice();
                                             if (dr["Units"].ToString() == "Nos")
                                             {
-                                                double.TryParse(dr["Qty"].ToString(), out pkt_qty);
+                                                double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
                                                 double.TryParse(dr["Qty"].ToString(), out ltrqty);
                                                 pkt_qty = pkt_qty;
                                                 ltrqty = ltrqty;
