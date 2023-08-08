@@ -160,22 +160,22 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                     }
                     if (ddlSalesOffice.SelectedItem.Text == "Cash Sale")
                     {
-                        cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct,ProductInfo.hsncode,ProductInfo.igst,ProductInfo.cgst,ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname,ProductInfo.categoryid, ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'LOCAL') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname,categoryid, ProductName, Sno, Qty, tproduct,Prodsno,hsncode,igst,sgst,cgst FROM  (SELECT products_category.Categoryname,products_category.sno as categoryid, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.tproduct,productsdata.sno as Prodsno FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
+                        cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct,ProductInfo.hsncode,ProductInfo.igst,ProductInfo.cgst,ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname,ProductInfo.categoryid, ProductInfo.Qty,ProductInfo.pkt_qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'LOCAL') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname,categoryid, ProductName, Sno, Qty,pkt_qty, tproduct,Prodsno,hsncode,igst,sgst,cgst FROM  (SELECT products_category.Categoryname,products_category.sno as categoryid, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty,tripsubdata.pkt_qty,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.tproduct,productsdata.sno as Prodsno FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
                     }
                     else if (ddlSalesOffice.SelectedItem.Text == "Staff Sale")
                     {
-                        cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct,ProductInfo.hsncode,ProductInfo.igst,ProductInfo.cgst,ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname,ProductInfo.categoryid, ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'Staff') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname,categoryid, ProductName, Sno, Qty, tproduct,Prodsno,hsncode,igst,sgst,cgst FROM  (SELECT products_category.Categoryname,products_category.sno as categoryid, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.tproduct,productsdata.sno as Prodsno FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
+                        cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct,ProductInfo.hsncode,ProductInfo.igst,ProductInfo.cgst,ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname,ProductInfo.categoryid, ProductInfo.Qty,ProductInfo.pkt_qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'Staff') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname,categoryid, ProductName, Sno, Qty,pkt_qty, tproduct,Prodsno,hsncode,igst,sgst,cgst FROM  (SELECT products_category.Categoryname,products_category.sno as categoryid, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty,tripsubdata.pkt_qty,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.tproduct,productsdata.sno as Prodsno FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
                     }
                     else if (ddlSalesOffice.SelectedItem.Text == "Free Sale")
                     {
-                        cmd = new MySqlCommand("SELECT  TripInfo.Sno, TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct, ProductInfo.hsncode, ProductInfo.igst, ProductInfo.cgst, ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname,ProductInfo.categoryid, ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'Free') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname,categoryid, ProductName, Sno, Qty, tproduct, Prodsno, hsncode, igst, sgst, cgst FROM (SELECT products_category.Categoryname, products_category.sno as categoryid,productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty, productsdata.hsncode, productsdata.igst,productsdata.cgst, productsdata.sgst, productsdata.tproduct, productsdata.sno AS Prodsno FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
+                        cmd = new MySqlCommand("SELECT  TripInfo.Sno, TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct, ProductInfo.hsncode, ProductInfo.igst, ProductInfo.cgst, ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname,ProductInfo.categoryid, ProductInfo.Qty, ProductInfo.pkt_qty,TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'Free') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname,categoryid, ProductName, Sno, Qty, pkt_qty,tproduct, Prodsno, hsncode, igst, sgst, cgst FROM (SELECT products_category.Categoryname, products_category.sno as categoryid,productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty,tripsubdata.pkt_qty, productsdata.hsncode, productsdata.igst,productsdata.cgst, productsdata.sgst, productsdata.tproduct, productsdata.sno AS Prodsno FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
                     }
                     cmd.Parameters.AddWithValue("@branch", Session["branch"]);
                     cmd.Parameters.AddWithValue("@SOID", Session["branch"]);
                     cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate).AddDays(-1));
                     cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate).AddDays(-1));
                     DataTable dtble = vdm.SelectQuery(cmd).Tables[0];
-                    cmd = new MySqlCommand("SELECT branchproducts.branch_sno, branchproducts.product_sno, branchproducts.unitprice, branchproducts.VatPercent, products_category.tcategory FROM branchproducts INNER JOIN productsdata ON branchproducts.product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (branchproducts.branch_sno = @BranchID)");
+                    cmd = new MySqlCommand("SELECT branchproducts.branch_sno, branchproducts.product_sno,productsdata.Qty, branchproducts.unitprice, branchproducts.VatPercent, products_category.tcategory FROM branchproducts INNER JOIN productsdata ON branchproducts.product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (branchproducts.branch_sno = @BranchID)");
                     if (ddlSalesOffice.SelectedItem.Text == "Cash Sale" || ddlSalesOffice.SelectedItem.Text == "Free Sale" || ddlSalesOffice.SelectedItem.Text == "Others")
                     {
                         cmd.Parameters.AddWithValue("@BranchID", Session["branch"]);
@@ -264,6 +264,8 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                             newrow["Qty"] = branch["qty"].ToString();
                             double UnitCost = 0;
                             double Unitprice = 0;
+                            double pkt_qty = 0;
+                            double uomqty = 0;
                             string tcategory = "";
                             double igst = 0;
                             double.TryParse(branch["igst"].ToString(), out igst);
@@ -273,8 +275,10 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                             double.TryParse(branch["sgst"].ToString(), out sgst);
                             foreach (DataRow dr in dtprodcts.Select("product_sno='" + branch["Prodsno"].ToString() + "'"))
                             {
+                               
                                 double.TryParse(dr["unitprice"].ToString(), out UnitCost);
-                                if (igst == null || igst == 0.0)
+                                double.TryParse(dr["Qty"].ToString(), out uomqty);
+                                if (igst == null || igst == 0.0)    
                                 {
                                     tcategory = dr["tcategory"].ToString();
                                 }
@@ -292,12 +296,17 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                                 }
                             }
                             newrow["Ledger Type"] = tcategory.ToString();
-                            Unitprice = UnitCost;
                             double percent = 0;
                             double.TryParse(branch["igst"].ToString(), out igst);
                             double invval = 0;
                             double qty = 0;
                             double.TryParse(branch["qty"].ToString(), out qty);
+                            double.TryParse(branch["pkt_qty"].ToString(), out pkt_qty);
+                            EInvoice obj = new EInvoice();
+
+                            double ltr_rate = obj.Converting_Ltr_rate(pkt_qty.ToString(), uomqty.ToString(), UnitCost.ToString());
+                            UnitCost = ltr_rate;
+
                             double taxval = 0;
                             double netvalue = 0;
                             netvalue = invval + taxval;
@@ -427,6 +436,8 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                                     newrow["Item Name"] = branch["tproduct"].ToString();
                                     newrow["Qty"] = branch["qty"].ToString();
                                     double UnitCost = 0;
+                                    double pkt_qty = 0;
+                                    double uomqty = 0;
                                     double Unitprice = 0;
                                     string tcategory = "";
                                     double igst = 0;
@@ -438,6 +449,7 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                                     foreach (DataRow dr in dtprodcts.Select("product_sno='" + branch["Prodsno"].ToString() + "'"))
                                     {
                                         double.TryParse(dr["unitprice"].ToString(), out UnitCost);
+                                        double.TryParse(dr["Qty"].ToString(), out uomqty);
                                         if (igst == null || igst == 0.0)
                                         {
                                             tcategory = dr["tcategory"].ToString();
@@ -462,6 +474,11 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                                     double invval = 0;
                                     double qty = 0;
                                     double.TryParse(branch["qty"].ToString(), out qty);
+                                    double.TryParse(branch["pkt_qty"].ToString(), out pkt_qty);
+                                    EInvoice obj = new EInvoice();
+
+                                    double ltr_rate = obj.Converting_Ltr_rate(pkt_qty.ToString(), uomqty.ToString(), UnitCost.ToString());
+                                    UnitCost = ltr_rate;
                                     double taxval = 0;
                                     double netvalue = 0;
                                     netvalue = invval + taxval;
@@ -550,15 +567,15 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                     }
                     if (ddlSalesOffice.SelectedItem.Text == "Cash Sale")
                     {
-                        cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct,ProductInfo.hsncode,ProductInfo.igst,ProductInfo.cgst,ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname, ProductInfo.categoryid,ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'LOCAL') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, categoryid,ProductName, Sno, Qty, tproduct,Prodsno,hsncode,igst,sgst,cgst FROM  (SELECT products_category.Categoryname, productsdata.ProductName,products_category.sno as categoryid, tripdata_1.Sno, tripsubdata.Qty,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.tproduct,productsdata.sno as Prodsno FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
+                        cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct,ProductInfo.hsncode,ProductInfo.igst,ProductInfo.cgst,ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname, ProductInfo.categoryid,ProductInfo.Qty,ProductInfo.pkt_qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'LOCAL') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, categoryid,ProductName, Sno, Qty, pkt_qty,tproduct,Prodsno,hsncode,igst,sgst,cgst FROM  (SELECT products_category.Categoryname, productsdata.ProductName,products_category.sno as categoryid, tripdata_1.Sno, tripsubdata.Qty,tripsubdata.pkt_qty,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.tproduct,productsdata.sno as Prodsno FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
                     }
                     else if (ddlSalesOffice.SelectedItem.Text == "Staff Sale")
                     {
-                        cmd = new MySqlCommand("SELECT TripInfo.Sno,TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct,ProductInfo.hsncode,ProductInfo.igst,ProductInfo.cgst,ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname, ProductInfo.categoryid,ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'Staff') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, categoryid,ProductName, Sno, Qty, tproduct,Prodsno,hsncode,igst,sgst,cgst FROM  (SELECT products_category.Categoryname, productsdata.ProductName,products_category.sno as categoryid, tripdata_1.Sno, tripsubdata.Qty,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.tproduct,productsdata.sno as Prodsno FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
+                        cmd = new MySqlCommand("SELECT TripInfo.Sno,TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct,ProductInfo.hsncode,ProductInfo.igst,ProductInfo.cgst,ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname, ProductInfo.categoryid,ProductInfo.Qty,ProductInfo.pkt_qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'Staff') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, categoryid,ProductName, Sno, Qty, pkt_qty,tproduct,Prodsno,hsncode,igst,sgst,cgst FROM  (SELECT products_category.Categoryname, productsdata.ProductName,products_category.sno as categoryid, tripdata_1.Sno, tripsubdata.Qty,tripsubdata.pkt_qty,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst, productsdata.tproduct,productsdata.sno as Prodsno FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
                     }
                     else if (ddlSalesOffice.SelectedItem.Text == "Free Sale")
                     {
-                        cmd = new MySqlCommand("SELECT  TripInfo.Sno,TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct, ProductInfo.hsncode, ProductInfo.igst, ProductInfo.cgst, ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname,ProductInfo.categoryid, ProductInfo.Qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'Free') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname,categoryid, ProductName, Sno, Qty, tproduct, Prodsno, hsncode, igst, sgst, cgst FROM (SELECT products_category.Categoryname,products_category.sno as categoryid, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty, productsdata.hsncode, productsdata.igst,productsdata.cgst, productsdata.sgst, productsdata.tproduct, productsdata.sno AS Prodsno FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
+                        cmd = new MySqlCommand("SELECT  TripInfo.Sno,TripInfo.DCNo,TripInfo.taxdcno, ProductInfo.tproduct, ProductInfo.hsncode, ProductInfo.igst, ProductInfo.cgst, ProductInfo.sgst, ProductInfo.Prodsno, ProductInfo.Categoryname,ProductInfo.categoryid, ProductInfo.Qty,ProductInfo.pkt_qty, TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo,tripdata.taxdcno, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE (dispatch.DispMode = 'Free') AND (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname,categoryid, ProductName, Sno, Qty,pkt_qty, tproduct, Prodsno, hsncode, igst, sgst, cgst FROM (SELECT products_category.Categoryname,products_category.sno as categoryid, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty,tripsubdata.pkt_qty, productsdata.hsncode, productsdata.igst,productsdata.cgst, productsdata.sgst, productsdata.tproduct, productsdata.sno AS Prodsno FROM  tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno");
                     }
                     //else
                     //{
@@ -569,7 +586,7 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                     cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate).AddDays(-1));
                     cmd.Parameters.AddWithValue("@d2", GetHighDate(fromdate).AddDays(-1));
                     DataTable dtble = vdm.SelectQuery(cmd).Tables[0];
-                    cmd = new MySqlCommand("SELECT branchproducts.branch_sno, branchproducts.product_sno, branchproducts.unitprice, branchproducts.VatPercent, products_category.tcategory FROM branchproducts INNER JOIN productsdata ON branchproducts.product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (branchproducts.branch_sno = @BranchID)");
+                    cmd = new MySqlCommand("SELECT branchproducts.branch_sno, branchproducts.product_sno, productsdata.Qty,branchproducts.unitprice, branchproducts.VatPercent, products_category.tcategory FROM branchproducts INNER JOIN productsdata ON branchproducts.product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (branchproducts.branch_sno = @BranchID)");
                     if (ddlSalesOffice.SelectedItem.Text == "Cash Sale" || ddlSalesOffice.SelectedItem.Text == "Free Sale" || ddlSalesOffice.SelectedItem.Text == "Others")
                     {
                         cmd.Parameters.AddWithValue("@BranchID", Session["branch"]);
@@ -669,6 +686,8 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                                     newrow["Qty"] = branch["qty"].ToString();
                                     double UnitCost = 0;
                                     double Unitprice = 0;
+                                    double pkt_qty = 0;
+                                    double uomqty = 0;
                                     string tcategory = "";
                                     double igst = 0;
                                     double.TryParse(branch["igst"].ToString(), out igst);
@@ -679,6 +698,7 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                                     foreach (DataRow dr in dtprodcts.Select("product_sno='" + branch["Prodsno"].ToString() + "'"))
                                     {
                                         double.TryParse(dr["unitprice"].ToString(), out UnitCost);
+                                        double.TryParse(dr["Qty"].ToString(), out uomqty);
                                         if (igst == null || igst == 0.0)
                                         {
                                             tcategory = dr["tcategory"].ToString();
@@ -696,12 +716,16 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                                             }
                                         }
                                         newrow["Ledger Type"] = tcategory.ToString();
-                                        Unitprice = UnitCost;
                                         double percent = 0;
                                         double.TryParse(branch["igst"].ToString(), out igst);
                                         double invval = 0;
                                         double qty = 0;
                                         double.TryParse(branch["qty"].ToString(), out qty);
+                                        double.TryParse(branch["pkt_qty"].ToString(), out pkt_qty);
+                                        EInvoice obj = new EInvoice();
+
+                                        double ltr_rate = obj.Converting_Ltr_rate(pkt_qty.ToString(), uomqty.ToString(), UnitCost.ToString());
+                                        UnitCost = ltr_rate;
                                         double taxval = 0;
                                         double netvalue = 0;
                                         netvalue = invval + taxval;
@@ -827,6 +851,8 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                                 newrow["Item Name"] = branch["tproduct"].ToString();
                                 newrow["Qty"] = branch["qty"].ToString();
                                 double UnitCost = 0;
+                                double pkt_qty = 0;
+                                double uomqty = 0;
                                 double Unitprice = 0;
                                 string tcategory = "";
                                 double igst = 0;
@@ -838,6 +864,7 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                                 foreach (DataRow dr in dtprodcts.Select("product_sno='" + branch["Prodsno"].ToString() + "'"))
                                 {
                                     double.TryParse(dr["unitprice"].ToString(), out UnitCost);
+                                        double.TryParse(dr["Qty"].ToString(), out uomqty);
                                     if (igst == null || igst == 0.0)
                                     {
                                         tcategory = dr["tcategory"].ToString();
@@ -855,12 +882,16 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                                         }
                                     }
                                     newrow["Ledger Type"] = tcategory.ToString();
-                                    Unitprice = UnitCost;
                                     double percent = 0;
                                     double.TryParse(branch["igst"].ToString(), out igst);
+                                    
                                     double invval = 0;
                                     double qty = 0;
                                     double.TryParse(branch["qty"].ToString(), out qty);
+                                    double.TryParse(branch["pkt_qty"].ToString(), out pkt_qty);
+                                    EInvoice obj = new EInvoice();
+                                    double ltr_rate = obj.Converting_Ltr_rate(pkt_qty.ToString(), uomqty.ToString(), UnitCost.ToString());
+                                    UnitCost = ltr_rate;
                                     double taxval = 0;
                                     double netvalue = 0;
                                     netvalue = invval + taxval;
@@ -1167,8 +1198,9 @@ public partial class TallyCash_staffsales : System.Web.UI.Page
                 Session["xportdata"] = Report;
             }
         }
-        catch
+        catch(Exception ex)
         {
+
         }
     }
 }
