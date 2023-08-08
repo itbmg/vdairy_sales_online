@@ -314,7 +314,7 @@ public partial class CashBook : System.Web.UI.Page
             }
             else if (BranchID == "7")
             {
-                cmd = new MySqlCommand("SELECT branchdata.BranchName, cashreceipts.AmountPaid,cashreceipts.PaymentStatus, cashreceipts.Receipt AS ReceiptNo FROM branchdata INNER JOIN cashreceipts ON branchdata.sno = cashreceipts.AgentID WHERE (branchdata.SalesType <> 21) AND (branchdata.SalesType <> 21) AND (cashreceipts.DOE BETWEEN @d1 AND @d2) AND (cashreceipts.BranchId = @BranchID)  order by ReceiptNo");
+                cmd = new MySqlCommand("SELECT branchdata.BranchName, cashreceipts.AmountPaid,cashreceipts.PaymentStatus, cashreceipts.Receipt AS ReceiptNo FROM branchdata INNER JOIN cashreceipts ON branchdata.sno = cashreceipts.AgentID WHERE (branchdata.SalesType <> 21) AND (branchdata.SalesType <> 21) AND (cashreceipts.DOE BETWEEN @d1 AND @d2) AND (cashreceipts.BranchId = @BranchID) and (cashreceipts.PaymentStatus = 'Cash')  order by ReceiptNo");
             }
             else
             {

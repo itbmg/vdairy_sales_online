@@ -73,6 +73,15 @@
                                 <td style="width: 5px;">
                                 </td>
                                 <td>
+                                 <asp:DropDownList ID="ddlType" runat="server" CssClass="form-control" >
+                                            <asp:ListItem>CashReceipts</asp:ListItem>
+                                            <asp:ListItem>JournelImport</asp:ListItem>
+                                            <asp:ListItem>BankReceipts</asp:ListItem>
+                                            </asp:DropDownList>
+                                            </td>
+                                <td style="width: 5px;">
+                            </td>
+                                <td>
                                     <asp:TextBox ID="txtFromdate" runat="server" Width="205px" CssClass="form-control"></asp:TextBox>
                                     <asp:CalendarExtender ID="enddate_CalendarExtender" runat="server" Enabled="True"
                                         TargetControlID="txtFromdate" Format="dd-MM-yyyy HH:mm">

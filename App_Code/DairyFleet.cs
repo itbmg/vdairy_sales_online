@@ -35004,14 +35004,14 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         UnitCost = Math.Round(UnitCost, 2);
 
                         cmd.Parameters.AddWithValue("@UnitCost", perltrCost);
-                        cmd.Parameters.AddWithValue("@unitQty", o.Qty);
+                        cmd.Parameters.AddWithValue("@unitQty", "0");
                         cmd.Parameters.AddWithValue("@DeliveryQty", o.Qty);
                         cmd.Parameters.AddWithValue("@Status", "Delivered");
                         cmd.Parameters.AddWithValue("@OTripId", TripSno);
                         cmd.Parameters.AddWithValue("@DtripID", TripSno);
                         cmd.Parameters.AddWithValue("@D_date", ServerDateCurrentdate.AddDays(1));
                         cmd.Parameters.AddWithValue("@tubqty", o.tubQty);
-                        cmd.Parameters.AddWithValue("@pktqty", pktqty);
+                        cmd.Parameters.AddWithValue("@pktqty", "0");
                         cmd.Parameters.AddWithValue("@pkt_dqty", pktqty);
                         cmd.Parameters.AddWithValue("@pkt_rate", pkt_rate);
                         if (DeliveryQty != 0.0)
