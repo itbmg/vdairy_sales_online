@@ -15646,7 +15646,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             string tostate = "";
             if (DcType == "NonTax")
             {
-                cmd = new MySqlCommand("SELECT branchdata.city,branchdata.branchcode, branchdata.statename, branchdata.gstno, tripdata.BranchID, tripdata.AssignDate, tripdata.Sno, tripdata.DCNo,tripdata.taxdcno,tripdata.DispTime, tripdata.VehicleNo, dispatch.DispType, dispatch.BranchID AS Agentid, dispatch.DispMode, dispatch.DispName AS DispatchName, dispatch.sno AS dispsno, empmanage_1.EmpName AS Employee, empmanage.EmpName AS dispather, branchdata.stateid, statemastar.statename AS BranchState, statemastar.gststatecode FROM branchdata INNER JOIN empmanage empmanage_1 ON branchdata.sno = empmanage_1.Branch INNER JOIN statemastar ON branchdata.stateid = statemastar.sno RIGHT OUTER JOIN tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno LEFT OUTER JOIN empmanage ON tripdata.DEmpId = empmanage.Sno ON empmanage_1.Sno = tripdata.EmpId WHERE (tripdata.Sno = @tripsno)");
+                cmd = new MySqlCommand("SELECT branchdata.city,branchdata.branchcode, branchdata.statename, branchdata.gstno, tripdata.BranchID, tripdata.AssignDate, tripdata.Sno, tripdata.DCNo,tripdata.taxdcno,tripdata.DispTime, tripdata.VehicleNo, dispatch.DispType, dispatch.BranchID AS Agentid, dispatch.DispMode, dispatch.DispName AS DispatchName,dispatch.supplyPlace,dispatch.supplyStateId,dispatch.supplyStateName, dispatch.sno AS dispsno, empmanage_1.EmpName AS Employee, empmanage.EmpName AS dispather, branchdata.stateid, statemastar.statename AS BranchState, statemastar.gststatecode FROM branchdata INNER JOIN empmanage empmanage_1 ON branchdata.sno = empmanage_1.Branch INNER JOIN statemastar ON branchdata.stateid = statemastar.sno RIGHT OUTER JOIN tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno LEFT OUTER JOIN empmanage ON tripdata.DEmpId = empmanage.Sno ON empmanage_1.Sno = tripdata.EmpId WHERE (tripdata.Sno = @tripsno)");
                 cmd.Parameters.AddWithValue("@tripsno", refdcno);
                 DataTable dtdetails = vdbmngr.SelectQuery(cmd).Tables[0];
                 List<DcmainDetails> DcDetailslist = new List<DcmainDetails>();
@@ -15697,6 +15697,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 GetDetails.tostatename = dtagentaddress.Rows[0]["BranchState"].ToString();
                                 GetDetails.tostatecode = dtagentaddress.Rows[0]["gststatecode"].ToString();
                             }
+
                         }
 
                         DispType = dr["DispType"].ToString();
@@ -15746,7 +15747,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 string branchID = dr["BranchID"].ToString(); ;
                                 if (branchID == "1" || dr["DispType"].ToString() == "SM")
                                 {
-                                    GetDetails.dctype = "Bill of Supply";
+                                    GetDetails.dctype = "Route Delivery Challan";
                                     BRANCHCODE = dtbranchaddress.Rows[0]["BranchCode"].ToString() + "/";
                                     DcNo = BRANCHCODE + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DcNo;
                                 }
@@ -15771,6 +15772,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         GetDetails.fromstatecode = context.Session["statecode"].ToString();
                         GetDetails.fromgstin = context.Session["gstin"].ToString();
                         GetDetails.branchname = context.Session["branchname"].ToString();
+
+
                     }
                     GetDetails.DcNo = DcNo;
                     DateTime dtassigndate = Convert.ToDateTime(assigndate);
@@ -15806,6 +15809,15 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     string address = dtbranchaddress.Rows[0]["doorno"].ToString() + "," + dtbranchaddress.Rows[0]["street"].ToString() + "," + dtbranchaddress.Rows[0]["area"].ToString() + "," + dtbranchaddress.Rows[0]["mandal"].ToString() + "," + dtbranchaddress.Rows[0]["city"].ToString() + "," + dtbranchaddress.Rows[0]["district"].ToString() + " District -" + dtbranchaddress.Rows[0]["pincode"].ToString();
                     GetDetails.Address = address;
                 }
+                if (dtdetails.Rows[0]["dispType"].ToString() == "SM")
+                {
+                    GetDetails.tostatename = dtdetails.Rows[0]["supplyStateId"].ToString();
+                    GetDetails.tostatecode = dtdetails.Rows[0]["supplyStateName"].ToString();
+                    GetDetails.city = dtdetails.Rows[0]["supplyPlace"].ToString();
+                    GetDetails.AgentAddress = dtdetails.Rows[0]["supplyPlace"].ToString();
+                    GetDetails.togstin = "";
+                    GetDetails.dispType = dtdetails.Rows[0]["dispType"].ToString();
+                }
                 GetDetails.Title = context.Session["TitleName"].ToString();
                 GetDetails.tinNo = context.Session["TinNo"].ToString();
                 DcDetailslist.Add(GetDetails);
@@ -15814,7 +15826,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             }
             else
             {
-                cmd = new MySqlCommand("SELECT branchdata.city,branchdata.branchcode, branchdata.statename, branchdata.gstno, tripdata.BranchID, tripdata.AssignDate, tripdata.Sno, tripdata.taxdcno AS DCNo, tripdata.DispTime, tripdata.VehicleNo, dispatch.DispType, dispatch.BranchID AS Agentid, dispatch.DispMode, dispatch.DispName AS DispatchName, dispatch.sno AS dispsno, empmanage_1.EmpName AS Employee, empmanage.EmpName AS dispather, branchdata.stateid, statemastar.statename AS BranchState, statemastar.gststatecode FROM branchdata INNER JOIN empmanage empmanage_1 ON branchdata.sno = empmanage_1.Branch INNER JOIN statemastar ON branchdata.stateid = statemastar.sno RIGHT OUTER JOIN tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno LEFT OUTER JOIN empmanage ON tripdata.DEmpId = empmanage.Sno ON empmanage_1.Sno = tripdata.EmpId WHERE (tripdata.Sno = @tripsno)");
+                cmd = new MySqlCommand("SELECT branchdata.city,branchdata.branchcode, branchdata.statename, branchdata.gstno, tripdata.BranchID, tripdata.AssignDate, tripdata.Sno, tripdata.taxdcno AS DCNo, tripdata.DispTime, tripdata.VehicleNo, dispatch.DispType, dispatch.BranchID AS Agentid, dispatch.DispMode, dispatch.DispName AS DispatchName,dispatch.supplyPlace,dispatch.supplyStateId,dispatch.supplyStateName, dispatch.sno AS dispsno, empmanage_1.EmpName AS Employee, empmanage.EmpName AS dispather, branchdata.stateid, statemastar.statename AS BranchState, statemastar.gststatecode FROM branchdata INNER JOIN empmanage empmanage_1 ON branchdata.sno = empmanage_1.Branch INNER JOIN statemastar ON branchdata.stateid = statemastar.sno RIGHT OUTER JOIN tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno LEFT OUTER JOIN empmanage ON tripdata.DEmpId = empmanage.Sno ON empmanage_1.Sno = tripdata.EmpId WHERE (tripdata.Sno = @tripsno)");
                 cmd.Parameters.AddWithValue("@tripsno", refdcno);
                 DataTable dtdetails = vdbmngr.SelectQuery(cmd).Tables[0];
                 List<DcmainDetails> DcDetailslist = new List<DcmainDetails>();
@@ -15913,7 +15925,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 string branchID = dr["BranchID"].ToString(); ;
                                 if (branchID == "1" || dr["DispType"].ToString() == "SM")
                                 {
-                                    GetDetails.dctype = "Tax Invoice";
+                                    GetDetails.dctype = "Route Delivery Challan";
                                     BRANCHCODE = dtbranchaddress.Rows[0]["BranchCode"].ToString() + "/"; ;
                                     DcNo = BRANCHCODE + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DcNo;
                                 }
@@ -15973,6 +15985,15 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     string address = dtbranchaddress.Rows[0]["doorno"].ToString() + "," + dtbranchaddress.Rows[0]["street"].ToString() + "," + dtbranchaddress.Rows[0]["area"].ToString() + "," + dtbranchaddress.Rows[0]["mandal"].ToString() + "," + dtbranchaddress.Rows[0]["city"].ToString() + "," + dtbranchaddress.Rows[0]["district"].ToString() + " District -" + dtbranchaddress.Rows[0]["pincode"].ToString();
                     GetDetails.Address = address;//dtagentaddress.Rows[0]["Address"].ToString();
                 }
+                if (dtdetails.Rows[0]["dispType"].ToString() == "SM")
+                {
+                    GetDetails.tostatename = dtdetails.Rows[0]["supplyStateId"].ToString();
+                    GetDetails.tostatecode = dtdetails.Rows[0]["supplyStateName"].ToString();
+                    GetDetails.city = dtdetails.Rows[0]["supplyPlace"].ToString();
+                    GetDetails.AgentAddress = dtdetails.Rows[0]["supplyPlace"].ToString();
+                    GetDetails.togstin = "";
+                    GetDetails.dispType = dtdetails.Rows[0]["dispType"].ToString();
+                }
                 GetDetails.Title = context.Session["TitleName"].ToString();
                 GetDetails.tinNo = context.Session["TinNo"].ToString();
                 DcDetailslist.Add(GetDetails);
@@ -16015,6 +16036,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string companyphone { get; set; }
         public string companyemail { get; set; }
         public string tollfree { get; set; }
+        public string dispType { get; set; }
     }
 
     public class DcDetails
@@ -24173,7 +24195,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             string response = GetJson(Productslist);
             context.Response.Write(response);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
         }
     }
@@ -32470,7 +32492,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             List<Dispatchplan> DispatchplanList = new List<Dispatchplan>();
             string Branchname = context.Session["BranchName"].ToString();
             string bid = context.Session["branch"].ToString();
-            cmd = new MySqlCommand("select sno,DispName from dispatch where Branch_Id=@branchid and flag<>0 order by sno");
+            cmd = new MySqlCommand("select sno,DispName from dispatch where Branch_Id=@branchid and flag =1 order by DispName");
             cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
             DataTable dtDispatches = vdbmngr.SelectQuery(cmd).Tables[0];
             dtTotalDispatches.Columns.Add("sno");

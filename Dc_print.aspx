@@ -172,6 +172,8 @@
                 document.getElementById('lbl_companymobno').innerHTML = msg[0].companyphone;
                 document.getElementById('lbl_companyemail').innerHTML = msg[0].companyemail;
                 document.getElementById('lblsignname').innerHTML = msg[0].Title;
+                document.getElementById('lblInvoice').innerHTML = "Invoice No.:";
+                
                 if (msg[0].dispmode == "LOCAL" || msg[0].dispmode == "Staff" || msg[0].dispmode == "Free") {
                     document.getElementById('lblpartyname').innerHTML = msg[0].partyname;
                 }
@@ -184,7 +186,14 @@
                         document.getElementById('lblvendoremail').innerHTML = msg[0].email;
                     }
                     else {
-                        document.getElementById('lblpartyname').innerHTML = msg[0].Title + "-" + msg[0].partyname;
+                        if (msg[0].dispType == "SM") {
+                            document.getElementById('lblpartyname').innerHTML = msg[0].partyname;
+                            document.getElementById('lblInvoice').innerHTML = "DC No.:";
+                        }
+                        else
+                        {
+                            document.getElementById('lblpartyname').innerHTML = msg[0].Title + "-" + msg[0].partyname;
+                        }
                         document.getElementById('span_toGSTIN').innerHTML = msg[0].togstin;
                         document.getElementById('lblvendorphoneno').innerHTML = msg[0].phoneno;
                         document.getElementById('spn_toaddress').innerHTML = msg[0].AgentAddress;
@@ -525,8 +534,8 @@
                                                 <br />
                                             </td>
                                             <td style="width: 39%; border: 2px solid gray; padding-left: 2%;">
-                                                <label style="font-size: 12px; font-weight: bold !important;">
-                                                    Invoice No. :</label>
+                                                <label id="lblInvoice" style="font-size: 12px; font-weight: bold !important;">
+                                                   </label>
                                                 <span id="lbldcno" style="font-size: 11px;"></span>
                                                 <br />
                                                 <label style="font-size: 12px; font-weight: bold !important;">
