@@ -28061,7 +28061,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             string Username = context.Session["userdata_sno"].ToString();
             List<Route> brnch = new List<Route>();
             List<Dispatchplan> DispatchplanList = new List<Dispatchplan>();
-            cmd = new MySqlCommand("select sno,DispName from dispatch where Branch_Id=@branchid and flag<>0 order by sno");
+            cmd = new MySqlCommand("select sno,DispName from dispatch where Branch_Id=@branchid and flag =1 order by DispName");
             cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
             DataTable dtDispatches = vdbmngr.SelectQuery(cmd).Tables[0];
             dtTotalDispatches.Columns.Add("sno");
@@ -28590,7 +28590,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             {
                 BranchID = context.Request["ddlSalesOffice"];
             }
-            cmd = new MySqlCommand("select sno,DispName from dispatch where Branch_Id=@branchid and flag=@flag order by sno");
+            cmd = new MySqlCommand("select sno,DispName from dispatch where Branch_Id=@branchid and flag =1 order by DispName");
             cmd.Parameters.AddWithValue("@branchid", BranchID);
             cmd.Parameters.AddWithValue("@flag", "1");
             DataTable dtDispatches = vdbmngr.SelectQuery(cmd).Tables[0];
@@ -28843,7 +28843,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             {
                 BranchID = context.Session["branch"].ToString();
             }
-            cmd = new MySqlCommand("select sno,DispName from dispatch where Branch_Id=@branchid and flag=@flag order by sno");
+            cmd = new MySqlCommand("select sno,DispName from dispatch where Branch_Id=@branchid and flag =1 order by DispName");
             cmd.Parameters.AddWithValue("@branchid", BranchID);
             cmd.Parameters.AddWithValue("@flag", "1");
             DataTable dtDispatches = vdbmngr.SelectQuery(cmd).Tables[0];
