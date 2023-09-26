@@ -15753,15 +15753,26 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 }
                                 else
                                 {
-                                    GetDetails.dctype = "STOCK TRANSFER";
-                                    BRANCHCODE = dtbranchaddress.Rows[0]["BranchCode"].ToString() + "/";
-                                    DcNo = BRANCHCODE + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "S/" + DcNo;
+                                    string Branch_ID = dr["Agentid"].ToString();
+                                    if(Branch_ID == "3")
+                                    {
+                                        GetDetails.dctype = "Route Delivery Challan";
+                                        BRANCHCODE = dtbranchaddress.Rows[0]["BranchCode"].ToString() + "/";
+                                        DcNo = BRANCHCODE + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "S/" + DcNo;
+                                    }
+                                    else
+                                    {
+                                        GetDetails.dctype = "STOCK TRANSFER";
+                                        BRANCHCODE = dtbranchaddress.Rows[0]["BranchCode"].ToString() + "/";
+                                        DcNo = BRANCHCODE + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "S/" + DcNo;
+                                    }
+                                    
                                 }
                             }
                         }
                         else
                         {
-                            GetDetails.dctype = "STOCK TRANSFER";
+                            GetDetails.dctype = "Bill of Supply";
                             BRANCHCODE = dtbranchaddress.Rows[0]["BranchCode"].ToString() + "/";
                             DcNo = BRANCHCODE + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "N/" + DcNo;
                         }
@@ -15931,15 +15942,25 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 }
                                 else
                                 {
-                                    GetDetails.dctype = "STOCK TRANSFER";
-                                    BRANCHCODE = dtbranchaddress.Rows[0]["BranchCode"].ToString() + "/"; ;
-                                    DcNo = BRANCHCODE + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "S/" + DcNo;
+                                    string Branch_ID = dr["Agentid"].ToString();
+                                    if (Branch_ID == "3")
+                                    {
+                                        GetDetails.dctype = "Route Delivery Challan";
+                                        BRANCHCODE = dtbranchaddress.Rows[0]["BranchCode"].ToString() + "/";
+                                        DcNo = BRANCHCODE + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "S/" + DcNo;
+                                    }
+                                    else
+                                    {
+                                        GetDetails.dctype = "STOCK TRANSFER";
+                                        BRANCHCODE = dtbranchaddress.Rows[0]["BranchCode"].ToString() + "/"; ;
+                                        DcNo = BRANCHCODE + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "S/" + DcNo;
+                                    }
                                 }
                             }
                         }
                         else
                         {
-                            GetDetails.dctype = "STOCK TRANSFER";
+                            GetDetails.dctype = "Tax Invoice";
                             BRANCHCODE = dtbranchaddress.Rows[0]["BranchCode"].ToString() + "/";
                             DcNo = BRANCHCODE + dtapril.ToString("yy") + "-" + dtmarch.ToString("yy") + "T/" + DcNo;
                         }

@@ -1085,11 +1085,11 @@ public partial class TotalDCReport : System.Web.UI.Page
 
                 
 
-                foreach (var column in Report.Columns.Cast<DataColumn>().ToArray())
-                {
-                    if (Report.AsEnumerable().All(dr => dr.IsNull(column)))
-                        Report.Columns.Remove(column);
-                }
+                //foreach (var column in Report.Columns.Cast<DataColumn>().ToArray())
+                //{
+                //    if (Report.AsEnumerable().All(dr => dr.IsNull(column)))
+                //        Report.Columns.Remove(column);
+                //}
                 DataRow newvartical = Report.NewRow();
                 newvartical["Route Name"] = "Total";
                 double val = 0.0;
@@ -1152,6 +1152,11 @@ public partial class TotalDCReport : System.Web.UI.Page
                 pktnewrow["Total Lts"] = total_pkt + totalcurdandBM_pkt;
                 Report.Rows.Add(pktnewrow);
 
+                foreach (var column in Report.Columns.Cast<DataColumn>().ToArray())
+                {
+                    if (Report.AsEnumerable().All(dr => dr.IsNull(column)))
+                        Report.Columns.Remove(column);
+                }
 
                 foreach (DataColumn col in Report.Columns)
                 {
