@@ -1158,13 +1158,14 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         {
             vdbmngr = new VehicleDBMgr();
             var js = new JavaScriptSerializer();
-
+            string empid = context.Session["empid"].ToString();
+            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
             var title1 = context.Request.Params[1];
             Agent_Bal_Trans_Model obj = js.Deserialize<Agent_Bal_Trans_Model>(title1);
             foreach (Agent_Bal_Trans o in obj.filldetails)
             {
                 DateTime dtIndent = Convert.ToDateTime(o.inddate);
-                cmd = new MySqlCommand("UPDATE agent_bal_trans set opp_balance=@opp_balance,salesvalue=@salesvalue,paidamount=@paidamount, clo_balance=@clo_balance  where sno=@sno and agentid=@agentid AND inddate between @d1 and @d2");
+                cmd = new MySqlCommand("UPDATE agent_bal_trans set opp_balance=@opp_balance,salesvalue=@salesvalue,paidamount=@paidamount, clo_balance=@clo_balance,entryby=@entryby,createdate=@createdate  where sno=@sno and agentid=@agentid AND inddate between @d1 and @d2");
                 cmd.Parameters.AddWithValue("@d1", GetLowDate(dtIndent).AddDays(-1));
                 cmd.Parameters.AddWithValue("@d2", GetHighDate(dtIndent).AddDays(-1));
                 cmd.Parameters.AddWithValue("@salesvalue", o.salesvalue);
@@ -1173,6 +1174,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 cmd.Parameters.AddWithValue("@clo_balance", o.clo_balance);
                 cmd.Parameters.AddWithValue("@agentid", o.AgentId);
                 cmd.Parameters.AddWithValue("@sno", o.sno);
+                cmd.Parameters.AddWithValue("@createdate", ServerDateCurrentdate);
+                cmd.Parameters.AddWithValue("@entryby", empid);
                 vdbmngr.Update(cmd);
             }
             string msg = "Agent Balance Successfully Updated";

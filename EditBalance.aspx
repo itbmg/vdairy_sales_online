@@ -190,7 +190,9 @@
                 results += '<td id="spn_PrevOpBal" class="clsPrevOp" style="width:65px;display:none;">' + msg[i].opp_balance + '</td>';
                 //results += '<td><input id="txt_OpBal" data-title="Code" style="width:65px;" onkeyup="CLChange(this);" class="4"  value="' + msg[i].opp_balance + '"/></td>';
                 results += '<td><input  id="txt_SaleValue" class="clsSaleValue" style="width:65px;" value="' + msg[i].salesvalue + '"/></td>';
+                results += '<td id="txt_PrevSaleValue" class="clsPrevSaleValue" style="width:65px;display:none;">' + msg[i].salesvalue + '</td>';
                 results += '<td><input id="txt_PaidAmount" class="clsPaidAmount" style="width:65px;" value="' + msg[i].paidamount + '"/></td>';
+                results += '<td id="txt_PrevPaidAmount" class="clsPrevPaidAmount" style="width:65px;display:none;">' + msg[i].paidamount + '</td>';
                 results += '<td id="txt_PrevCloBal" class="clsPrevCloBal" style="width:65px;display:none;">' + msg[i].clo_balance + '</td>';
                 results += '<td><input  id="txt_CloBal" class="clsCloBal" style="width:65px;" value="' + msg[i].clo_balance + '"/></td>';
                 results += '<td><input  id="txt_Sno" class="8" style="width:65px;display:none;"  value="' + msg[i].sno + '"/></td></tr >';
@@ -206,8 +208,8 @@
         $(document).click(function () {
             increment = 0;
             $('#myTable').on('change', '.clsSaleValue', calTotal_gst)
-                .on('change', '.clsPaidAmount', calTotal_gst);
-                .on('change', '.clsCloBal', calTotal_gst);
+                .on('change', '.clsPaidAmount', calTotal_gst)
+                .on('change', '.clsCloBal', calClosing);
 
         });
 
@@ -239,7 +241,9 @@
 
                 PrevOp_Bal = parseFloat($(this).find('#spn_PrevOpBal').text());
                 SaleValue = parseFloat($(this).find('#txt_SaleValue').val());
+                PrevSaleValue = parseFloat($(this).find('#txt_PrevSaleValue').text());
                 PaidAmount = parseFloat($(this).find('#txt_PaidAmount').val());
+                PrevPaidAmount = parseFloat($(this).find('#txt_PrevPaidAmount').text());
                 if (count == 0) {
                     Clo_Bal = parseFloat($(this).find('#txt_CloBal').val());
                     Op_Bal = parseFloat($(this).find('#spn_OpBal').text());
@@ -250,23 +254,46 @@
                 }
                 PrevClo_Bal = parseFloat($(this).find('#txt_PrevCloBal').text());
                 sno = parseFloat($(this).find('#txt_Sno').val());
-                if (PrevClo_Bal != Clo_Bal) {
-                    if (count == 0) {
-                        Op_Bal = PrevOp_Bal;
-                        Clo_Bal = PrevOp_Bal + SaleValue - PaidAmount;
 
+                if (SaleValue != PrevSaleValue || PaidAmount != PrevPaidAmount) {
+
+                    if (PrevClo_Bal != Clo_Bal) {
+                        if (count == 0) {
+                            Op_Bal = PrevOp_Bal;
+                            Clo_Bal = PrevOp_Bal + SaleValue - PaidAmount;
+                        }
+                        else {
+                            Clo_Bal = Op_Bal + SaleValue - PaidAmount;
+                        }
+
+                        presentClosing = Clo_Bal;
+                        PresentOpening = Clo_Bal;
+                        count++;
                     }
                     else {
                         Clo_Bal = Op_Bal + SaleValue - PaidAmount;
+                        //Op_Bal = Clo_Bal;
                     }
-
-                    presentClosing = Clo_Bal;
-                    PresentOpening = Clo_Bal;
-                    count++;
                 }
                 else {
-                    Clo_Bal = Op_Bal + SaleValue - PaidAmount;
-                    //Op_Bal = Clo_Bal;
+
+                    if (PrevClo_Bal != Clo_Bal) {
+                        if (count == 0) {
+                            Op_Bal = PrevOp_Bal;
+                            Clo_Bal = Clo_Bal;
+                        }
+                        else {
+                            Clo_Bal = Op_Bal + SaleValue - PaidAmount;
+                        }
+
+                        presentClosing = Clo_Bal;
+                        PresentOpening = Clo_Bal;
+                        count++;
+                    }
+                    else {
+                        Clo_Bal = Clo_Bal;
+                        //Op_Bal = Clo_Bal;
+                    }
                 }
                 sno = $(this).find('#txt_Sno').val();
                 DataTable1.push({ 'Op_Bal': Op_Bal, 'AgentName': AgentName, 'AgentId': AgentId, 'SaleValue': SaleValue, 'PaidAmount': PaidAmount, 'Clo_Bal': Clo_Bal, 'sno': sno, 'IndDate': IndDate });//, freigtamt: freigtamt
@@ -281,8 +308,10 @@
                 results += '<td id="spnAgentName" class="clsAgentName">' + DataTable1[i].AgentName + '</td>';
                 results += '<td class="4"><span id="spn_OpBal" class="clsOp">' + parseFloat(DataTable1[i].Op_Bal).toFixed(2) + '</span></td>';
                 results += '<td id="spn_PrevOpBal" class="clsPrevOp" style="width:65px;display:none;">' + parseFloat(DataTable1[i].Op_Bal).toFixed(2) + '</td>';
-                results += '<td><input  id="txt_SaleValue" class="clsSaleValue" style="width:65px;" value="' + DataTable1[i].SaleValue + '"/></td>';
-                results += '<td><input id="txt_PaidAmount" class="clsPaidAmount" style="width:65px;" value="' + DataTable1[i].PaidAmount + '"/></td>';
+                results += '<td><input  id="txt_SaleValue" class="clsSaleValue" style="width:65px;" value="' + parseFloat(DataTable1[i].SaleValue).toFixed(2) + '"/></td>';
+                results += '<td id="txt_PrevSaleValue" class="clsPrevSaleValue" style="width:65px;display:none;">' + parseFloat(DataTable1[i].SaleValue).toFixed(2) + '</td>';
+                results += '<td><input id="txt_PaidAmount" class="clsPaidAmount" style="width:65px;" value="' + parseFloat(DataTable1[i].PaidAmount).toFixed(2) + '"/></td>';
+                results += '<td id="txt_PrevPaidAmount" class="clsPrevPaidAmount" style="width:65px;display:none;">' + parseFloat(DataTable1[i].PaidAmount).toFixed(2) + '</td>';
                 results += '<td><input  id="txt_CloBal" class="clsCloBal" style="width:65px;" value="' + parseFloat(DataTable1[i].Clo_Bal).toFixed(2) + '"/></td>';
                 results += '<td id="txt_PrevCloBal" class="clsPrevCloBal" style="width:65px;display:none;">' + parseFloat(DataTable1[i].Clo_Bal).toFixed(2) + '</td>';
                 results += '<td><input  id="txt_Sno" class="8" style="width:65px;display:none;"  value="' + DataTable1[i].sno + '"/></td>';
@@ -293,20 +322,40 @@
         }
 
         var salevalue = 0; var paidamount = 0; var closingamt = 0;
-        let increment = 0;
+        let increment = 0; var op = 0;
         function calTotal_gst() {
 
             var $row = $(this).closest('tr'),
                 salevalue = parseFloat($row.find('.clsSaleValue').val(),) || 0
             op = parseFloat($row.find('.clsOp').text(),) || 0
-            //closingamt = $row.find('.clsPaidAmount').val(),
+            Prevamt = parseFloat($row.find('.clsPrevCloBal').val(),) || 0
+            Presentamt = parseFloat($row.find('.clsCloBal').val(),) || 0
+
             paidamount = parseFloat($row.find('.clsPaidAmount').val(),) || 0
 
             closingamt = op + salevalue - paidamount;
             $row.find('.clsCloBal').val(parseFloat(closingamt).toFixed(2));
-                insertrow();
+            //if (Presentamt != Prevamt) {
+            //    closingamt = Presentamt;
+            insertrow();
+            //}
         }
+        var salevalue1 = 0; var op = 0; var paidamount1 = 0; var closingamt1 = 0;
+        function calClosing() {
 
+            var $row = $(this).closest('tr'),
+                salevalue1 = parseFloat($row.find('.clsSaleValue').val(),) || 0
+            op1 = parseFloat($row.find('.clsOp').text(),) || 0
+            paidamount1 = parseFloat($row.find('.clsPaidAmount').val(),) || 0
+            var ClosingAmount = parseFloat($row.find('.clsCloBal').val(),) || 0
+
+            closingamt1 = ClosingAmount;
+            $row.find('.clsCloBal').val(parseFloat(closingamt1).toFixed(2));
+            //if (Presentamt != Prevamt) {
+            //    closingamt = Presentamt;
+            insertrow();
+            //}
+        }
         var filldetails = [];
         function btnUpdate_Click() {
             $('#myTable> tbody > tr').each(function () {

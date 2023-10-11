@@ -769,7 +769,7 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                                 <li id="LiCahsbookEdit"><a href="EditCashBook.aspx">CashBook Edit</a></li>
                                                 <li id="liInventoryEdit"><a href="InventoryEdit.aspx">Inventory Edit</a></li>
                                                 <li id="listockclear"><a href="StockEdit.aspx">Stock Clear</a></li>
-                                                <li id="li28"><a href="editduetransactions.aspx">Edit Due Transactions</a></li>
+                                                <li id="li28"><a href="EditBalance.aspx">Edit Balance</a></li>
                                                 <li id="li21"><a href="InventoryUpdate.aspx">Inventory Update</a></li>
                                             </ul>
                                         </div>
