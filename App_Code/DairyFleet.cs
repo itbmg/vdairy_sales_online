@@ -21565,56 +21565,28 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     DateTime dtmonth = Convert.ToDateTime(Date);
                                     string strdate = dtmonth.ToString("dd/MMM");
                                     string message = "";
-                                    if (context.Session["TitleName"].ToString() == "BMG Milk Dairy Farm")
-                                    {
-                                        //string baseurl = "http://103.225.76.43/blank/sms/user/urlsmstemp.php?username=vyshnavidairy&pass=vyshnavi@123&senderid=VYSHRM&dest_mobileno=" + phonenumber + "&message=Dear%20" + BranchName + "%20Your%20Incentive%20Amount%20Credeted%20for%20The%20Month%20Of%20%20" + strdate + "%20Amount%20is =" + PaidAmount + "&response=Y";
-                                        string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Incentive%20Amount%20Credeted%20for%20The%20Month%20Of%20%20" + strdate + "%20Amount%20is =" + PaidAmount + "&type=1";
-                                        message = "" + BranchName + "Your Incentive Amount Credeted for The Month Of" + strdate + "Amount is =" + PaidAmount + "";
-                                        Stream data = client.OpenRead(baseurl);
-                                        StreamReader reader = new StreamReader(data);
-                                        string ResponseID = reader.ReadToEnd();
-                                        data.Close();
-                                        reader.Close();
-                                    }
-                                    else
-                                    {
-                                        string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VFWYRA&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Incentive%20Amount%20Credeted%20for%20The%20Month%20Of%20%20" + strdate + "%20Amount%20is =" + PaidAmount + "&type=1";
-                                        message = "" + BranchName + "Your Incentive Amount Credeted for The Month Of" + strdate + "Amount is =" + PaidAmount + "";
-                                        Stream data = client.OpenRead(baseurl);
-                                        StreamReader reader = new StreamReader(data);
-                                        string ResponseID = reader.ReadToEnd();
-                                        data.Close();
-                                        reader.Close();
-                                    }
+                                    string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VFWYRA&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Incentive%20Amount%20Credeted%20for%20The%20Month%20Of%20%20" + strdate + "%20Amount%20is =" + PaidAmount + "&type=1";
+                                    message = "" + BranchName + "Your Incentive Amount Credeted for The Month Of" + strdate + "Amount is =" + PaidAmount + "";
+                                    Stream data = client.OpenRead(baseurl);
+                                    StreamReader reader = new StreamReader(data);
+                                    string ResponseID = reader.ReadToEnd();
+                                    data.Close();
+                                    reader.Close();
                                 }
                                 else
                                 {
-                                    ///////................Instruction By Raghu Kumar.............................../////////////
                                     try
                                     {
                                         string Date = PaidDate;
-                                        if (context.Session["TitleName"].ToString() == "BMG Milk Dairy Farm")
-                                        {
-                                            WebClient client = new WebClient();
-                                            //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
-                                            string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Amount%20Collected%20for%20today%20ReceiptNo%20%20" + CashReceiptNo + "%20Date%20" + Date + "%20Amount%20is =" + PaidAmount + "&type=1";
-                                            Stream data = client.OpenRead(baseurl);
-                                            StreamReader reader = new StreamReader(data);
-                                            string ResponseID = reader.ReadToEnd();
-                                            data.Close();
-                                            reader.Close();
-                                        }
-                                        else
-                                        {
-                                            WebClient client = new WebClient();
-                                            //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
-                                            string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VFWYRA&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Amount%20Collected%20for%20today%20ReceiptNo%20%20" + CashReceiptNo + "%20Date%20" + Date + "%20Amount%20is =" + PaidAmount + "&type=1";
-                                            Stream data = client.OpenRead(baseurl);
-                                            StreamReader reader = new StreamReader(data);
-                                            string ResponseID = reader.ReadToEnd();
-                                            data.Close();
-                                            reader.Close();
-                                        }
+                                        WebClient client = new WebClient();
+                                       // string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=Vys@2021&from=VYSSAL&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20,%20Your%20indent%20for%20Date%20" + Date + "%20,Milk%20" + ProductNameMD + "%20And%20" + ProductName + "%20,%20Curd%20" + ProductNameCD + "%20And%20" + ProductNameCDAND + "%20,%20Others%20" + ProductNameBD + "%20And%20" + ProductNameBDAND + "%20,%20Total =" + TotalQty + "&type=1&template_id=1407165976493597741";
+
+                                        string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=Vys@2021&from=VYSSAL&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Collected%20Amount%20Rs.%20Amount%20for%20the%20Dt.% 20" + Date + "%20,ReceiptNo%20" + CashReceiptNo + "%20and%20Balance%20is%20Rs.=" + 0 + "&type = 1&template_id=1407165466585735820";
+                                        Stream data = client.OpenRead(baseurl);
+                                        StreamReader reader = new StreamReader(data);
+                                        string ResponseID = reader.ReadToEnd();
+                                        data.Close();
+                                        reader.Close();
                                     }
                                     catch
                                     {
@@ -21710,7 +21682,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     }
                                 }
 
-                            }////end added by akbar 
+                            }
                             else
                             {
 
