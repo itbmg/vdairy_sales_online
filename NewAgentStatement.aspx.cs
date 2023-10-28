@@ -243,9 +243,10 @@ public partial class NewAgentStatement : System.Web.UI.Page
                 Report.Columns.Add("Opp Bal").SetOrdinal(count + 5);
                 Report.Columns.Add("Total Amount").SetOrdinal(count + 6);
                 Report.Columns.Add("Paid Amount", typeof(Double)).SetOrdinal(count + 7);
-                Report.Columns.Add("Phone/Google Pay", typeof(Double)).SetOrdinal(count + 8);
-                Report.Columns.Add("Incentive/JV", typeof(Double)).SetOrdinal(count + 9);
-                Report.Columns.Add("Bal Amount").SetOrdinal(count + 10);
+                Report.Columns.Add("Bank Transfer", typeof(Double)).SetOrdinal(count + 8);
+                Report.Columns.Add("Phone/Google Pay", typeof(Double)).SetOrdinal(count + 9);
+                Report.Columns.Add("Incentive/JV", typeof(Double)).SetOrdinal(count + 10);
+                Report.Columns.Add("Bal Amount").SetOrdinal(count + 11);
                 DataTable distincttable = view.ToTable(true, "IndentDate");
                 int i = 1;
                 double oppcarry = 0;
@@ -330,11 +331,11 @@ public partial class NewAgentStatement : System.Web.UI.Page
                         //    ftotalbankTransfer += banktransfervalue;
                         //    grand_totalbankTransfer += banktransfervalue;
                         //}
-                        if (PaymentType == "Bank Transfer" || PaymentType == "Cheque" || PaymentType == "PhonePay" || PaymentType == "Journal Voucher" || PaymentType == "Incentive")
+                        if (PaymentType == "Bank Transfer" || PaymentType == "Cheque" )
                         {
                             //double banktransfervalue = 0;
                             double.TryParse(drcollections["AmountPaid"].ToString(), out banktransfervalue);
-                            //newrow["Bank Transfer"] = banktransfervalue;
+                            newrow["Bank Transfer"] = banktransfervalue;
                             ftotalbankTransfer += banktransfervalue;
                             grand_totalbankTransfer += banktransfervalue;
                         }

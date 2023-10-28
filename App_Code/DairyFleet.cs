@@ -19882,6 +19882,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             string soid = context.Request["soid"];
             string DenominationString = context.Request["DenominationString"];
             string faaccuntno = context.Request["faaccuntno"];
+            //string CashReceiptNo = "0";
+            //string BranchName = "";
+            //string phonenumber = "";
             DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
             DateTime dtchequedate = new DateTime();
             DateTime paydate = new DateTime();
@@ -21256,7 +21259,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 #region
                 if (collectiontype == "SalesOfficeCollection" || collectiontype == "Journal Voucher")
                 {
-
+                    string CashReceiptNo = "0";
+                    string phonenumber = "";
+                    string BranchName = "";
                     double PaidAmount = 0;
                     double.TryParse(Amount.ToString(), out PaidAmount);
                     currentyear = ServerDateCurrentdate.Year;
@@ -21302,7 +21307,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 amount = dtbrnchoppamt.Rows[0]["Amount"].ToString();
                             }
                             //string remarks = "Agent Collection";
-                            string CashReceiptNo = "0";
+                            CashReceiptNo = "0";
                             if (paymenttype == "Cash" || paymenttype == "PhonePay")
                             {
                                 cmd = new MySqlCommand("Select IFNULL(MAX(Receipt),0)+1 as Sno  from cashreceipts where BranchID=@BranchID AND (DOE BETWEEN @d1 AND @d2)");
@@ -21499,8 +21504,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             cmd = new MySqlCommand("select BranchName,phonenumber from BranchData where Sno=@sno");
                             cmd.Parameters.AddWithValue("@sno", BranchID);
                             DataTable dtBranchName = vdbmngr.SelectQuery(cmd).Tables[0];
-                            string BranchName = dtBranchName.Rows[0]["BranchName"].ToString();
-                            string phonenumber = dtBranchName.Rows[0]["phonenumber"].ToString();
+                            BranchName = dtBranchName.Rows[0]["BranchName"].ToString();
+                            //phonenumber = "7013732814";
+                            phonenumber = dtBranchName.Rows[0]["phonenumber"].ToString();
                             if (paymenttype == "Cheque" || paymenttype == "Bank Transfer")
                             {
                                 if (paymenttype == "Cheque")
@@ -21556,43 +21562,43 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     vdbmngr.insert(cmd);
                                 }
                             }
-                            if (phonenumber.Length == 10)
-                            {
-                                if (paymenttype == "Incentive" || paymenttype == "Journal Voucher")
-                                {
-                                    string Date = PaidDate;
-                                    WebClient client = new WebClient();
-                                    DateTime dtmonth = Convert.ToDateTime(Date);
-                                    string strdate = dtmonth.ToString("dd/MMM");
-                                    string message = "";
-                                    string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VFWYRA&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Incentive%20Amount%20Credeted%20for%20The%20Month%20Of%20%20" + strdate + "%20Amount%20is =" + PaidAmount + "&type=1";
-                                    message = "" + BranchName + "Your Incentive Amount Credeted for The Month Of" + strdate + "Amount is =" + PaidAmount + "";
-                                    Stream data = client.OpenRead(baseurl);
-                                    StreamReader reader = new StreamReader(data);
-                                    string ResponseID = reader.ReadToEnd();
-                                    data.Close();
-                                    reader.Close();
-                                }
-                                else
-                                {
-                                    try
-                                    {
-                                        string Date = PaidDate;
-                                        WebClient client = new WebClient();
-                                       // string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=Vys@2021&from=VYSSAL&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20,%20Your%20indent%20for%20Date%20" + Date + "%20,Milk%20" + ProductNameMD + "%20And%20" + ProductName + "%20,%20Curd%20" + ProductNameCD + "%20And%20" + ProductNameCDAND + "%20,%20Others%20" + ProductNameBD + "%20And%20" + ProductNameBDAND + "%20,%20Total =" + TotalQty + "&type=1&template_id=1407165976493597741";
+                            //if (phonenumber.Length == 10)
+                            //{
+                            //    if (paymenttype == "Incentive" || paymenttype == "Journal Voucher")
+                            //    {
+                            //        string Date = PaidDate;
+                            //        WebClient client = new WebClient();
+                            //        DateTime dtmonth = Convert.ToDateTime(Date);
+                            //        string strdate = dtmonth.ToString("dd/MMM");
+                            //        string message = "";
+                            //        string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VFWYRA&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Incentive%20Amount%20Credeted%20for%20The%20Month%20Of%20%20" + strdate + "%20Amount%20is =" + PaidAmount + "&type=1";
+                            //        message = "" + BranchName + "Your Incentive Amount Credeted for The Month Of" + strdate + "Amount is =" + PaidAmount + "";
+                            //        Stream data = client.OpenRead(baseurl);
+                            //        StreamReader reader = new StreamReader(data);
+                            //        string ResponseID = reader.ReadToEnd();
+                            //        data.Close();
+                            //        reader.Close();
+                            //    }
+                            //    else
+                            //    {
+                            //        try
+                            //        {
+                            //            string Date = PaidDate;
+                            //            WebClient client = new WebClient();
+                            //            // string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=Vys@2021&from=VYSSAL&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20,%20Your%20indent%20for%20Date%20" + Date + "%20,Milk%20" + ProductNameMD + "%20And%20" + ProductName + "%20,%20Curd%20" + ProductNameCD + "%20And%20" + ProductNameCDAND + "%20,%20Others%20" + ProductNameBD + "%20And%20" + ProductNameBDAND + "%20,%20Total =" + TotalQty + "&type=1&template_id=1407165976493597741";
 
-                                        string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=Vys@2021&from=VYSSAL&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Collected%20Amount%20Rs.%20Amount%20for%20the%20Dt.% 20" + Date + "%20,ReceiptNo%20" + CashReceiptNo + "%20and%20Balance%20is%20Rs.=" + 0 + "&type = 1&template_id=1407165466585735820";
-                                        Stream data = client.OpenRead(baseurl);
-                                        StreamReader reader = new StreamReader(data);
-                                        string ResponseID = reader.ReadToEnd();
-                                        data.Close();
-                                        reader.Close();
-                                    }
-                                    catch
-                                    {
-                                    }
-                                }
-                            }
+                            //            string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=Vys@2021&from=VYSSAL&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Collected%20Amount%20Rs.%20Amount%20for%20the%20Dt.% 20" + Date + "%20,ReceiptNo%20" + CashReceiptNo + "%20and%20Balance%20is%20Rs.=" + 0 + "&type = 1&template_id=1407165466585735820";
+                            //            Stream data = client.OpenRead(baseurl);
+                            //            StreamReader reader = new StreamReader(data);
+                            //            string ResponseID = reader.ReadToEnd();
+                            //            data.Close();
+                            //            reader.Close();
+                            //        }
+                            //        catch
+                            //        {
+                            //        }
+                            //    }
+                            //}
                         }
                     }
                     if (paymenttype == "Cash" || paymenttype == "Bank Transfer" || paymenttype == "PhonePay" || paymenttype == "Journal Voucher")
@@ -21766,6 +21772,55 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     cmd.Parameters.AddWithValue("@createdate", ServerDateCurrentdate);
                                     cmd.Parameters.AddWithValue("@entryby", context.Session["UserSno"].ToString());
                                     vdbmngr.insert(cmd);
+                                }
+                            }
+                        }
+                    }
+                    if (Branch == "7")
+                    {
+                        if (phonenumber.Length == 10)
+                        {
+                            cmd = new MySqlCommand("SELECT  * from agent_bal_trans where agentid=@BranchID  ORDER BY sno DESC Limit 1");
+                            cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                            DataTable dtTotalAmount = vdbmngr.SelectQuery(cmd).Tables[0];
+                            string bal_amt = "0";
+                            if (dtTotalAmount.Rows.Count > 0)
+                            {
+                                bal_amt = dtTotalAmount.Rows[0]["clo_balance"].ToString();
+                            }
+
+                            if (paymenttype == "Incentive" || paymenttype == "Journal Voucher")
+                            {
+                                string Date = PaidDate;
+                                WebClient client = new WebClient();
+                                DateTime dtmonth = Convert.ToDateTime(Date);
+                                string strdate = dtmonth.ToString("dd/MMM");
+                                string message = "";
+                                string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=Vys@2021&from=VYSSAL&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Incentive%20Amount%20Credeted%20for%20The%20Month%20Of%20%20" + strdate + "%20Amount%20is =" + PaidAmount + "&type = 1&template_id=1407165466585735820";
+                                message = "" + BranchName + "Your Incentive Amount Credeted for The Month Of" + strdate + "Amount is =" + PaidAmount + "";
+                                Stream data = client.OpenRead(baseurl);
+                                StreamReader reader = new StreamReader(data);
+                                string ResponseID = reader.ReadToEnd();
+                                data.Close();
+                                reader.Close();
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    string Date = PaidDate;
+                                    WebClient client = new WebClient();
+                                    // string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=Vys@2021&from=VYSSAL&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20,%20Your%20indent%20for%20Date%20" + Date + "%20,Milk%20" + ProductNameMD + "%20And%20" + ProductName + "%20,%20Curd%20" + ProductNameCD + "%20And%20" + ProductNameCDAND + "%20,%20Others%20" + ProductNameBD + "%20And%20" + ProductNameBDAND + "%20,%20Total =" + TotalQty + "&type=1&template_id=1407165976493597741";
+
+                                    string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=Vys@2021&from=VYSSAL&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20Your%20Collected%20Amount%20Rs." + PaidAmount + "%20for%20the%20Dt." + Date + "%20,ReceiptNo%20" + CashReceiptNo + "%20and%20Balance%20is%20Rs.=" + bal_amt + "&type = 1&template_id=1407165466585735820";
+                                    Stream data = client.OpenRead(baseurl);
+                                    StreamReader reader = new StreamReader(data);
+                                    string ResponseID = reader.ReadToEnd();
+                                    data.Close();
+                                    reader.Close();
+                                }
+                                catch
+                                {
                                 }
                             }
                         }
@@ -27626,17 +27681,28 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     IndentNo = dtYesdayIndent.Rows[0]["IndentNo"].ToString();
                 }
             }
-            cmd = new MySqlCommand("SELECT branchaccounts.Amount, branchdata.CollectionType FROM  branchaccounts INNER JOIN branchdata ON branchaccounts.BranchId = branchdata.sno WHERE (branchaccounts.BranchId = @BranchID)");
+            DateTime Selecteddate = Convert.ToDateTime(DOE);
+            DataTable dtTotalAmount = new DataTable();
+            cmd = new MySqlCommand("select * from agent_bal_trans where agentid=@BranchID and inddate between @d1 and @d2 and clo_balance <>'0'");
             cmd.Parameters.AddWithValue("@BranchID", BranchID);
-            DataTable dtTotalAmount = vdbmngr.SelectQuery(cmd).Tables[0];
+            cmd.Parameters.AddWithValue("@d1", GetLowDate(Selecteddate).AddDays(-1));
+            cmd.Parameters.AddWithValue("@d2", GetHighDate(Selecteddate).AddDays(-1));
+            dtTotalAmount = vdbmngr.SelectQuery(cmd).Tables[0];
+            DataRow[] dtarr = dtTotalAmount.Select("agentid=" + BranchID + "");
+            if (dtarr.Length == 0)
+            {
+                cmd = new MySqlCommand("SELECT TOP 1 * from agent_bal_trans where agentid=@BranchID  ORDER BY sno DESC Limit 1");
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                dtTotalAmount = vdbmngr.SelectQuery(cmd).Tables[0];
+            }
             List<AmontClass> msgAmountlist = new List<AmontClass>();
             if (dtTotalAmount.Rows.Count > 0)
             {
                 AmontClass getAmount = new AmontClass();
                 getAmount.IndentNo = IndentNo;
                 getAmount.TodayAmount = Total;
-                getAmount.CollectionType = dtTotalAmount.Rows[0]["CollectionType"].ToString();
-                getAmount.TotalAmount = dtTotalAmount.Rows[0]["Amount"].ToString();
+                // getAmount.CollectionType = dtTotalAmount.Rows[0]["CollectionType"].ToString();
+                getAmount.TotalAmount = dtTotalAmount.Rows[0]["clo_balance"].ToString();
                 msgAmountlist.Add(getAmount);
                 string response = GetJson(msgAmountlist);
                 context.Response.Write(response);
@@ -32916,7 +32982,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     int.TryParse(context.Session["branch"].ToString(), out Sno);
                     dtProducts = vdbmngr.SelectQuery(cmd).Tables[0];
 
-                    cmd = new MySqlCommand("SELECT branchroutes.RouteName, ROUND(SUM(offer_indents_sub.offer_indent_qty), 2) AS TotalofferQty, offer_indents.IndentType, productsdata.sno, productsdata.ProductName, productsdata.ifdflag FROM branchroutes INNER JOIN  branchroutesubtable ON branchroutes.Sno = branchroutesubtable.RefNo INNER JOIN  branchdata ON branchroutesubtable.BranchID = branchdata.sno INNER JOIN offer_indents ON branchdata.sno = offer_indents.agent_id INNER JOIN offer_indents_sub ON offer_indents.idoffer_indents = offer_indents_sub.idoffer_indents INNER JOIN productsdata ON offer_indents_sub.product_id = productsdata.sno WHERE  (branchroutes.Sno = '" + routeid + "') AND (offer_indents.IndentType = @iitype) AND (offer_indents.indent_date BETWEEN @d11 AND @d22) GROUP BY productsdata.ProductName");
+                    cmd = new MySqlCommand("SELECT branchroutes.RouteName, ROUND(SUM(offer_indents_sub.offer_indent_qty), 2) AS TotalofferQty, offer_indents.IndentType, productsdata.sno,productsdata.Qty as uom, productsdata.ProductName, productsdata.ifdflag FROM branchroutes INNER JOIN  branchroutesubtable ON branchroutes.Sno = branchroutesubtable.RefNo INNER JOIN  branchdata ON branchroutesubtable.BranchID = branchdata.sno INNER JOIN offer_indents ON branchdata.sno = offer_indents.agent_id INNER JOIN offer_indents_sub ON offer_indents.idoffer_indents = offer_indents_sub.idoffer_indents INNER JOIN productsdata ON offer_indents_sub.product_id = productsdata.sno WHERE  (branchroutes.Sno = '" + routeid + "') AND (offer_indents.IndentType = @iitype) AND (offer_indents.indent_date BETWEEN @d11 AND @d22) GROUP BY productsdata.ProductName");
                     cmd.Parameters.AddWithValue("@d11", GetLowDate(Currentdate));
                     cmd.Parameters.AddWithValue("@d22", GetHighDate(Currentdate));
                     cmd.Parameters.AddWithValue("@iitype", routeitype);
@@ -32929,11 +32995,15 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             if (drprdt["sno"].ToString() == drprdtcpy["sno"].ToString())
                             {
                                 double TotalofferQty = 0;
+                                double offerqty = 0;
+                                double offerLtrqty = 0;
                                 foreach (DataRow dro in dtofferProducts.Select("sno='" + drprdt["sno"].ToString() + "'"))
                                 {
-                                    double offerqty = 0;
+                                    double uom = 0;
+                                    double.TryParse(dro["uom"].ToString(), out uom);
                                     double.TryParse(dro["TotalofferQty"].ToString(), out offerqty);
                                     TotalofferQty += offerqty;
+                                    offerLtrqty = offerqty * uom / 1000;
                                 }
                                 float qty = 0;
                                 float.TryParse(drprdt["TotalQty"].ToString(), out qty);
@@ -32964,8 +33034,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 float totaltubqty = tubqty + tubqtycpy;
 
                                 drprdtcpy["TubQty"] = totaltubqty;
-                                drprdtcpy["PktQty"] = totalPktqty;
-                                drprdtcpy["TotalQty"] = totalqty + TotalofferQty;
+                                drprdtcpy["PktQty"] = totalPktqty + TotalofferQty;
+                                drprdtcpy["TotalQty"] = totalqty + offerLtrqty;
                             }
                             else
                             {
