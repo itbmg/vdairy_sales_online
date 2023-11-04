@@ -236,7 +236,7 @@
         }
         function GetProducts(msg) {
             $('#divFillScreen').removeTemplate();
-            $('#divFillScreen').setTemplateURL('TripRoutes6.htm');
+            $('#divFillScreen').setTemplateURL('TripRoutes7.htm');
             $('#divFillScreen').processTemplate(msg);
             
             getTripValuesCalculation();
@@ -304,7 +304,7 @@
                     tot_qty = parseFloat(hdn_editqty) + parseFloat(txtProductQty);
                     if (tot_qty > 0) {
                         var Product = 0;
-                        Orderdetails.push({ ProductSno: $(this).find('#hdnProductSno').val(), Product: Product, Qty: $(this).find('#txtProductQty').val(), tub_qty: $(this).find('#txtTubQty').val(), pkt_qty: $(this).find('#txtQtypkts').val() });
+                        Orderdetails.push({ ProductSno: $(this).find('#hdnProductSno').val(), Product: Product, Qty: $(this).find('#txtProductQty').val(), tub_qty: $(this).find('#txtTubQty').val(), pkt_qty: $(this).find('#txtQtypkts').val(), OfferPkt_qty: $(this).find('#hdnOfferQtyPkts').val() });
                     }
                 }
             });
@@ -334,7 +334,7 @@
                     }
                     if (msg == "Data Successfully Saved") {
                         $('#divFillScreen').removeTemplate();
-                        $('#divFillScreen').setTemplateURL('TripRoutes6.htm');
+                        $('#divFillScreen').setTemplateURL('TripRoutes7.htm');
                         $('#divFillScreen').processTemplate(datatab);
                         $('#divInventory').removeTemplate();
                         $('#divInventory').setTemplateURL('TripInventory.htm');
@@ -344,7 +344,7 @@
                     }
                     if (msg == "Data Successfully Updated") {
                         $('#divFillScreen').removeTemplate();
-                        $('#divFillScreen').setTemplateURL('TripRoutes6.htm');
+                        $('#divFillScreen').setTemplateURL('TripRoutes7.htm');
                         $('#divFillScreen').processTemplate(datatab);
                         $('#divInventory').removeTemplate();
                         $('#divInventory').setTemplateURL('TripInventory.htm');

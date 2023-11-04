@@ -14739,11 +14739,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             }
             if (DispType == "Free")
             {
-                cmd = new MySqlCommand("SELECT tripsubdata.ProductId, productsdata.Itemcode,productsdata.SubCat_sno as subcatid, productsdata.hsncode, productsdata.igst, productsdata.cgst, productsdata.sgst, productsdata.Units,productsdata.qty as uomqty, productsdata.ProductName, productsdata.VatPercent,  tripsubdata.Price, ROUND(tripsubdata.Qty, 2) AS Qty,ROUND(tripsubdata.pkt_qty, 2) AS pkt_qty, tripdata.AssignDate, tripdata.BranchID FROM tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno WHERE (tripdata.Sno = @tripdataId) GROUP BY productsdata.ProductName");
+                cmd = new MySqlCommand("SELECT tripsubdata.ProductId, productsdata.Itemcode,productsdata.SubCat_sno as subcatid, productsdata.hsncode, productsdata.igst, productsdata.cgst, productsdata.sgst, productsdata.Units,productsdata.qty as uomqty, productsdata.ProductName, productsdata.VatPercent,  tripsubdata.Price, ROUND(tripsubdata.Qty, 2) AS Qty,ROUND(tripsubdata.pkt_qty, 2) AS pkt_qty,,ROUND(tripsubdata.offerqty, 2) AS Offerqty, tripdata.AssignDate, tripdata.BranchID FROM tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno WHERE (tripdata.Sno = @tripdataId) GROUP BY productsdata.ProductName");
             }
             else
             {
-                cmd = new MySqlCommand("SELECT tripsubdata.ProductId,productsdata.itemcode,productsdata.SubCat_sno as subcatid,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName, productsdata.VatPercent, branchproducts.VatPercent AS vp, tripsubdata.Price, ROUND(tripsubdata.Qty, 2) AS Qty,ROUND(tripsubdata.pkt_qty, 2) AS pkt_qty,tripdata.AssignDate, tripdata.BranchID, branchproducts_1.VatPercent AS plantvp FROM tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno INNER JOIN branchproducts branchproducts_1 ON tripdata.BranchID = branchproducts_1.branch_sno AND branchproducts.product_sno = branchproducts_1.product_sno WHERE (tripdata.Sno = @tripdataId) AND (branchproducts.branch_sno = @BranchID) GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
+                cmd = new MySqlCommand("SELECT tripsubdata.ProductId,productsdata.itemcode,productsdata.SubCat_sno as subcatid,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName, productsdata.VatPercent, branchproducts.VatPercent AS vp, tripsubdata.Price, ROUND(tripsubdata.Qty, 2) AS Qty,ROUND(tripsubdata.offerqty, 2) AS Offerqty,ROUND(tripsubdata.pkt_qty, 2) AS pkt_qty,tripdata.AssignDate, tripdata.BranchID, branchproducts_1.VatPercent AS plantvp FROM tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno INNER JOIN branchproducts branchproducts_1 ON tripdata.BranchID = branchproducts_1.branch_sno AND branchproducts.product_sno = branchproducts_1.product_sno WHERE (tripdata.Sno = @tripdataId) AND (branchproducts.branch_sno = @BranchID) GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
             }
             cmd.Parameters.AddWithValue("@BranchID", branchsno);
             cmd.Parameters.AddWithValue("@tripdataId", TripId);
@@ -14765,7 +14765,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             dtTotQty.Columns.Add("HSN Code");
             dtTotQty.Columns.Add("Uom");
             dtTotQty.Columns.Add("Uomqty");
-            dtTotQty.Columns.Add("Qty(tubs)");
+            dtTotQty.Columns.Add("Qty(tubs)"); 
             dtTotQty.Columns.Add("Qty").DataType = typeof(Double);
             dtTotQty.Columns.Add("pkt_qty").DataType = typeof(Double);
             dtTotQty.Columns.Add("Rate");
@@ -14778,6 +14778,20 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             dtTotQty.Columns.Add("IGST");
             dtTotQty.Columns.Add("IGSTamount");
             dtTotQty.Columns.Add("totalamount");
+
+            //offer Details
+
+            dtTotQty.Columns.Add("Offerpkt_qty").DataType = typeof(Double);
+            dtTotQty.Columns.Add("OfferRate");
+            
+            dtTotQty.Columns.Add("OfferTaxable Value").DataType = typeof(Double);
+            dtTotQty.Columns.Add("OfferSGST");
+            dtTotQty.Columns.Add("OfferSGSTamount");
+            dtTotQty.Columns.Add("OfferCGST");
+            dtTotQty.Columns.Add("OfferCGSTamount");
+            dtTotQty.Columns.Add("OfferIGST");
+            dtTotQty.Columns.Add("OfferIGSTamount");
+            dtTotQty.Columns.Add("Offertotalamount");
             int i = 1;
             double TotalMilk = 0;
             if (DcType == "Tax")
@@ -14868,11 +14882,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                                 rate = Price;
                                             }
                                             double ltrqty = 0;
-                                            double ltr_rate = 0; double pkt_qty = 0; double pkt_rate = 0;
+                                            double ltr_rate = 0; double pkt_qty = 0; double Offerpkt_qty = 0; double pkt_rate = 0;
                                             EInvoice obj = new EInvoice();
                                             if (dr["Units"].ToString() == "Nos")
                                             {
                                                 double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
+                                                double.TryParse(dr["Offerqty"].ToString(), out Offerpkt_qty);
                                                 double.TryParse(dr["Qty"].ToString(), out ltrqty);
                                                 pkt_qty = pkt_qty;
                                                 ltrqty = ltrqty;
@@ -14889,9 +14904,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
                                                 //pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
                                                 double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
+                                                double.TryParse(dr["Offerqty"].ToString(), out Offerpkt_qty);
+                                                
                                                 double.TryParse(dr["Qty"].ToString(), out ltrqty);
                                                 pkt_qty = pkt_qty;
                                                 ltrqty = ltrqty;
+
                                                 //ltr_rate = rate;
                                                 pkt_rate = rate;
                                             }
@@ -14904,9 +14922,13 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             //perltrCost = Math.Round(perltrCost, 2);
                                             //rate = perltrCost;
                                             newrow["pkt_qty"] = pkt_qty;
+                                            newrow["Offerpkt_qty"] = Offerpkt_qty;
                                             newrow["Discount"] = 0;
                                             double PAmount = 0;
                                             double tot_vatamount = 0;
+                                            //Offer Details
+                                            double OfferPAmount = 0;
+                                            double Offertot_vatamount = 0;
                                             if (fromstate == tostate)
                                             {
                                                 if (DispMode == "Staff" || DispMode == "AGENT" || DispMode == "Others" || DispMode == "Free" || DispMode == "LOCAL")
@@ -14925,6 +14947,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                                     Vatrate = Math.Round(Vatrate, 2);
                                                     newrow["Rate"] = Vatrate.ToString();
                                                     PAmount = pkt_qty * Vatrate;
+                                                   
                                                     //PAmount = qty * Vatrate;
                                                     newrow["Taxable Value"] = Math.Round(PAmount, 2);
                                                     tot_vatamount = (PAmount * Igst) / 100;
@@ -14938,6 +14961,40 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                                     newrow["cgstamount"] = cgstamount.ToString();
                                                     newrow["Igst"] = 0;
                                                     newrow["Igstamount"] = 0;
+
+
+                                                    //Offer Calculation
+                                                    
+                                                    double Offersgstamount = 0;
+                                                    double Offercgstamount = 0;
+                                                    double OfferIgst = 0;
+                                                    double OfferIgstamount = 0;
+                                                    double OffertotRate = 0;
+                                                    
+                                                    double.TryParse(dr["Igst"].ToString(), out OfferIgst);
+                                                    double OfferIgstcon = 100 + OfferIgst;
+                                                    OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
+                                                    OfferIgstamount = Math.Round(OfferIgstamount, 2);
+                                                    OffertotRate = OfferIgstamount;
+                                                    double OfferVatrate = rate - OffertotRate;
+                                                    OfferVatrate = Math.Round(OfferVatrate, 2);
+                                                    newrow["OfferRate"] = OfferVatrate.ToString();
+                                                    OfferPAmount = Offerpkt_qty * OfferVatrate;
+
+                                                    
+                                                    newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
+                                                    Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
+                                                    Offersgstamount = (Offertot_vatamount / 2);
+                                                    Offersgstamount = Math.Round(Offersgstamount, 2);
+                                                    newrow["Offersgst"] = dr["sgst"].ToString();
+                                                    newrow["Offersgstamount"] = Offersgstamount.ToString();
+                                                    Offercgstamount = (Offertot_vatamount / 2);
+                                                    Offercgstamount = Math.Round(Offercgstamount, 2);
+                                                    newrow["Offercgst"] = dr["cgst"].ToString();
+                                                    newrow["Offercgstamount"] = Offercgstamount.ToString();
+                                                    newrow["OfferIgst"] = 0;
+                                                    newrow["OfferIgstamount"] = 0;
+
                                                 }
                                                 else
                                                 {
@@ -14968,6 +15025,36 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                                     newrow["cgstamount"] = cgstamount.ToString();
                                                     newrow["Igst"] = 0;
                                                     newrow["Igstamount"] = 0;
+
+
+                                                    //offer details
+                                                    double Offersgstamount = 0;
+                                                    double Offercgstamount = 0;
+                                                    double OfferIgst = 0;
+                                                    double OfferIgstamount = 0;
+                                                    double OffertotRate = 0;
+                                                    double.TryParse(dr["Igst"].ToString(), out OfferIgst);
+                                                    double OfferIgstcon = 100 + OfferIgst;
+                                                    OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
+                                                    OfferIgstamount = Math.Round(OfferIgstamount, 2);
+                                                    OffertotRate = OfferIgstamount;
+                                                    double OfferVatrate = rate - OffertotRate;
+                                                    OfferVatrate = Math.Round(OfferVatrate, 2);
+                                                    newrow["OfferRate"] = OfferVatrate.ToString();
+                                                    
+                                                    OfferPAmount = Offerpkt_qty * OfferVatrate;
+                                                    newrow["Taxable Value"] = Math.Round(OfferPAmount, 2);
+                                                    Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
+                                                    Offersgstamount = (Offertot_vatamount / 2);
+                                                    Offersgstamount = Math.Round(Offersgstamount, 2);
+                                                    newrow["Offersgst"] = dr["sgst"].ToString();
+                                                    newrow["Offersgstamount"] = Offersgstamount.ToString();
+                                                    Offercgstamount = (Offertot_vatamount / 2);
+                                                    Offercgstamount = Math.Round(Offercgstamount, 2);
+                                                    newrow["Offercgst"] = dr["cgst"].ToString();
+                                                    newrow["Offercgstamount"] = Offercgstamount.ToString();
+                                                    newrow["OfferIgst"] = 0;
+                                                    newrow["OfferIgstamount"] = 0;
                                                 }
                                             }
                                             else
@@ -14994,10 +15081,43 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                                 newrow["Igst"] = dr["Igst"].ToString();
                                                 tot_vatamount = Math.Round(tot_vatamount, 2);
                                                 newrow["Igstamount"] = tot_vatamount.ToString();
+
+
+
+                                                //Offer Details
+
+                                                double OfferIgst = 0;
+                                                double OfferIgstamount = 0;
+                                                double OffertotRate = 0;
+                                                double.TryParse(dr["Igst"].ToString(), out OfferIgst);
+                                                double OfferIgstcon = 100 + OfferIgst;
+                                                OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
+                                                OfferIgstamount = Math.Round(OfferIgstamount, 2);
+                                                OffertotRate = OfferIgstamount;
+                                                double OfferVatrate = rate - OffertotRate;
+                                                OfferVatrate = Math.Round(OfferVatrate, 2);
+                                                newrow["OfferRate"] = OfferVatrate.ToString();
+                                              
+                                                OfferPAmount = Offerpkt_qty * OfferVatrate;
+                                                newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
+                                                Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
+                                                newrow["Offersgst"] = 0;
+                                                newrow["Offersgstamount"] = 0;
+                                                newrow["Offercgst"] = 0;
+                                                newrow["Offercgstamount"] = 0;
+                                                newrow["OfferIgst"] = dr["Igst"].ToString();
+                                                Offertot_vatamount = Math.Round(Offertot_vatamount, 2);
+                                                newrow["Igstamount"] = Offertot_vatamount.ToString();
                                             }
                                             double tot_amount = PAmount + tot_vatamount;
                                             tot_amount = Math.Round(tot_amount, 2);
                                             newrow["totalamount"] = tot_amount;
+
+                                            //offer details
+                                            double Offertot_amount = OfferPAmount + Offertot_vatamount;
+                                            Offertot_amount = Math.Round(Offertot_amount, 2);
+                                            newrow["Offertotalamount"] = Offertot_amount;
+
                                             dtTotQty.Rows.Add(newrow);
                                         }
                                     }
@@ -15062,11 +15182,13 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         //added by akbar ltrcost
 
                                         double ltrqty = 0, ltr_rate = 0, pkt_qty = 0, pkt_rate = 0;
+                                        double Offerpkt_qty = 0;
                                         EInvoice obj = new EInvoice();
                                         if (dr["Units"].ToString() == "Nos")
                                         {
                                             double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
                                             double.TryParse(dr["Qty"].ToString(), out ltrqty);
+                                            double.TryParse(dr["offerqty"].ToString(), out Offerpkt_qty);
                                             pkt_qty = pkt_qty;
                                             ltrqty = ltrqty;
                                             ltr_rate = rate;
@@ -15083,6 +15205,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             //pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
                                             double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
                                             double.TryParse(dr["Qty"].ToString(), out ltrqty);
+                                            double.TryParse(dr["offerqty"].ToString(), out Offerpkt_qty);
                                             pkt_qty = pkt_qty;
                                             ltrqty = ltrqty;
                                             //ltr_rate = rate;
@@ -15098,9 +15221,14 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         //perltrCost = Math.Round(perltrCost, 2);
                                         //rate = perltrCost;
                                         newrow["pkt_qty"] = pkt_qty;
+                                        newrow["Offerpkt_qty"] = Offerpkt_qty;
                                         newrow["Discount"] = 0;
                                         double PAmount = 0;
                                         double tot_vatamount = 0;
+
+                                        //offer variable
+                                        double OfferPAmount = 0;
+                                        double Offertot_vatamount = 0;
                                         if (fromstate == tostate)
                                         {
                                             if (DispMode == "Staff" || DispMode == "AGENT" || DispMode == "Others" || DispMode == "Free" || DispMode == "LOCAL")
@@ -15132,6 +15260,36 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                                 newrow["cgstamount"] = cgstamount.ToString();
                                                 newrow["Igst"] = 0;
                                                 newrow["Igstamount"] = 0;
+
+
+                                                //Offer Details
+                                                double Offersgstamount = 0;
+                                                double Offercgstamount = 0;
+                                                double OfferIgst = 0;
+                                                double OfferIgstamount = 0;
+                                                double OffertotRate = 0;
+                                                double.TryParse(dr["Igst"].ToString(), out OfferIgst);
+                                                double OfferIgstcon = 100 + OfferIgst;
+                                                OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
+                                                OfferIgstamount = Math.Round(OfferIgstamount, 2);
+                                                OffertotRate = OfferIgstamount;
+                                                double OfferVatrate = rate - OffertotRate;
+                                                OfferVatrate = Math.Round(OfferVatrate, 2);
+                                                newrow["OfferRate"] = OfferVatrate.ToString();
+                                               
+                                                OfferPAmount = Offerpkt_qty * OfferVatrate;
+                                                newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
+                                                Offertot_vatamount = (OfferPAmount * Igst) / 100;
+                                                Offersgstamount = (Offertot_vatamount / 2);
+                                                Offersgstamount = Math.Round(Offersgstamount, 2);
+                                                newrow["Offersgst"] = dr["sgst"].ToString();
+                                                newrow["Offersgstamount"] = Offersgstamount.ToString();
+                                                Offercgstamount = (Offertot_vatamount / 2);
+                                                Offercgstamount = Math.Round(Offercgstamount, 2);
+                                                newrow["Offercgst"] = dr["cgst"].ToString();
+                                                newrow["Offercgstamount"] = Offercgstamount.ToString();
+                                                newrow["OfferIgst"] = 0;
+                                                newrow["OfferIgstamount"] = 0;
                                             }
                                             else
                                             {
@@ -15162,6 +15320,37 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                                 newrow["cgstamount"] = cgstamount.ToString();
                                                 newrow["Igst"] = 0;
                                                 newrow["Igstamount"] = 0;
+
+
+
+                                                //Offer Details
+                                                double Offersgstamount = 0;
+                                                double Offercgstamount = 0;
+                                                double OfferIgst = 0;
+                                                double OfferIgstamount = 0;
+                                                double OffertotRate = 0;
+                                                double.TryParse(dr["Igst"].ToString(), out OfferIgst);
+                                                double OfferIgstcon = 100 + OfferIgst;
+                                                OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
+                                                OfferIgstamount = Math.Round(OfferIgstamount, 2);
+                                                OffertotRate = OfferIgstamount;
+                                                double OfferVatrate = rate - OffertotRate;
+                                                OfferVatrate = Math.Round(OfferVatrate, 2);
+                                                newrow["OfferRate"] = OfferVatrate.ToString();
+
+                                                OfferPAmount = Offerpkt_qty * OfferVatrate;
+                                                newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
+                                                Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
+                                                Offersgstamount = (Offertot_vatamount / 2);
+                                                Offersgstamount = Math.Round(Offersgstamount, 2);
+                                                newrow["Offersgst"] = dr["sgst"].ToString();
+                                                newrow["Offersgstamount"] = Offersgstamount.ToString();
+                                                Offercgstamount = (Offertot_vatamount / 2);
+                                                Offercgstamount = Math.Round(Offercgstamount, 2);
+                                                newrow["Offercgst"] = dr["cgst"].ToString();
+                                                newrow["Offercgstamount"] = Offercgstamount.ToString();
+                                                newrow["OfferIgst"] = 0;
+                                                newrow["OfferIgstamount"] = 0;
                                             }
                                         }
                                         else
@@ -15188,10 +15377,40 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             newrow["Igst"] = dr["Igst"].ToString();
                                             tot_vatamount = Math.Round(tot_vatamount, 2);
                                             newrow["Igstamount"] = tot_vatamount.ToString();
+
+
+                                            //Offer Details
+                                            double OfferIgst = 0;
+                                            double OfferIgstamount = 0;
+                                            double OffertotRate = 0;
+                                            double.TryParse(dr["Igst"].ToString(), out OfferIgst);
+                                            double OfferIgstcon = 100 + OfferIgst;
+                                            OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
+                                            OfferIgstamount = Math.Round(OfferIgstamount, 2);
+                                            OffertotRate = OfferIgstamount;
+                                            double OfferVatrate = rate - OffertotRate;
+                                            OfferVatrate = Math.Round(OfferVatrate, 2);
+                                            newrow["OfferRate"] = OfferVatrate.ToString();
+                                            
+                                            OfferPAmount = Offerpkt_qty * OfferVatrate;
+                                            newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
+                                            Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
+                                            newrow["Offersgst"] = 0;
+                                            newrow["Offersgstamount"] = 0;
+                                            newrow["Offercgst"] = 0;
+                                            newrow["Offercgstamount"] = 0;
+                                            newrow["OfferIgst"] = dr["Igst"].ToString();
+                                            Offertot_vatamount = Math.Round(Offertot_vatamount, 2);
+                                            newrow["OfferIgstamount"] = Offertot_vatamount.ToString();
                                         }
                                         double tot_amount = PAmount + tot_vatamount;
                                         tot_amount = Math.Round(tot_amount, 2);
                                         newrow["totalamount"] = tot_amount;
+
+                                        //offer details
+                                        double Offertot_amount = OfferPAmount + Offertot_vatamount;
+                                        Offertot_amount = Math.Round(Offertot_amount, 2);
+                                        newrow["Offertotalamount"] = Offertot_amount;
                                         dtTotQty.Rows.Add(newrow);
                                     }
                                 }
@@ -15210,8 +15429,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         getProducts.hsncode = dr["HSN Code"].ToString();
                         getProducts.uom = dr["Uom"].ToString();
                         getProducts.uomqty = dr["Uomqty"].ToString();
-                        getProducts.rate = dr["Rate"].ToString();
                         getProducts.discount = dr["Discount"].ToString();
+                        getProducts.rate = dr["Rate"].ToString();
                         getProducts.taxablevalue = dr["Taxable Value"].ToString();
                         getProducts.sgst = dr["sgst"].ToString();
                         getProducts.sgstamount = dr["sgstamount"].ToString();
@@ -15220,6 +15439,19 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         getProducts.igst = dr["igst"].ToString();
                         getProducts.igstamount = dr["igstamount"].ToString();
                         getProducts.totalamount = dr["totalamount"].ToString();
+
+                        //offer details
+                        getProducts.Offerpkt_qty = dr["Offerpkt_qty"].ToString();
+                        getProducts.Offerrate = dr["OfferRate"].ToString();
+                        getProducts.Offertaxablevalue = dr["OfferTaxable Value"].ToString();
+                        getProducts.Offersgst = dr["Offersgst"].ToString();
+                        getProducts.Offersgstamount = dr["Offersgstamount"].ToString();
+                        getProducts.Offercgst = dr["Offercgst"].ToString();
+                        getProducts.Offercgstamount = dr["Offercgstamount"].ToString();
+                        getProducts.Offerigst = dr["Offerigst"].ToString();
+                        getProducts.Offerigstamount = dr["Offerigstamount"].ToString();
+                        getProducts.Offertotalamount = dr["Offertotalamount"].ToString();
+
                         DcDetailslist.Add(getProducts);
                     }
                     foreach (DataRow dr in dtInventory.Rows)
@@ -15312,10 +15544,12 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     }
 
                                     double ltrqty = 0, ltr_rate = 0, pkt_qty = 0, pkt_rate = 0;
+                                    double Offerpkt_qty = 0;
                                     EInvoice obj = new EInvoice();
                                     if (dr["Units"].ToString() == "Nos")
                                     {
                                         double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
+                                        double.TryParse(dr["Offerqty"].ToString(), out Offerpkt_qty);
                                         double.TryParse(dr["Qty"].ToString(), out ltrqty);
                                         pkt_qty = pkt_qty;
                                         ltrqty = ltrqty;
@@ -15332,6 +15566,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
                                         //pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
                                         double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
+                                        double.TryParse(dr["Offerqty"].ToString(), out Offerpkt_qty);
                                         double.TryParse(dr["Qty"].ToString(), out ltrqty);
                                         pkt_qty = pkt_qty;
                                         ltrqty = ltrqty;
@@ -15347,9 +15582,14 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     //perltrCost = Math.Round(perltrCost, 2);
                                     //rate = perltrCost;
                                     newrow["pkt_qty"] = pkt_qty;
+                                    newrow["Offerpkt_qty"] = Offerpkt_qty;
+
                                     newrow["Discount"] = 0;
                                     double PAmount = 0;
                                     double tot_vatamount = 0;
+                                    //Offer Details
+                                    double OfferPAmount = 0;
+                                    double Offertot_vatamount = 0;
                                     if (fromstate == tostate)
                                     {
                                         if (DispMode == "Staff" || DispMode == "AGENT" || DispMode == "Others" || DispMode == "Free" || DispMode == "LOCAL")
@@ -15381,6 +15621,36 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             newrow["cgstamount"] = cgstamount.ToString();
                                             newrow["Igst"] = 0;
                                             newrow["Igstamount"] = 0;
+
+
+                                            //Offer Details
+                                            double Offersgstamount = 0;
+                                            double Offercgstamount = 0;
+                                            double OfferIgst = 0;
+                                            double OfferIgstamount = 0;
+                                            double OffertotRate = 0;
+                                            double.TryParse(dr["Igst"].ToString(), out OfferIgst);
+                                            double OfferIgstcon = 100 + OfferIgst;
+                                            OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
+                                            OfferIgstamount = Math.Round(OfferIgstamount, 2);
+                                            OffertotRate = OfferIgstamount;
+                                            double OfferVatrate = rate - OffertotRate;
+                                            OfferVatrate = Math.Round(OfferVatrate, 2);
+                                            newrow["OfferRate"] = OfferVatrate.ToString();
+                                            //PAmount = qty * Vatrate;
+                                            OfferPAmount = Offerpkt_qty * OfferVatrate;
+                                            newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
+                                            Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
+                                            Offersgstamount = (Offertot_vatamount / 2);
+                                            Offersgstamount = Math.Round(Offersgstamount, 2);
+                                            newrow["Offersgst"] = dr["sgst"].ToString();
+                                            newrow["Offersgstamount"] = Offersgstamount.ToString();
+                                            Offercgstamount = (Offertot_vatamount / 2);
+                                            Offercgstamount = Math.Round(Offercgstamount, 2);
+                                            newrow["Offercgst"] = dr["cgst"].ToString();
+                                            newrow["Offercgstamount"] = Offercgstamount.ToString();
+                                            newrow["OfferIgst"] = 0;
+                                            newrow["OfferIgstamount"] = 0;
                                         }
                                         else
                                         {
@@ -15394,6 +15664,18 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             newrow["cgstamount"] = 0;
                                             newrow["Igst"] = 0;
                                             newrow["Igstamount"] = 0;
+
+                                            //Offer Details
+                                            newrow["OfferRate"] = rate.ToString();
+                                            OfferPAmount = Offerpkt_qty * rate;
+                                            //PAmount = qty * rate;
+                                            newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
+                                            newrow["Offersgst"] = 0;
+                                            newrow["Offersgstamount"] = 0;
+                                            newrow["Offercgst"] = 0;
+                                            newrow["Offercgstamount"] = 0;
+                                            newrow["OfferIgst"] = 0;
+                                            newrow["OfferIgstamount"] = 0;
                                         }
                                     }
                                     else
@@ -15420,10 +15702,39 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         newrow["Igst"] = dr["Igst"].ToString();
                                         tot_vatamount = Math.Round(tot_vatamount, 2);
                                         newrow["Igstamount"] = tot_vatamount.ToString();
+
+                                        //Offer Details
+                                        double OfferIgst = 0;
+                                        double OfferIgstamount = 0;
+                                        double OffertotRate = 0;
+                                        double.TryParse(dr["Igst"].ToString(), out OfferIgst);
+                                        double OfferIgstcon = 100 + OfferIgst;
+                                        OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
+                                        OfferIgstamount = Math.Round(OfferIgstamount, 2);
+                                        OffertotRate = OfferIgstamount;
+                                        double OfferVatrate = rate - OffertotRate;
+                                        OfferVatrate = Math.Round(OfferVatrate, 2);
+                                        newrow["OfferRate"] = OfferVatrate.ToString();
+                                        //PAmount = qty * Vatrate;
+                                        OfferPAmount = Offerpkt_qty * OfferVatrate;
+                                        newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
+                                        Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
+                                        newrow["Offersgst"] = 0;
+                                        newrow["Offersgstamount"] = 0;
+                                        newrow["Offercgst"] = 0;
+                                        newrow["Offercgstamount"] = 0;
+                                        newrow["OfferIgst"] = dr["Igst"].ToString();
+                                        Offertot_vatamount = Math.Round(Offertot_vatamount, 2);
+                                        newrow["OfferIgstamount"] = Offertot_vatamount.ToString();
                                     }
                                     double tot_amount = PAmount + tot_vatamount;
                                     tot_amount = Math.Round(tot_amount, 2);
                                     newrow["totalamount"] = tot_amount;
+
+                                    //Offer Details
+                                    double Offertot_amount = OfferPAmount + Offertot_vatamount;
+                                    Offertot_amount = Math.Round(Offertot_amount, 2);
+                                    newrow["Offertotalamount"] = Offertot_amount;
                                     dtTotQty.Rows.Add(newrow);
                                 }
                                 else
@@ -15496,11 +15807,14 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             }
 
                                             double ltrqty = 0, ltr_rate = 0, pkt_qty = 0, pkt_rate = 0;
+                                            double Offerpkt_qty = 0;
+
                                             EInvoice obj = new EInvoice();
                                             if (dr["Units"].ToString() == "Nos")
                                             {
                                                 double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
                                                 double.TryParse(dr["Qty"].ToString(), out ltrqty);
+                                                double.TryParse(dr["Offerqty"].ToString(), out Offerpkt_qty);
                                                 pkt_qty = pkt_qty;
                                                 ltrqty = ltrqty;
                                                 ltr_rate = rate;
@@ -15517,6 +15831,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                                 //pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
                                                 double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
                                                 double.TryParse(dr["Qty"].ToString(), out ltrqty);
+                                                double.TryParse(dr["Offerqty"].ToString(), out Offerpkt_qty);
                                                 pkt_qty = pkt_qty;
                                                 ltrqty = ltrqty;
                                                 //ltr_rate = rate;
@@ -15531,9 +15846,13 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             //perltrCost = Math.Round(perltrCost, 2);
                                             //rate = perltrCost;
                                             newrow["pkt_qty"] = pkt_qty;
+                                            newrow["Offerpkt_qty"] = Offerpkt_qty;
                                             newrow["Discount"] = 0;
                                             double PAmount = 0;
                                             double tot_vatamount = 0;
+                                            //oFfer Details
+                                            double OfferPAmount = 0;
+                                            double Offertot_vatamount = 0;
                                             if (fromstate == tostate)
                                             {
                                                 if (DispMode == "Staff" || DispMode == "AGENT" || DispMode == "Others" || DispMode == "Free" || DispMode == "LOCAL")
@@ -15565,6 +15884,36 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                                     newrow["cgstamount"] = 0;
                                                     newrow["Igst"] = 0;
                                                     newrow["Igstamount"] = 0;
+
+
+                                                    //Offer Details
+                                                    double Offersgstamount = 0;
+                                                    double Offercgstamount = 0;
+                                                    double OfferIgst = 0;
+                                                    double OfferIgstamount = 0;
+                                                    double OffertotRate = 0;
+                                                    double.TryParse(dr["Igst"].ToString(), out OfferIgst);
+                                                    double OfferIgstcon = 100 + OfferIgst;
+                                                    OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
+                                                    OfferIgstamount = Math.Round(OfferIgstamount, 2);
+                                                    OffertotRate = OfferIgstamount;
+                                                    double OfferVatrate = rate - OffertotRate;
+                                                    OfferVatrate = Math.Round(OfferVatrate, 2);
+                                                    newrow["OfferRate"] = OfferVatrate.ToString();
+                                                    //PAmount = qty * Vatrate;
+                                                    OfferPAmount = Offerpkt_qty * OfferVatrate;
+                                                    newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
+                                                    Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
+                                                    Offersgstamount = (Offertot_vatamount / 2);
+                                                    Offersgstamount = Math.Round(Offersgstamount, 2);
+                                                    newrow["Offersgst"] = 0;
+                                                    newrow["Offersgstamount"] = 0;
+                                                    Offercgstamount = (Offertot_vatamount / 2);
+                                                    Offercgstamount = Math.Round(Offercgstamount, 2);
+                                                    newrow["Offercgst"] = 0;
+                                                    newrow["Offercgstamount"] = 0;
+                                                    newrow["OfferIgst"] = 0;
+                                                    newrow["OfferIgstamount"] = 0;
                                                 }
                                                 else
                                                 {
@@ -15578,6 +15927,18 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                                     newrow["cgstamount"] = 0;
                                                     newrow["Igst"] = 0;
                                                     newrow["Igstamount"] = 0;
+
+                                                    //Offer Details
+                                                    newrow["OfferRate"] = rate.ToString();
+                                                    //PAmount = qty * rate;
+                                                    OfferPAmount = Offerpkt_qty * rate;
+                                                    newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
+                                                    newrow["Offersgst"] = 0;
+                                                    newrow["Offersgstamount"] = 0;
+                                                    newrow["Offercgst"] = 0;
+                                                    newrow["Offercgstamount"] = 0;
+                                                    newrow["OfferIgst"] = 0;
+                                                    newrow["OfferIgstamount"] = 0;
                                                 }
                                             }
                                             else
@@ -15604,10 +15965,40 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                                 newrow["Igst"] = 0;
                                                 tot_vatamount = Math.Round(tot_vatamount, 2);
                                                 newrow["Igstamount"] = 0;
+
+
+                                                //Offer Details
+                                                double OfferIgst = 0;
+                                                double OfferIgstamount = 0;
+                                                double OffertotRate = 0;
+                                                double.TryParse(dr["Igst"].ToString(), out OfferIgst);
+                                                double OfferIgstcon = 100 + OfferIgst;
+                                                OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
+                                                OfferIgstamount = Math.Round(OfferIgstamount, 2);
+                                                OffertotRate = OfferIgstamount;
+                                                double OfferVatrate = rate - OffertotRate;
+                                                OfferVatrate = Math.Round(OfferVatrate, 2);
+                                                newrow["OfferRate"] = OfferVatrate.ToString();
+                                                //PAmount = qty * Vatrate;
+                                                OfferPAmount = Offerpkt_qty * OfferVatrate;
+                                                newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
+                                                Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
+                                                newrow["Offersgst"] = 0;
+                                                newrow["Offersgstamount"] = 0;
+                                                newrow["Offercgst"] = 0;
+                                                newrow["Offercgstamount"] = 0;
+                                                newrow["OfferIgst"] = 0;
+                                                Offertot_vatamount = Math.Round(Offertot_vatamount, 2);
+                                                newrow["OfferIgstamount"] = 0;
                                             }
                                             double tot_amount = PAmount;
                                             tot_amount = Math.Round(tot_amount, 2);
                                             newrow["totalamount"] = tot_amount;
+
+                                            //Offer Details
+                                            double Offertot_amount = OfferPAmount;
+                                            Offertot_amount = Math.Round(Offertot_amount, 2);
+                                            newrow["Offertotalamount"] = Offertot_amount;
                                             dtTotQty.Rows.Add(newrow);
                                         }
                                     }
@@ -15638,6 +16029,18 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         getProducts.igst = dr["igst"].ToString();
                         getProducts.igstamount = dr["igstamount"].ToString();
                         getProducts.totalamount = dr["totalamount"].ToString();
+
+                        //Offer Details
+                        getProducts.Offerpkt_qty = dr["Offerpkt_qty"].ToString();
+                        getProducts.Offerrate = dr["OfferRate"].ToString();
+                        getProducts.Offertaxablevalue = dr["OfferTaxable Value"].ToString();
+                        getProducts.Offersgst = dr["Offersgst"].ToString();
+                        getProducts.Offersgstamount = dr["Offersgstamount"].ToString();
+                        getProducts.Offercgst = dr["Offercgst"].ToString();
+                        getProducts.Offercgstamount = dr["Offercgstamount"].ToString();
+                        getProducts.Offerigst = dr["Offerigst"].ToString();
+                        getProducts.Offerigstamount = dr["Offerigstamount"].ToString();
+                        getProducts.Offertotalamount = dr["Offertotalamount"].ToString();
                         DcDetailslist.Add(getProducts);
                     }
                     foreach (DataRow dr in dtInventory.Rows)
@@ -15692,6 +16095,18 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string itemcode { get; set; }
         public string totalamount { get; set; }
         public string pkt_qty { get; set; }
+
+        //offer details
+        public string Offerpkt_qty { get; set; }
+        public string Offerrate { get; set; }
+        public string Offertaxablevalue { get; set; }
+        public string Offersgst { get; set; }
+        public string Offersgstamount { get; set; }
+        public string Offercgst { get; set; }
+        public string Offercgstamount { get; set; }
+        public string Offerigst { get; set; }
+        public string Offerigstamount { get; set; }
+        public string Offertotalamount { get; set; }
     }
     private void get_DeliveryChallan_click(HttpContext context)
     {
@@ -32137,6 +32552,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string pkt_rate { get; set; }
         public string tub_qty { get; set; }
         public string uom { get; set; }
+        public string OfferPkt_qty { get; set; }
 
     }
     class offerorderdetails
@@ -32881,6 +33297,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             dtallProducts.Columns.Add("InvName");
             dtallProducts.Columns.Add("TubQty");
             dtallProducts.Columns.Add("PktQty");
+            dtallProducts.Columns.Add("OfferPkt_qty");
             foreach (DataRow dr in dtproductsdata.Rows)
             {
                 DataRow newRow = dtallProducts.NewRow();
@@ -32889,6 +33306,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 newRow["TotalQty"] = "0";
                 newRow["TubQty"] = "0";
                 newRow["PktQty"] = "0";
+                newRow["OfferPkt_qty"] = "0";
+                
                 newRow["Units"] = dr["Units"].ToString();
                 newRow["UnitQty"] = dr["UnitQty"].ToString();
 
@@ -32917,7 +33336,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 empid = "";
                 empid = dtcheck.Rows[0]["EmpId"].ToString();
                 vehcleno = dtcheck.Rows[0]["VehicleNo"].ToString();
-                cmd = new MySqlCommand("SELECT productsdata.sno,productsdata.ProductName,productsdata.ifdflag, tripsubdata.Qty AS TotalQty,tripsubdata.pkt_qty,tripsubdata.tub_qty  FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno WHERE (tripdata.Sno = @tripid)");
+                cmd = new MySqlCommand("SELECT productsdata.sno,productsdata.ProductName,productsdata.ifdflag, tripsubdata.Qty AS TotalQty,tripsubdata.pkt_qty,tripsubdata.offerqty,tripsubdata.tub_qty  FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno WHERE (tripdata.Sno = @tripid)");
                 cmd.Parameters.AddWithValue("@tripid", tripid);
                 DataTable dttripprdt = vdbmngr.SelectQuery(cmd).Tables[0];
                 foreach (DataRow drtripprdt in dttripprdt.Rows)
@@ -32942,9 +33361,14 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             //}
                             float pktqty = 0;
                             float.TryParse(drtripprdt["pkt_qty"].ToString(), out pktqty);
+                            float Offerpktqty = 0;
+                            float.TryParse(drtripprdt["offerqty"].ToString(), out Offerpktqty);
                             float Pktqtycpy = 0;
                             float.TryParse(drprdtcpy["PktQty"].ToString(), out Pktqtycpy);
+                            float OfferPktqtycpy = 0;
+                            float.TryParse(drprdtcpy["OfferPkt_qty"].ToString(), out OfferPktqtycpy);
                             float totalPktqty = pktqty + Pktqtycpy;
+                            float totalOfferPktqty = Offerpktqty + OfferPktqtycpy;
 
                             float tubqty = 0;
                             float.TryParse(drtripprdt["tub_qty"].ToString(), out tubqty);
@@ -32954,6 +33378,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
                             drprdtcpy["TubQty"] = totaltubqty;
                             drprdtcpy["PktQty"] = totalPktqty;
+                            drprdtcpy["OfferPkt_qty"] = totalOfferPktqty;
                             drprdtcpy["TotalQty"] = totalqty;
                         }
                         else
@@ -32987,6 +33412,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     cmd.Parameters.AddWithValue("@d22", GetHighDate(Currentdate));
                     cmd.Parameters.AddWithValue("@iitype", routeitype);
                     dtofferProducts = vdbmngr.SelectQuery(cmd).Tables[0];
+                    
+                    //DataView view = new DataView(dtallProducts);
+                    //DataTable distinctProduct = view.ToTable(true, "ProductName", "sno", "TotalQty", "PktQty", "TubQty", "TubQty", "","","");
+                    //foreach (DataRow drdistinct in distinctProduct.Rows)
+                    //{
                     foreach (DataRow drprdt in dtProducts.Rows)
                     {
 
@@ -32994,7 +33424,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         {
                             if (drprdt["sno"].ToString() == drprdtcpy["sno"].ToString())
                             {
-                                double TotalofferQty = 0;
+                                double TotofferPkt_qty = 0;
                                 double offerqty = 0;
                                 double offerLtrqty = 0;
                                 foreach (DataRow dro in dtofferProducts.Select("sno='" + drprdt["sno"].ToString() + "'"))
@@ -33002,7 +33432,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     double uom = 0;
                                     double.TryParse(dro["uom"].ToString(), out uom);
                                     double.TryParse(dro["TotalofferQty"].ToString(), out offerqty);
-                                    TotalofferQty += offerqty;
+                                    TotofferPkt_qty += offerqty;
                                     offerLtrqty = offerqty * uom / 1000;
                                 }
                                 float qty = 0;
@@ -33034,8 +33464,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 float totaltubqty = tubqty + tubqtycpy;
 
                                 drprdtcpy["TubQty"] = totaltubqty;
-                                drprdtcpy["PktQty"] = totalPktqty + TotalofferQty;
-                                drprdtcpy["TotalQty"] = totalqty + offerLtrqty;
+                                drprdtcpy["PktQty"] = totalPktqty; //+ TotalofferQty;
+                                drprdtcpy["TotalQty"] = totalqty; //+ offerLtrqty;
+                                drprdtcpy["OfferPkt_qty"] = TotofferPkt_qty;
+                                
                             }
                             else
                             {
@@ -33081,6 +33513,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         getProducts.invqty = dr["Qty"].ToString();
                         getProducts.tubQty = dr["TubQty"].ToString();
                         getProducts.Qtypkts = dr["PktQty"].ToString();
+                        getProducts.OfferPkt_qty = dr["OfferPkt_qty"].ToString();
+                        
                         getProducts.Productsno = dr["sno"].ToString();
                         //getProducts.tubs = dr["Tubs"].ToString();
                         //getProducts.cans = dr["Cans"].ToString();
@@ -33125,6 +33559,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     getProducts.invqty = dr["Qty"].ToString();
                     getProducts.tubQty = dr["TubQty"].ToString();
                     getProducts.Qtypkts = dr["PktQty"].ToString();
+                    getProducts.OfferPkt_qty = dr["OfferPkt_qty"].ToString();
                     getProducts.Productsno = dr["sno"].ToString();
                     //getProducts.tubs = dr["Tubs"].ToString();
                     //getProducts.cans = dr["Cans"].ToString();
@@ -33867,6 +34302,8 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string TotalOfferQty { set; get; }
         public string InvName { set; get; }
         public int InvSno { set; get; }
+        public string OfferPkt_qty { set; get; }
+        
     }
     private void Get_SpL_Employe(HttpContext context)
     {
@@ -34319,7 +34756,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             cmd = new MySqlCommand("SELECT   sno, SubCat_sno, ProductName, Qty, Units, UnitPrice, Flag, UserData_sno, Rank, Inventorysno, VatPercent, Product_type, tproduct, sangam_flag, Itemcode, images,specification, materialtype, perunitprice, hsncode, igst, cgst, sgst, gsttaxcategory, pieces, invqty, description, ifdflag FROM productsdata WHERE (sno = @productsno)");
                             cmd.Parameters.AddWithValue("@productsno", o.Productsno);
                             DataTable dtproduct = vdbmngr.SelectQuery(cmd).Tables[0];
-                            cmd = new MySqlCommand("insert into tripsubdata (Tripdata_Sno,ProductId,Qty,DeliverQty,pkt_qty,tub_qty)values(@Tripdata_Sno,@ProductId,@Qty,@deliverqty,@pkt_qty,@tub_qty)");
+                            cmd = new MySqlCommand("insert into tripsubdata (Tripdata_Sno,ProductId,Qty,DeliverQty,pkt_qty,tub_qty,offerqty)values(@Tripdata_Sno,@ProductId,@Qty,@deliverqty,@pkt_qty,@tub_qty,@offerqty)");
                             cmd.Parameters.AddWithValue("@Tripdata_Sno", Tripdata_Sno);
                             cmd.Parameters.AddWithValue("@ProductId", o.Productsno);
                             float qty;
@@ -34332,7 +34769,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             cmd.Parameters.AddWithValue("@pkt_qty", pktQty);
                             float tubQty;
                             float.TryParse(o.tub_qty, out tubQty);
+                            float OfferPkt_qty;
+                            float.TryParse(o.OfferPkt_qty, out OfferPkt_qty);
                             cmd.Parameters.AddWithValue("@tub_qty", tubQty);
+                            cmd.Parameters.AddWithValue("@offerqty", OfferPkt_qty);
                             vdbmngr.insert(cmd);
                         }
                     }

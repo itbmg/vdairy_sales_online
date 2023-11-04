@@ -211,7 +211,7 @@
             }
 
             $('#divFillScreen').removeTemplate();
-            $('#divFillScreen').setTemplateURL('TripRoutes6.htm');
+            $('#divFillScreen').setTemplateURL('TripRoutes7.htm');
             $('#divFillScreen').processTemplate(msg);
         }
         function GetBranchInventory() {
@@ -283,7 +283,7 @@
                     }
                     if (msg == "Data Successfully Updated") {
                         $('#divFillScreen').removeTemplate();
-                        $('#divFillScreen').setTemplateURL('TripRoutes6.htm');
+                        $('#divFillScreen').setTemplateURL('TripRoutes7.htm');
                         $('#divFillScreen').processTemplate();
                         $('#divInventory').removeTemplate();
                         $('#divInventory').setTemplateURL('EditDcInventory1.htm');
