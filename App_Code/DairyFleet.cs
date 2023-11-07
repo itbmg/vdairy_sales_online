@@ -14739,7 +14739,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             }
             if (DispType == "Free")
             {
-                cmd = new MySqlCommand("SELECT tripsubdata.ProductId, productsdata.Itemcode,productsdata.SubCat_sno as subcatid, productsdata.hsncode, productsdata.igst, productsdata.cgst, productsdata.sgst, productsdata.Units,productsdata.qty as uomqty, productsdata.ProductName, productsdata.VatPercent,  tripsubdata.Price, ROUND(tripsubdata.Qty, 2) AS Qty,ROUND(tripsubdata.pkt_qty, 2) AS pkt_qty,,ROUND(tripsubdata.offerqty, 2) AS Offerqty, tripdata.AssignDate, tripdata.BranchID FROM tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno WHERE (tripdata.Sno = @tripdataId) GROUP BY productsdata.ProductName");
+                cmd = new MySqlCommand("SELECT tripsubdata.ProductId, productsdata.Itemcode,productsdata.SubCat_sno as subcatid, productsdata.hsncode, productsdata.igst, productsdata.cgst, productsdata.sgst, productsdata.Units,productsdata.qty as uomqty, productsdata.ProductName, productsdata.VatPercent,  tripsubdata.Price, ROUND(tripsubdata.Qty, 2) AS Qty,ROUND(tripsubdata.pkt_qty, 2) AS pkt_qty,ROUND(tripsubdata.offerqty, 2) AS Offerqty, tripdata.AssignDate, tripdata.BranchID FROM tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno WHERE (tripdata.Sno = @tripdataId) GROUP BY productsdata.ProductName");
             }
             else
             {
