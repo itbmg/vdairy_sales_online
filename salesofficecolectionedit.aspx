@@ -261,7 +261,7 @@
             var s = function (msg) {
                 if (msg) {
                     $('#divFillScreen').removeTemplate();
-                    $('#divFillScreen').setTemplateURL('CollectionsEdit2.htm');
+                    $('#divFillScreen').setTemplateURL('CollectionsEdit1.htm');
                     $('#divFillScreen').processTemplate(msg);
                     $('.TotClass').each(function (i, obj) {
                         Returnqty += parseFloat($(this).val());
