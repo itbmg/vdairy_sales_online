@@ -33413,10 +33413,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     cmd.Parameters.AddWithValue("@iitype", routeitype);
                     dtofferProducts = vdbmngr.SelectQuery(cmd).Tables[0];
                     
-                    //DataView view = new DataView(dtallProducts);
-                    //DataTable distinctProduct = view.ToTable(true, "ProductName", "sno", "TotalQty", "PktQty", "TubQty", "TubQty", "","","");
-                    //foreach (DataRow drdistinct in distinctProduct.Rows)
-                    //{
+                    
                     foreach (DataRow drprdt in dtProducts.Rows)
                     {
 
@@ -33424,33 +33421,23 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         {
                             if (drprdt["sno"].ToString() == drprdtcpy["sno"].ToString())
                             {
-                                double TotofferPkt_qty = 0;
-                                double offerqty = 0;
-                                double offerLtrqty = 0;
-                                foreach (DataRow dro in dtofferProducts.Select("sno='" + drprdt["sno"].ToString() + "'"))
-                                {
-                                    double uom = 0;
-                                    double.TryParse(dro["uom"].ToString(), out uom);
-                                    double.TryParse(dro["TotalofferQty"].ToString(), out offerqty);
-                                    TotofferPkt_qty += offerqty;
-                                    offerLtrqty = offerqty * uom / 1000;
-                                }
+                                //double TotofferPkt_qty = 0;
+                                //double offerqty = 0;
+                                //double offerLtrqty = 0;
+                                //foreach (DataRow dro in dtofferProducts.Select("sno='" + drprdt["sno"].ToString() + "'"))
+                                //{
+                                //    double uom = 0;
+                                //    double.TryParse(dro["uom"].ToString(), out uom);
+                                //    double.TryParse(dro["TotalofferQty"].ToString(), out offerqty);
+                                //    TotofferPkt_qty += offerqty;
+                                //    offerLtrqty = offerqty * uom / 1000;
+                                //}
                                 float qty = 0;
                                 float.TryParse(drprdt["TotalQty"].ToString(), out qty);
                                 float qtycpy = 0;
                                 float.TryParse(drprdtcpy["TotalQty"].ToString(), out qtycpy);
                                 float totalqty = qty + qtycpy;
-                                //float invqty = 0;
-                                //foreach (DataRow drinvsno in dtallProducts1.Rows)
-                                //{
-                                //    if (drprdtcpy["Inventorysno"].ToString() == drinvsno["Inventorysno"].ToString())
-                                //    {
-                                //        float.TryParse(drprdtcpy["Qty"].ToString(), out invqty);
-                                //        drprdtcpy["Cans"] = totalqty / invqty;
-
-                                //        string invName = drprdtcpy["InvName"].ToString();
-                                //    }
-                                //}
+                                
                                 float pktqty = 0;
                                 float.TryParse(drprdt["pkt_qty"].ToString(), out pktqty);
                                 float Pktqtycpy = 0;
@@ -33466,8 +33453,34 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 drprdtcpy["TubQty"] = totaltubqty;
                                 drprdtcpy["PktQty"] = totalPktqty; //+ TotalofferQty;
                                 drprdtcpy["TotalQty"] = totalqty; //+ offerLtrqty;
-                                drprdtcpy["OfferPkt_qty"] = TotofferPkt_qty;
+                                //drprdtcpy["OfferPkt_qty"] = TotofferPkt_qty;
                                 
+                            }
+                            else
+                            {
+                            }
+                        }
+                    }
+
+                    //Offer Details
+                    foreach (DataRow drofferprdt in dtofferProducts.Rows)
+                    {
+                        foreach (DataRow drprdtcpy in dtallProducts.Rows)
+                        {
+                            if (drofferprdt["sno"].ToString() == drprdtcpy["sno"].ToString())
+                            {
+                                double TotofferPkt_qty = 0;
+                                double offerqty = 0;
+                                double offerLtrqty = 0;
+                                //foreach (DataRow dro in dtofferProducts.Select("sno='" + drprdt["sno"].ToString() + "'"))
+                                //{
+                                double uom = 0;
+                                double.TryParse(drofferprdt["uom"].ToString(), out uom);
+                                double.TryParse(drofferprdt["TotalofferQty"].ToString(), out offerqty);
+                                TotofferPkt_qty += offerqty;
+                                offerLtrqty = offerqty * uom / 1000;
+                                //}
+                                drprdtcpy["OfferPkt_qty"] = TotofferPkt_qty;
                             }
                             else
                             {
@@ -34751,7 +34764,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 {
                     if (o.Productsno != null)
                     {
-                        if (o.Qty != "0")
+                        if (o.Qty != "0" || o.OfferPkt_qty!="0")
                         {
                             cmd = new MySqlCommand("SELECT   sno, SubCat_sno, ProductName, Qty, Units, UnitPrice, Flag, UserData_sno, Rank, Inventorysno, VatPercent, Product_type, tproduct, sangam_flag, Itemcode, images,specification, materialtype, perunitprice, hsncode, igst, cgst, sgst, gsttaxcategory, pieces, invqty, description, ifdflag FROM productsdata WHERE (sno = @productsno)");
                             cmd.Parameters.AddWithValue("@productsno", o.Productsno);
@@ -34856,9 +34869,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 {
                     if (o.Productsno != null)
                     {
-                        if (o.Qty != "0")
+                        if (o.Qty != "0" || o.OfferPkt_qty != "0")
                         {
-                            cmd = new MySqlCommand("update tripsubdata set Tripdata_Sno=@Tripdata_Sno,ProductId=@ProductId,Qty=@Qty,DeliverQty=@deliverqty,pkt_qty=@pkt_qty,tub_qty=@tub_qty where Tripdata_Sno=@Tripdata_Sno and ProductId=@ProductId");
+                            cmd = new MySqlCommand("update tripsubdata set Tripdata_Sno=@Tripdata_Sno,ProductId=@ProductId,Qty=@Qty,DeliverQty=@deliverqty,pkt_qty=@pkt_qty,tub_qty=@tub_qty,offerqty=@offerqty where Tripdata_Sno=@Tripdata_Sno and ProductId=@ProductId");
                             cmd.Parameters.AddWithValue("@Tripdata_Sno", tripid);
                             cmd.Parameters.AddWithValue("@ProductId", o.Productsno);
                             float qty;
@@ -34872,15 +34885,20 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             float tubQty;
                             float.TryParse(o.tub_qty, out tubQty);
                             cmd.Parameters.AddWithValue("@tub_qty", tubQty);
+
+                            float OfferPkt_qty;
+                            float.TryParse(o.OfferPkt_qty, out OfferPkt_qty);
+                            cmd.Parameters.AddWithValue("@offerqty", OfferPkt_qty);
                             if (vdbmngr.Update(cmd) == 0)
                             {
-                                cmd = new MySqlCommand("insert into tripsubdata (Tripdata_Sno,ProductId,Qty,DeliverQty,pkt_qty,tub_qty)values(@Tripdata_Sno,@ProductId,@Qty,@deliverqty,@pkt_qty,@tub_qty)");
+                                cmd = new MySqlCommand("insert into tripsubdata (Tripdata_Sno,ProductId,Qty,DeliverQty,pkt_qty,tub_qty,offerqty)values(@Tripdata_Sno,@ProductId,@Qty,@deliverqty,@pkt_qty,@tub_qty,@offerqty)");
                                 cmd.Parameters.AddWithValue("@Tripdata_Sno", tripid);
                                 cmd.Parameters.AddWithValue("@ProductId", o.Productsno);
                                 cmd.Parameters.AddWithValue("@Qty", qty);
                                 cmd.Parameters.AddWithValue("@deliverqty", delqty);
                                 cmd.Parameters.AddWithValue("@pkt_qty", pktQty);
                                 cmd.Parameters.AddWithValue("@tub_qty", tubQty);
+                              cmd.Parameters.AddWithValue("@offerqty", OfferPkt_qty);
                                 vdbmngr.insert(cmd);
                             }
                         }

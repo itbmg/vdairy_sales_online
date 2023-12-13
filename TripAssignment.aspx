@@ -302,7 +302,11 @@
                     var txtProductQty = $(this).find('#txtProductQty').val();
                     var tot_qty = 0;
                     tot_qty = parseFloat(hdn_editqty) + parseFloat(txtProductQty);
-                    if (tot_qty > 0) {
+                    var off_rqty = $(this).find('#hdnOfferQtyPkts').val();
+                    var Offer_Quantity = 0;
+                    Offer_Quantity = parseFloat(off_rqty);
+
+                    if (tot_qty > 0 || Offer_Quantity > 0) {
                         var Product = 0;
                         Orderdetails.push({ ProductSno: $(this).find('#hdnProductSno').val(), Product: Product, Qty: $(this).find('#txtProductQty').val(), tub_qty: $(this).find('#txtTubQty').val(), pkt_qty: $(this).find('#txtQtypkts').val(), OfferPkt_qty: $(this).find('#hdnOfferQtyPkts').val() });
                     }
