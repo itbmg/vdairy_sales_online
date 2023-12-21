@@ -118,6 +118,7 @@ public partial class GatePassReport : System.Web.UI.Page
             Report.Columns.Add("Crates");
             Report.Columns.Add("Cans");
             Report.Columns.Add("Bags");
+            //cmd = new MySqlCommand("SELECT   gatepassdeatails.sno, gatepassdeatails.gatepassno, gatepassdeatails.doe, gatepassdeatails.vehicleno, gatepassdeatails.routename, gatepassdeatails.partyname, ROUND(SUM(tripsubdata.pkt_qty), 2) AS PktQty,ROUND(SUM(tripsubdata.offerqty), 2) AS OfferPktQty,ROUND(SUM(tripsubdata.Qty), 2) AS LtrQty,tripdata.DCNo,tripdata.BranchID,tripdata.Sno AS tripSno,  productsdata.ProductName, products_category.Categoryname FROM gatepassdeatails INNER JOIN gatepass_subtable ON gatepassdeatails.sno = gatepass_subtable.gatepass_refno INNER JOIN tripdata ON gatepass_subtable.refdcno = tripdata.Sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (gatepassdeatails.sno = @GatePassID) AND (products_category.sno = 1) AND (productsdata.Inventorysno = 1) GROUP BY products_category.Categoryname ORDER BY productsdata.Rank");
             cmd = new MySqlCommand("SELECT   gatepassdeatails.sno, gatepassdeatails.gatepassno, gatepassdeatails.doe, gatepassdeatails.vehicleno, gatepassdeatails.routename, gatepassdeatails.partyname, ROUND(SUM(tripsubdata.pkt_qty), 2) AS PktQty,ROUND(SUM(tripsubdata.offerqty), 2) AS OfferPktQty,ROUND(SUM(tripsubdata.Qty), 2) AS LtrQty,tripdata.DCNo,tripdata.BranchID,tripdata.Sno AS tripSno,  productsdata.ProductName, products_category.Categoryname FROM gatepassdeatails INNER JOIN gatepass_subtable ON gatepassdeatails.sno = gatepass_subtable.gatepass_refno INNER JOIN tripdata ON gatepass_subtable.refdcno = tripdata.Sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (gatepassdeatails.sno = @GatePassID) AND (products_category.sno = 1) AND (productsdata.Inventorysno = 1) GROUP BY products_category.Categoryname ORDER BY productsdata.Rank");
             cmd.Parameters.AddWithValue("@GatePassID", txt_gatePassid.Text);
             DataTable dtProducts = vdm.SelectQuery(cmd).Tables[0];
@@ -128,9 +129,14 @@ public partial class GatePassReport : System.Web.UI.Page
                 DataRow newrow = Report.NewRow();
                 newrow["Sno"] = i++.ToString();
                 newrow["Product Name"] = "Milk";
-                newrow["LtrQty"] = dr["LtrQty"].ToString(); 
-                 newrow["PktQty"] = dr["PktQty"].ToString();
-                 newrow["OfferPktQty"] = dr["OfferPktQty"].ToString();
+                newrow["LtrQty"] = dr["LtrQty"].ToString();
+                newrow["PktQty"] = dr["PktQty"].ToString();
+                double offerqty = 0;
+                double.TryParse(dr["OfferPktQty"].ToString(), out offerqty);
+                if (offerqty > 0)
+                {
+                    newrow["OfferPktQty"] = offerqty;
+                }
                 gpno = dr["gatepassno"].ToString();
                 Report.Rows.Add(newrow);
             }
@@ -148,7 +154,13 @@ public partial class GatePassReport : System.Web.UI.Page
                 newrow["Product Name"] = "Milk Cans";
                 newrow["LtrQty"] = dr["LtrQty"].ToString();
                 newrow["PktQty"] = dr["PktQty"].ToString();
-                 newrow["OfferPktQty"] = dr["OfferPktQty"].ToString();
+                double offerqty = 0;
+                double.TryParse(dr["OfferPktQty"].ToString(), out offerqty);
+                if (offerqty > 0)
+                {
+                    newrow["OfferPktQty"] = offerqty;
+                }
+                //newrow["OfferPktQty"] = dr["OfferPktQty"].ToString();
                 gpno = dr["gatepassno"].ToString();
                 Report.Rows.Add(newrow);
             }
@@ -172,7 +184,13 @@ public partial class GatePassReport : System.Web.UI.Page
                 newrow["Product Name"] = dr["ProductName"].ToString();
                 newrow["LtrQty"] = dr["LtrQty"].ToString();
                 newrow["PktQty"] = dr["PktQty"].ToString();
-                 newrow["OfferPktQty"] = dr["OfferPktQty"].ToString();
+                double offerqty = 0;
+                double.TryParse(dr["OfferPktQty"].ToString(), out offerqty);
+                if (offerqty > 0)
+                {
+                    newrow["OfferPktQty"] = offerqty;
+                }
+                //newrow["OfferPktQty"] = dr["OfferPktQty"].ToString();
                 gpno = dr["gatepassno"].ToString();
                 Report.Rows.Add(newrow);
             }
@@ -190,6 +208,12 @@ public partial class GatePassReport : System.Web.UI.Page
                         newvartical2[dc.ToString()] = val;
                     }
                 }
+            }
+            foreach (var column in Report.Columns.Cast<DataColumn>().ToArray())
+            {
+                if(column.ColumnName== "OfferPktQty")
+                if (Report.AsEnumerable().All(dr => dr.IsNull(column)))
+                    Report.Columns.Remove(column);
             }
             Report.Rows.Add(newvartical2);
             
