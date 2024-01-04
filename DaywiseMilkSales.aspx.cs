@@ -35,6 +35,23 @@ public partial class Day_wise_Milk_Sales : System.Web.UI.Page
                 txtfromdate.Text = DateTime.Now.ToString("dd-MM-yyyy HH:mm");
                 txttodate.Text = DateTime.Now.ToString("dd-MM-yyyy HH:mm");
                 LoadCategoryName();
+                FillAgentName();
+                PCategory.Visible = true;
+                PSubCategory.Visible = false;
+                PRoute.Visible = true;
+                PAgent.Visible = true;
+
+                //if (chkCategory.Checked || chkSubCategory.Checked)
+                //{
+                //    PCategory.Visible = true;
+                //    PSubCategory.Visible = false;
+                //}
+                //else
+                //{
+                //    PCategory.Visible = false;
+                //    PSubCategory.Visible = false;
+                //}
+
             }
         }
     }
@@ -42,24 +59,274 @@ public partial class Day_wise_Milk_Sales : System.Web.UI.Page
     {
             GetReport();
     }
+    //protected void chkChangedCtegory(Object sender,EventArgs e)
+    //{
+    //    if (chkCategory.Checked)
+    //    {
+
+    //    }
+    //    else if(chkSubCategory.Checked)
+    //    {
+    //        PCategory.Visible = true;
+    //        PSubCategory.Visible = true;
+    //    }
+    //    else
+    //    {
+    //        PCategory.Visible = false;
+    //        PSubCategory.Visible = false;
+    //    }
+    //}
+
+
+    void FillAgentName()
+    {
+        try
+        {
+            vdm = new VehicleDBMgr();
+            if (Session["salestype"].ToString() == "Plant")
+            {
+                PBranch.Visible = true;
+                DataTable dtBranch = new DataTable();
+                dtBranch.Columns.Add("BranchName");
+                dtBranch.Columns.Add("sno");
+                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType) and (branchdata.flag<>0) or (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType1) and (branchdata.flag<>0) ");
+                cmd.Parameters.AddWithValue("@SuperBranch", Session["branch"]);
+                cmd.Parameters.AddWithValue("@SalesType", "21");
+                cmd.Parameters.AddWithValue("@SalesType1", "26");
+                DataTable dtRoutedata = vdm.SelectQuery(cmd).Tables[0];
+                foreach (DataRow dr in dtRoutedata.Rows)
+                { 
+                    DataRow newrow = dtBranch.NewRow();
+                    newrow["BranchName"] = dr["BranchName"].ToString();
+                    newrow["sno"] = dr["sno"].ToString();
+                    dtBranch.Rows.Add(newrow);
+                }
+                cmd = new MySqlCommand("SELECT BranchName, sno FROM  branchdata WHERE (sno = @BranchID) and (flag<>0)");
+                cmd.Parameters.AddWithValue("@BranchID", Session["branch"]);
+                DataTable dtPlant = vdm.SelectQuery(cmd).Tables[0];
+                foreach (DataRow dr in dtPlant.Rows)
+                {
+                    DataRow newrow = dtBranch.NewRow();
+                    newrow["BranchName"] = dr["BranchName"].ToString();
+                    newrow["sno"] = dr["sno"].ToString();
+                    dtBranch.Rows.Add(newrow);
+                }
+                ddlSalesOffice.DataSource = dtBranch;
+                ddlSalesOffice.DataTextField = "BranchName";
+                ddlSalesOffice.DataValueField = "sno";
+                ddlSalesOffice.DataBind();
+                ddlSalesOffice.Items.Insert(0, new ListItem("Select", "0"));
+
+            }
+            else
+            {
+                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno, branchdata.SalesType FROM branchdata INNER JOIN branchdata branchdata_1 ON branchdata.sno = branchdata_1.sno WHERE (branchdata_1.SalesOfficeID = @SOID) AND (branchdata.SalesType IS NOT NULL) and (branchdata.flag<>0) OR (branchdata.sno = @BranchID) AND (branchdata.SalesType IS NOT NULL) and (branchdata.flag<>0)");
+                cmd.Parameters.AddWithValue("@SOID", Session["branch"]);
+                cmd.Parameters.AddWithValue("@BranchID", Session["branch"]);
+                DataTable dtRoutedata = vdm.SelectQuery(cmd).Tables[0];
+                ddlDispName.DataSource = dtRoutedata;
+                ddlDispName.DataTextField = "BranchName";
+                ddlDispName.DataValueField = "sno";
+                ddlDispName.DataBind();
+            }
+        }
+        catch (Exception ex)
+        {
+            lblmsg.Text = ex.Message;
+        }
+    }
+    protected void ddlSalesOffice_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        vdm = new VehicleDBMgr();
+        //cmd = new MySqlCommand("SELECT branchdata.sno, branchdata.BranchName FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @SuperBranch)");
+        cmd = new MySqlCommand("SELECT RouteName, Sno,BranchID FROM branchroutes WHERE (BranchID = @BranchID) and  (flag=@flag)");
+        cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
+        cmd.Parameters.AddWithValue("@flag", "1");
+        DataTable dtBranch = vdm.SelectQuery(cmd).Tables[0];
+        
+        ddlDispName.DataSource = dtBranch;
+        ddlDispName.DataTextField = "RouteName";
+        ddlDispName.DataValueField = "Sno";
+        ddlDispName.DataBind();
+        ddlDispName.Items.Insert(0, new ListItem("Select", "0"));
+    }
+    protected void ddlDispName_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        vdm = new VehicleDBMgr();
+        //cmd = new MySqlCommand("SELECT branchdata.sno, branchdata.BranchName FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @SuperBranch)");
+        cmd = new MySqlCommand("SELECT branchdata.sno, branchdata.BranchName,branchroutes.Sno FROM branchroutesubtable INNER JOIN branchroutes ON branchroutesubtable.RefNo = branchroutes.Sno INNER JOIN branchdata ON branchroutesubtable.BranchID = branchdata.sno WHERE (branchroutes.Sno = @RouteID) AND branchdata.flag=@flag");
+        cmd.Parameters.AddWithValue("@RouteID", ddlDispName.SelectedValue);
+        cmd.Parameters.AddWithValue("@flag", "1");
+        DataTable dtRoutedata = vdm.SelectQuery(cmd).Tables[0];
+        ddlAgentName.DataSource = dtRoutedata;
+        ddlAgentName.DataTextField = "BranchName";
+        ddlAgentName.DataValueField = "sno";
+        ddlAgentName.DataBind();
+    }
+
     protected void ddlReportType_SelectedIndexChanged(object sender, EventArgs e)
     {
         LoadCategoryName();
         //ddlSubCategoryName.Items.Insert(0, new ListItem("ALL", "ALL"));
     }
+    protected void ddlType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        //if (ddlcatType.SelectedValue == "Category")
+        //{
+        //    PCategory.Visible = true;
+        //    PSubCategory.Visible = false;
+        //    PBranch.Visible = true;
+        //    PRoute.Visible = true;
+        //    PAgent.Visible = true;
+        //}
+        //else if (ddlcatType.SelectedValue == "SubCategory")
+        //{
+        //    PCategory.Visible = true;
+        //    PSubCategory.Visible = true;
+        //    PBranch.Visible = true;
+        //    PRoute.Visible = true;
+        //    PAgent.Visible = true;
+        //}
+        //else if (ddlType.SelectedValue == "SalesOffice")
+        //{
+
+        //    PCategory.Visible = true;
+        //    PSubCategory.Visible = true;
+        //    PBranch.Visible = true;
+        //    PRoute.Visible = false;
+        //    PAgent.Visible = false;
+        //}
+        //else if (ddlType.SelectedValue == "RouteWise")
+        //{
+        //    PAgent.Visible = false;
+
+        //    PCategory.Visible = true;
+        //    PSubCategory.Visible = true;
+        //    PBranch.Visible = true;
+        //    PRoute.Visible = true;
+
+        //}
+        //else if (ddlType.SelectedValue == "AgentWise")
+        //{
+        //    PCategory.Visible = true;
+        //    PSubCategory.Visible = true;
+        //    PBranch.Visible = true;
+        //    PRoute.Visible = true;
+        //    PAgent.Visible = true;
+        //}
+        if (ddlType.SelectedValue == "SalesOffice" && ddlcatType.SelectedValue == "Category")
+        {
+            PCategory.Visible = true;
+            PSubCategory.Visible = false;
+            PBranch.Visible = true;
+            PRoute.Visible = false;
+            PAgent.Visible = false;
+        }
+        else if (ddlType.SelectedValue == "RouteWise" && ddlcatType.SelectedValue == "Category")
+        {
+            PCategory.Visible = true;
+            PSubCategory.Visible = false;
+            PBranch.Visible = true;
+            PRoute.Visible = true;
+            PAgent.Visible = false;
+        }
+        else if (ddlType.SelectedValue == "AgentWise" && ddlcatType.SelectedValue == "Category")
+        {
+            PCategory.Visible = true;
+            PSubCategory.Visible = false;
+            PBranch.Visible = true;
+            PRoute.Visible = true;
+            PAgent.Visible = true;
+        }
+        else if (ddlType.SelectedValue == "SalesOffice" && ddlcatType.SelectedValue == "SubCategory")
+        {
+            PCategory.Visible = true;
+            PSubCategory.Visible = true;
+            PBranch.Visible = true;
+            PRoute.Visible = false;
+            PAgent.Visible = false;
+        }
+        else if (ddlType.SelectedValue == "RouteWise" && ddlcatType.SelectedValue == "SubCategory")
+        {
+            PCategory.Visible = true;
+            PSubCategory.Visible = true;
+            PBranch.Visible = true;
+            PRoute.Visible = true;
+            PAgent.Visible = false;
+        }
+        else if (ddlType.SelectedValue == "AgentWise" && ddlcatType.SelectedValue == "SubCategory")
+        {
+            PCategory.Visible = true;
+            PSubCategory.Visible = true;
+            PBranch.Visible = true;
+            PRoute.Visible = true;
+            PAgent.Visible = true;
+        }
+    }
+    protected void ddlcatType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (ddlType.SelectedValue == "SalesOffice" && ddlcatType.SelectedValue == "Category")
+        {
+            PCategory.Visible = true;
+            PSubCategory.Visible = false;
+            PBranch.Visible = true;
+            PRoute.Visible = false;
+            PAgent.Visible = false;
+        }
+        else if (ddlType.SelectedValue == "RouteWise" && ddlcatType.SelectedValue == "Category")
+        {
+            PCategory.Visible = true;
+            PSubCategory.Visible = false;
+            PBranch.Visible = true;
+            PRoute.Visible = true;
+            PAgent.Visible = false;
+        }
+        else if (ddlType.SelectedValue == "AgentWise" && ddlcatType.SelectedValue == "Category")
+        {
+            PCategory.Visible = true;
+            PSubCategory.Visible = false;
+            PBranch.Visible = true;
+            PRoute.Visible = true;
+            PAgent.Visible = true;
+        }
+        else if (ddlType.SelectedValue == "SalesOffice" && ddlcatType.SelectedValue == "SubCategory")
+        {
+            PCategory.Visible = true;
+            PSubCategory.Visible = true;
+            PBranch.Visible = true;
+            PRoute.Visible = false;
+            PAgent.Visible = false;
+        }
+        else if (ddlType.SelectedValue == "RouteWise" && ddlcatType.SelectedValue == "SubCategory")
+        {
+            PCategory.Visible = true;
+            PSubCategory.Visible = true;
+            PBranch.Visible = true;
+            PRoute.Visible = true;
+            PAgent.Visible = false;
+        }
+        else if (ddlType.SelectedValue == "AgentWise" && ddlcatType.SelectedValue == "SubCategory")
+        {
+            PCategory.Visible = true;
+            PSubCategory.Visible = true;
+            PBranch.Visible = true;
+            PRoute.Visible = true;
+            PAgent.Visible = true;
+        }
+
+    }
     protected void LoadCategoryName()
     {
         vdm = new VehicleDBMgr();
         string type = ddlReportType.SelectedValue;
-        cmd = new MySqlCommand("SELECT    sno, category_sno, SubCatName, Flag, userdata_sno, fat, description, rank, tempcatsno, tempsub_catsno FROM  products_subcategory WHERE (Flag = @flag) AND (tempsub_catsno IS NOT NULL) AND (tempsub_catsno <> '0') AND (tempcatsno = @CatSno) ORDER BY tempsub_catsno");
+        cmd = new MySqlCommand("SELECT    sno, category_sno, SubCatName, Flag, userdata_sno, fat, description, rank, tempcatsno, sno FROM  products_subcategory WHERE (Flag = @flag) AND (category_sno = @CatSno) ORDER BY tempsub_catsno");
         cmd.Parameters.AddWithValue("@CatSno", ddlReportType.SelectedValue);
         cmd.Parameters.AddWithValue("@flag", "1");
         DataTable dtCategory = vdm.SelectQuery(cmd).Tables[0];
         ddlSubCategoryName.DataSource = dtCategory;
-        ddlSubCategoryName.DataTextField = "description";
-        ddlSubCategoryName.DataValueField = "tempsub_catsno";
+        ddlSubCategoryName.DataTextField = "SubCatName";
+        ddlSubCategoryName.DataValueField = "sno";
         ddlSubCategoryName.DataBind();
-        ddlSubCategoryName.Items.Insert(0, new ListItem("ALL", "ALL"));
 
     }
     protected void btnSMS_Click(object sender, EventArgs e)
@@ -199,12 +466,17 @@ public partial class Day_wise_Milk_Sales : System.Web.UI.Page
     DataTable distincttable = new DataTable();
     DataTable sortedProductDT1 = new DataTable();
     DataTable distinctproducts = new DataTable();
+
+
+
     void GetReport()
     {
         try
         {
+            Button3.Visible = true;
             lblmsg.Text = "";
             pnlHide.Visible = true;
+            exportPanel.Visible = true;
             Report = new DataTable();
             Session["IDate"] = DateTime.Now.AddDays(1).ToString("dd/MM/yyyy");
             vdm = new VehicleDBMgr();
@@ -237,152 +509,144 @@ public partial class Day_wise_Milk_Sales : System.Web.UI.Page
             int NoOfdays = dateSpan.Days;
             NoOfdays = NoOfdays + 1;
             DataTable dtsubcategory = new DataTable();
-            //if (ddlReportType.SelectedValue == "1")
-            //{
-            if (ddlSubCategoryName.SelectedValue == "ALL")
+
+            if (ddlType.SelectedValue == "SalesOffice" && ddlcatType.SelectedValue == "Category")
             {
-                cmd = new MySqlCommand("SELECT  products_subcategory.rank,DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate, branchdata.BranchName, products_subcategory.tempsub_catsno,products_subcategory.description AS SubCatName,  productsdata.tempsubcatsno, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty), 2) AS SaleValue FROM branchmappingtable INNER JOIN branchdata ON branchmappingtable.SubBranch = branchdata.sno INNER JOIN branchmappingtable branchmappingtable_1 ON branchdata.sno = branchmappingtable_1.SuperBranch INNER JOIN branchdata branchdata_1 ON branchmappingtable_1.SubBranch = branchdata_1.sno INNER JOIN indents ON branchdata_1.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.tempsubcatsno = products_subcategory.tempsub_catsno INNER JOIN products_category ON products_subcategory.tempcatsno = products_category.tempcatsno WHERE (branchmappingtable.SuperBranch = @BranchID) AND (indents.I_date BETWEEN @d1 AND @d2) AND (indents_subtable.DeliveryQty > 0) AND (products_category.tempcatsno = @CatSno) GROUP BY IndentDate,products_subcategory.tempsub_catsno ORDER BY products_subcategory.tempsub_catsno");
-                //  cmd = new MySqlCommand("SELECT  ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, indents_subtable.Product_sno, products_subcategory.sno, products_subcategory.SubCatName, DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate FROM  branchmappingtable branchmappingtable_1 INNER JOIN branchdata branchdata_1 ON branchmappingtable_1.SubBranch = branchdata_1.sno INNER JOIN indents ON branchdata_1.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchmappingtable ON branchmappingtable_1.SuperBranch = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @BranchID) AND (indents.I_date BETWEEN @d1 AND @d2) AND (products_category.sno = '9') AND  (branchmappingtable_1.SuperBranch <> 538) GROUP BY IndentDate, products_subcategory.sno");
-                cmd.Parameters.AddWithValue("@BranchID", Session["branch"]);
-                cmd.Parameters.AddWithValue("@CatSno", ddlReportType.SelectedValue);
+                cmd = new MySqlCommand("SELECT  products_subcategory.rank,DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate, branchdata.BranchName, products_subcategory.category_sno, productsdata.SubCat_sno, productsdata.ProductName, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty,ROUND(SUM(indents_subtable.pkt_qty), 2) AS PktQty, ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty), 2) AS SaleValue, ROUND(SUM(indents_subtable.pkt_rate * indents_subtable.pkt_qty), 2) AS PktValue,products_category.Categoryname FROM branchmappingtable INNER JOIN branchdata ON branchmappingtable.SubBranch = branchdata.sno INNER JOIN branchmappingtable branchmappingtable_1 ON branchdata.sno = branchmappingtable_1.SuperBranch INNER JOIN branchdata branchdata_1 ON branchmappingtable_1.SubBranch = branchdata_1.sno INNER JOIN indents ON branchdata_1.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (branchmappingtable_1.SuperBranch = @BranchID)  AND (indents.I_date BETWEEN @d1 AND @d2) AND (indents_subtable.DeliveryQty > 0) AND (products_category.sno = @catsno) GROUP BY IndentDate,productsdata.ProductName ORDER BY indents.I_date,products_category.sno");
+                cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
                 cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
                 cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate.AddDays(-1)));
-                dtble1 = vdm.SelectQuery(cmd).Tables[0];
-                //cmd = new MySqlCommand("SELECT SUM(tripsubdata.Qty) AS dispqty, products_category.Categoryname, products_subcategory.SubCatName, result.IndentDate FROM (SELECT dispatch.sno, dispatch.DispName, tripdat.Sno AS tripid, DATE_FORMAT(tripdat.I_Date, '%d %b %y') AS IndentDate FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate, Status, I_Date FROM tripdata WHERE (I_Date BETWEEN @d1 AND @d2) AND (Status <> 'C')) tripdat ON triproutes.Tripdata_sno = tripdat.Sno WHERE (dispatch.Branch_Id = @branch) AND (dispatch.DispMode IS NOT NULL) AND (dispatch.DispMode <> 'SPL')) result INNER JOIN tripsubdata ON result.tripid = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (products_category.sno = 9) GROUP BY products_subcategory.sno, result.IndentDate");
-                //cmd.Parameters.AddWithValue("@branch", Session["branch"]);
-                //cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-                //cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate.AddDays(-1)));
-                //dtdirect = vdm.SelectQuery(cmd).Tables[0];
-                DataView dv = dtble1.DefaultView;
-                dv.Sort = "IndentDate ASC";
-                DataTable sortedProductDT = dv.ToTable();
-                if (sortedProductDT.Rows.Count > 0)
-                {
-                    DataView view = new DataView(sortedProductDT);
-                    DataTable distinctproducts = view.ToTable(true, "SubCatName", "tempsub_catsno");
-                    DataView dv1 = distinctproducts.DefaultView;
-                    dv1.Sort = "tempsub_catsno ASC";
-                    sortedProductDT1 = dv1.ToTable();
-
-                    Report = new DataTable();
-                    Report.Columns.Add("SNo");
-                    Report.Columns.Add("Date");
-                    int count = 0;
-                    foreach (DataRow dr in sortedProductDT1.Rows)
-                    {
-                        Report.Columns.Add(dr["SubCatName"].ToString()).DataType = typeof(Double);
-                    }
-                    Report.Columns.Add("Total").DataType = typeof(Double);
-                    DataTable distincttable = view.ToTable(true, "IndentDate");
-                    int i = 1;
-                    foreach (DataRow branch in distincttable.Rows)
-                    {
-                        DataRow newrow = Report.NewRow();
-                        newrow["SNo"] = i;
-                        string AssignDate = branch["IndentDate"].ToString();
-                        DateTime dtAssignDate = Convert.ToDateTime(AssignDate).AddDays(1);
-                        string AssigDate = dtAssignDate.ToString("dd MMM yyyy");
-                        newrow["Date"] = AssigDate;
-                        double totmilk = 0;
-                        foreach (DataRow dr in sortedProductDT.Rows)
-                        {
-                            double directdel = 0;
-                            if (dr["IndentDate"].ToString() == AssignDate)
-                            {
-                                //foreach (DataRow drdtdirect in dtdirect.Select("IndentDate='" + AssignDate + "'"))
-                                //{
-                                //    if (drdtdirect["SubCatName"].ToString() == dr["SubCatName"].ToString())
-                                //    {
-                                //        double.TryParse(drdtdirect["dispqty"].ToString(), out directdel);
-                                //    }
-                                //}
-                                double delqty = 0;
-                                double.TryParse(dr["DeliveryQty"].ToString(), out delqty);
-                                newrow[dr["SubCatName"].ToString()] = Math.Round(delqty + directdel, 2);
-                                totmilk += delqty + directdel;
-
-                            }
-                        }
-                        newrow["Total"] = Math.Round(totmilk, 2);
-                        Report.Rows.Add(newrow);
-                        i++;
-                    }
-                }
-            }
-            else
-            {
-               // AND (branchmappingtable.SubBranch NOT IN (538, 2749, 3928, 1801, 3625))
-                if (Session["branch"].ToString() == "172")
-                {
-                    cmd = new MySqlCommand("SELECT  products_subcategory.rank,DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate, branchdata.BranchName, products_subcategory.tempcatsno, productsdata.tempsubcatsno, productsdata.ProductName, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty), 2) AS SaleValue, products_category.description AS Categoryname FROM branchmappingtable INNER JOIN branchdata ON branchmappingtable.SubBranch = branchdata.sno INNER JOIN branchmappingtable branchmappingtable_1 ON branchdata.sno = branchmappingtable_1.SuperBranch INNER JOIN branchdata branchdata_1 ON branchmappingtable_1.SubBranch = branchdata_1.sno INNER JOIN indents ON branchdata_1.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.tempsubcatsno = products_subcategory.tempsub_catsno INNER JOIN products_category ON products_subcategory.tempcatsno = products_category.tempcatsno WHERE (branchmappingtable.SuperBranch = @BranchID) AND (branchmappingtable.SubBranch NOT IN (538, 2749, 3928, 1801, 3625)) AND (indents.I_date BETWEEN @d1 AND @d2) AND (indents_subtable.DeliveryQty > 0) AND (products_subcategory.tempsub_catsno = @SubCatsno) GROUP BY IndentDate,productsdata.ProductName ORDER BY products_subcategory.tempsub_catsno,productsdata.rank");
-                    cmd.Parameters.AddWithValue("@BranchID", Session["branch"].ToString());
-                    cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-                    cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate.AddDays(-1)));
-                    cmd.Parameters.AddWithValue("@SubCatsno", ddlSubCategoryName.SelectedValue);
-                }
-                else
-                {
-                    cmd = new MySqlCommand("SELECT  products_subcategory.rank,DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate, branchdata.BranchName, products_subcategory.tempcatsno, productsdata.tempsubcatsno, productsdata.ProductName, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty), 2) AS SaleValue, products_category.description AS Categoryname FROM branchmappingtable INNER JOIN branchdata ON branchmappingtable.SubBranch = branchdata.sno INNER JOIN branchmappingtable branchmappingtable_1 ON branchdata.sno = branchmappingtable_1.SuperBranch INNER JOIN branchdata branchdata_1 ON branchmappingtable_1.SubBranch = branchdata_1.sno INNER JOIN indents ON branchdata_1.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.tempsubcatsno = products_subcategory.tempsub_catsno INNER JOIN products_category ON products_subcategory.tempcatsno = products_category.tempcatsno WHERE (branchmappingtable.SuperBranch = @BranchID)  AND (indents.I_date BETWEEN @d1 AND @d2) AND (indents_subtable.DeliveryQty > 0) AND (products_subcategory.tempsub_catsno = @SubCatsno) GROUP BY IndentDate,productsdata.ProductName ORDER BY products_subcategory.tempsub_catsno,productsdata.rank");
-                    cmd.Parameters.AddWithValue("@BranchID", Session["branch"].ToString());
-                    cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-                    cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate.AddDays(-1)));
-                    cmd.Parameters.AddWithValue("@SubCatsno", ddlSubCategoryName.SelectedValue);
-                }
+                cmd.Parameters.AddWithValue("@catsno", ddlReportType.SelectedValue);
                 dtsubcategory = vdm.SelectQuery(cmd).Tables[0];
-                //cmd = new MySqlCommand("SELECT SUM(tripsubdata.Qty) AS dispqty, products_category.Categoryname, products_subcategory.SubCatName, result.IndentDate FROM (SELECT dispatch.sno, dispatch.DispName, tripdat.Sno AS tripid, DATE_FORMAT(tripdat.I_Date, '%d %b %y') AS IndentDate FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate, Status, I_Date FROM tripdata WHERE (I_Date BETWEEN @d1 AND @d2) AND (Status <> 'C')) tripdat ON triproutes.Tripdata_sno = tripdat.Sno WHERE (dispatch.Branch_Id = @branch) AND (dispatch.DispMode IS NOT NULL) AND (dispatch.DispMode <> 'SPL')) result INNER JOIN tripsubdata ON result.tripid = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (products_category.sno = 9) GROUP BY products_subcategory.sno, result.IndentDate");
-                //cmd.Parameters.AddWithValue("@branch", Session["branch"]);
-                //cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-                //cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate.AddDays(-1)));
-                //dtdirect = vdm.SelectQuery(cmd).Tables[0];
-                DataView dv = dtsubcategory.DefaultView;
-                dv.Sort = "IndentDate ASC";
-                DataTable sortedProductDT = dv.ToTable();
-                if (sortedProductDT.Rows.Count > 0)
+            }
+            else if (ddlType.SelectedValue == "SalesOffice" && ddlcatType.SelectedValue == "SubCategory")
+            {
+                cmd = new MySqlCommand("SELECT  products_subcategory.rank,DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate, branchdata.BranchName, products_subcategory.category_sno, productsdata.SubCat_sno, productsdata.ProductName, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty,ROUND(SUM(indents_subtable.pkt_qty), 2) AS PktQty, ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty), 2) AS SaleValue,ROUND(SUM(indents_subtable.pkt_rate * indents_subtable.pkt_qty), 2) AS PktValue, products_category.Categoryname FROM branchmappingtable INNER JOIN branchdata ON branchmappingtable.SubBranch = branchdata.sno INNER JOIN branchmappingtable branchmappingtable_1 ON branchdata.sno = branchmappingtable_1.SuperBranch INNER JOIN branchdata branchdata_1 ON branchmappingtable_1.SubBranch = branchdata_1.sno INNER JOIN indents ON branchdata_1.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (branchmappingtable_1.SuperBranch = @BranchID)  AND (indents.I_date BETWEEN @d1 AND @d2) AND (indents_subtable.DeliveryQty > 0) AND (products_subcategory.sno = @Subcatsno) GROUP BY IndentDate,productsdata.ProductName ORDER BY indents.I_date,products_category.sno");
+                cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
+                cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+                cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate.AddDays(-1)));
+                cmd.Parameters.AddWithValue("@Subcatsno", ddlSubCategoryName.SelectedValue);
+                dtsubcategory = vdm.SelectQuery(cmd).Tables[0];
+            }
+            //else if (ddlType.SelectedValue == "RouteWise" && ddlcatType.SelectedValue == "Category")
+            //{
+            //    cmd = new MySqlCommand("SELECT dispath.DispName, ROUND(SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost), 2) AS salevalue, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, indents_subtable.UnitCost, DATE_FORMAT(tripdat.I_Date, '%d %b %y') AS IndentDate, productsdata.ProductName,products_category.Categoryname FROM (SELECT sno, DispName FROM dispatch WHERE (sno = @dispatchsno)) dispath INNER JOIN triproutes ON dispath.sno = triproutes.RouteID INNER JOIN (SELECT Sno, I_Date, Status FROM tripdata WHERE (I_Date BETWEEN @d1 AND @d2) AND (Status <> 'C')) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN indents_subtable ON tripdat.Sno = indents_subtable.DTripId INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno where products_category.sno=@catsno GROUP BY tripdat.Sno, productsdata.ProductName, products_category.Categoryname ORDER BY tripdat.I_Date");
+            //    cmd.Parameters.AddWithValue("@dispatchsno", ddlDispName.SelectedValue);
+            //    cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+            //    cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate.AddDays(-1)));
+            //    cmd.Parameters.AddWithValue("@catsno", ddlReportType.SelectedValue);
+            //    dtsubcategory = vdm.SelectQuery(cmd).Tables[0];
+
+            //}
+            //else if (ddlType.SelectedValue == "RouteWise" && ddlcatType.SelectedValue == "SubCategory")
+            //{
+            //    cmd = new MySqlCommand("SELECT dispath.DispName, ROUND(SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost), 2) AS salevalue, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, indents_subtable.UnitCost, DATE_FORMAT(tripdat.I_Date, '%d %b %y') AS IndentDate, productsdata.ProductName,products_category.Categoryname FROM (SELECT sno, DispName FROM dispatch WHERE (sno = @dispatchsno)) dispath INNER JOIN triproutes ON dispath.sno = triproutes.RouteID INNER JOIN (SELECT Sno, I_Date, Status FROM tripdata WHERE (I_Date BETWEEN @d1 AND @d2) AND (Status <> 'C')) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN indents_subtable ON tripdat.Sno = indents_subtable.DTripId INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno where products_subcategory.sno=@Subcatsno GROUP BY tripdat.Sno, productsdata.ProductName, products_category.Categoryname ORDER BY tripdat.I_Date");
+            //    cmd.Parameters.AddWithValue("@dispatchsno", ddlDispName.SelectedValue);
+            //    cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+            //    cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate.AddDays(-1)));
+            //    cmd.Parameters.AddWithValue("@Subcatsno", ddlSubCategoryName);
+            //    dtsubcategory = vdm.SelectQuery(cmd).Tables[0];
+            //}
+            else if (ddlType.SelectedValue == "AgentWise" && ddlcatType.SelectedValue == "Category")
+            {
+                cmd = new MySqlCommand("SELECT  products_subcategory.rank,DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate, branchdata.BranchName, products_subcategory.category_sno, productsdata.SubCat_sno, productsdata.ProductName, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty,ROUND(SUM(indents_subtable.pkt_qty), 2) AS PktQty, ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty), 2) AS SaleValue,ROUND(SUM(indents_subtable.pkt_rate * indents_subtable.pkt_qty), 2) AS PktValue, products_category.Categoryname FROM branchmappingtable INNER JOIN branchdata ON branchmappingtable.SubBranch = branchdata.sno INNER JOIN branchmappingtable branchmappingtable_1 ON branchdata.sno = branchmappingtable_1.SuperBranch INNER JOIN branchdata branchdata_1 ON branchmappingtable_1.SubBranch = branchdata_1.sno INNER JOIN indents ON branchdata_1.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (branchmappingtable_1.SubBranch = @BranchID)  AND (indents.I_date BETWEEN @d1 AND @d2) AND (indents_subtable.DeliveryQty > 0) AND (products_category.sno = @catsno) GROUP BY IndentDate,productsdata.ProductName ORDER BY indents.I_date,products_category.sno");
+                cmd.Parameters.AddWithValue("@BranchID", ddlAgentName.SelectedValue);
+                cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+                cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate.AddDays(-1)));
+                cmd.Parameters.AddWithValue("@catsno", ddlReportType.SelectedValue);
+                dtsubcategory = vdm.SelectQuery(cmd).Tables[0];
+
+            }
+            else if (ddlType.SelectedValue == "AgentWise" && ddlcatType.SelectedValue == "SubCategory")
+            {
+                cmd = new MySqlCommand("SELECT  products_subcategory.rank,DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate, branchdata.BranchName, products_subcategory.category_sno, productsdata.SubCat_sno, productsdata.ProductName, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, ROUND(SUM(indents_subtable.pkt_qty), 2) AS PktQty,ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty), 2) AS SaleValue,ROUND(SUM(indents_subtable.pkt_rate * indents_subtable.pkt_qty), 2) AS PktValue, products_category.Categoryname FROM branchmappingtable INNER JOIN branchdata ON branchmappingtable.SubBranch = branchdata.sno INNER JOIN branchmappingtable branchmappingtable_1 ON branchdata.sno = branchmappingtable_1.SuperBranch INNER JOIN branchdata branchdata_1 ON branchmappingtable_1.SubBranch = branchdata_1.sno INNER JOIN indents ON branchdata_1.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (branchmappingtable_1.SubBranch = @BranchID)  AND (indents.I_date BETWEEN @d1 AND @d2) AND (indents_subtable.DeliveryQty > 0)  AND (products_subcategory.sno = @Subcatsno)  GROUP BY IndentDate,productsdata.ProductName ORDER BY indents.I_date,products_category.sno");
+                cmd.Parameters.AddWithValue("@BranchID", ddlAgentName.SelectedValue);
+                cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+                cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate.AddDays(-1)));
+                cmd.Parameters.AddWithValue("@SubCatsno", ddlSubCategoryName.SelectedValue);
+                dtsubcategory = vdm.SelectQuery(cmd).Tables[0];
+            }
+
+
+
+
+
+
+            //cmd = new MySqlCommand("SELECT SUM(tripsubdata.Qty) AS dispqty, products_category.Categoryname, products_subcategory.SubCatName, result.IndentDate FROM (SELECT dispatch.sno, dispatch.DispName, tripdat.Sno AS tripid, DATE_FORMAT(tripdat.I_Date, '%d %b %y') AS IndentDate FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate, Status, I_Date FROM tripdata WHERE (I_Date BETWEEN @d1 AND @d2) AND (Status <> 'C')) tripdat ON triproutes.Tripdata_sno = tripdat.Sno WHERE (dispatch.Branch_Id = @branch) AND (dispatch.DispMode IS NOT NULL) AND (dispatch.DispMode <> 'SPL')) result INNER JOIN tripsubdata ON result.tripid = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (products_category.sno = 9) GROUP BY products_subcategory.sno, result.IndentDate");
+            //cmd.Parameters.AddWithValue("@branch", Session["branch"]);
+            //cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+            //cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate.AddDays(-1)));
+            //dtdirect = vdm.SelectQuery(cmd).Tables[0];
+            DataView dv = dtsubcategory.DefaultView;
+            //dv.Sort = "IndentDate";
+            DataTable sortedProductDT = dv.ToTable();
+            if (sortedProductDT.Rows.Count > 0)
+            {
+                DataView view = new DataView(sortedProductDT);
+                distinctproducts = view.ToTable(true, "ProductName");
+                Report = new DataTable();
+                Report.Columns.Add("SNo");
+                Report.Columns.Add("Date");
+                int count = 0;
+                foreach (DataRow dr in distinctproducts.Rows)
                 {
-                    DataView view = new DataView(sortedProductDT);
-                    distinctproducts = view.ToTable(true, "ProductName");
-                    Report = new DataTable();
-                    Report.Columns.Add("SNo");
-                    Report.Columns.Add("Date");
-                    int count = 0;
-                    foreach (DataRow dr in distinctproducts.Rows)
+                    //string pLtr = dr["ProductName"].ToString() + "ltr";
+                    //string PPakt = dr["ProductName"].ToString() + "pkt";
+                    //Report.Columns.Add(pLtr).DataType = typeof(Double);
+                    //Report.Columns.Add(PPakt).DataType = typeof(Double);
+                    Report.Columns.Add(dr["ProductName"].ToString()).DataType = typeof(Double);
+                }
+                Report.Columns.Add("Total");
+                //Report.Columns.Add("Total(packets)");
+                DataTable distincttable = view.ToTable(true, "IndentDate");
+                int i = 1;
+                foreach (DataRow branch in distincttable.Rows)
+                {
+                    DataRow newrow = Report.NewRow();
+                    newrow["SNo"] = i;
+                    string AssignDate = branch["IndentDate"].ToString();
+                    DateTime dtAssignDate = Convert.ToDateTime(AssignDate).AddDays(1);
+                    string AssigDate = dtAssignDate.ToString("dd MMM yyyy");
+                    newrow["Date"] = AssigDate;
+                    double totmilk = 0; double totpktqty = 0;
+                    foreach (DataRow dr in sortedProductDT.Rows)
                     {
-                        Report.Columns.Add(dr["ProductName"].ToString()).DataType = typeof(Double);
-                    }
-                    Report.Columns.Add("Total");
-                    DataTable distincttable = view.ToTable(true, "IndentDate");
-                    int i = 1;
-                    foreach (DataRow branch in distincttable.Rows)
-                    {
-                        DataRow newrow = Report.NewRow();
-                        newrow["SNo"] = i;
-                        string AssignDate = branch["IndentDate"].ToString();
-                        DateTime dtAssignDate = Convert.ToDateTime(AssignDate).AddDays(1);
-                        string AssigDate = dtAssignDate.ToString("dd MMM yyyy");
-                        newrow["Date"] = AssigDate;
-                        double totmilk = 0;
-                        foreach (DataRow dr in sortedProductDT.Rows)
+                        double directdel = 0;
+                        if (dr["IndentDate"].ToString() == AssignDate)
                         {
-                            double directdel = 0;
-                            if (dr["IndentDate"].ToString() == AssignDate)
+                            //foreach (DataRow drdtdirect in dtdirect.Select("IndentDate='" + AssignDate + "'"))
+                            //{
+                            //    if (drdtdirect["SubCatName"].ToString() == dr["SubCatName"].ToString())
+                            //    {
+                            //        double.TryParse(drdtdirect["dispqty"].ToString(), out directdel);
+                            //    }
+                            //}
+                            if (chkPktOrLtr.Checked)
                             {
-                                //foreach (DataRow drdtdirect in dtdirect.Select("IndentDate='" + AssignDate + "'"))
-                                //{
-                                //    if (drdtdirect["SubCatName"].ToString() == dr["SubCatName"].ToString())
-                                //    {
-                                //        double.TryParse(drdtdirect["dispqty"].ToString(), out directdel);
-                                //    }
-                                //}
+                                double delpqty = 0;
+                                double.TryParse(dr["PktQty"].ToString(), out delpqty);
+                                newrow[dr["ProductName"].ToString()] = Math.Round(delpqty, 2);
+                                totpktqty += delpqty;
+                            }
+                            else
+                            {
                                 double delqty = 0;
                                 double.TryParse(dr["DeliveryQty"].ToString(), out delqty);
                                 newrow[dr["ProductName"].ToString()] = Math.Round(delqty + directdel, 2);
                                 totmilk += delqty + directdel;
                             }
                         }
-                        newrow["Total"] = Math.Round(totmilk, 2);
-                        Report.Rows.Add(newrow);
-                        i++;
                     }
+                    if (chkPktOrLtr.Checked)
+                    {
+                        newrow["Total"] = Math.Round(totpktqty, 2);
+                    }
+                    else
+                    {
+                        newrow["Total"] = Math.Round(totmilk, 2);
+                    }
+                    Report.Rows.Add(newrow);
+                    i++;
                 }
             }
             DataRow newvartical = Report.NewRow();
@@ -405,181 +669,16 @@ public partial class Day_wise_Milk_Sales : System.Web.UI.Page
             }
             Report.Rows.Add(newvartical);
             Report.Rows.Add(newAvg);
-            //}
-            //if (ddlReportType.SelectedValue == "2")
-            //{
-            //    //cmd = new MySqlCommand("SELECT ind.IndentNo, DATE_FORMAT(ind.I_date, '%d %b %y') AS IndentDate, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, indents_subtable.Product_sno,products_subcategory.sno, products_subcategory.SubCatName, products_category.sno AS categorysno FROM branchmappingtable INNER JOIN branchmappingtable branchmappingtable_1 ON branchmappingtable.SubBranch = branchmappingtable_1.SuperBranch INNER JOIN (SELECT IndentNo, Branch_id, TotalQty, TotalPrice, I_date, D_date, Status, UserData_sno, PaymentStatus, I_createdby, I_modifiedby, IndentType FROM indents WHERE (I_date BETWEEN @d1 AND @d2)) ind ON branchmappingtable_1.SubBranch = ind.Branch_id INNER JOIN indents_subtable ON ind.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (branchmappingtable.SuperBranch = @branch) AND (products_category.sno = 10) OR (branchmappingtable.SuperBranch = @branch) AND (products_category.sno = 12) GROUP BY IndentDate, products_category.sno");
-            //    //cmd = new MySqlCommand("SELECT ind.IndentNo, DATE_FORMAT(ind.I_date, '%d %b %y') AS IndentDate, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, indents_subtable.Product_sno,products_subcategory.sno, products_subcategory.SubCatName, products_category.sno AS categorysno FROM branchmappingtable INNER JOIN branchmappingtable branchmappingtable_1 ON branchmappingtable.SubBranch = branchmappingtable_1.SuperBranch INNER JOIN (SELECT IndentNo, Branch_id, TotalQty, TotalPrice, I_date, D_date, Status, UserData_sno, PaymentStatus, I_createdby, I_modifiedby, IndentType FROM indents WHERE (I_date BETWEEN @d1 AND @d2)) ind ON branchmappingtable_1.SubBranch = ind.Branch_id INNER JOIN indents_subtable ON ind.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (branchmappingtable.SuperBranch = @branch) AND (products_category.sno = 10) AND (branchmappingtable_1.SuperBranch <> 538) OR (branchmappingtable.SuperBranch = @branch) AND (products_category.sno = 12) AND (branchmappingtable_1.SuperBranch <> 538) GROUP BY IndentDate, products_category.sno");
-            //    cmd = new MySqlCommand("SELECT ind.IndentNo, DATE_FORMAT(ind.I_date, '%d %b %y') AS IndentDate, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, indents_subtable.Product_sno,products_subcategory.sno, products_subcategory.SubCatName, products_category.sno AS categorysno FROM branchmappingtable INNER JOIN branchmappingtable branchmappingtable_1 ON branchmappingtable.SubBranch = branchmappingtable_1.SuperBranch INNER JOIN (SELECT IndentNo, Branch_id, TotalQty, TotalPrice, I_date, D_date, Status, UserData_sno, PaymentStatus, I_createdby, I_modifiedby, IndentType FROM indents WHERE (I_date BETWEEN @d1 AND @d2)) ind ON branchmappingtable_1.SubBranch = ind.Branch_id INNER JOIN indents_subtable ON ind.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (branchmappingtable.SuperBranch = @branch) AND (products_category.sno = 10) AND (branchmappingtable_1.SuperBranch <> 538) AND (productsdata.Units <> @units) OR (branchmappingtable.SuperBranch = @branch) AND (products_category.sno = 12) AND (branchmappingtable_1.SuperBranch <> 538) AND  (productsdata.Units <> @units) GROUP BY IndentDate, products_category.sno");
-            //    cmd.Parameters.AddWithValue("@branch", Session["branch"]);
-            //    cmd.Parameters.AddWithValue("@units", "ltr");
-            //    cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-            //    cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate.AddDays(-1)));
-            //    dtcurdBM = vdm.SelectQuery(cmd).Tables[0];
-            //    //cmd = new MySqlCommand("SELECT SUM(tripsubdata.Qty) AS dispqty, products_category.Categoryname,products_category.sno AS categorysno,result.IndentDate FROM (SELECT dispatch.sno, dispatch.DispName, tripdat.Sno AS tripid, DATE_FORMAT(tripdat.I_Date, '%d %b %y') AS IndentDate FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate, Status, I_Date FROM tripdata WHERE (I_Date BETWEEN @d1 AND @d2) AND (Status <> 'C')) tripdat ON triproutes.Tripdata_sno = tripdat.Sno WHERE (dispatch.Branch_Id = @branch) AND (dispatch.DispMode IS NOT NULL) AND (dispatch.DispMode <> 'SPL')) result INNER JOIN tripsubdata ON result.tripid = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (products_category.sno = 10) OR (products_category.sno = 12) GROUP BY result.IndentDate, products_category.sno");
-            //    //cmd.Parameters.AddWithValue("@branch", Session["branch"]);
-            //    //cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-            //    //cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate.AddDays(-1)));
-            //    //dtdirectcurdBM = vdm.SelectQuery(cmd).Tables[0];
-            //    if (dtcurdBM.Rows.Count > 0)
-            //    {
-            //        DataView view = new DataView(dtcurdBM);
-            //        Report = new DataTable();
-            //        Report.Columns.Add("SNo");
-            //        Report.Columns.Add("Date");
-            //        Report.Columns.Add("Curd", typeof(Double));
-            //        Report.Columns.Add("Butter Milk", typeof(Double));
-            //        Report.Columns.Add("Total Curd & BM", typeof(Double));
-            //        DataTable distincttable = view.ToTable(true, "IndentDate");
-            //        int i = 1;
-            //        foreach (DataRow branch in distincttable.Rows)
-            //        {
-            //            DataRow newrow = Report.NewRow();
-            //            newrow["SNo"] = i;
-            //            string AssignDate = branch["IndentDate"].ToString();
-            //            DateTime dtAssignDate = Convert.ToDateTime(AssignDate).AddDays(1);
-            //            string AssigDate = dtAssignDate.ToString("dd MMM yyyy");
 
-            //            newrow["Date"] = AssigDate;
-            //            double totmilk = 0;
-
-            //            foreach (DataRow dr in dtcurdBM.Rows)
-            //            {
-            //                double directdel = 0;
-            //                if (dr["IndentDate"].ToString() == AssignDate)
-            //                {
-            //                    //foreach (DataRow drdtdirect in dtdirectcurdBM.Select("IndentDate='" + AssignDate + "'"))
-            //                    //{
-            //                    //    if (drdtdirect["categorysno"].ToString() == dr["categorysno"].ToString())
-            //                    //    {
-            //                    //        double.TryParse(drdtdirect["dispqty"].ToString(), out directdel);
-            //                    //    }
-            //                    //}
-            //                    double delqty = 0;
-            //                    double.TryParse(dr["DeliveryQty"].ToString(), out delqty);
-            //                    if (dr["categorysno"].ToString() == "10")
-            //                    {
-            //                        newrow["Curd"] = Math.Round(delqty + directdel, 2);
-            //                        totmilk += delqty + directdel;
-
-            //                    }
-            //                    if (dr["categorysno"].ToString() == "12")
-            //                    {
-            //                        double div = 0;
-            //                        div = delqty + directdel;
-            //                        newrow["Butter Milk"] = Math.Round(div / 3);
-            //                        totmilk += div + directdel;
-
-            //                    }
-
-            //                }
-            //            }
-            //            newrow["Total Curd & BM"] = Math.Round(totmilk, 2);
-            //            Report.Rows.Add(newrow);
-            //            i++;
-            //        }
-            //    }
-            //    DataRow newvartical = Report.NewRow();
-            //    newvartical["Date"] = "Total";
-            //    DataRow newAvg = Report.NewRow();
-            //    newAvg["Date"] = "Avg Per Day";
-            //    double Avgval = 0.0;
-            //    double val = 0.0;
-            //    foreach (DataColumn dc in Report.Columns)
-            //    {
-            //        if (dc.DataType == typeof(Double))
-            //        {
-            //            Avgval = 0.0;
-            //            val = 0.0;
-            //            double.TryParse(Report.Compute("sum([" + dc.ToString() + "])", "[" + dc.ToString() + "]<>'0'").ToString(), out val);
-            //            newvartical[dc.ToString()] = val;
-            //            Avgval = val / NoOfdays;
-            //            newAvg[dc.ToString()] = Math.Round(Avgval, 2);
-            //        }
-            //    }
-            //    Report.Rows.Add(newvartical);
-            //    Report.Rows.Add(newAvg);
-
-            //}
 
 
 
             grdtotal_dcReports.DataSource = Report;
             grdtotal_dcReports.DataBind();
 
-            
 
-            //for (int jj = 0; jj < grdtotal_dcReports.Rows.Count; jj++)
-            //{
-            //    DataGridViewRow  dgvr = 
 
-            //    DataGridViewCell dr = 
-            //    double previousvalue = 0;
-            //    int i = 0;
-            //    int count = 0;
-            //    for (int rowcnt = 2; rowcnt < dgvr.Cells.Count; rowcnt++)
-            //    {
-            //        //int diff = 0;
-            //        //int.TryParse(dgvr.Cells[rowcnt].Text, out diff);
-            //        if (count == 0 || count == 1)
-            //        {
-            //            double presentvalue = 0;
-            //            double.TryParse(dgvr.Cells[rowcnt].Text, out presentvalue);
-            //            if (presentvalue < previousvalue)
-            //            {
-            //                dgvr.Cells[rowcnt].BackColor = Color.SandyBrown;
-            //                // double.TryParse(dgvr.Cells[rowcnt].Text, out previousvalue);
-            //            }
-            //            else
-            //            {
-            //                dgvr.Cells[rowcnt].BackColor = Color.Green;
-            //                double.TryParse(dgvr.Cells[rowcnt].Text, out previousvalue);
-            //            }
-            //            if (dgvr.Cells[1].Text.Contains("Avg Per Day"))
-            //            {
-            //                previousvalue = 0;
-            //            }
-            //            count++;
-            //        }
-            //        else
-            //        {
-            //            count = 0;
-            //            previousvalue = 0;
-            //            double presentvalue = 0;
-            //            double.TryParse(dgvr.Cells[rowcnt].Text, out presentvalue);
-            //            if (presentvalue < previousvalue)
-            //            {
-            //                dgvr.Cells[rowcnt].BackColor = Color.SandyBrown;
-            //                // double.TryParse(dgvr.Cells[rowcnt].Text, out previousvalue);
-            //            }
-            //            else
-            //            {
-            //                dgvr.Cells[rowcnt].BackColor = Color.Green;
-            //                double.TryParse(dgvr.Cells[rowcnt].Text, out previousvalue);
-            //            }
-            //            if (dgvr.Cells[1].Text.Contains("Avg Per Day"))
-            //            {
-            //                previousvalue = 0;
-            //            }
-            //            //double presentvalue = 0;
-            //            //double.TryParse(dgvr.Cells[rowcnt].Text, out presentvalue);
-            //            //if (presentvalue < previousvalue)
-            //            //{
-            //            //    dgvr.Cells[rowcnt].BackColor = Color.SandyBrown;
-            //            //    // double.TryParse(dgvr.Cells[rowcnt].Text, out previousvalue);
-            //            //}
-            //            //else
-            //            //{
-            //            //    dgvr.Cells[rowcnt].BackColor = Color.Green;
-            //            //    double.TryParse(dgvr.Cells[rowcnt].Text, out previousvalue);
-            //            //}
-            //            //if (dgvr.Cells[1].Text.Contains("Avg Per Day"))
-            //            //{
-            //            //    previousvalue = 0;
-            //            //}
-            //        }
-            //}
-            //    }
+
         }
         catch (Exception ex)
         {
@@ -655,88 +754,88 @@ public partial class Day_wise_Milk_Sales : System.Web.UI.Page
             lblmsg.Text = ex.Message;
         }
     }
-    protected void grdtotal_dcReports_RowDataBound(object sender, GridViewRowEventArgs e)
-    {
-        //e.Row.Cells[1].Visible = false;
-        if (e.Row.RowType == DataControlRowType.DataRow)
-        {
-            double presentvalue = 0;
-            if (count == 0)
-            {
-                previousvalue = 0;
-            }
-            int last = e.Row.Cells.Count;
+    //protected void grdtotal_dcReports_RowDataBound(object sender, GridViewRowEventArgs e)
+    //{
+    //    //e.Row.Cells[1].Visible = false;
+    //    if (e.Row.RowType == DataControlRowType.DataRow)
+    //    {
+    //        double presentvalue = 0;
+    //        if (count == 0)
+    //        {
+    //            previousvalue = 0;
+    //        }
+    //        int last = e.Row.Cells.Count;
 
-            double.TryParse(e.Row.Cells[last-1].Text, out presentvalue);
-            if (presentvalue > previousvalue)
-            {
-                if (previousvalue == 0)
-                {
-                    previousvalue = presentvalue;
-                    //e.Row.Cells[2].BackColor = System.Drawing.Color.Green;
-                    //e.Row.Cells[2].Font.Size = FontUnit.Large;
-                    //e.Row.Cells[2].ForeColor = Color.White;
-                    //e.Row.Cells[2].Font.Bold = true;
-                    if (j == 1)
-                    {
-                        e.Row.Cells[last - 1].BackColor = System.Drawing.Color.Green;
-                        e.Row.Cells[last - 1].Font.Size = FontUnit.Large;
-                        e.Row.Cells[last - 1].ForeColor = Color.White;
-                        e.Row.Cells[last - 1].Font.Bold = true;
-                        //++
-                    }
-                    count++;
-                }
-                else
-                {
-                    e.Row.Cells[last - 1].BackColor = System.Drawing.Color.Green;
-                    e.Row.Cells[last - 1].Font.Size = FontUnit.Large;
-                    e.Row.Cells[last - 1].ForeColor = Color.White;
-                    e.Row.Cells[last - 1].Font.Bold = true;
-                    count = 0;
-                }
-            }
-            else if (presentvalue >= previousvalue)
-            {
-                e.Row.Cells[last - 1].BackColor = System.Drawing.Color.SkyBlue;
-                e.Row.Cells[last - 1].Font.Size = FontUnit.Large;
-                e.Row.Cells[last - 1].ForeColor = Color.White;
-                e.Row.Cells[last - 1].Font.Bold = true;
-            }
-            else
-            {
-                previousvalue = presentvalue;
-                e.Row.Cells[last - 1].BackColor = System.Drawing.Color.Red;
-                e.Row.Cells[last - 1].Font.Size = FontUnit.Large;
-                e.Row.Cells[last - 1].ForeColor = Color.White;
-                e.Row.Cells[last - 1].Font.Bold = true;
-                j = 1;
-                count++;
-            }
-            if (e.Row.Cells[1].Text == "Avg Per Day")
-            {
-                e.Row.Cells[last - 1].BackColor = System.Drawing.Color.White;
-                e.Row.Cells[last - 1].Font.Size = FontUnit.Large;
-                e.Row.Cells[last - 1].ForeColor = Color.White;
-                e.Row.Cells[last - 1].Font.Bold = true;
-                // previousvalue = 0;
-            }
-            if (e.Row.Cells[1].Text == "Total")
-            {
-                e.Row.Cells[last - 1].BackColor = System.Drawing.Color.White;
-                e.Row.Cells[last - 1].Font.Size = FontUnit.Large;
-                e.Row.Cells[last - 1].ForeColor = Color.White;
-                e.Row.Cells[last - 1].Font.Bold = true;
-            }
-            //if (e.Row.Cells[2].Text == "Total")
-            //{
-            //    e.Row.BackColor = System.Drawing.Color.CadetBlue;
-            //    e.Row.Font.Size = FontUnit.Large;
-            //    e.Row.ForeColor = Color.White;
-            //    e.Row.Font.Bold = true;
-            //}
+    //        double.TryParse(e.Row.Cells[last-1].Text, out presentvalue);
+    //        if (presentvalue > previousvalue)
+    //        {
+    //            if (previousvalue == 0)
+    //            {
+    //                previousvalue = presentvalue;
+    //                //e.Row.Cells[2].BackColor = System.Drawing.Color.Green;
+    //                //e.Row.Cells[2].Font.Size = FontUnit.Large;
+    //                //e.Row.Cells[2].ForeColor = Color.White;
+    //                //e.Row.Cells[2].Font.Bold = true;
+    //                if (j == 1)
+    //                {
+    //                    e.Row.Cells[last - 1].BackColor = System.Drawing.Color.Green;
+    //                    e.Row.Cells[last - 1].Font.Size = FontUnit.Large;
+    //                    e.Row.Cells[last - 1].ForeColor = Color.White;
+    //                    e.Row.Cells[last - 1].Font.Bold = true;
+    //                    //++
+    //                }
+    //                count++;
+    //            }
+    //            else
+    //            {
+    //                e.Row.Cells[last - 1].BackColor = System.Drawing.Color.Green;
+    //                e.Row.Cells[last - 1].Font.Size = FontUnit.Large;
+    //                e.Row.Cells[last - 1].ForeColor = Color.White;
+    //                e.Row.Cells[last - 1].Font.Bold = true;
+    //                count = 0;
+    //            }
+    //        }
+    //        else if (presentvalue >= previousvalue)
+    //        {
+    //            e.Row.Cells[last - 1].BackColor = System.Drawing.Color.SkyBlue;
+    //            e.Row.Cells[last - 1].Font.Size = FontUnit.Large;
+    //            e.Row.Cells[last - 1].ForeColor = Color.White;
+    //            e.Row.Cells[last - 1].Font.Bold = true;
+    //        }
+    //        else
+    //        {
+    //            previousvalue = presentvalue;
+    //            e.Row.Cells[last - 1].BackColor = System.Drawing.Color.Red;
+    //            e.Row.Cells[last - 1].Font.Size = FontUnit.Large;
+    //            e.Row.Cells[last - 1].ForeColor = Color.White;
+    //            e.Row.Cells[last - 1].Font.Bold = true;
+    //            j = 1;
+    //            count++;
+    //        }
+    //        if (e.Row.Cells[1].Text == "Avg Per Day")
+    //        {
+    //            e.Row.Cells[last - 1].BackColor = System.Drawing.Color.White;
+    //            e.Row.Cells[last - 1].Font.Size = FontUnit.Large;
+    //            e.Row.Cells[last - 1].ForeColor = Color.White;
+    //            e.Row.Cells[last - 1].Font.Bold = true;
+    //            // previousvalue = 0;
+    //        }
+    //        if (e.Row.Cells[1].Text == "Total")
+    //        {
+    //            e.Row.Cells[last - 1].BackColor = System.Drawing.Color.White;
+    //            e.Row.Cells[last - 1].Font.Size = FontUnit.Large;
+    //            e.Row.Cells[last - 1].ForeColor = Color.White;
+    //            e.Row.Cells[last - 1].Font.Bold = true;
+    //        }
+    //        //if (e.Row.Cells[2].Text == "Total")
+    //        //{
+    //        //    e.Row.BackColor = System.Drawing.Color.CadetBlue;
+    //        //    e.Row.Font.Size = FontUnit.Large;
+    //        //    e.Row.ForeColor = Color.White;
+    //        //    e.Row.Font.Bold = true;
+    //        //}
 
-        }
+    //    }
 
-    }
+    //}
 }
