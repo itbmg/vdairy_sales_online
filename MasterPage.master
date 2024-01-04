@@ -835,6 +835,7 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                                 <li id="liagentinvoice"><a href="Agent_invoice.aspx">Agent Invoice</a></li>
                                                 <li id="li26"><a href="indent_invoice.aspx">Indent Invoice</a></li>
                                                 <li id="liagentdelivery"><a href="AgentDelivery.aspx">Agent Delivery</a></li>
+                                                <li id="li38"><a href="DaywiseMilkSales.aspx">Day Wise Sales</a></li>
                                                 <%--<li id="lidelivery_sheet"><a href="Derivery_sheet.aspx">Delivery History</a></li>--%>
                                                 <%--<li id="lisaleprice" style="display: none;"><a href="RouteWiseSalePrice.aspx">RouteWise
                                                     Sale Price</a></li>--%>
