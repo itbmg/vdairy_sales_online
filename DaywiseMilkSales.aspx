@@ -5,6 +5,15 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="Css/VyshnaviStyles.css" rel="stylesheet" type="text/css" />
     <script src="js/jquery-1.4.4.js" type="text/javascript"></script>
+    <style>
+        .HeaderStyle
+        {
+            border: solid 1px White;
+            background-color: #81BEF7;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
     <script language="javascript">
         function CallPrint(strid) {
             var divToPrint = document.getElementById(strid);
@@ -206,7 +215,7 @@
                                             </table>
                                         </div>
                                         <asp:GridView ID="grdtotal_dcReports" runat="server" ForeColor="White" Width="100%"
-                                            GridLines="Both" Font-Size="Smaller">
+                                            GridLines="Both" Font-Bold="true" Font-Size="Smaller">
                                             <EditRowStyle BackColor="#999999" />
                                             <FooterStyle BackColor="Gray" Font-Bold="False" ForeColor="White" />
                                             <HeaderStyle BackColor="#f4f4f4" Font-Bold="False" ForeColor="Black" Font-Italic="False"
