@@ -309,8 +309,9 @@
 
             var branchID = document.getElementById("ddlsalesOffice").value;
             var ddltype = "Tax";
+            var type = "EInvoice";
 
-            var data = { 'operation': 'btnAgent_indent_Invoice_click', 'fromdate': fromdate, 'AgentId': AgentID, 'SOID': branchID, 'ddltype': ddltype };
+            var data = { 'operation': 'btnAgent_indent_Invoice_click', 'fromdate': fromdate, 'AgentId': AgentID, 'SOID': branchID, 'ddltype': ddltype, 'type': type };
             var s = function (msg) {
                 if (msg) {
                     if (msg == "Data not found") {

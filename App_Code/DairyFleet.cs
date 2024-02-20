@@ -10494,7 +10494,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             Report = new DataTable();
             string titlename = context.Session["TitleName"].ToString();
             string SOID = context.Request["SOID"];
-
+            string type = context.Request["type"];
             string DcType = context.Request["DcType"];
             string AgentId = context.Request["AgentId"];
             string from_date = context.Request["FromDate"];
@@ -10533,7 +10533,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     dtmarch = DateTime.Parse(march);
                 }
             }
-            if (SOID == "3")
+            if (SOID == "3" && type != "EInvoice")
             {
                 string IndentType = context.Request["IndentType"];
                 cmd = new MySqlCommand("SELECT indents_subtable.pkt_rate,indents_subtable.pkt_qty,indents_subtable.tub_qty,indents_subtable.IndentNo,sum(indents_subtable.unitQty * indents_subtable.UnitCost )AS Amount,IFNULL(branchproducts.VatPercent, 0) AS VatPercent,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName,productsdata.invqty,productsdata.Qty as rawqty,indents_subtable.unitQty AS IndentQty,sum(indents_subtable.unitQty * indents_subtable.UnitCost )AS indAmount, indents_subtable.UnitCost, DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate,branchdata.stateid, productsdata.itemcode,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.SubCat_sno as subcatid  FROM  productsdata INNER JOIN indents_subtable ON productsdata.sno = indents_subtable.Product_sno INNER JOIN indents ON indents_subtable.IndentNo = indents.IndentNo INNER JOIN  branchdata ON indents.Branch_id = branchdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchproducts ON branchmappingtable.SuperBranch = branchproducts.branch_sno AND productsdata.sno = branchproducts.product_sno WHERE (indents.IndentType=@IndentType) and  (indents.I_date BETWEEN @d1 AND @d2) AND (branchdata.sno = @BranchID) AND (indents_subtable.unitQty>0)  GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
@@ -10621,6 +10621,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         if (ServerDateCurrentdate.ToString("dd/MM/yyyy") == fromdate.ToString("dd/MM/yyyy"))
                         {
                             cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM agentdc WHERE (soid = @BranchId)  AND (IndDate BETWEEN @d1 AND @d2)");
+                            if (SOID == "3")
+                            {
+                                SOID = "7";
+                            }
                             cmd.Parameters.Add("@BranchId", SOID);
                             if (ServerDateCurrentdate.Day == 31 && ServerDateCurrentdate.Month == 3)
                             {
@@ -10638,6 +10642,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             cmd.Parameters.Add("@BranchId", AgentId);
                             cmd.Parameters.Add("@IndDate", GetLowDate(fromdate));
                             cmd.Parameters.Add("@agentdcno", agentdcNo);
+                            if (SOID == "3")
+                            {
+                                SOID = "7";
+                            }
                             cmd.Parameters.Add("@soid", SOID);
                             cmd.Parameters.Add("@stateid", stateid);
                             cmd.Parameters.Add("@companycode", companycode);
@@ -10652,6 +10660,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     if (DcNo == "")
                     {
                         cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM agentdc WHERE (soid = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
+                        if (SOID == "3")
+                        {
+                            SOID = "7";
+                        }
                         cmd.Parameters.Add("@BranchId", SOID);
                         if (ServerDateCurrentdate.Day == 31 && ServerDateCurrentdate.Month == 3)
                         {
@@ -10669,6 +10681,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         cmd.Parameters.Add("@BranchId", AgentId);
                         cmd.Parameters.Add("@IndDate", GetLowDate(fromdate));
                         cmd.Parameters.Add("@agentdcno", agentdcNo);
+                        if (SOID == "3")
+                        {
+                            SOID = "7";
+                        }
                         cmd.Parameters.Add("@soid", SOID);
                         cmd.Parameters.Add("@stateid", stateid);
                         cmd.Parameters.Add("@companycode", companycode);
@@ -11278,6 +11294,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         if (ServerDateCurrentdate.ToString("dd/MM/yyyy") == fromdate.ToString("dd/MM/yyyy"))
                         {
                             cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM agenttaxdc WHERE (soid = @BranchId)  AND (IndDate BETWEEN @d1 AND @d2)");
+                            if (SOID == "3")
+                            {
+                                SOID = "7";
+                            }
                             cmd.Parameters.Add("@BranchId", SOID);
                             if (ServerDateCurrentdate.Day == 31 && ServerDateCurrentdate.Month == 3)
                             {
@@ -11295,6 +11315,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             cmd.Parameters.Add("@BranchId", AgentId);
                             cmd.Parameters.Add("@IndDate", GetLowDate(fromdate));
                             cmd.Parameters.Add("@agentdcno", agentdcNo);
+                            if (SOID == "3")
+                            {
+                                SOID = "7";
+                            }
                             cmd.Parameters.Add("@soid", SOID);
                             cmd.Parameters.Add("@stateid", stateid);
                             cmd.Parameters.Add("@companycode", companycode);
@@ -11311,6 +11335,11 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         if (fromdate.ToString("dd/MM/yyyy") == fromdate.ToString("dd/MM/yyyy"))
                         {
                             cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM agenttaxdc WHERE (soid = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
+                            
+                            if (SOID == "3")
+                            {
+                                SOID = "7";
+                            }
                             cmd.Parameters.Add("@BranchId", SOID);
                             if (ServerDateCurrentdate.Day == 31 && ServerDateCurrentdate.Month == 3)
                             {
@@ -11328,6 +11357,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             cmd.Parameters.Add("@BranchId", AgentId);
                             cmd.Parameters.Add("@IndDate", GetLowDate(fromdate));
                             cmd.Parameters.Add("@agentdcno", agentdcNo);
+                            if (SOID == "3")
+                            {
+                                SOID = "7";
+                            }
                             cmd.Parameters.Add("@soid", SOID);
                             cmd.Parameters.Add("@stateid", stateid);
                             cmd.Parameters.Add("@companycode", companycode);
@@ -11990,6 +12023,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     if (ServerDateCurrentdate.ToString("dd/MM/yyyy") == fromdate.ToString("dd/MM/yyyy"))
                                     {
                                         cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM Agentdc WHERE (soid = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
+                                        if (SOID == "3")
+                                        {
+                                            SOID = "7";
+                                        }
                                         cmd.Parameters.AddWithValue("@BranchId", SOID);
                                         cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril.AddDays(-1)));
                                         cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch.AddDays(-1)));
@@ -11999,6 +12036,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         cmd.Parameters.AddWithValue("@BranchId", AgentId);
                                         cmd.Parameters.AddWithValue("@IndDate", GetLowDate(fromdate).AddDays(-1));
                                         cmd.Parameters.AddWithValue("@agentdcno", agentdcNo);
+                                        if (SOID == "3")
+                                        {
+                                            SOID = "7";
+                                        }
                                         cmd.Parameters.AddWithValue("@soid", SOID);
                                         cmd.Parameters.AddWithValue("@stateid", stateid);
                                         cmd.Parameters.AddWithValue("@companycode", companycode);
@@ -12019,6 +12060,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     if (ServerDateCurrentdate.ToString("dd/MM/yyyy") == fromdate.ToString("dd/MM/yyyy"))
                                     {
                                         cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM Agentdc WHERE (soid = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
+                                        if (SOID == "3")
+                                        {
+                                            SOID = "7";
+                                        }
                                         cmd.Parameters.AddWithValue("@BranchId", SOID);
                                         cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril.AddDays(-1)));
                                         cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch.AddDays(-1)));
@@ -12028,6 +12073,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         cmd.Parameters.AddWithValue("@BranchId", AgentId);
                                         cmd.Parameters.AddWithValue("@IndDate", GetLowDate(fromdate).AddDays(-1));
                                         cmd.Parameters.AddWithValue("@agentdcno", agentdcNo);
+                                        if (SOID == "3")
+                                        {
+                                            SOID = "7";
+                                        }
                                         cmd.Parameters.AddWithValue("@soid", SOID);
                                         cmd.Parameters.AddWithValue("@stateid", stateid);
                                         cmd.Parameters.AddWithValue("@companycode", companycode);
@@ -12204,6 +12253,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             if (ServerDateCurrentdate.ToString("dd/MM/yyyy") == fromdate.ToString("dd/MM/yyyy"))
                                             {
                                                 cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM Agentdc WHERE (soid = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
+                                                if (SOID == "3")
+                                                {
+                                                    SOID = "7";
+                                                }
                                                 cmd.Parameters.AddWithValue("@BranchId", SOID);
                                                 cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril.AddDays(-1)));
                                                 cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch.AddDays(-1)));
@@ -12213,6 +12266,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                                 cmd.Parameters.AddWithValue("@BranchId", AgentId);
                                                 cmd.Parameters.AddWithValue("@IndDate", GetLowDate(fromdate).AddDays(-1));
                                                 cmd.Parameters.AddWithValue("@agentdcno", agentdcNo);
+                                                if (SOID == "3")
+                                                {
+                                                    SOID = "7";
+                                                }
                                                 cmd.Parameters.AddWithValue("@soid", SOID);
                                                 cmd.Parameters.AddWithValue("@stateid", stateid);
                                                 cmd.Parameters.AddWithValue("@companycode", companycode);
@@ -12233,6 +12290,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             if (ServerDateCurrentdate.ToString("dd/MM/yyyy") == fromdate.ToString("dd/MM/yyyy"))
                                             {
                                                 cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM Agentdc WHERE (soid = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
+                                                if (SOID == "3")
+                                                {
+                                                    SOID = "7";
+                                                }
                                                 cmd.Parameters.AddWithValue("@BranchId", SOID);
                                                 cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril.AddDays(-1)));
                                                 cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch.AddDays(-1)));
@@ -12242,6 +12303,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                                 cmd.Parameters.AddWithValue("@BranchId", AgentId);
                                                 cmd.Parameters.AddWithValue("@IndDate", GetLowDate(fromdate).AddDays(-1));
                                                 cmd.Parameters.AddWithValue("@agentdcno", agentdcNo);
+                                                if (SOID == "3")
+                                                {
+                                                    SOID = "7";
+                                                }
                                                 cmd.Parameters.AddWithValue("@soid", SOID);
                                                 cmd.Parameters.AddWithValue("@stateid", stateid);
                                                 cmd.Parameters.AddWithValue("@companycode", companycode);
@@ -12491,6 +12556,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     if (ServerDateCurrentdate.ToString("dd/MM/yyyy") == fromdate.ToString("dd/MM/yyyy"))
                                     {
                                         cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM agenttaxdc WHERE (soid = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
+                                        if (SOID == "3")
+                                        {
+                                            SOID = "7";
+                                        }
                                         cmd.Parameters.AddWithValue("@BranchId", SOID);
                                         cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril.AddDays(-1)));
                                         cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch.AddDays(-1)));
@@ -12500,6 +12569,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         cmd.Parameters.AddWithValue("@BranchId", AgentId);
                                         cmd.Parameters.AddWithValue("@IndDate", GetLowDate(fromdate).AddDays(-1));
                                         cmd.Parameters.AddWithValue("@agentdcno", agentdcNo);
+                                        if (SOID == "3")
+                                        {
+                                            SOID = "7";
+                                        }
                                         cmd.Parameters.AddWithValue("@soid", SOID);
                                         cmd.Parameters.AddWithValue("@stateid", stateid);
                                         cmd.Parameters.AddWithValue("@companycode", companycode);
@@ -12520,6 +12593,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     if (ServerDateCurrentdate.ToString("dd/MM/yyyy") == fromdate.ToString("dd/MM/yyyy"))
                                     {
                                         cmd = new MySqlCommand("SELECT IFNULL(MAX(agentdcno), 0) + 1 AS Sno FROM agenttaxdc WHERE (soid = @BranchId) AND (IndDate BETWEEN @d1 AND @d2)");
+                                        if (SOID == "3")
+                                        {
+                                            SOID = "7";
+                                        }
                                         cmd.Parameters.AddWithValue("@BranchId", SOID);
                                         cmd.Parameters.AddWithValue("@d1", GetLowDate(dtapril.AddDays(-1)));
                                         cmd.Parameters.AddWithValue("@d2", GetHighDate(dtmarch.AddDays(-1)));
@@ -12529,6 +12606,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                         cmd.Parameters.AddWithValue("@BranchId", AgentId);
                                         cmd.Parameters.AddWithValue("@IndDate", GetLowDate(fromdate).AddDays(-1));
                                         cmd.Parameters.AddWithValue("@agentdcno", agentdcNo);
+                                        if (SOID == "3")
+                                        {
+                                            SOID = "7";
+                                        }
                                         cmd.Parameters.AddWithValue("@soid", SOID);
                                         cmd.Parameters.AddWithValue("@stateid", stateid);
                                         cmd.Parameters.AddWithValue("@companycode", companycode);
@@ -45255,7 +45336,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             DataTable dtall = new DataTable();
             if (type == "invoice")
             {
-                cmd = new MySqlCommand("SELECT  ROUND(SUM(indents_subtable.unitQty)) AS DeliveryQty,ROUND(SUM(indents_subtable.unitQty*indents_subtable.UnitCost)) AS TotalAmount,productsdata.SubCat_sno, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName,branchdata.gstno FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno <>'' and branchdata.gstno <>'0') and (productsdata.igst <>'' and productsdata.igst<>'0') OR (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno <>'' and branchdata.gstno <>'0') and (productsdata.igst <>'' and productsdata.igst<>'0') GROUP BY  branchdata.sno ORDER BY branchdata.sno");
+                cmd = new MySqlCommand("SELECT  ROUND(SUM(indents_subtable.unitQty)) AS DeliveryQty,ROUND(SUM(indents_subtable.unitQty*indents_subtable.UnitCost)) AS TotalAmount,productsdata.SubCat_sno, indents_subtable.UnitCost, branchdata.BranchName, branchdata.sno, productsdata.sno AS prodsno, productsdata.ProductName,branchdata.gstno FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id,IndentType, I_date FROM indents WHERE (I_date BETWEEN @starttime AND @endtime)) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (modifiedroutes.BranchID = @BranchID) AND (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno <>'' and branchdata.gstno <>'0') and (productsdata.igst <>'' and productsdata.igst<>'0') OR (modifiedroutes.BranchID = @BranchID)  AND (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) and (branchdata.gstno <>'' and branchdata.gstno <>'0') and (productsdata.igst <>'' and productsdata.igst<>'0') GROUP BY  branchdata.sno ORDER BY branchdata.sno");
                 cmd.Parameters.AddWithValue("@BranchID", soid);
                 cmd.Parameters.AddWithValue("@starttime", GetLowDate(fromdate));
                 cmd.Parameters.AddWithValue("@endtime", GetHighDate(fromdate));
