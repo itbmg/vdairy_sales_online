@@ -94,6 +94,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 				case "get_Agent_Bal_Trans":
                     get_Agent_Bal_Trans(context);
                     break;
+                case "get_Agent_Inv_Bal_Trans":
+                    get_Agent_Inv_Bal_Trans(context);
+                    break;
                 case "GetIndentType":
                     GetIndentType(context);
                     break;
@@ -909,6 +912,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 //case "btn_Click_GetInvoice":
                 //    btn_Click_GetInvoice(context);
                 //    break;
+                case "GetInvetory":
+                    GetInvetory(context);
+                    break;
                 default:
                     var jsonString = String.Empty;
                     context.Request.InputStream.Position = 0;
@@ -942,7 +948,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         {
                             Edit_Agent_Bal_Trans(context);
                         }
-
+                        if (obj.operation == "Edit_Agent_Inv_Bal_Trans")
+                        {
+                            Edit_Agent_Inv_Bal_Trans(context);
+                        }
                         //added by akbar 20-May-2022
                         if (obj.operation == "CollectioninventrySaveClick")
                         {
@@ -1189,6 +1198,133 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         }
     }
 
+    class InvetaryClass
+    {
+        public string InvName { set; get; }
+        public string Inv_sno { set; get; }
+    }
+    private void GetInvetory(HttpContext context)
+    {
+        try
+        {
+            vdbmngr = new VehicleDBMgr();
+            cmd = new MySqlCommand("SELECT  invmaster.sno AS invsno, invmaster.InvName from Invmaster");
+            DataTable dtAgent = vdbmngr.SelectQuery(cmd).Tables[0];
+            List<InvetaryClass> InventaryList = new List<InvetaryClass>();
+            foreach (DataRow dr in dtAgent.Rows)
+            {
+                InvetaryClass getInv = new InvetaryClass();
+                getInv.Inv_sno = dr["invsno"].ToString();
+                getInv.InvName = dr["InvName"].ToString();
+                InventaryList.Add(getInv);
+            }
+            string response = GetJson(InventaryList);
+            context.Response.Write(response);
+
+        }
+        catch (Exception ex)
+        {
+        }
+    }
+    class Agent_Inv_Bal_Trans
+    {
+        public string AgentId { set; get; }
+        public string AgentName { set; get; }
+        public string opp_balance { set; get; }
+        public string inddate { set; get; }
+        public string issued { set; get; }
+        public string received { set; get; }
+        public string clo_balance { set; get; }
+        public string sno { set; get; }
+        public string Inv_sno { set; get; }
+        public string InvName { set; get; }
+    }
+    class Agent_Inv_Bal_Trans_Model
+    {
+        public List<Agent_Inv_Bal_Trans> filldetails { set; get; }
+    }
+    private void get_Agent_Inv_Bal_Trans(HttpContext context)
+    {
+        try
+        {
+            vdbmngr = new VehicleDBMgr();
+            string AgentId = context.Request["AgentId"];
+            string fromDate = context.Request["fromdate"];
+            string todate = context.Request["todate"];
+            string inv_sno = context.Request["inv_sno"];
+            DateTime dt_fromdate = Convert.ToDateTime(fromDate);
+            DateTime dt_todate = Convert.ToDateTime(todate); //sno,agentid,inv_sno,inddate,opp_balance,issued,received,clo_balance,entryby,modified_by,createdate,modifieddate,doe
+            cmd = new MySqlCommand("SELECT InvMaster.InvName,InvMaster.sno as Inv_sno,agent_inv_bal_trans.sno,agent_inv_bal_trans.agentid,branchdata.branchname as AgentName, agent_inv_bal_trans.opp_balance, agent_inv_bal_trans.inddate, agent_inv_bal_trans.issued,agent_inv_bal_trans.received, agent_inv_bal_trans.clo_balance FROM agent_inv_bal_trans INNER JOIN branchdata ON agent_inv_bal_trans.agentid=branchdata.sno INNER JOIN InvMaster ON agent_inv_bal_trans.inv_sno=InvMaster.sno  WHERE (agent_inv_bal_trans.agentid = @agentid) AND (agent_inv_bal_trans.inddate BETWEEN @d1 AND @d2) AND (agent_inv_bal_trans.inv_sno=@inv_sno) ORDER BY agent_inv_bal_trans.inddate");
+            cmd.Parameters.AddWithValue("@agentid", AgentId);
+            cmd.Parameters.AddWithValue("@inv_sno", inv_sno);
+            cmd.Parameters.AddWithValue("@d1", GetLowDate(dt_fromdate).AddDays(-1));
+            cmd.Parameters.AddWithValue("@d2", GetHighDate(dt_todate).AddDays(-1));
+            DataTable dtAgent = vdbmngr.SelectQuery(cmd).Tables[0];
+            List<Agent_Inv_Bal_Trans> AgentBalList = new List<Agent_Inv_Bal_Trans>();
+            if (dtAgent.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dtAgent.Rows)
+                {
+                    Agent_Inv_Bal_Trans getBalance = new Agent_Inv_Bal_Trans();
+                    getBalance.sno = dr["sno"].ToString();
+                    getBalance.AgentId = dr["agentid"].ToString();
+                    getBalance.AgentName = dr["AgentName"].ToString();
+                    getBalance.opp_balance = dr["opp_balance"].ToString();
+                    DateTime dtDOE = Convert.ToDateTime(dr["inddate"].ToString()).AddDays(1);
+                    getBalance.inddate = dtDOE.ToString("dd/MMM/yyyy");
+                    getBalance.issued = dr["issued"].ToString();
+                    getBalance.received = dr["received"].ToString();
+                    getBalance.clo_balance = dr["clo_balance"].ToString();
+                    getBalance.Inv_sno = dr["Inv_sno"].ToString();
+                    getBalance.InvName = dr["InvName"].ToString();
+                    AgentBalList.Add(getBalance);
+                }
+                string response = GetJson(AgentBalList);
+                context.Response.Write(response);
+            }
+
+        }
+        catch (Exception ex)
+        {
+        }
+    }
+    private void Edit_Agent_Inv_Bal_Trans(HttpContext context)
+    {
+        try
+        {
+            vdbmngr = new VehicleDBMgr();
+            var js = new JavaScriptSerializer();
+            string empid = context.Session["empid"].ToString();
+            DateTime ServerDateCurrentdate = VehicleDBMgr.GetTime(vdbmngr.conn);
+            var title1 = context.Request.Params[1];
+            Agent_Inv_Bal_Trans_Model obj = js.Deserialize<Agent_Inv_Bal_Trans_Model>(title1);
+            foreach (Agent_Inv_Bal_Trans o in obj.filldetails)
+            {
+                DateTime dtIndent = Convert.ToDateTime(o.inddate);
+                cmd = new MySqlCommand("UPDATE agent_inv_bal_trans set opp_balance=@opp_balance,issued=@issued,received=@received,clo_balance=@clo_balance,entryby=@entryby,createdate=@createdate  where sno=@sno and agentid=@agentid AND inddate between @d1 and @d2 and inv_sno=@inv_sno");
+                cmd.Parameters.AddWithValue("@d1", GetLowDate(dtIndent).AddDays(-1));
+                cmd.Parameters.AddWithValue("@d2", GetHighDate(dtIndent).AddDays(-1));
+                cmd.Parameters.AddWithValue("@issued", o.issued);
+                cmd.Parameters.AddWithValue("@opp_balance", o.opp_balance);
+                cmd.Parameters.AddWithValue("@received", o.received);
+                cmd.Parameters.AddWithValue("@clo_balance", o.clo_balance);
+                cmd.Parameters.AddWithValue("@agentid", o.AgentId);
+                cmd.Parameters.AddWithValue("@sno", o.sno);
+                cmd.Parameters.AddWithValue("@createdate", ServerDateCurrentdate);
+                cmd.Parameters.AddWithValue("@entryby", empid);
+                cmd.Parameters.AddWithValue("@inv_sno", o.Inv_sno);
+                vdbmngr.Update(cmd);
+            }
+            string msg = "Agent Balance Successfully Updated";
+            string Response = GetJson(msg);
+            context.Response.Write(Response);
+        }
+        catch (Exception ex)
+        {
+            string Response = GetJson(ex.Message);
+            context.Response.Write(Response);
+        }
+    }
     class invcollectionsave
     {
         public string op { set; get; }
