@@ -365,7 +365,11 @@ public partial class NewAgentStatement : System.Web.UI.Page
                         grand_totalsalesvalue += salesvalue;
                         //double paidamount = 0;  
                         double.TryParse(drtrans["paidamount"].ToString(), out paidamount);
-                        paidamount = paidamount - ftotalbankTransfer;
+                        if(paidamount!=0)
+                        {
+                            double tot = banktransfervalue + Phonepayvalue + jvvalue;
+                            paidamount = paidamount - tot;
+                        }
                         newrow["Paid Amount"] = Math.Round(paidamount); ;
                         ftotalpaidamount += paidamount;
                         grand_totalpaidamount += paidamount;

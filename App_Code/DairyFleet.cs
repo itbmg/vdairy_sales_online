@@ -16513,7 +16513,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         }
                         GetDetails.companyphone = dtbranchaddress.Rows[0]["phonenumber"].ToString();
                         GetDetails.companyemail = dtbranchaddress.Rows[0]["emailid"].ToString();
-                        GetDetails.city = dr["city"].ToString();
+                        //GetDetails.city = dr["city"].ToString();
                         GetDetails.fromstatename = context.Session["statename"].ToString();
                         GetDetails.fromstatecode = context.Session["statecode"].ToString();
                         GetDetails.fromgstin = context.Session["gstin"].ToString();
@@ -16701,7 +16701,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         }
                         GetDetails.companyphone = dtbranchaddress.Rows[0]["phonenumber"].ToString();
                         GetDetails.companyemail = dtbranchaddress.Rows[0]["emailid"].ToString();
-                        GetDetails.city = dr["city"].ToString();
+                        //GetDetails.city = dr["city"].ToString();
                         GetDetails.fromstatename = context.Session["statename"].ToString();
                         GetDetails.fromstatecode = context.Session["statecode"].ToString();
                         GetDetails.fromgstin = context.Session["gstin"].ToString();
@@ -21060,14 +21060,14 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 cmd.Parameters.AddWithValue("@ReceivedFrom", "Agent");
                                 cmd.Parameters.AddWithValue("@AgentID", BranchID);
                                 cmd.Parameters.AddWithValue("@AmountPaid", PaidAmount);
-                                if (soid == "570")
-                                {
+                                //if (soid == "570")
+                                //{
                                     cmd.Parameters.AddWithValue("DOE", PaidDate);
-                                }
-                                if (soid != "570")
-                                {
-                                    cmd.Parameters.AddWithValue("DOE", ServerDateCurrentdate);
-                                }
+                                //}
+                                //if (soid != "570")
+                                //{
+                                //    cmd.Parameters.AddWithValue("DOE", ServerDateCurrentdate);
+                                //}
                                 cmd.Parameters.AddWithValue("@Create_by", context.Session["UserSno"].ToString());
                                 cmd.Parameters.AddWithValue("@Remarks", Remarks);
                                 cmd.Parameters.AddWithValue("@OppBal", amount);
@@ -21266,14 +21266,14 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             cmd.Parameters.AddWithValue("@AmountPaid", PaidAmount);
                             cmd.Parameters.AddWithValue("@Remarks", Remarks);
                             cmd.Parameters.AddWithValue("@headsno", HeadSno);
-                            if (soid == "570")
-                            {
+                            //if (soid == "570")
+                            //{
                                 cmd.Parameters.AddWithValue("@PaidDate", PaidDate);
-                            }
-                            if (soid != "570")
-                            {
-                                cmd.Parameters.AddWithValue("@PaidDate", ServerDateCurrentdate);
-                            }
+                            //}
+                            //if (soid != "570")
+                            //{
+                            //    cmd.Parameters.AddWithValue("@PaidDate", ServerDateCurrentdate);
+                            //}
                             cmd.Parameters.AddWithValue("@PayTime", ServerDateCurrentdate);
                             cmd.Parameters.AddWithValue("@UserData_sno", Username);
                             cmd.Parameters.AddWithValue("@PaymentType", paymenttype);
