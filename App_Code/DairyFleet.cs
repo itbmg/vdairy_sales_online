@@ -14960,7 +14960,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             }
             else
             {
-                cmd = new MySqlCommand("SELECT tripsubdata.ProductId,productsdata.itemcode,productsdata.SubCat_sno as subcatid,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName, productsdata.VatPercent, branchproducts.VatPercent AS vp, tripsubdata.Price, ROUND(tripsubdata.Qty, 2) AS Qty,ROUND(tripsubdata.offerqty, 2) AS Offerqty,ROUND(tripsubdata.pkt_qty, 2) AS pkt_qty,tripdata.AssignDate, tripdata.BranchID, branchproducts_1.VatPercent AS plantvp FROM tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno INNER JOIN branchproducts branchproducts_1 ON tripdata.BranchID = branchproducts_1.branch_sno AND branchproducts.product_sno = branchproducts_1.product_sno WHERE (tripdata.Sno = @tripdataId) AND (branchproducts.branch_sno = @BranchID) GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
+                cmd = new MySqlCommand("SELECT tripsubdata.ProductId,tripsubdata.unitcost,tripsubdata.pkt_rate,productsdata.itemcode,productsdata.SubCat_sno as subcatid,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName, productsdata.VatPercent, branchproducts.VatPercent AS vp, tripsubdata.Price, ROUND(tripsubdata.Qty, 2) AS Qty,ROUND(tripsubdata.offerqty, 2) AS Offerqty,ROUND(tripsubdata.pkt_qty, 2) AS pkt_qty,tripdata.AssignDate, tripdata.BranchID, branchproducts_1.VatPercent AS plantvp FROM tripdata INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno INNER JOIN branchproducts branchproducts_1 ON tripdata.BranchID = branchproducts_1.branch_sno AND branchproducts.product_sno = branchproducts_1.product_sno WHERE (tripdata.Sno = @tripdataId) AND (branchproducts.branch_sno = @BranchID) GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
             }
             cmd.Parameters.AddWithValue("@BranchID", branchsno);
             cmd.Parameters.AddWithValue("@tripdataId", TripId);
@@ -15030,548 +15030,131 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                 DateTime dtjuly = new DateTime();
                                 string jul = "7/18/2022";
                                 dtjuly = DateTime.Parse(jul);
-                                if (dtjuly > AssignDate.AddDays(1))
+                                if (dr["igst"].ToString() != "0")
                                 {
-                                    string categoryid = "";
-                                    foreach (DataRow drcate in dtcategory.Select("subcatsno='" + dr["subcatid"].ToString() + "'"))
+                                    DataRow newrow = dtTotQty.NewRow();
+                                    newrow["Sl No"] = i++.ToString();
+                                    newrow["itemcode"] = dr["itemcode"].ToString();
+                                    newrow["Product Name"] = dr["ProductName"].ToString();
+                                    newrow["HSN Code"] = dr["hsncode"].ToString();
+                                    newrow["Uom"] = dr["Units"].ToString();
+                                    newrow["Uomqty"] = dr["Uomqty"].ToString();
+                                    float qty = 0;
+                                    float.TryParse(dr["Qty"].ToString(), out qty);
+                                    float Price = 0;
+                                    float.TryParse(dr["Price"].ToString(), out Price);
+                                    newrow["Qty"] = Math.Round(qty, 2);
+                                    string Categoryname = drprdt["Categoryname"].ToString();
+                                    if (Categoryname == "MILK")
                                     {
-                                        categoryid = drcate["catsno"].ToString();
+                                        TotalMilk += qty;
                                     }
-                                    string[] catarr = { "2", "12", "39", "47", "48" };
-                                    if (catarr.Contains(categoryid))
+                                    string UnitCost = dr["Price"].ToString();
+                                    double rate = 0;
+                                    if (DispMode == "Free")
+                                    {
+                                        rate = 0;
+                                        double.TryParse(drprdt["unitprice"].ToString(), out rate);
+                                    }
+                                    else
+                                    {
+                                        double.TryParse(drprdt["unitprice"].ToString(), out rate);
+                                    }
+                                    if (DispMode == "AGENT")
+                                    {
+                                        string mar = "3/30/2024";
+                                        dtjuly = DateTime.Parse(mar);
+                                        if (dtjuly >= AssignDate)
+                                        {
+                                            String unitprice = drprdt["unitprice"].ToString();
+                                            if (unitprice == "0")
+                                            {
+                                                unitprice = drprdt["BUnitPrice"].ToString();
+                                            }
+                                            double.TryParse(unitprice, out rate);
+                                        }
+                                        else
+                                        {
+                                            String unitprice = dr["pkt_rate"].ToString();
+                                            if (unitprice == "0")
+                                            {
+                                                unitprice = drprdt["BUnitPrice"].ToString();
+                                            }
+                                            double.TryParse(unitprice, out rate);
+                                        }
+                                    }
+                                    if (DispMode == "Others")
+                                    {
+                                        String unitprice = drprdt["unitprice"].ToString();
+                                        if (unitprice == "0")
+                                        {
+                                            unitprice = drprdt["BUnitPrice"].ToString();
+                                        }
+                                        double.TryParse(unitprice, out rate);
+                                    }
+                                    if (UnitCost == "")
                                     {
                                     }
                                     else
                                     {
-                                        if (dr["igst"].ToString() != "0")
-                                        {
-                                            DataRow newrow = dtTotQty.NewRow();
-                                            newrow["Sl No"] = i++.ToString();
-                                            newrow["itemcode"] = dr["itemcode"].ToString();
-                                            newrow["Product Name"] = dr["ProductName"].ToString();
-                                            newrow["HSN Code"] = dr["hsncode"].ToString();
-                                            newrow["Uom"] = dr["Units"].ToString();
-                                            newrow["Uomqty"] = dr["Uomqty"].ToString();
-                                            float qty = 0;
-                                            float.TryParse(dr["Qty"].ToString(), out qty);
-                                            float Price = 0;
-                                            float.TryParse(dr["Price"].ToString(), out Price);
-                                            newrow["Qty"] = Math.Round(qty, 2);
-                                            string Categoryname = drprdt["Categoryname"].ToString();
-                                            if (Categoryname == "MILK")
-                                            {
-                                                TotalMilk += qty;
-                                            }
-                                            string UnitCost = dr["Price"].ToString();
-                                            double rate = 0;
-                                            if (DispMode == "Free")
-                                            {
-                                                rate = 0;
-                                                double.TryParse(drprdt["unitprice"].ToString(), out rate);
-                                            }
-                                            else
-                                            {
-                                                double.TryParse(drprdt["unitprice"].ToString(), out rate);
-                                            }
-                                            if (DispMode == "AGENT")
-                                            {
-                                                String unitprice = drprdt["unitprice"].ToString();
-                                                if (unitprice == "0")
-                                                {
-                                                    unitprice = drprdt["BUnitPrice"].ToString();
-                                                }
-                                                double.TryParse(unitprice, out rate);
-                                            }
-                                            if (DispMode == "Others")
-                                            {
-                                                String unitprice = drprdt["unitprice"].ToString();
-                                                if (unitprice == "0")
-                                                {
-                                                    unitprice = drprdt["BUnitPrice"].ToString();
-                                                }
-                                                double.TryParse(unitprice, out rate);
-                                            }
-                                            if (UnitCost == "")
-                                            {
-                                            }
-                                            else
-                                            {
-                                                rate = Price;
-                                            }
-                                            double ltrqty = 0;
-                                            double ltr_rate = 0; double pkt_qty = 0; double Offerpkt_qty = 0; double pkt_rate = 0;
-                                            EInvoice obj = new EInvoice();
-                                            if (dr["Units"].ToString() == "Nos")
-                                            {
-                                                double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
-                                                double.TryParse(dr["Offerqty"].ToString(), out Offerpkt_qty);
-                                                double.TryParse(dr["Qty"].ToString(), out ltrqty);
-                                                pkt_qty = pkt_qty;
-                                                ltrqty = ltrqty;
-                                                ltr_rate = rate;
-                                                pkt_rate = rate;
-                                            }
-                                            else
-                                            {
-                                                //pkt_qty = obj.ConvertingPackets(dr["Qty"].ToString(), dr["Uomqty"].ToString(), rate.ToString());
-
-                                                //ltr_rate = obj.Converting_Ltr_rate(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
-
-                                                //ltrqty = obj.ConvertingLtrs(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
-
-                                                //pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
-                                                double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
-                                                double.TryParse(dr["Offerqty"].ToString(), out Offerpkt_qty);
-                                                
-                                                double.TryParse(dr["Qty"].ToString(), out ltrqty);
-                                                pkt_qty = pkt_qty;
-                                                ltrqty = ltrqty;
-
-                                                //ltr_rate = rate;
-                                                pkt_rate = rate;
-                                            }
-
-                                            rate = pkt_rate;
-                                            //double UomQty = 0;
-                                            //double.TryParse(dr["Uomqty"].ToString(), out UomQty);
-                                            //double perltrCost = 0;
-                                            //perltrCost = (1000 / UomQty) * rate;
-                                            //perltrCost = Math.Round(perltrCost, 2);
-                                            //rate = perltrCost;
-                                            newrow["pkt_qty"] = pkt_qty;
-                                            newrow["Offerpkt_qty"] = Offerpkt_qty;
-                                            newrow["Discount"] = 0;
-                                            double PAmount = 0;
-                                            double tot_vatamount = 0;
-                                            //Offer Details
-                                            double OfferPAmount = 0;
-                                            double Offertot_vatamount = 0;
-                                            if (fromstate == tostate)
-                                            {
-                                                if (DispMode == "Staff" || DispMode == "AGENT" || DispMode == "Others" || DispMode == "Free" || DispMode == "LOCAL")
-                                                {
-                                                    double sgstamount = 0;
-                                                    double cgstamount = 0;
-                                                    double Igst = 0;
-                                                    double Igstamount = 0;
-                                                    double totRate = 0;
-                                                    double.TryParse(dr["Igst"].ToString(), out Igst);
-                                                    double Igstcon = 100 + Igst;
-                                                    Igstamount = (rate / Igstcon) * Igst;
-                                                    Igstamount = Math.Round(Igstamount, 2);
-                                                    totRate = Igstamount;
-                                                    double Vatrate = rate - totRate;
-                                                    Vatrate = Math.Round(Vatrate, 2);
-                                                    newrow["Rate"] = Vatrate.ToString();
-                                                    PAmount = pkt_qty * Vatrate;
-                                                   
-                                                    //PAmount = qty * Vatrate;
-                                                    newrow["Taxable Value"] = Math.Round(PAmount, 2);
-                                                    tot_vatamount = (PAmount * Igst) / 100;
-                                                    sgstamount = (tot_vatamount / 2);
-                                                    sgstamount = Math.Round(sgstamount, 2);
-                                                    newrow["sgst"] = dr["sgst"].ToString();
-                                                    newrow["sgstamount"] = sgstamount.ToString();
-                                                    cgstamount = (tot_vatamount / 2);
-                                                    cgstamount = Math.Round(cgstamount, 2);
-                                                    newrow["cgst"] = dr["cgst"].ToString();
-                                                    newrow["cgstamount"] = cgstamount.ToString();
-                                                    newrow["Igst"] = 0;
-                                                    newrow["Igstamount"] = 0;
-
-
-                                                    //Offer Calculation
-                                                    
-                                                    double Offersgstamount = 0;
-                                                    double Offercgstamount = 0;
-                                                    double OfferIgst = 0;
-                                                    double OfferIgstamount = 0;
-                                                    double OffertotRate = 0;
-                                                    
-                                                    double.TryParse(dr["Igst"].ToString(), out OfferIgst);
-                                                    double OfferIgstcon = 100 + OfferIgst;
-                                                    OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
-                                                    OfferIgstamount = Math.Round(OfferIgstamount, 2);
-                                                    OffertotRate = OfferIgstamount;
-                                                    double OfferVatrate = rate - OffertotRate;
-                                                    OfferVatrate = Math.Round(OfferVatrate, 2);
-                                                    newrow["OfferRate"] = OfferVatrate.ToString();
-                                                    OfferPAmount = Offerpkt_qty * OfferVatrate;
-
-                                                    
-                                                    newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
-                                                    Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
-                                                    Offersgstamount = (Offertot_vatamount / 2);
-                                                    Offersgstamount = Math.Round(Offersgstamount, 2);
-                                                    newrow["Offersgst"] = dr["sgst"].ToString();
-                                                    newrow["Offersgstamount"] = Offersgstamount.ToString();
-                                                    Offercgstamount = (Offertot_vatamount / 2);
-                                                    Offercgstamount = Math.Round(Offercgstamount, 2);
-                                                    newrow["Offercgst"] = dr["cgst"].ToString();
-                                                    newrow["Offercgstamount"] = Offercgstamount.ToString();
-                                                    newrow["OfferIgst"] = 0;
-                                                    newrow["OfferIgstamount"] = 0;
-
-                                                }
-                                                else
-                                                {
-                                                    double sgstamount = 0;
-                                                    double cgstamount = 0;
-                                                    double Igst = 0;
-                                                    double Igstamount = 0;
-                                                    double totRate = 0;
-                                                    double.TryParse(dr["Igst"].ToString(), out Igst);
-                                                    double Igstcon = 100 + Igst;
-                                                    Igstamount = (rate / Igstcon) * Igst;
-                                                    Igstamount = Math.Round(Igstamount, 2);
-                                                    totRate = Igstamount;
-                                                    double Vatrate = rate - totRate;
-                                                    Vatrate = Math.Round(Vatrate, 2);
-                                                    newrow["Rate"] = Vatrate.ToString();
-                                                    //PAmount = qty * Vatrate;
-                                                    PAmount = pkt_qty * Vatrate;
-                                                    newrow["Taxable Value"] = Math.Round(PAmount, 2);
-                                                    tot_vatamount = (PAmount * Igst) / 100;
-                                                    sgstamount = (tot_vatamount / 2);
-                                                    sgstamount = Math.Round(sgstamount, 2);
-                                                    newrow["sgst"] = dr["sgst"].ToString();
-                                                    newrow["sgstamount"] = sgstamount.ToString();
-                                                    cgstamount = (tot_vatamount / 2);
-                                                    cgstamount = Math.Round(cgstamount, 2);
-                                                    newrow["cgst"] = dr["cgst"].ToString();
-                                                    newrow["cgstamount"] = cgstamount.ToString();
-                                                    newrow["Igst"] = 0;
-                                                    newrow["Igstamount"] = 0;
-
-
-                                                    //offer details
-                                                    double Offersgstamount = 0;
-                                                    double Offercgstamount = 0;
-                                                    double OfferIgst = 0;
-                                                    double OfferIgstamount = 0;
-                                                    double OffertotRate = 0;
-                                                    double.TryParse(dr["Igst"].ToString(), out OfferIgst);
-                                                    double OfferIgstcon = 100 + OfferIgst;
-                                                    OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
-                                                    OfferIgstamount = Math.Round(OfferIgstamount, 2);
-                                                    OffertotRate = OfferIgstamount;
-                                                    double OfferVatrate = rate - OffertotRate;
-                                                    OfferVatrate = Math.Round(OfferVatrate, 2);
-                                                    newrow["OfferRate"] = OfferVatrate.ToString();
-                                                    
-                                                    OfferPAmount = Offerpkt_qty * OfferVatrate;
-                                                    newrow["Taxable Value"] = Math.Round(OfferPAmount, 2);
-                                                    Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
-                                                    Offersgstamount = (Offertot_vatamount / 2);
-                                                    Offersgstamount = Math.Round(Offersgstamount, 2);
-                                                    newrow["Offersgst"] = dr["sgst"].ToString();
-                                                    newrow["Offersgstamount"] = Offersgstamount.ToString();
-                                                    Offercgstamount = (Offertot_vatamount / 2);
-                                                    Offercgstamount = Math.Round(Offercgstamount, 2);
-                                                    newrow["Offercgst"] = dr["cgst"].ToString();
-                                                    newrow["Offercgstamount"] = Offercgstamount.ToString();
-                                                    newrow["OfferIgst"] = 0;
-                                                    newrow["OfferIgstamount"] = 0;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                double Igst = 0;
-                                                double Igstamount = 0;
-                                                double totRate = 0;
-                                                double.TryParse(dr["Igst"].ToString(), out Igst);
-                                                double Igstcon = 100 + Igst;
-                                                Igstamount = (rate / Igstcon) * Igst;
-                                                Igstamount = Math.Round(Igstamount, 2);
-                                                totRate = Igstamount;
-                                                double Vatrate = rate - totRate;
-                                                Vatrate = Math.Round(Vatrate, 2);
-                                                newrow["Rate"] = Vatrate.ToString();
-                                                //PAmount = qty * Vatrate;
-                                                PAmount = pkt_qty * Vatrate;
-                                                newrow["Taxable Value"] = Math.Round(PAmount, 2);
-                                                tot_vatamount = (PAmount * Igst) / 100;
-                                                newrow["sgst"] = 0;
-                                                newrow["sgstamount"] = 0;
-                                                newrow["cgst"] = 0;
-                                                newrow["cgstamount"] = 0;
-                                                newrow["Igst"] = dr["Igst"].ToString();
-                                                tot_vatamount = Math.Round(tot_vatamount, 2);
-                                                newrow["Igstamount"] = tot_vatamount.ToString();
-
-
-
-                                                //Offer Details
-
-                                                double OfferIgst = 0;
-                                                double OfferIgstamount = 0;
-                                                double OffertotRate = 0;
-                                                double.TryParse(dr["Igst"].ToString(), out OfferIgst);
-                                                double OfferIgstcon = 100 + OfferIgst;
-                                                OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
-                                                OfferIgstamount = Math.Round(OfferIgstamount, 2);
-                                                OffertotRate = OfferIgstamount;
-                                                double OfferVatrate = rate - OffertotRate;
-                                                OfferVatrate = Math.Round(OfferVatrate, 2);
-                                                newrow["OfferRate"] = OfferVatrate.ToString();
-                                              
-                                                OfferPAmount = Offerpkt_qty * OfferVatrate;
-                                                newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
-                                                Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
-                                                newrow["Offersgst"] = 0;
-                                                newrow["Offersgstamount"] = 0;
-                                                newrow["Offercgst"] = 0;
-                                                newrow["Offercgstamount"] = 0;
-                                                newrow["OfferIgst"] = dr["Igst"].ToString();
-                                                Offertot_vatamount = Math.Round(Offertot_vatamount, 2);
-                                                newrow["Igstamount"] = Offertot_vatamount.ToString();
-                                            }
-                                            double tot_amount = PAmount + tot_vatamount;
-                                            tot_amount = Math.Round(tot_amount, 2);
-                                            newrow["totalamount"] = tot_amount;
-
-                                            //offer details
-                                            double Offertot_amount = OfferPAmount + Offertot_vatamount;
-                                            Offertot_amount = Math.Round(Offertot_amount, 2);
-                                            newrow["Offertotalamount"] = Offertot_amount;
-
-                                            dtTotQty.Rows.Add(newrow);
-                                        }
+                                        rate = Price;
                                     }
-                                }
-                                else
-                                {
-                                    if (dr["igst"].ToString() != "0")
+                                    //added by akbar ltrcost
+
+                                    double ltrqty = 0, ltr_rate = 0, pkt_qty = 0, pkt_rate = 0;
+                                    double Offerpkt_qty = 0;
+                                    EInvoice obj = new EInvoice();
+                                    if (dr["Units"].ToString() == "Nos")
                                     {
-                                        DataRow newrow = dtTotQty.NewRow();
-                                        newrow["Sl No"] = i++.ToString();
-                                        newrow["itemcode"] = dr["itemcode"].ToString();
-                                        newrow["Product Name"] = dr["ProductName"].ToString();
-                                        newrow["HSN Code"] = dr["hsncode"].ToString();
-                                        newrow["Uom"] = dr["Units"].ToString();
-                                        newrow["Uomqty"] = dr["Uomqty"].ToString();
-                                        float qty = 0;
-                                        float.TryParse(dr["Qty"].ToString(), out qty);
-                                        float Price = 0;
-                                        float.TryParse(dr["Price"].ToString(), out Price);
-                                        newrow["Qty"] = Math.Round(qty, 2);
-                                        string Categoryname = drprdt["Categoryname"].ToString();
-                                        if (Categoryname == "MILK")
+                                        double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
+                                        double.TryParse(dr["Qty"].ToString(), out ltrqty);
+                                        double.TryParse(dr["offerqty"].ToString(), out Offerpkt_qty);
+                                        pkt_qty = pkt_qty;
+                                        ltrqty = ltrqty;
+                                        ltr_rate = rate;
+                                        pkt_rate = rate;
+                                    }
+                                    else
+                                    {
+                                        //pkt_qty = obj.ConvertingPackets(dr["Qty"].ToString(), dr["Uomqty"].ToString(), rate.ToString());
+
+                                        //ltr_rate = obj.Converting_Ltr_rate(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
+
+                                        //ltrqty = obj.ConvertingLtrs(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
+
+                                        //pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
+                                        double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
+                                        double.TryParse(dr["Qty"].ToString(), out ltrqty);
+                                        double.TryParse(dr["offerqty"].ToString(), out Offerpkt_qty);
+                                        pkt_qty = pkt_qty;
+                                        ltrqty = ltrqty;
+                                        //ltr_rate = rate;
+                                        pkt_rate = rate;
+                                    }
+
+                                    rate = pkt_rate;
+
+                                    //double UomQty = 0;
+                                    //double.TryParse(dr["Uomqty"].ToString(), out UomQty);
+                                    //double perltrCost = 0;
+                                    //perltrCost = (1000 / UomQty) * rate;
+                                    //perltrCost = Math.Round(perltrCost, 2);
+                                    //rate = perltrCost;
+                                    newrow["pkt_qty"] = pkt_qty;
+                                    newrow["Offerpkt_qty"] = Offerpkt_qty;
+                                    newrow["Discount"] = 0;
+                                    double PAmount = 0;
+                                    double tot_vatamount = 0;
+
+                                    //offer variable
+                                    double OfferPAmount = 0;
+                                    double Offertot_vatamount = 0;
+                                    if (fromstate == tostate)
+                                    {
+                                        if (DispMode == "Staff" || DispMode == "AGENT" || DispMode == "Others" || DispMode == "Free" || DispMode == "LOCAL")
                                         {
-                                            TotalMilk += qty;
-                                        }
-                                        string UnitCost = dr["Price"].ToString();
-                                        double rate = 0;
-                                        if (DispMode == "Free")
-                                        {
-                                            rate = 0;
-                                            double.TryParse(drprdt["unitprice"].ToString(), out rate);
-                                        }
-                                        else
-                                        {
-                                            double.TryParse(drprdt["unitprice"].ToString(), out rate);
-                                        }
-                                        if (DispMode == "AGENT")
-                                        {
-                                            String unitprice = drprdt["unitprice"].ToString();
-                                            if (unitprice == "0")
-                                            {
-                                                unitprice = drprdt["BUnitPrice"].ToString();
-                                            }
-                                            double.TryParse(unitprice, out rate);
-                                        }
-                                        if (DispMode == "Others")
-                                        {
-                                            String unitprice = drprdt["unitprice"].ToString();
-                                            if (unitprice == "0")
-                                            {
-                                                unitprice = drprdt["BUnitPrice"].ToString();
-                                            }
-                                            double.TryParse(unitprice, out rate);
-                                        }
-                                        if (UnitCost == "")
-                                        {
-                                        }
-                                        else
-                                        {
-                                            rate = Price;
-                                        }
-                                        //added by akbar ltrcost
-
-                                        double ltrqty = 0, ltr_rate = 0, pkt_qty = 0, pkt_rate = 0;
-                                        double Offerpkt_qty = 0;
-                                        EInvoice obj = new EInvoice();
-                                        if (dr["Units"].ToString() == "Nos")
-                                        {
-                                            double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
-                                            double.TryParse(dr["Qty"].ToString(), out ltrqty);
-                                            double.TryParse(dr["offerqty"].ToString(), out Offerpkt_qty);
-                                            pkt_qty = pkt_qty;
-                                            ltrqty = ltrqty;
-                                            ltr_rate = rate;
-                                            pkt_rate = rate;
-                                        }
-                                        else
-                                        {
-                                            //pkt_qty = obj.ConvertingPackets(dr["Qty"].ToString(), dr["Uomqty"].ToString(), rate.ToString());
-
-                                            //ltr_rate = obj.Converting_Ltr_rate(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
-
-                                            //ltrqty = obj.ConvertingLtrs(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
-
-                                            //pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
-                                            double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
-                                            double.TryParse(dr["Qty"].ToString(), out ltrqty);
-                                            double.TryParse(dr["offerqty"].ToString(), out Offerpkt_qty);
-                                            pkt_qty = pkt_qty;
-                                            ltrqty = ltrqty;
-                                            //ltr_rate = rate;
-                                            pkt_rate = rate;
-                                        }
-
-                                        rate = pkt_rate;
-
-                                        //double UomQty = 0;
-                                        //double.TryParse(dr["Uomqty"].ToString(), out UomQty);
-                                        //double perltrCost = 0;
-                                        //perltrCost = (1000 / UomQty) * rate;
-                                        //perltrCost = Math.Round(perltrCost, 2);
-                                        //rate = perltrCost;
-                                        newrow["pkt_qty"] = pkt_qty;
-                                        newrow["Offerpkt_qty"] = Offerpkt_qty;
-                                        newrow["Discount"] = 0;
-                                        double PAmount = 0;
-                                        double tot_vatamount = 0;
-
-                                        //offer variable
-                                        double OfferPAmount = 0;
-                                        double Offertot_vatamount = 0;
-                                        if (fromstate == tostate)
-                                        {
-                                            if (DispMode == "Staff" || DispMode == "AGENT" || DispMode == "Others" || DispMode == "Free" || DispMode == "LOCAL")
-                                            {
-                                                double sgstamount = 0;
-                                                double cgstamount = 0;
-                                                double Igst = 0;
-                                                double Igstamount = 0;
-                                                double totRate = 0;
-                                                double.TryParse(dr["Igst"].ToString(), out Igst);
-                                                double Igstcon = 100 + Igst;
-                                                Igstamount = (rate / Igstcon) * Igst;
-                                                Igstamount = Math.Round(Igstamount, 2);
-                                                totRate = Igstamount;
-                                                double Vatrate = rate - totRate;
-                                                Vatrate = Math.Round(Vatrate, 2);
-                                                newrow["Rate"] = Vatrate.ToString();
-                                                //PAmount = qty * Vatrate;
-                                                PAmount = pkt_qty * Vatrate;
-                                                newrow["Taxable Value"] = Math.Round(PAmount, 2);
-                                                tot_vatamount = (PAmount * Igst) / 100;
-                                                sgstamount = (tot_vatamount / 2);
-                                                sgstamount = Math.Round(sgstamount, 2);
-                                                newrow["sgst"] = dr["sgst"].ToString();
-                                                newrow["sgstamount"] = sgstamount.ToString();
-                                                cgstamount = (tot_vatamount / 2);
-                                                cgstamount = Math.Round(cgstamount, 2);
-                                                newrow["cgst"] = dr["cgst"].ToString();
-                                                newrow["cgstamount"] = cgstamount.ToString();
-                                                newrow["Igst"] = 0;
-                                                newrow["Igstamount"] = 0;
-
-
-                                                //Offer Details
-                                                double Offersgstamount = 0;
-                                                double Offercgstamount = 0;
-                                                double OfferIgst = 0;
-                                                double OfferIgstamount = 0;
-                                                double OffertotRate = 0;
-                                                double.TryParse(dr["Igst"].ToString(), out OfferIgst);
-                                                double OfferIgstcon = 100 + OfferIgst;
-                                                OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
-                                                OfferIgstamount = Math.Round(OfferIgstamount, 2);
-                                                OffertotRate = OfferIgstamount;
-                                                double OfferVatrate = rate - OffertotRate;
-                                                OfferVatrate = Math.Round(OfferVatrate, 2);
-                                                newrow["OfferRate"] = OfferVatrate.ToString();
-                                               
-                                                OfferPAmount = Offerpkt_qty * OfferVatrate;
-                                                newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
-                                                Offertot_vatamount = (OfferPAmount * Igst) / 100;
-                                                Offersgstamount = (Offertot_vatamount / 2);
-                                                Offersgstamount = Math.Round(Offersgstamount, 2);
-                                                newrow["Offersgst"] = dr["sgst"].ToString();
-                                                newrow["Offersgstamount"] = Offersgstamount.ToString();
-                                                Offercgstamount = (Offertot_vatamount / 2);
-                                                Offercgstamount = Math.Round(Offercgstamount, 2);
-                                                newrow["Offercgst"] = dr["cgst"].ToString();
-                                                newrow["Offercgstamount"] = Offercgstamount.ToString();
-                                                newrow["OfferIgst"] = 0;
-                                                newrow["OfferIgstamount"] = 0;
-                                            }
-                                            else
-                                            {
-                                                double sgstamount = 0;
-                                                double cgstamount = 0;
-                                                double Igst = 0;
-                                                double Igstamount = 0;
-                                                double totRate = 0;
-                                                double.TryParse(dr["Igst"].ToString(), out Igst);
-                                                double Igstcon = 100 + Igst;
-                                                Igstamount = (rate / Igstcon) * Igst;
-                                                Igstamount = Math.Round(Igstamount, 2);
-                                                totRate = Igstamount;
-                                                double Vatrate = rate - totRate;
-                                                Vatrate = Math.Round(Vatrate, 2);
-                                                newrow["Rate"] = Vatrate.ToString();
-                                                //PAmount = qty * Vatrate;
-                                                PAmount = pkt_qty * Vatrate;
-                                                newrow["Taxable Value"] = Math.Round(PAmount, 2);
-                                                tot_vatamount = (PAmount * Igst) / 100;
-                                                sgstamount = (tot_vatamount / 2);
-                                                sgstamount = Math.Round(sgstamount, 2);
-                                                newrow["sgst"] = dr["sgst"].ToString();
-                                                newrow["sgstamount"] = sgstamount.ToString();
-                                                cgstamount = (tot_vatamount / 2);
-                                                cgstamount = Math.Round(cgstamount, 2);
-                                                newrow["cgst"] = dr["cgst"].ToString();
-                                                newrow["cgstamount"] = cgstamount.ToString();
-                                                newrow["Igst"] = 0;
-                                                newrow["Igstamount"] = 0;
-
-
-
-                                                //Offer Details
-                                                double Offersgstamount = 0;
-                                                double Offercgstamount = 0;
-                                                double OfferIgst = 0;
-                                                double OfferIgstamount = 0;
-                                                double OffertotRate = 0;
-                                                double.TryParse(dr["Igst"].ToString(), out OfferIgst);
-                                                double OfferIgstcon = 100 + OfferIgst;
-                                                OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
-                                                OfferIgstamount = Math.Round(OfferIgstamount, 2);
-                                                OffertotRate = OfferIgstamount;
-                                                double OfferVatrate = rate - OffertotRate;
-                                                OfferVatrate = Math.Round(OfferVatrate, 2);
-                                                newrow["OfferRate"] = OfferVatrate.ToString();
-
-                                                OfferPAmount = Offerpkt_qty * OfferVatrate;
-                                                newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
-                                                Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
-                                                Offersgstamount = (Offertot_vatamount / 2);
-                                                Offersgstamount = Math.Round(Offersgstamount, 2);
-                                                newrow["Offersgst"] = dr["sgst"].ToString();
-                                                newrow["Offersgstamount"] = Offersgstamount.ToString();
-                                                Offercgstamount = (Offertot_vatamount / 2);
-                                                Offercgstamount = Math.Round(Offercgstamount, 2);
-                                                newrow["Offercgst"] = dr["cgst"].ToString();
-                                                newrow["Offercgstamount"] = Offercgstamount.ToString();
-                                                newrow["OfferIgst"] = 0;
-                                                newrow["OfferIgstamount"] = 0;
-                                            }
-                                        }
-                                        else
-                                        {
+                                            double sgstamount = 0;
+                                            double cgstamount = 0;
                                             double Igst = 0;
                                             double Igstamount = 0;
                                             double totRate = 0;
@@ -15587,16 +15170,21 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             PAmount = pkt_qty * Vatrate;
                                             newrow["Taxable Value"] = Math.Round(PAmount, 2);
                                             tot_vatamount = (PAmount * Igst) / 100;
-                                            newrow["sgst"] = 0;
-                                            newrow["sgstamount"] = 0;
-                                            newrow["cgst"] = 0;
-                                            newrow["cgstamount"] = 0;
-                                            newrow["Igst"] = dr["Igst"].ToString();
-                                            tot_vatamount = Math.Round(tot_vatamount, 2);
-                                            newrow["Igstamount"] = tot_vatamount.ToString();
+                                            sgstamount = (tot_vatamount / 2);
+                                            sgstamount = Math.Round(sgstamount, 2);
+                                            newrow["sgst"] = dr["sgst"].ToString();
+                                            newrow["sgstamount"] = sgstamount.ToString();
+                                            cgstamount = (tot_vatamount / 2);
+                                            cgstamount = Math.Round(cgstamount, 2);
+                                            newrow["cgst"] = dr["cgst"].ToString();
+                                            newrow["cgstamount"] = cgstamount.ToString();
+                                            newrow["Igst"] = 0;
+                                            newrow["Igstamount"] = 0;
 
 
                                             //Offer Details
+                                            double Offersgstamount = 0;
+                                            double Offercgstamount = 0;
                                             double OfferIgst = 0;
                                             double OfferIgstamount = 0;
                                             double OffertotRate = 0;
@@ -15608,29 +15196,144 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                             double OfferVatrate = rate - OffertotRate;
                                             OfferVatrate = Math.Round(OfferVatrate, 2);
                                             newrow["OfferRate"] = OfferVatrate.ToString();
-                                            
+
+                                            OfferPAmount = Offerpkt_qty * OfferVatrate;
+                                            newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
+                                            Offertot_vatamount = (OfferPAmount * Igst) / 100;
+                                            Offersgstamount = (Offertot_vatamount / 2);
+                                            Offersgstamount = Math.Round(Offersgstamount, 2);
+                                            newrow["Offersgst"] = dr["sgst"].ToString();
+                                            newrow["Offersgstamount"] = Offersgstamount.ToString();
+                                            Offercgstamount = (Offertot_vatamount / 2);
+                                            Offercgstamount = Math.Round(Offercgstamount, 2);
+                                            newrow["Offercgst"] = dr["cgst"].ToString();
+                                            newrow["Offercgstamount"] = Offercgstamount.ToString();
+                                            newrow["OfferIgst"] = 0;
+                                            newrow["OfferIgstamount"] = 0;
+                                        }
+                                        else
+                                        {
+                                            double sgstamount = 0;
+                                            double cgstamount = 0;
+                                            double Igst = 0;
+                                            double Igstamount = 0;
+                                            double totRate = 0;
+                                            double.TryParse(dr["Igst"].ToString(), out Igst);
+                                            double Igstcon = 100 + Igst;
+                                            Igstamount = (rate / Igstcon) * Igst;
+                                            Igstamount = Math.Round(Igstamount, 2);
+                                            totRate = Igstamount;
+                                            double Vatrate = rate - totRate;
+                                            Vatrate = Math.Round(Vatrate, 2);
+                                            newrow["Rate"] = Vatrate.ToString();
+                                            //PAmount = qty * Vatrate;
+                                            PAmount = pkt_qty * Vatrate;
+                                            newrow["Taxable Value"] = Math.Round(PAmount, 2);
+                                            tot_vatamount = (PAmount * Igst) / 100;
+                                            sgstamount = (tot_vatamount / 2);
+                                            sgstamount = Math.Round(sgstamount, 2);
+                                            newrow["sgst"] = dr["sgst"].ToString();
+                                            newrow["sgstamount"] = sgstamount.ToString();
+                                            cgstamount = (tot_vatamount / 2);
+                                            cgstamount = Math.Round(cgstamount, 2);
+                                            newrow["cgst"] = dr["cgst"].ToString();
+                                            newrow["cgstamount"] = cgstamount.ToString();
+                                            newrow["Igst"] = 0;
+                                            newrow["Igstamount"] = 0;
+
+
+
+                                            //Offer Details
+                                            double Offersgstamount = 0;
+                                            double Offercgstamount = 0;
+                                            double OfferIgst = 0;
+                                            double OfferIgstamount = 0;
+                                            double OffertotRate = 0;
+                                            double.TryParse(dr["Igst"].ToString(), out OfferIgst);
+                                            double OfferIgstcon = 100 + OfferIgst;
+                                            OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
+                                            OfferIgstamount = Math.Round(OfferIgstamount, 2);
+                                            OffertotRate = OfferIgstamount;
+                                            double OfferVatrate = rate - OffertotRate;
+                                            OfferVatrate = Math.Round(OfferVatrate, 2);
+                                            newrow["OfferRate"] = OfferVatrate.ToString();
+
                                             OfferPAmount = Offerpkt_qty * OfferVatrate;
                                             newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
                                             Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
-                                            newrow["Offersgst"] = 0;
-                                            newrow["Offersgstamount"] = 0;
-                                            newrow["Offercgst"] = 0;
-                                            newrow["Offercgstamount"] = 0;
-                                            newrow["OfferIgst"] = dr["Igst"].ToString();
-                                            Offertot_vatamount = Math.Round(Offertot_vatamount, 2);
-                                            newrow["OfferIgstamount"] = Offertot_vatamount.ToString();
+                                            Offersgstamount = (Offertot_vatamount / 2);
+                                            Offersgstamount = Math.Round(Offersgstamount, 2);
+                                            newrow["Offersgst"] = dr["sgst"].ToString();
+                                            newrow["Offersgstamount"] = Offersgstamount.ToString();
+                                            Offercgstamount = (Offertot_vatamount / 2);
+                                            Offercgstamount = Math.Round(Offercgstamount, 2);
+                                            newrow["Offercgst"] = dr["cgst"].ToString();
+                                            newrow["Offercgstamount"] = Offercgstamount.ToString();
+                                            newrow["OfferIgst"] = 0;
+                                            newrow["OfferIgstamount"] = 0;
                                         }
-                                        double tot_amount = PAmount + tot_vatamount;
-                                        tot_amount = Math.Round(tot_amount, 2);
-                                        newrow["totalamount"] = tot_amount;
-
-                                        //offer details
-                                        double Offertot_amount = OfferPAmount + Offertot_vatamount;
-                                        Offertot_amount = Math.Round(Offertot_amount, 2);
-                                        newrow["Offertotalamount"] = Offertot_amount;
-                                        dtTotQty.Rows.Add(newrow);
                                     }
+                                    else
+                                    {
+                                        double Igst = 0;
+                                        double Igstamount = 0;
+                                        double totRate = 0;
+                                        double.TryParse(dr["Igst"].ToString(), out Igst);
+                                        double Igstcon = 100 + Igst;
+                                        Igstamount = (rate / Igstcon) * Igst;
+                                        Igstamount = Math.Round(Igstamount, 2);
+                                        totRate = Igstamount;
+                                        double Vatrate = rate - totRate;
+                                        Vatrate = Math.Round(Vatrate, 2);
+                                        newrow["Rate"] = Vatrate.ToString();
+                                        //PAmount = qty * Vatrate;
+                                        PAmount = pkt_qty * Vatrate;
+                                        newrow["Taxable Value"] = Math.Round(PAmount, 2);
+                                        tot_vatamount = (PAmount * Igst) / 100;
+                                        newrow["sgst"] = 0;
+                                        newrow["sgstamount"] = 0;
+                                        newrow["cgst"] = 0;
+                                        newrow["cgstamount"] = 0;
+                                        newrow["Igst"] = dr["Igst"].ToString();
+                                        tot_vatamount = Math.Round(tot_vatamount, 2);
+                                        newrow["Igstamount"] = tot_vatamount.ToString();
+
+
+                                        //Offer Details
+                                        double OfferIgst = 0;
+                                        double OfferIgstamount = 0;
+                                        double OffertotRate = 0;
+                                        double.TryParse(dr["Igst"].ToString(), out OfferIgst);
+                                        double OfferIgstcon = 100 + OfferIgst;
+                                        OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
+                                        OfferIgstamount = Math.Round(OfferIgstamount, 2);
+                                        OffertotRate = OfferIgstamount;
+                                        double OfferVatrate = rate - OffertotRate;
+                                        OfferVatrate = Math.Round(OfferVatrate, 2);
+                                        newrow["OfferRate"] = OfferVatrate.ToString();
+
+                                        OfferPAmount = Offerpkt_qty * OfferVatrate;
+                                        newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
+                                        Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
+                                        newrow["Offersgst"] = 0;
+                                        newrow["Offersgstamount"] = 0;
+                                        newrow["Offercgst"] = 0;
+                                        newrow["Offercgstamount"] = 0;
+                                        newrow["OfferIgst"] = dr["Igst"].ToString();
+                                        Offertot_vatamount = Math.Round(Offertot_vatamount, 2);
+                                        newrow["OfferIgstamount"] = Offertot_vatamount.ToString();
+                                    }
+                                    double tot_amount = PAmount + tot_vatamount;
+                                    tot_amount = Math.Round(tot_amount, 2);
+                                    newrow["totalamount"] = tot_amount;
+
+                                    //offer details
+                                    double Offertot_amount = OfferPAmount + Offertot_vatamount;
+                                    Offertot_amount = Math.Round(Offertot_amount, 2);
+                                    newrow["Offertotalamount"] = Offertot_amount;
+                                    dtTotQty.Rows.Add(newrow);
                                 }
+
                             }
                         }
                     }
@@ -15704,6 +15407,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         {
                             if (dr["ProductId"].ToString() == drprdt["sno"].ToString())
                             {
+                                DateTime dtjuly = new DateTime();
+                                string jul = "7/18/2022";
+                                dtjuly = DateTime.Parse(jul);
                                 if (dr["igst"].ToString() == "0")
                                 {
                                     DataRow newrow = dtTotQty.NewRow();
@@ -15734,14 +15440,38 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     {
                                         double.TryParse(drprdt["unitprice"].ToString(), out rate);
                                     }
+                                    //if (DispMode == "AGENT")
+                                    //{
+                                    //    String unitprice = drprdt["unitprice"].ToString();
+                                    //    if (unitprice == "0")
+                                    //    {
+                                    //        unitprice = drprdt["BUnitPrice"].ToString();
+                                    //    }
+                                    //    double.TryParse(unitprice, out rate);
+                                    //}
+
                                     if (DispMode == "AGENT")
                                     {
-                                        String unitprice = drprdt["unitprice"].ToString();
-                                        if (unitprice == "0")
+                                        string mar = "3/30/2024";
+                                        dtjuly = DateTime.Parse(mar);
+                                        if (dtjuly >= AssignDate)
                                         {
-                                            unitprice = drprdt["BUnitPrice"].ToString();
+                                            String unitprice = drprdt["unitprice"].ToString();
+                                            if (unitprice == "0")
+                                            {
+                                                unitprice = drprdt["BUnitPrice"].ToString();
+                                            }
+                                            double.TryParse(unitprice, out rate);
                                         }
-                                        double.TryParse(unitprice, out rate);
+                                        else
+                                        {
+                                            String unitprice = dr["pkt_rate"].ToString();
+                                            if (unitprice == "0")
+                                            {
+                                                unitprice = drprdt["BUnitPrice"].ToString();
+                                            }
+                                            double.TryParse(unitprice, out rate);
+                                        }
                                     }
                                     if (DispMode == "Others")
                                     {
@@ -15953,272 +15683,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     Offertot_amount = Math.Round(Offertot_amount, 2);
                                     newrow["Offertotalamount"] = Offertot_amount;
                                     dtTotQty.Rows.Add(newrow);
-                                }
-                                else
-                                {
-                                    DateTime dtjuly = new DateTime();
-                                    string jul = "7/18/2022";
-                                    dtjuly = DateTime.Parse(jul);
-                                    if (dtjuly > AssignDate.AddDays(1))
-                                    {
-                                        string categoryid = "";
-                                        foreach (DataRow drcate in dtcategory.Select("subcatsno='" + dr["subcatid"].ToString() + "'"))
-                                        {
-                                            categoryid = drcate["catsno"].ToString();
-                                        }
-                                        string[] catarr = { "2", "12", "39", "47", "48" };
-                                        if (catarr.Contains(categoryid))
-                                        {
-                                            DataRow newrow = dtTotQty.NewRow();
-                                            newrow["Sl No"] = i++.ToString();
-                                            newrow["itemcode"] = dr["itemcode"].ToString();
-                                            newrow["Product Name"] = dr["ProductName"].ToString();
-                                            newrow["HSN Code"] = dr["hsncode"].ToString();
-                                            newrow["Uom"] = dr["Units"].ToString();
-                                            newrow["Uomqty"] = dr["Uomqty"].ToString();
-                                            float qty = 0;
-                                            float.TryParse(dr["Qty"].ToString(), out qty);
-                                            float Price = 0;
-                                            float.TryParse(dr["Price"].ToString(), out Price);
-                                            newrow["Qty"] = Math.Round(qty, 2);
-                                            string Categoryname = drprdt["Categoryname"].ToString();
-                                            if (Categoryname == "MILK")
-                                            {
-                                                TotalMilk += qty;
-                                            }
-                                            string UnitCost = dr["Price"].ToString();
-                                            double rate = 0;
-                                            if (DispMode == "Free")
-                                            {
-                                                rate = 0;
-                                                double.TryParse(drprdt["unitprice"].ToString(), out rate);
-                                            }
-                                            else
-                                            {
-                                                double.TryParse(drprdt["unitprice"].ToString(), out rate);
-                                            }
-                                            if (DispMode == "AGENT")
-                                            {
-                                                String unitprice = drprdt["unitprice"].ToString();
-                                                if (unitprice == "0")
-                                                {
-                                                    unitprice = drprdt["BUnitPrice"].ToString();
-                                                }
-                                                double.TryParse(unitprice, out rate);
-                                            }
-                                            if (DispMode == "Others")
-                                            {
-                                                String unitprice = drprdt["unitprice"].ToString();
-                                                if (unitprice == "0")
-                                                {
-                                                    unitprice = drprdt["BUnitPrice"].ToString();
-                                                }
-                                                double.TryParse(unitprice, out rate);
-                                            }
-                                            if (UnitCost == "")
-                                            {
-                                            }
-                                            else
-                                            {
-                                                rate = Price;
-                                            }
-
-                                            double ltrqty = 0, ltr_rate = 0, pkt_qty = 0, pkt_rate = 0;
-                                            double Offerpkt_qty = 0;
-
-                                            EInvoice obj = new EInvoice();
-                                            if (dr["Units"].ToString() == "Nos")
-                                            {
-                                                double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
-                                                double.TryParse(dr["Qty"].ToString(), out ltrqty);
-                                                double.TryParse(dr["Offerqty"].ToString(), out Offerpkt_qty);
-                                                pkt_qty = pkt_qty;
-                                                ltrqty = ltrqty;
-                                                ltr_rate = rate;
-                                                pkt_rate = rate;
-                                            }
-                                            else
-                                            {
-                                                //pkt_qty = obj.ConvertingPackets(dr["Qty"].ToString(), dr["Uomqty"].ToString(), rate.ToString());
-
-                                                //ltr_rate = obj.Converting_Ltr_rate(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
-
-                                                //ltrqty = obj.ConvertingLtrs(pkt_qty.ToString(), dr["Uomqty"].ToString(), rate.ToString());
-
-                                                //pkt_rate = obj.Converting_Packet_rate(ltrqty.ToString(), dr["Uomqty"].ToString(), ltr_rate.ToString());
-                                                double.TryParse(dr["pkt_qty"].ToString(), out pkt_qty);
-                                                double.TryParse(dr["Qty"].ToString(), out ltrqty);
-                                                double.TryParse(dr["Offerqty"].ToString(), out Offerpkt_qty);
-                                                pkt_qty = pkt_qty;
-                                                ltrqty = ltrqty;
-                                                //ltr_rate = rate;
-                                                pkt_rate = rate;
-                                            }
-                                            rate = pkt_rate;
-                                            ////added by akbar ltrcost
-                                            //double UomQty = 0;
-                                            //double.TryParse(dr["Uomqty"].ToString(), out UomQty);
-                                            //double perltrCost = 0;
-                                            //perltrCost = (1000 / UomQty) * rate;
-                                            //perltrCost = Math.Round(perltrCost, 2);
-                                            //rate = perltrCost;
-                                            newrow["pkt_qty"] = pkt_qty;
-                                            newrow["Offerpkt_qty"] = Offerpkt_qty;
-                                            newrow["Discount"] = 0;
-                                            double PAmount = 0;
-                                            double tot_vatamount = 0;
-                                            //oFfer Details
-                                            double OfferPAmount = 0;
-                                            double Offertot_vatamount = 0;
-                                            if (fromstate == tostate)
-                                            {
-                                                if (DispMode == "Staff" || DispMode == "AGENT" || DispMode == "Others" || DispMode == "Free" || DispMode == "LOCAL")
-                                                {
-                                                    double sgstamount = 0;
-                                                    double cgstamount = 0;
-                                                    double Igst = 0;
-                                                    double Igstamount = 0;
-                                                    double totRate = 0;
-                                                    double.TryParse(dr["Igst"].ToString(), out Igst);
-                                                    double Igstcon = 100 + Igst;
-                                                    Igstamount = (rate / Igstcon) * Igst;
-                                                    Igstamount = Math.Round(Igstamount, 2);
-                                                    totRate = Igstamount;
-                                                    double Vatrate = rate - totRate;
-                                                    Vatrate = Math.Round(Vatrate, 2);
-                                                    newrow["Rate"] = Vatrate.ToString();
-                                                    //PAmount = qty * Vatrate;
-                                                    PAmount = pkt_qty * Vatrate;
-                                                    newrow["Taxable Value"] = Math.Round(PAmount, 2);
-                                                    tot_vatamount = (PAmount * Igst) / 100;
-                                                    sgstamount = (tot_vatamount / 2);
-                                                    sgstamount = Math.Round(sgstamount, 2);
-                                                    newrow["sgst"] = 0;
-                                                    newrow["sgstamount"] = 0;
-                                                    cgstamount = (tot_vatamount / 2);
-                                                    cgstamount = Math.Round(cgstamount, 2);
-                                                    newrow["cgst"] = 0;
-                                                    newrow["cgstamount"] = 0;
-                                                    newrow["Igst"] = 0;
-                                                    newrow["Igstamount"] = 0;
-
-
-                                                    //Offer Details
-                                                    double Offersgstamount = 0;
-                                                    double Offercgstamount = 0;
-                                                    double OfferIgst = 0;
-                                                    double OfferIgstamount = 0;
-                                                    double OffertotRate = 0;
-                                                    double.TryParse(dr["Igst"].ToString(), out OfferIgst);
-                                                    double OfferIgstcon = 100 + OfferIgst;
-                                                    OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
-                                                    OfferIgstamount = Math.Round(OfferIgstamount, 2);
-                                                    OffertotRate = OfferIgstamount;
-                                                    double OfferVatrate = rate - OffertotRate;
-                                                    OfferVatrate = Math.Round(OfferVatrate, 2);
-                                                    newrow["OfferRate"] = OfferVatrate.ToString();
-                                                    //PAmount = qty * Vatrate;
-                                                    OfferPAmount = Offerpkt_qty * OfferVatrate;
-                                                    newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
-                                                    Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
-                                                    Offersgstamount = (Offertot_vatamount / 2);
-                                                    Offersgstamount = Math.Round(Offersgstamount, 2);
-                                                    newrow["Offersgst"] = 0;
-                                                    newrow["Offersgstamount"] = 0;
-                                                    Offercgstamount = (Offertot_vatamount / 2);
-                                                    Offercgstamount = Math.Round(Offercgstamount, 2);
-                                                    newrow["Offercgst"] = 0;
-                                                    newrow["Offercgstamount"] = 0;
-                                                    newrow["OfferIgst"] = 0;
-                                                    newrow["OfferIgstamount"] = 0;
-                                                }
-                                                else
-                                                {
-                                                    newrow["Rate"] = rate.ToString();
-                                                    //PAmount = qty * rate;
-                                                    PAmount = pkt_qty * rate;
-                                                    newrow["Taxable Value"] = Math.Round(PAmount, 2);
-                                                    newrow["sgst"] = 0;
-                                                    newrow["sgstamount"] = 0;
-                                                    newrow["cgst"] = 0;
-                                                    newrow["cgstamount"] = 0;
-                                                    newrow["Igst"] = 0;
-                                                    newrow["Igstamount"] = 0;
-
-                                                    //Offer Details
-                                                    newrow["OfferRate"] = rate.ToString();
-                                                    //PAmount = qty * rate;
-                                                    OfferPAmount = Offerpkt_qty * rate;
-                                                    newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
-                                                    newrow["Offersgst"] = 0;
-                                                    newrow["Offersgstamount"] = 0;
-                                                    newrow["Offercgst"] = 0;
-                                                    newrow["Offercgstamount"] = 0;
-                                                    newrow["OfferIgst"] = 0;
-                                                    newrow["OfferIgstamount"] = 0;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                double Igst = 0;
-                                                double Igstamount = 0;
-                                                double totRate = 0;
-                                                double.TryParse(dr["Igst"].ToString(), out Igst);
-                                                double Igstcon = 100 + Igst;
-                                                Igstamount = (rate / Igstcon) * Igst;
-                                                Igstamount = Math.Round(Igstamount, 2);
-                                                totRate = Igstamount;
-                                                double Vatrate = rate - totRate;
-                                                Vatrate = Math.Round(Vatrate, 2);
-                                                newrow["Rate"] = Vatrate.ToString();
-                                                //PAmount = qty * Vatrate;
-                                                PAmount = pkt_qty * Vatrate;
-                                                newrow["Taxable Value"] = Math.Round(PAmount, 2);
-                                                tot_vatamount = (PAmount * Igst) / 100;
-                                                newrow["sgst"] = 0;
-                                                newrow["sgstamount"] = 0;
-                                                newrow["cgst"] = 0;
-                                                newrow["cgstamount"] = 0;
-                                                newrow["Igst"] = 0;
-                                                tot_vatamount = Math.Round(tot_vatamount, 2);
-                                                newrow["Igstamount"] = 0;
-
-
-                                                //Offer Details
-                                                double OfferIgst = 0;
-                                                double OfferIgstamount = 0;
-                                                double OffertotRate = 0;
-                                                double.TryParse(dr["Igst"].ToString(), out OfferIgst);
-                                                double OfferIgstcon = 100 + OfferIgst;
-                                                OfferIgstamount = (rate / OfferIgstcon) * OfferIgst;
-                                                OfferIgstamount = Math.Round(OfferIgstamount, 2);
-                                                OffertotRate = OfferIgstamount;
-                                                double OfferVatrate = rate - OffertotRate;
-                                                OfferVatrate = Math.Round(OfferVatrate, 2);
-                                                newrow["OfferRate"] = OfferVatrate.ToString();
-                                                //PAmount = qty * Vatrate;
-                                                OfferPAmount = Offerpkt_qty * OfferVatrate;
-                                                newrow["OfferTaxable Value"] = Math.Round(OfferPAmount, 2);
-                                                Offertot_vatamount = (OfferPAmount * OfferIgst) / 100;
-                                                newrow["Offersgst"] = 0;
-                                                newrow["Offersgstamount"] = 0;
-                                                newrow["Offercgst"] = 0;
-                                                newrow["Offercgstamount"] = 0;
-                                                newrow["OfferIgst"] = 0;
-                                                Offertot_vatamount = Math.Round(Offertot_vatamount, 2);
-                                                newrow["OfferIgstamount"] = 0;
-                                            }
-                                            double tot_amount = PAmount;
-                                            tot_amount = Math.Round(tot_amount, 2);
-                                            newrow["totalamount"] = tot_amount;
-
-                                            //Offer Details
-                                            double Offertot_amount = OfferPAmount;
-                                            Offertot_amount = Math.Round(Offertot_amount, 2);
-                                            newrow["Offertotalamount"] = Offertot_amount;
-                                            dtTotQty.Rows.Add(newrow);
-                                        }
-                                    }
                                 }
                             }
                         }
@@ -35754,43 +35218,30 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 {
                     if (o.Qty != "0" || o.offerqty != "0")
                     {
-                        cmd = new MySqlCommand("insert into tripsubdata (Tripdata_Sno,ProductId,Qty,DeliverQty,offerqty,pkt_qty,tub_qty)values(@Tripdata_Sno,@ProductId,@Qty,@deliverqty,@offerqty,@pkt_qty,@tub_qty)");
+                        cmd = new MySqlCommand("insert into tripsubdata (Tripdata_Sno,ProductId,Qty,DeliverQty,offerqty,pkt_qty,tub_qty,unitcost,pkt_rate)values(@Tripdata_Sno,@ProductId,@Qty,@deliverqty,@offerqty,@pkt_qty,@tub_qty,@unitcost,@pkt_rate)");
                         cmd.Parameters.AddWithValue("@Tripdata_Sno", TripSno);
                         cmd.Parameters.AddWithValue("@ProductId", o.Productsno);
-                        //double ltr_qty = 0;
-                        //double UomQty = 0;
-                        //double pktqty = 0;
-                        //double DeliveryQty = 0;
 
-                        //if (o.uom == "Nos")
-                        //{
-                        //    double.TryParse(o.Unitsqty, out DeliveryQty);
-                        //    ltr_qty = Math.Round(DeliveryQty, 2);
-                        //    double.TryParse(o.PktQty, out pktqty);
-                        //    pktqty = Math.Round(pktqty, 2);
-                        //}
-                        //else
-                        //{
-                        //    double.TryParse(o.Unitsqty, out DeliveryQty);
-                        //    DeliveryQty = Math.Round(DeliveryQty, 2);
+                        
+                        string pktqty = o.Unitsqty;
+                        string UomQty = o.UomQty;
+                        string pkt_rate = o.UnitCost;
+                        EInvoice obj1 = new EInvoice();
+                        double perltrCost = obj1.Converting_Ltr_rate(pktqty, UomQty, pkt_rate);
 
-                        //    double.TryParse(o.PktQty, out pktqty);
-                        //    pktqty = Math.Round(pktqty, 2);
-                        //    double.TryParse(o.UomQty, out UomQty);
-                        //    ltr_qty = pktqty * UomQty / 1000;
-                        //    ltr_qty = Math.Round(ltr_qty, 2);
-                        //}
+                        double UnitCost = 0;
+                        double.TryParse(o.UnitCost, out UnitCost);
+                        UnitCost = Math.Round(UnitCost, 2);
 
 
-                        //float manuftreming_qty = 0;
-                        //float.TryParse(o.RemainingQty, out manuftreming_qty);
-                        //cmd.Parameters.AddWithValue("@Qty", ltr_qty);
                         cmd.Parameters.AddWithValue("@Qty", o.Qty);
                         cmd.Parameters.AddWithValue("@pkt_qty", o.PktQty);
                         cmd.Parameters.AddWithValue("@tub_qty", o.tubQty);
                         float delqty = 0;
                         cmd.Parameters.AddWithValue("@deliverqty", delqty);
                         cmd.Parameters.AddWithValue("@offerqty", o.offerqty);
+                        cmd.Parameters.AddWithValue("@unitcost", perltrCost);
+                        cmd.Parameters.AddWithValue("@pkt_rate", pkt_rate);
                         vdbmngr.insert(cmd);
                         cmd = new MySqlCommand("SELECT branchproducts.unitprice, branchproducts.product_sno, productsdata.Qty, productsdata.Units FROM branchproducts INNER JOIN productsdata ON branchproducts.product_sno = productsdata.sno WHERE (branchproducts.branch_sno = @BranchID) and (branchproducts.product_sno=@sno) and (branchproducts.flag=@flag)");
                         cmd.Parameters.AddWithValue("@sno", o.Productsno);
@@ -35856,15 +35307,15 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         double ltr_qty = 0;
                         double.TryParse(o.Qty, out ltr_qty);
                         ltr_qty = Math.Round(ltr_qty, 2);
-                        string pktqty = o.Unitsqty;
-                        string UomQty = o.UomQty;
-                        string pkt_rate = o.UnitCost;
-                        EInvoice obj1 = new EInvoice();
-                        double perltrCost = obj1.Converting_Ltr_rate(pktqty, UomQty, pkt_rate);
+                        //string pktqty = o.Unitsqty;
+                        //string UomQty = o.UomQty;
+                        //string pkt_rate = o.UnitCost;
+                        //EInvoice obj1 = new EInvoice();
+                        //double perltrCost = obj1.Converting_Ltr_rate(pktqty, UomQty, pkt_rate);
 
-                        double UnitCost = 0;
-                        double.TryParse(o.UnitCost, out UnitCost);
-                        UnitCost = Math.Round(UnitCost, 2);
+                        //double UnitCost = 0;
+                        //double.TryParse(o.UnitCost, out UnitCost);
+                        //UnitCost = Math.Round(UnitCost, 2);
 
                         cmd.Parameters.AddWithValue("@UnitCost", perltrCost);
                         cmd.Parameters.AddWithValue("@unitQty", "0");

@@ -639,7 +639,7 @@ public partial class TallyReceipts : System.Web.UI.Page
                     DataView view = new DataView(Report);
                     dtReport = new DataTable();
                     dtReport.Columns.Add("Voucher Date");
-                    dtReport.Columns.Add("Voucher No");
+                    //dtReport.Columns.Add("Voucher No");
                     dtReport.Columns.Add("Voucher Type");
                     dtReport.Columns.Add("Ledger (Dr)");
                     dtReport.Columns.Add("Ledger (Cr)");
@@ -674,11 +674,11 @@ public partial class TallyReceipts : System.Web.UI.Page
                         {
                             newreceipt = "" + countdc;
                         }
-                        newrow["Voucher No"] = Receiptno + newreceipt;
+                        //newrow["Voucher No"] = Receiptno + newreceipt;
                         newrow["Voucher Type"] = "Bank Receipts Import";
                         newrow["Ledger (Dr)"] = "Union Bank Of India - 031115010000004 - OD";// ledger;
 
-                        newrow["Ledger (Cr)"] = ledger;// branch["Name"].ToString();
+                        newrow["Ledger (Cr)"] = branch["Name"].ToString();
                         newrow["Amount"] = branch["Amount"].ToString();
                         double invval = 0;
                         string Remarks = branch["Remarks"].ToString();
