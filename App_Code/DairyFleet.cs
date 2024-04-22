@@ -15062,27 +15062,36 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     }
                                     if (DispMode == "AGENT")
                                     {
-                                        string mar = "3/30/2024";
-                                        dtjuly = DateTime.Parse(mar);
-                                        if (dtjuly >= AssignDate)
+                                        String unitprice = drprdt["unitprice"].ToString();
+                                        if (unitprice == "0")
                                         {
-                                            String unitprice = drprdt["unitprice"].ToString();
-                                            if (unitprice == "0")
-                                            {
-                                                unitprice = drprdt["BUnitPrice"].ToString();
-                                            }
-                                            double.TryParse(unitprice, out rate);
+                                            unitprice = drprdt["BUnitPrice"].ToString();
                                         }
-                                        else
-                                        {
-                                            String unitprice = dr["pkt_rate"].ToString();
-                                            if (unitprice == "0")
-                                            {
-                                                unitprice = drprdt["BUnitPrice"].ToString();
-                                            }
-                                            double.TryParse(unitprice, out rate);
-                                        }
+                                        double.TryParse(unitprice, out rate);
                                     }
+                                    //if (DispMode == "AGENT")
+                                    //{
+                                    //    string mar = "3/30/2024";
+                                    //    dtjuly = DateTime.Parse(mar);
+                                    //    if (dtjuly >= AssignDate)
+                                    //    {
+                                    //        String unitprice = drprdt["unitprice"].ToString();
+                                    //        if (unitprice == "0")
+                                    //        {
+                                    //            unitprice = drprdt["BUnitPrice"].ToString();
+                                    //        }
+                                    //        double.TryParse(unitprice, out rate);
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        String unitprice = dr["pkt_rate"].ToString();
+                                    //        if (unitprice == "0")
+                                    //        {
+                                    //            unitprice = drprdt["BUnitPrice"].ToString();
+                                    //        }
+                                    //        double.TryParse(unitprice, out rate);
+                                    //    }
+                                    //}
                                     if (DispMode == "Others")
                                     {
                                         String unitprice = drprdt["unitprice"].ToString();
@@ -15440,39 +15449,39 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                                     {
                                         double.TryParse(drprdt["unitprice"].ToString(), out rate);
                                     }
-                                    //if (DispMode == "AGENT")
-                                    //{
-                                    //    String unitprice = drprdt["unitprice"].ToString();
-                                    //    if (unitprice == "0")
-                                    //    {
-                                    //        unitprice = drprdt["BUnitPrice"].ToString();
-                                    //    }
-                                    //    double.TryParse(unitprice, out rate);
-                                    //}
-
                                     if (DispMode == "AGENT")
                                     {
-                                        string mar = "3/30/2024";
-                                        dtjuly = DateTime.Parse(mar);
-                                        if (dtjuly >= AssignDate)
+                                        String unitprice = drprdt["unitprice"].ToString();
+                                        if (unitprice == "0")
                                         {
-                                            String unitprice = drprdt["unitprice"].ToString();
-                                            if (unitprice == "0")
-                                            {
-                                                unitprice = drprdt["BUnitPrice"].ToString();
-                                            }
-                                            double.TryParse(unitprice, out rate);
+                                            unitprice = drprdt["BUnitPrice"].ToString();
                                         }
-                                        else
-                                        {
-                                            String unitprice = dr["pkt_rate"].ToString();
-                                            if (unitprice == "0")
-                                            {
-                                                unitprice = drprdt["BUnitPrice"].ToString();
-                                            }
-                                            double.TryParse(unitprice, out rate);
-                                        }
+                                        double.TryParse(unitprice, out rate);
                                     }
+
+                                    //if (DispMode == "AGENT")
+                                    //{
+                                    //    string mar = "3/30/2024";
+                                    //    dtjuly = DateTime.Parse(mar);
+                                    //    if (dtjuly >= AssignDate)
+                                    //    {
+                                    //        String unitprice = drprdt["unitprice"].ToString();
+                                    //        if (unitprice == "0")
+                                    //        {
+                                    //            unitprice = drprdt["BUnitPrice"].ToString();
+                                    //        }
+                                    //        double.TryParse(unitprice, out rate);
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        String unitprice = dr["pkt_rate"].ToString();
+                                    //        if (unitprice == "0")
+                                    //        {
+                                    //            unitprice = drprdt["BUnitPrice"].ToString();
+                                    //        }
+                                    //        double.TryParse(unitprice, out rate);
+                                    //    }
+                                    //}
                                     if (DispMode == "Others")
                                     {
                                         String unitprice = drprdt["unitprice"].ToString();
@@ -16019,15 +16028,15 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     string address = dtbranchaddress.Rows[0]["doorno"].ToString() + "," + dtbranchaddress.Rows[0]["street"].ToString() + "," + dtbranchaddress.Rows[0]["area"].ToString() + "," + dtbranchaddress.Rows[0]["mandal"].ToString() + "," + dtbranchaddress.Rows[0]["city"].ToString() + "," + dtbranchaddress.Rows[0]["district"].ToString() + " District -" + dtbranchaddress.Rows[0]["pincode"].ToString();
                     GetDetails.Address = address;
                 }
-                if (dtdetails.Rows[0]["dispType"].ToString() == "SM")
-                {
-                    GetDetails.tostatename = dtdetails.Rows[0]["supplyStateId"].ToString();
-                    GetDetails.tostatecode = dtdetails.Rows[0]["supplyStateName"].ToString();
-                    GetDetails.city = dtdetails.Rows[0]["supplyPlace"].ToString();
-                    GetDetails.AgentAddress = dtdetails.Rows[0]["supplyPlace"].ToString();
-                    GetDetails.togstin = "";
-                    GetDetails.dispType = dtdetails.Rows[0]["dispType"].ToString();
-                }
+                //if (dtdetails.Rows[0]["dispType"].ToString() == "SM")
+                //{
+                //    GetDetails.tostatename = dtdetails.Rows[0]["supplyStateId"].ToString();
+                //    GetDetails.tostatecode = dtdetails.Rows[0]["supplyStateName"].ToString();
+                //    GetDetails.city = dtdetails.Rows[0]["supplyPlace"].ToString();
+                //    GetDetails.AgentAddress = dtdetails.Rows[0]["supplyPlace"].ToString();
+                //    GetDetails.togstin = "";
+                //    GetDetails.dispType = dtdetails.Rows[0]["dispType"].ToString();
+                //}
                 GetDetails.Title = context.Session["TitleName"].ToString();
                 GetDetails.tinNo = context.Session["TinNo"].ToString();
                 DcDetailslist.Add(GetDetails);
@@ -16205,15 +16214,15 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     string address = dtbranchaddress.Rows[0]["doorno"].ToString() + "," + dtbranchaddress.Rows[0]["street"].ToString() + "," + dtbranchaddress.Rows[0]["area"].ToString() + "," + dtbranchaddress.Rows[0]["mandal"].ToString() + "," + dtbranchaddress.Rows[0]["city"].ToString() + "," + dtbranchaddress.Rows[0]["district"].ToString() + " District -" + dtbranchaddress.Rows[0]["pincode"].ToString();
                     GetDetails.Address = address;//dtagentaddress.Rows[0]["Address"].ToString();
                 }
-                if (dtdetails.Rows[0]["dispType"].ToString() == "SM")
-                {
-                    GetDetails.tostatename = dtdetails.Rows[0]["supplyStateId"].ToString();
-                    GetDetails.tostatecode = dtdetails.Rows[0]["supplyStateName"].ToString();
-                    GetDetails.city = dtdetails.Rows[0]["supplyPlace"].ToString();
-                    GetDetails.AgentAddress = dtdetails.Rows[0]["supplyPlace"].ToString();
-                    GetDetails.togstin = "";
-                    GetDetails.dispType = dtdetails.Rows[0]["dispType"].ToString();
-                }
+                //if (dtdetails.Rows[0]["dispType"].ToString() == "SM")
+                //{
+                //    GetDetails.tostatename = dtdetails.Rows[0]["supplyStateId"].ToString();
+                //    GetDetails.tostatecode = dtdetails.Rows[0]["supplyStateName"].ToString();
+                //    GetDetails.city = dtdetails.Rows[0]["supplyPlace"].ToString();
+                //    GetDetails.AgentAddress = dtdetails.Rows[0]["supplyPlace"].ToString();
+                //    GetDetails.togstin = "";
+                //    GetDetails.dispType = dtdetails.Rows[0]["dispType"].ToString();
+                //}
                 GetDetails.Title = context.Session["TitleName"].ToString();
                 GetDetails.tinNo = context.Session["TinNo"].ToString();
                 DcDetailslist.Add(GetDetails);

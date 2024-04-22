@@ -94,6 +94,7 @@
                                         AutoPostBack="True">
                                         <asp:ListItem Value="AgentWise" Text="AgentWise">AgentWise</asp:ListItem>
                                         <asp:ListItem Value="SalesOffice" Text="SalesOffice">SalesOffice</asp:ListItem>
+                                        <asp:ListItem Value="Plant" Text="SalesOffice">Plant</asp:ListItem>
                                         <%--<asp:ListItem Value="RouteWise" Text="RouteWise">RouteWise</asp:ListItem>--%>
                                     </asp:DropDownList>
                                 </td>
@@ -106,9 +107,11 @@
                                     </asp:DropDownList>
                                 </td>
                                 <td style="width: 5px;"></td>
-                                <td>
+                                <asp:Panel ID="chk_pktOrLtr" runat="server">
+                                    <td>
                                     <span>PktWise</span>
                                     <asp:CheckBox ID="chkPktOrLtr" runat="server"   CssClass="form-control" AutoPostBack="True"  ></asp:CheckBox>
+                                </asp:Panel>
                                 </td>
                             </tr>
                             <tr>
