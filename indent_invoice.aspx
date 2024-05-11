@@ -123,12 +123,22 @@
         }
         function ddlDispNameChanged(id) {
             FillAgentName(id.value);
+            //fillIndentType();
+        }
+        function ddlAgentNameChanged(id) {
             fillIndentType();
         }
 
         function fillIndentType() {
-            var RouteId = document.getElementById('ddlDispName').value;
-            var data = { 'operation': 'GetIndentType', 'RouteId': RouteId };
+            var ddlAgentName = document.getElementById('ddlAgentName');
+            if (ddlAgentName != "Select Agent Name") {
+               var Agentid= document.getElementById('ddlAgentName').value;
+            }
+            if (document.getElementById('ddlDispName').value != "Select Route Name") {
+                var RouteId = document.getElementById('ddlDispName').value;
+            }
+            var Inddate = document.getElementById('txtFrom_date').value
+            var data = { 'operation': 'GetIndentType', 'RouteId': RouteId, 'Agentid': Agentid, 'Inddate': Inddate };
             var s = function (msg) {
                 if (msg) {
                     if (msg == "Session Expired") {
@@ -469,14 +479,15 @@
                             <select id="ddlDispName" class="form-control" onchange="ddlDispNameChanged(this);">
                             </select>
                         </td>
+                        
                         <td style="width: 5px;"></td>
-                        <td id="DivIndentType" style="display: none;">
-                            <select id="ddlIndentType" class="form-control">
+                        <td>
+                            <select id="ddlAgentName" class="form-control" onchange="ddlAgentNameChanged(this);">
                             </select>
                         </td>
                         <td style="width: 5px;"></td>
-                        <td>
-                            <select id="ddlAgentName" class="form-control">
+                        <td id="DivIndentType" style="display: none;">
+                            <select id="ddlIndentType" class="form-control">
                             </select>
                         </td>
                         <td style="width: 5px;"></td>

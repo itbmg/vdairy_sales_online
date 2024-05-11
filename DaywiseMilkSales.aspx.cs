@@ -659,10 +659,10 @@ public partial class Day_wise_Milk_Sales : System.Web.UI.Page
                 if (sortedProductDT.Rows.Count > 0)
                 {
                     DataView view = new DataView(sortedProductDT);
-                    distinctproducts = view.ToTable(true, "ProductName");
+                    distinctproducts = view.ToTable(true, "IndentDate");
 
                     Report.Columns.Add("SNo");
-                    Report.Columns.Add("Date");
+                    Report.Columns.Add("ProductName");
                     int count = 0;
                     foreach (DataRow dr in distinctproducts.Rows)
                     {
@@ -670,7 +670,7 @@ public partial class Day_wise_Milk_Sales : System.Web.UI.Page
                         //string PPakt = dr["ProductName"].ToString() + "pkt";
                         //Report.Columns.Add(pLtr).DataType = typeof(Double);
                         //Report.Columns.Add(PPakt).DataType = typeof(Double);
-                        Report.Columns.Add(dr["ProductName"].ToString()).DataType = typeof(Double);
+                        Report.Columns.Add(dr["IndentDate"].ToString()).DataType = typeof(Double);
                     }
                     if (ddlReportType.SelectedValue == "7")
                     {
@@ -684,21 +684,21 @@ public partial class Day_wise_Milk_Sales : System.Web.UI.Page
                     }
 
                     //Report.Columns.Add("Total(packets)");
-                    DataTable distincttable = view.ToTable(true, "IndentDate");
+                    DataTable distincttable = view.ToTable(true, "ProductName");
                     int i = 1; double gtotmilk = 0; double gtotpktqty = 0;
                     foreach (DataRow branch in distincttable.Rows)
                     {
                         DataRow newrow = Report.NewRow();
                         newrow["SNo"] = i;
-                        string AssignDate = branch["IndentDate"].ToString();
-                        DateTime dtAssignDate = Convert.ToDateTime(AssignDate).AddDays(1);
-                        string AssigDate = dtAssignDate.ToString("dd MMM yyyy");
-                        newrow["Date"] = AssigDate;
+                        string ProductName = branch["ProductName"].ToString();
+                        //DateTime dtAssignDate = Convert.ToDateTime(AssignDate).AddDays(1);
+                        //string AssigDate = dtAssignDate.ToString("dd MMM yyyy");
+                        newrow["ProductName"] = ProductName;
                         double totmilk = 0; double totpktqty = 0; double gtotkg = 0;
                         foreach (DataRow dr in sortedProductDT.Rows)
                         {
                             double directdel = 0;
-                            if (dr["IndentDate"].ToString() == AssignDate)
+                            if (dr["ProductName"].ToString() == ProductName)
                             {
                                 //foreach (DataRow drdtdirect in dtdirect.Select("IndentDate='" + AssignDate + "'"))
                                 //{
@@ -711,14 +711,14 @@ public partial class Day_wise_Milk_Sales : System.Web.UI.Page
                                 {
                                     double delpqty = 0;
                                     double.TryParse(dr["PktQty"].ToString(), out delpqty);
-                                    newrow[dr["ProductName"].ToString()] = Math.Round(delpqty, 2);
+                                    newrow[dr["IndentDate"].ToString()] = Math.Round(delpqty, 2);
                                     totpktqty += delpqty;
                                 }
                                 else
                                 {
                                     double delqty = 0;
                                     double.TryParse(dr["DeliveryQty"].ToString(), out delqty);
-                                    newrow[dr["ProductName"].ToString()] = Math.Round(delqty + directdel, 2);
+                                    newrow[dr["IndentDate"].ToString()] = Math.Round(delqty + directdel, 2);
                                     totmilk += delqty + directdel;
                                 }
                             }
@@ -752,7 +752,7 @@ public partial class Day_wise_Milk_Sales : System.Web.UI.Page
                     }
                 }
                 DataRow newvartical = Report.NewRow();
-                newvartical["Date"] = "Total";
+                newvartical["ProductName"] = "Total";
                 //DataRow newAvg = Report.NewRow();
                 //newAvg["Date"] = "Avg Per Day";
                 double Avgval = 0.0;
