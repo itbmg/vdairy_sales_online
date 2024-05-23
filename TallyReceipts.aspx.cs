@@ -540,6 +540,8 @@ public partial class TallyReceipts : System.Web.UI.Page
                 Report.Columns.Add("Receipt");
                 Report.Columns.Add("Type");
                 Report.Columns.Add("Name");
+                Report.Columns.Add("bankaccid");
+                
                 Report.Columns.Add("Amount").DataType = typeof(Double);
                 Report.Columns.Add("Remarks");
                 lbl_selfromdate.Text = fromdate.ToString("dd/MM/yyyy");
@@ -565,6 +567,8 @@ public partial class TallyReceipts : System.Web.UI.Page
                     string march = "3/31/" + (nextyear - 1);
                     dtmarch = DateTime.Parse(march);
                 }
+                cmd = new MySqlCommand("select bam.bankid,bam.accountno,bam.sno as accid,bm.bankname from bankmaster as bm INNER JOIN bankaccountno_master as bam ON bm.sno=bam.bankid;");
+                DataTable dtBank = vdm.SelectQuery(cmd).Tables[0];
                 cmd = new MySqlCommand("SELECT tbranchname, ladger_dr FROM branchdata WHERE (sno = @BranchID)");
                 cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
                 DataTable dtledger = vdm.SelectQuery(cmd).Tables[0];
@@ -574,8 +578,8 @@ public partial class TallyReceipts : System.Web.UI.Page
                 }
 
                 Session["filename"] = ddlSalesOffice.SelectedItem.Text + " Tally Journel Import" + fromdate.ToString("dd/MM/yyyy");
-
-                cmd = new MySqlCommand("SELECT branchdata.salestype,branchdata.tBranchName,collections.ReceiptNo,collections.Remarks,collections.Sno,DATE_FORMAT(collections.PaidDate, '%d %b %y') AS DOE , collections.AmountPaid, collections.PaymentType FROM collections INNER JOIN branchdata ON collections.Branchid = branchdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchdata branchdata_1 ON branchmappingtable.SuperBranch = branchdata_1.sno WHERE (collections.PaidDate BETWEEN @d1 AND @d2) AND (branchmappingtable.SuperBranch = @BranchID) AND ((collections.PaymentType = 'PhonePay') OR (collections.PaymentType = 'Bank Transfer')) AND (collections.AmountPaid > 0) OR (collections.PaidDate BETWEEN @d1 AND @d2) AND ((collections.PaymentType = 'PhonePay') OR (collections.PaymentType = 'Bank Transfer')) AND (branchdata_1.SalesOfficeID = @SOID) AND (collections.AmountPaid > 0)");
+                 
+                cmd = new MySqlCommand("SELECT branchdata.salestype,branchdata.tBranchName,collections.bankaccid,collections.ReceiptNo,collections.Remarks,collections.Sno,DATE_FORMAT(collections.PaidDate, '%d %b %y') AS DOE , collections.AmountPaid, collections.PaymentType FROM collections INNER JOIN branchdata ON collections.Branchid = branchdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchdata branchdata_1 ON branchmappingtable.SuperBranch = branchdata_1.sno WHERE (collections.PaidDate BETWEEN @d1 AND @d2) AND (branchmappingtable.SuperBranch = @BranchID) AND ((collections.PaymentType = 'PhonePay') OR (collections.PaymentType = 'Bank Transfer')) AND (collections.AmountPaid > 0) OR (collections.PaidDate BETWEEN @d1 AND @d2) AND ((collections.PaymentType = 'PhonePay') OR (collections.PaymentType = 'Bank Transfer')) AND (branchdata_1.SalesOfficeID = @SOID) AND (collections.AmountPaid > 0)");
                 // 01/09/2017
                 //cmd = new MySqlCommand("SELECT branchdata.SalesType, branchdata.tbranchname,cashreceipts.Remarks, cashreceipts.AmountPaid ,cashreceipts.Receipt,DATE_FORMAT(cashreceipts.DOE, '%d %b %y') AS DOE FROM branchmappingtable INNER JOIN branchdata ON branchmappingtable.SubBranch = branchdata.sno INNER JOIN branchdata branchdata_1 ON branchmappingtable.SuperBranch = branchdata_1.sno INNER JOIN cashreceipts ON branchdata.sno = cashreceipts.AgentID WHERE (branchmappingtable.SuperBranch = @BranchID) AND (cashreceipts.DOE BETWEEN @d1 AND @d2) AND (cashreceipts.AmountPaid > 0) AND ((cashreceipts.PaymentStatus = 'PhonePay') OR (cashreceipts.PaymentType = 'Bank Transfer'))   OR (branchdata_1.SalesOfficeID = @SOID) AND (cashreceipts.DOE BETWEEN @d1 AND @d2) AND (cashreceipts.AmountPaid > 0) AND ((cashreceipts.PaymentStatus = 'PhonePay') OR (cashreceipts.PaymentType = 'Bank Transfer'))");
                 cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
@@ -594,7 +598,9 @@ public partial class TallyReceipts : System.Web.UI.Page
                     newrow["Name"] = dr["tBranchName"].ToString();
                     double AmountPaid = 0;
                     double.TryParse(dr["AmountPaid"].ToString(), out AmountPaid);
+                    newrow["Type"] = dr["PaymentType"].ToString();
                     newrow["Amount"] = AmountPaid;
+                    newrow["bankaccid"] = dr["bankaccid"].ToString();
                     Report.Rows.Add(newrow);
                 }
                 cmd = new MySqlCommand("SELECT Sno,DATE_FORMAT(DOE, '%d %b %y') AS DOE,Receiptno,PaymentType as Type, Name, Amount,Remarks  FROM cashcollections WHERE (Branchid = @BranchID) AND (DOE BETWEEN @d1 AND @d2) AND   (CollectionType = 'PhonePay') OR (CollectionType = 'Bank Transfer') ORDER BY DOE");
@@ -676,7 +682,17 @@ public partial class TallyReceipts : System.Web.UI.Page
                         }
                         //newrow["Voucher No"] = Receiptno + newreceipt;
                         newrow["Voucher Type"] = "Bank Receipts Import";
-                        newrow["Ledger (Dr)"] = "Union Bank Of India - 031115010000004 - OD";// ledger;
+                        if (branch["Type"].ToString() == "Bank Transfer")
+                        {
+                            foreach (DataRow drb in dtBank.Select("accid='" + branch["bankaccid"].ToString() + "'"))
+                            {
+                                newrow["Ledger (Dr)"] = drb["bankname"].ToString() + "-" + drb["accountno"].ToString() + "- OD";// ledger;
+                            }
+                        }
+                        else
+                        {
+                            newrow["Ledger (Dr)"] = "Union Bank Of India - 031115010000005 - OD";// ledger;
+                        }
 
                         newrow["Ledger (Cr)"] = branch["Name"].ToString();
                         newrow["Amount"] = branch["Amount"].ToString();

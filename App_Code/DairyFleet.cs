@@ -1399,24 +1399,24 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             string Type = context.Request["Type"];
             DateTime fromdate = Convert.ToDateTime(Inddate);
             List<IndentClas> Indentlist = new List<IndentClas>();
-            if (Type == "AgentInvoice")
-            {
-                cmd = new MySqlCommand("SELECT  IndentType from indents where branch_id=@AgentId and I_date between @d1 and @d2 order by IndentType asc");
-                cmd.Parameters.AddWithValue("@AgentId", Agentid);
-                cmd.Parameters.Add("@d1", GetLowDate(fromdate).AddDays(-1));
-                cmd.Parameters.Add("@d2", GetHighDate(fromdate).AddDays(-1));
-            }
-            else
-            {
-                cmd = new MySqlCommand("SELECT  IndentType from indents where branch_id=@AgentId and I_date between @d1 and @d2 order by IndentType asc");
-                cmd.Parameters.AddWithValue("@AgentId", Agentid);
-                cmd.Parameters.Add("@d1", GetLowDate(fromdate));
-                cmd.Parameters.Add("@d2", GetHighDate(fromdate));
-            }
+            //if (Type == "AgentInvoice")
+            //{
+            //    cmd = new MySqlCommand("SELECT  IndentType from indents where branch_id=@AgentId and I_date between @d1 and @d2 order by IndentType asc");
+            //    cmd.Parameters.AddWithValue("@AgentId", Agentid);
+            //    cmd.Parameters.Add("@d1", GetLowDate(fromdate).AddDays(-1));
+            //    cmd.Parameters.Add("@d2", GetHighDate(fromdate).AddDays(-1));
+            //}
             //else
             //{
-            //    cmd = new MySqlCommand("SELECT dispatch_sub.IndentType FROM dispatch INNER JOIN dispatch_sub ON dispatch.sno = dispatch_sub.dispatch_sno WHERE (dispatch.Route_id = @Route_id) group by dispatch_sub.IndentType");
-            //    cmd.Parameters.AddWithValue("@Route_id", RouteId);
+            //    cmd = new MySqlCommand("SELECT  IndentType from indents where branch_id=@AgentId and I_date between @d1 and @d2 order by IndentType asc");
+            //    cmd.Parameters.AddWithValue("@AgentId", Agentid);
+            //    cmd.Parameters.Add("@d1", GetLowDate(fromdate));
+            //    cmd.Parameters.Add("@d2", GetHighDate(fromdate));
+            //}
+            //else
+            //{
+            cmd = new MySqlCommand("SELECT dispatch_sub.IndentType FROM dispatch INNER JOIN dispatch_sub ON dispatch.sno = dispatch_sub.dispatch_sno WHERE (dispatch.Route_id = @Route_id) group by dispatch_sub.IndentType");
+            cmd.Parameters.AddWithValue("@Route_id", RouteId);
             //}
             DataTable dtIndentType = vdbmngr.SelectQuery(cmd).Tables[0];
             foreach (DataRow dr in dtIndentType.Rows)
@@ -10751,16 +10751,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             }
             else
             {
-                if(IndentType !="")
-                {
-                    cmd = new MySqlCommand("SELECT indents_subtable.pkt_rate,indents_subtable.pkt_qty,indents_subtable.tub_qty,indents_subtable.IndentNo,sum(indents_subtable.unitQty * indents_subtable.UnitCost )AS Amount,IFNULL(branchproducts.VatPercent, 0) AS VatPercent,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName,productsdata.invqty,productsdata.Qty as rawqty,indents_subtable.unitQty AS IndentQty,sum(indents_subtable.unitQty * indents_subtable.UnitCost )AS indAmount, indents_subtable.UnitCost, DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate,branchdata.stateid, productsdata.itemcode,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.SubCat_sno as subcatid  FROM  productsdata INNER JOIN indents_subtable ON productsdata.sno = indents_subtable.Product_sno INNER JOIN indents ON indents_subtable.IndentNo = indents.IndentNo INNER JOIN  branchdata ON indents.Branch_id = branchdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchproducts ON branchmappingtable.SuperBranch = branchproducts.branch_sno AND productsdata.sno = branchproducts.product_sno WHERE (indents.IndentType=@IndentType) and  (indents.I_date BETWEEN @d1 AND @d2) AND (branchdata.sno = @BranchID) AND (indents_subtable.unitQty>0)  GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
-                    cmd.Parameters.AddWithValue("@IndentType", IndentType);
-                }
-                else
-                {
-                    cmd = new MySqlCommand("SELECT indents_subtable.pkt_rate,indents_subtable.pkt_qty,indents_subtable.tub_qty,indents_subtable.IndentNo,sum(indents_subtable.unitQty * indents_subtable.UnitCost )AS Amount,IFNULL(branchproducts.VatPercent, 0) AS VatPercent,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName,productsdata.invqty,productsdata.Qty as rawqty,indents_subtable.unitQty AS IndentQty,sum(indents_subtable.unitQty * indents_subtable.UnitCost )AS indAmount, indents_subtable.UnitCost, DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate,branchdata.stateid, productsdata.itemcode,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.SubCat_sno as subcatid  FROM  productsdata INNER JOIN indents_subtable ON productsdata.sno = indents_subtable.Product_sno INNER JOIN indents ON indents_subtable.IndentNo = indents.IndentNo INNER JOIN  branchdata ON indents.Branch_id = branchdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchproducts ON branchmappingtable.SuperBranch = branchproducts.branch_sno AND productsdata.sno = branchproducts.product_sno WHERE (indents.I_date BETWEEN @d1 AND @d2) AND (branchdata.sno = @BranchID) AND (indents_subtable.unitQty>0)  GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
-
-                }
+                cmd = new MySqlCommand("SELECT indents_subtable.pkt_rate,indents_subtable.pkt_qty,indents_subtable.tub_qty,indents_subtable.IndentNo,sum(indents_subtable.unitQty * indents_subtable.UnitCost )AS Amount,IFNULL(branchproducts.VatPercent, 0) AS VatPercent,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName,productsdata.invqty,productsdata.Qty as rawqty,indents_subtable.unitQty AS IndentQty,sum(indents_subtable.unitQty * indents_subtable.UnitCost )AS indAmount, indents_subtable.UnitCost, DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate,branchdata.stateid, productsdata.itemcode,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.SubCat_sno as subcatid  FROM  productsdata INNER JOIN indents_subtable ON productsdata.sno = indents_subtable.Product_sno INNER JOIN indents ON indents_subtable.IndentNo = indents.IndentNo INNER JOIN  branchdata ON indents.Branch_id = branchdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchproducts ON branchmappingtable.SuperBranch = branchproducts.branch_sno AND productsdata.sno = branchproducts.product_sno WHERE (indents.I_date BETWEEN @d1 AND @d2) AND (branchdata.sno = @BranchID) AND (indents_subtable.unitQty>0)  GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
             }
             cmd.Parameters.Add("@BranchID", AgentId);
             cmd.Parameters.Add("@d1", GetLowDate(fromdate));
@@ -11998,16 +11989,15 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
             }
             string IndentType = context.Request["IndentType"];
-            if (SOID == "3")
-            {
-                cmd = new MySqlCommand("SELECT SUM(indents_subtable.tub_qty) as tub_qty,SUM(indents_subtable.pkt_dqty) as pkt_dqty,indents_subtable.pkt_rate,SUM(indents_subtable.pkt_qty) as pkt_qty,indents_subtable.IndentNo,sum(indents_subtable.DeliveryQty * indents_subtable.UnitCost )AS Amount,IFNULL(branchproducts.VatPercent, 0) AS VatPercent,productsdata.sno AS ProductSno,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName,productsdata.description, SUM(indents_subtable.DeliveryQty) AS DeliveryQty,SUM(indents_subtable.unitQty) AS IndentQty,sum(indents_subtable.unitQty * indents_subtable.UnitCost )AS indAmount, indents_subtable.UnitCost, DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate,branchdata.stateid, productsdata.itemcode,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.SubCat_sno as subcatid FROM  productsdata INNER JOIN indents_subtable ON productsdata.sno = indents_subtable.Product_sno INNER JOIN indents ON indents_subtable.IndentNo = indents.IndentNo INNER JOIN  branchdata ON indents.Branch_id = branchdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchproducts ON branchmappingtable.SuperBranch = branchproducts.branch_sno AND productsdata.sno = branchproducts.product_sno WHERE indents.IndentType =@IndentType and (indents.I_date BETWEEN @d1 AND @d2) AND (branchdata.sno = @BranchID) AND (indents_subtable.DeliveryQty>0)  GROUP BY productsdata.ProductName,productsdata.igst ORDER BY branchproducts.Rank");
-                cmd.Parameters.AddWithValue("@IndentType", IndentType);
-            }
-            else
-            {
-                cmd = new MySqlCommand("SELECT SUM(indents_subtable.tub_qty) as tub_qty,SUM(indents_subtable.pkt_dqty) as pkt_dqty,indents_subtable.pkt_rate,SUM(indents_subtable.pkt_qty) as pkt_qty,indents_subtable.IndentNo,sum(indents_subtable.DeliveryQty * indents_subtable.UnitCost )AS Amount,IFNULL(branchproducts.VatPercent, 0) AS VatPercent,productsdata.sno AS ProductSno,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName,productsdata.description, SUM(indents_subtable.DeliveryQty) AS DeliveryQty,SUM(indents_subtable.unitQty) AS IndentQty,sum(indents_subtable.unitQty * indents_subtable.UnitCost )AS indAmount, indents_subtable.UnitCost, DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate,branchdata.stateid, productsdata.itemcode,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.SubCat_sno as subcatid FROM  productsdata INNER JOIN indents_subtable ON productsdata.sno = indents_subtable.Product_sno INNER JOIN indents ON indents_subtable.IndentNo = indents.IndentNo INNER JOIN  branchdata ON indents.Branch_id = branchdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchproducts ON branchmappingtable.SuperBranch = branchproducts.branch_sno AND productsdata.sno = branchproducts.product_sno WHERE indents.IndentType =@IndentType and (indents.I_date BETWEEN @d1 AND @d2) AND (branchdata.sno = @BranchID) AND (indents_subtable.DeliveryQty>0)  GROUP BY productsdata.ProductName,productsdata.igst ORDER BY branchproducts.Rank");
-                cmd.Parameters.AddWithValue("@IndentType", IndentType);
-            }
+            //if (SOID == "3")
+            //{
+            //    cmd = new MySqlCommand("SELECT SUM(indents_subtable.tub_qty) as tub_qty,SUM(indents_subtable.pkt_dqty) as pkt_dqty,indents_subtable.pkt_rate,SUM(indents_subtable.pkt_qty) as pkt_qty,indents_subtable.IndentNo,sum(indents_subtable.DeliveryQty * indents_subtable.UnitCost )AS Amount,IFNULL(branchproducts.VatPercent, 0) AS VatPercent,productsdata.sno AS ProductSno,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName,productsdata.description, SUM(indents_subtable.DeliveryQty) AS DeliveryQty,SUM(indents_subtable.unitQty) AS IndentQty,sum(indents_subtable.unitQty * indents_subtable.UnitCost )AS indAmount, indents_subtable.UnitCost, DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate,branchdata.stateid, productsdata.itemcode,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.SubCat_sno as subcatid FROM  productsdata INNER JOIN indents_subtable ON productsdata.sno = indents_subtable.Product_sno INNER JOIN indents ON indents_subtable.IndentNo = indents.IndentNo INNER JOIN  branchdata ON indents.Branch_id = branchdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchproducts ON branchmappingtable.SuperBranch = branchproducts.branch_sno AND productsdata.sno = branchproducts.product_sno WHERE indents.IndentType =@IndentType and (indents.I_date BETWEEN @d1 AND @d2) AND (branchdata.sno = @BranchID) AND (indents_subtable.DeliveryQty>0)  GROUP BY productsdata.ProductName,productsdata.igst ORDER BY branchproducts.Rank");
+            //    cmd.Parameters.AddWithValue("@IndentType", IndentType);
+            //}
+            //else
+            //{
+                cmd = new MySqlCommand("SELECT SUM(indents_subtable.tub_qty) as tub_qty,SUM(indents_subtable.pkt_dqty) as pkt_dqty,indents_subtable.pkt_rate,SUM(indents_subtable.pkt_qty) as pkt_qty,indents_subtable.IndentNo,sum(indents_subtable.DeliveryQty * indents_subtable.UnitCost )AS Amount,IFNULL(branchproducts.VatPercent, 0) AS VatPercent,productsdata.sno AS ProductSno,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName,productsdata.description, SUM(indents_subtable.DeliveryQty) AS DeliveryQty,SUM(indents_subtable.unitQty) AS IndentQty,sum(indents_subtable.unitQty * indents_subtable.UnitCost )AS indAmount, indents_subtable.UnitCost, DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate,branchdata.stateid, productsdata.itemcode,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.SubCat_sno as subcatid FROM  productsdata INNER JOIN indents_subtable ON productsdata.sno = indents_subtable.Product_sno INNER JOIN indents ON indents_subtable.IndentNo = indents.IndentNo INNER JOIN  branchdata ON indents.Branch_id = branchdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchproducts ON branchmappingtable.SuperBranch = branchproducts.branch_sno AND productsdata.sno = branchproducts.product_sno WHERE (indents.I_date BETWEEN @d1 AND @d2) AND (branchdata.sno = @BranchID) AND (indents_subtable.DeliveryQty>0)  GROUP BY productsdata.ProductName,productsdata.igst ORDER BY branchproducts.Rank");
+            //}
             //cmd = new MySqlCommand("SELECT SUM(indents_subtable.tub_qty) as tub_qty,SUM(indents_subtable.pkt_dqty) as pkt_dqty,indents_subtable.pkt_rate,SUM(indents_subtable.pkt_qty) as pkt_qty,indents_subtable.IndentNo,sum(indents_subtable.DeliveryQty * indents_subtable.UnitCost )AS Amount,IFNULL(branchproducts.VatPercent, 0) AS VatPercent,productsdata.sno AS ProductSno,productsdata.units,productsdata.qty as uomqty, productsdata.ProductName,productsdata.description, SUM(indents_subtable.DeliveryQty) AS DeliveryQty,SUM(indents_subtable.unitQty) AS IndentQty,sum(indents_subtable.unitQty * indents_subtable.UnitCost )AS indAmount, indents_subtable.UnitCost, DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate,branchdata.stateid, productsdata.itemcode,productsdata.hsncode,productsdata.igst,productsdata.cgst,productsdata.sgst,productsdata.SubCat_sno as subcatid FROM  productsdata INNER JOIN indents_subtable ON productsdata.sno = indents_subtable.Product_sno INNER JOIN indents ON indents_subtable.IndentNo = indents.IndentNo INNER JOIN  branchdata ON indents.Branch_id = branchdata.sno INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchproducts ON branchmappingtable.SuperBranch = branchproducts.branch_sno AND productsdata.sno = branchproducts.product_sno WHERE (indents.I_date BETWEEN @d1 AND @d2) AND (branchdata.sno = @BranchID) AND (indents_subtable.DeliveryQty>0)  GROUP BY productsdata.ProductName,productsdata.igst ORDER BY branchproducts.Rank");
             cmd.Parameters.AddWithValue("@BranchID", AgentId);
             cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate).AddDays(-1));
@@ -20802,17 +20792,19 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             {
                                 if (paymenttype == "Cheque")
                                 {
-                                    cmd = new MySqlCommand("INSERT INTO collections (Branchid, AmountPaid, Denominations, Remarks, PaidDate, UserData_sno, PaymentType, ReturnDenomin, PayTime, EmpID, ChequeNo, CheckStatus, ReceiptNo,ChequeDate, BankName,headsno) VALUES (@Branchid, @AmountPaid, @Denominations, @Remarks, @PaidDate, @UserData_sno, @PaymentType, @ReturnDenomin, @PayTime, @EmpID, @ChequeNo,@CheckStatus, @ReceiptNo, @ChequeDate, @BankName,@headsno)");
+                                    cmd = new MySqlCommand("INSERT INTO collections (Branchid, AmountPaid, Denominations, Remarks, PaidDate, UserData_sno, PaymentType, ReturnDenomin, PayTime, EmpID, ChequeNo, CheckStatus, ReceiptNo,ChequeDate, BankName,headsno,bankaccid) VALUES (@Branchid, @AmountPaid, @Denominations, @Remarks, @PaidDate, @UserData_sno, @PaymentType, @ReturnDenomin, @PayTime, @EmpID, @ChequeNo,@CheckStatus, @ReceiptNo, @ChequeDate, @BankName,@headsno,@bankaccid)");
                                     cmd.Parameters.AddWithValue("@CheckStatus", "P");
                                     cmd.Parameters.AddWithValue("@ChequeDate", dtchequedate);
-                                    cmd.Parameters.AddWithValue("@BankName", BankName);
+                                    cmd.Parameters.AddWithValue("@BankName", BankName); 
+                                    cmd.Parameters.AddWithValue("@bankaccid", faaccuntno); 
                                 }
                                 else
                                 {
-                                    cmd = new MySqlCommand("INSERT INTO collections (Branchid, AmountPaid, Denominations, Remarks, PaidDate, UserData_sno, PaymentType, ReturnDenomin, PayTime, EmpID, ChequeNo, ReceiptNo, BankName,headsno,banktransferstatus,banktransferdate) VALUES (@Branchid, @AmountPaid, @Denominations, @Remarks, @PaidDate, @UserData_sno, @PaymentType, @ReturnDenomin, @PayTime, @EmpID, @ChequeNo,@ReceiptNo,@BankName,@headsno,@banktransferstatus,@banktransferdate)");
+                                    cmd = new MySqlCommand("INSERT INTO collections (Branchid, AmountPaid, Denominations, Remarks, PaidDate, UserData_sno, PaymentType, ReturnDenomin, PayTime, EmpID, ChequeNo, ReceiptNo, BankName,headsno,banktransferstatus,banktransferdate,bankaccid) VALUES (@Branchid, @AmountPaid, @Denominations, @Remarks, @PaidDate, @UserData_sno, @PaymentType, @ReturnDenomin, @PayTime, @EmpID, @ChequeNo,@ReceiptNo,@BankName,@headsno,@banktransferstatus,@banktransferdate,@bankaccid)");
                                     cmd.Parameters.AddWithValue("@BankName", BankName);
                                     cmd.Parameters.AddWithValue("@banktransferstatus", "P");
                                     cmd.Parameters.AddWithValue("@banktransferdate", PaidDate);
+                                    cmd.Parameters.AddWithValue("@bankaccid", faaccuntno);
                                 }
                             }
                             else

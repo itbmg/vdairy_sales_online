@@ -123,11 +123,11 @@
         }
         function ddlDispNameChanged(id) {
             FillAgentName(id.value);
-            //fillIndentType();
-        }
-        function ddlAgentNameChanged(id) {
             fillIndentType();
         }
+        //function ddlAgentNameChanged(id) {
+        //    fillIndentType();
+        //}
 
         function fillIndentType() {
             var ddlAgentName = document.getElementById('ddlAgentName');

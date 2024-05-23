@@ -955,8 +955,8 @@
                                     <i class="fa fa-building-o" aria-hidden="true"></i>&nbsp;&nbsp;Department</a></li>
                                 <li id="id_tab_ProductRanking" class=""><a data-toggle="tab" href="#" onclick="showProductRanking()">
                                     <i class=""></i>&nbsp;&nbsp;Product Ranking</a></li>
-                                <%--<li id="id_tab_BankDetails" class=""><a data-toggle="tab" href="#" onclick="showbankmaster()">
-                                    <i class="fa fa-university"></i>&nbsp;&nbsp;BankDetails</a></li>--%>
+                                <li id="id_tab_BankDetails" class=""><a data-toggle="tab" href="#" onclick="showbankmaster()">
+                                    <i class="fa fa-university"></i>&nbsp;&nbsp;BankDetails</a></li>
                                 <li id="id_tab_PoDetails" class=""><a data-toggle="tab" href="#" onclick="showPOEntryDetails()">
                                     <i class="fa fa-file-text-o"></i>&nbsp;&nbsp;POEntry</a></li>
                                 <li id="id_tab_CashCollections" class=""><a data-toggle="tab" href="#" onclick="showCashCollectionMaster()">
@@ -1250,7 +1250,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div id="div_Bankdetails" style="display: none;">
+                        <div id="div_Bankdetails">
                             <div class="box-header with-border">
                                 <h3 class="box-title">
                                     <i style="padding-right: 5px;" class="fa fa-cog"></i>BankDetails

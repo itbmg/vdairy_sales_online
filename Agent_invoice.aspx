@@ -178,9 +178,9 @@
             FillAgentName(id.value);
             //fillIndentType();
         }
-        function ddlAgentNameChanged(id) {
-            fillIndentType();
-        }
+        //function ddlAgentNameChanged(id) {
+        //    fillIndentType();
+        //}
         function FillAgentName(RouteID) {
             var data = { 'operation': 'GetAgents', 'RouteID': RouteID };
             var s = function (msg) {
