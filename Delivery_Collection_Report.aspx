@@ -72,6 +72,17 @@
                     <ContentTemplate>
                         <table>
                             <tr>
+                                <td>
+                                    <asp:DropDownList ID="ddlType" runat="server"   CssClass="form-control" 
+                                        AutoPostBack="True" OnSelectedIndexChanged="ddlType_SelectedIndexChanged">
+                                        <asp:ListItem Value="Select Type" Text="Select Type">Select Type</asp:ListItem>
+                                        <asp:ListItem Value="Category" Text="Category">Category</asp:ListItem>
+                                        <asp:ListItem Value="Non-Category" Text="Non-Category">Non-Category</asp:ListItem>
+                                       <%-- <asp:ListItem Value="AgentWise" Text="AgentWise">AgentWise</asp:ListItem>
+                                        <asp:ListItem Value="RouteWise" Text="RouteWise">RouteWise</asp:ListItem>--%>
+                                    </asp:DropDownList>
+                                </td>
+                                 <td style="width: 5px;"></td>
                                  <td>
                                     <asp:Label ID="labeltype" runat="server">AgentWise</asp:Label>
                                      </td>
@@ -80,6 +91,15 @@
                                 </td>
                                  <td style="width: 5px;">
                                 </td>
+                                 
+                                <td>
+                                    <asp:Panel ID="CategoryPanel" runat="server" Visible="false">
+                                        <asp:DropDownList ID="ddlCategory" runat="server" CssClass="form-control" AutoPostBack="True">
+                                            
+                                        </asp:DropDownList>
+                                    </asp:Panel>
+                                </td>
+                                <td style="width: 5px;"></td>
                                 <td>
                                     <asp:Panel ID="PPlant" runat="server" Visible="false">
                                         <asp:DropDownList ID="ddlPlant" runat="server" CssClass="form-control" AutoPostBack="True"

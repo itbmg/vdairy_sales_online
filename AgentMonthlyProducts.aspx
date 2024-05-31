@@ -24,6 +24,11 @@
                 alert("Select To Date");
                 return false;
             }
+
+            //var months;
+            months = (fromDate. - txtTodate.getFullYear()) * 12;
+            //months -= d1.getMonth();
+            //months += d2.getMonth();
         }
     </script>
     <script type="text/javascript">
@@ -69,7 +74,7 @@
             <div>
                 <table>
                     <tr>
-                    <td>
+                    <%--<td>
                                     <span>Report Type</span>
                                 </td>
                                 <td style="height:40px;">
@@ -78,31 +83,35 @@
                                         <asp:ListItem>WithAvg</asp:ListItem>
                                         <asp:ListItem>WithOutAvg</asp:ListItem>
                                     </asp:DropDownList>
-                                </td>
+                                </td>--%>
                                 <td style="width: 5px;">
                                 </td>
 
                                 <td style="height:40px;">
+                                     <asp:Panel ID="ddlreportpannel" runat="server">
                                     <asp:DropDownList ID="ddlReportType" runat="server" CssClass="form-control" AutoPostBack="True"
                                         OnSelectedIndexChanged="ddlReportType_SelectedIndexChanged">
-                                        <asp:ListItem>Route Wise</asp:ListItem>
+                                        <%--<asp:ListItem>Route Wise</asp:ListItem>--%>
                                         <asp:ListItem>SalesOffice Wise</asp:ListItem>
                                     </asp:DropDownList>
+                                         </asp:Panel>
                                 </td>
                                 <td style="width: 5px;">
                                 </td>
                         <td>
                             <asp:Panel ID="PBranch" runat="server">
                                 <asp:DropDownList ID="ddlSalesOffice" runat="server" CssClass="form-control" AutoPostBack="True"
-                                    OnSelectedIndexChanged="ddlSalesOffice_SelectedIndexChanged">
+                                    >
                                 </asp:DropDownList>
                             </asp:Panel>
                         </td>
                           <td style="width: 5px;">
                                 </td>
                         <td>
+                      <asp:Panel ID="disppanel" runat="server">
                             <asp:DropDownList ID="ddlDispName" runat="server" CssClass="form-control">
                             </asp:DropDownList>
+                           </asp:Panel>
                         </td>
                           <td style="width: 5px;">
                                 </td>

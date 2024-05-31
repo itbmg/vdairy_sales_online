@@ -33,6 +33,10 @@ public partial class AgentMonthlyProducts : System.Web.UI.Page
                 txtTodate.Text = DateTime.Now.ToString("dd-MM-yyyy HH:mm");
                 FillAgentName();
                 lblTitle.Text = Session["TitleName"].ToString();
+                disppanel.Visible = false;
+                ddlreportpannel.Visible = false;
+
+
             }
         }
     }
@@ -108,20 +112,6 @@ public partial class AgentMonthlyProducts : System.Web.UI.Page
         {
             lblmsg.Text = ex.Message;
         }
-    }
-    protected void ddlSalesOffice_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        vdm = new VehicleDBMgr();
-        cmd = new MySqlCommand("SELECT    branchroutes.flag, branchroutes.RouteName, branchroutes.Sno FROM  branchroutes INNER JOIN branchdata ON branchroutes.BranchID = branchdata.sno INNER JOIN branchdata branchdata_1 ON branchroutes.BranchID = branchdata_1.sno WHERE ((branchroutes.BranchID = @BranchID) AND (branchroutes.flag=@flag)) OR ((branchdata_1.SalesOfficeID = @SOID) AND (branchroutes.flag=@flag))");
-        //cmd = new MySqlCommand("SELECT dispatch.DispName, dispatch.sno FROM dispatch INNER JOIN branchdata ON dispatch.Branch_Id = branchdata.sno INNER JOIN branchdata branchdata_1 ON dispatch.Branch_Id = branchdata_1.sno WHERE ((branchdata.sno = @BranchID) and (dispatch.flag=@flag)) OR ((branchdata_1.SalesOfficeID = @SOID) and (dispatch.flag=@flag))");
-        cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
-        cmd.Parameters.AddWithValue("@SOID", ddlSalesOffice.SelectedValue);
-        cmd.Parameters.AddWithValue("@flag", "1");
-        DataTable dtRoutedata = vdm.SelectQuery(cmd).Tables[0];
-        ddlDispName.DataSource = dtRoutedata;
-        ddlDispName.DataTextField = "RouteName";
-        ddlDispName.DataValueField = "Sno";
-        ddlDispName.DataBind();
     }
     protected void ddlReportType_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -251,6 +241,8 @@ public partial class AgentMonthlyProducts : System.Web.UI.Page
             lbl_selttodate.Text = txtTodate.Text;
             DateTime firstmonth = new DateTime();
             DateTime firstmonth1 = new DateTime();
+            DateTime previousmonth = new DateTime();
+            DateTime presentmonth = new DateTime();
             DateTime lastmonth = new DateTime();
             int frommonth = fromdate.Month;
             int tomonth = todate.Month;
@@ -258,40 +250,48 @@ public partial class AgentMonthlyProducts : System.Web.UI.Page
             int years = (dateSpan.Days / 365);
             int months = ((dateSpan.Days % 365) / 31) + (years * 12);
             Report.Columns.Add("SNo");
-            Report.Columns.Add("Route Name");
-            Report.Columns.Add("Agent Name");
+            //Report.Columns.Add("Route Name");
+            Report.Columns.Add("Branch Name");
             int Count = 0;
-            if (ddlType.SelectedValue == "WithAvg" || ddlType.SelectedValue == "WithOutAvg")
-            {
-                Count = 0;
-            }
-            else
-            {
+            //if (ddlType.SelectedValue == "WithAvg" || ddlType.SelectedValue == "WithOutAvg")
+            //{
+            //    Count = 0;
+            //}
+            //else
+            //{
                 Count = 1;
-            }
+            //}
             int N = 0;
             if (months != 0)
             {
+                int d = 0;int q = 0;
                 for (int k = 0; k < months; k++)
                 {
                     firstmonth = GetLowMonthRetrive(fromdate.AddMonths(k));
                     string ChangedTime1 = firstmonth.ToString("MMM/yyyy");
                     string Changedt = firstmonth.ToString("MMM/yy");
-                    Changedt = Changedt + " Avg";
 
-                    if (ddlType.SelectedValue == "WithAvg")
+                    previousmonth = GetLowMonthRetrive(fromdate.AddMonths(k).AddMonths(-2));
+                   string previous_month = previousmonth.ToString("MMM");
+                    presentmonth = GetLowMonthRetrive(fromdate.AddMonths(k).AddMonths(-1));
+                    string present_month = presentmonth.ToString("MMM");
+
+                    string differ = previous_month + "_" + present_month + "Difference";
+                    if (d == 2)
                     {
-                        Report.Columns.Add(Changedt).DataType = typeof(Double);
+                        Report.Columns.Add(differ).DataType = typeof(Double);
+                        k--;
+                        d = 0;
+                        q = 0;
                     }
-                    else if (ddlType.SelectedValue == "WithOutAvg")
+                    else if (d != 2)
                     {
                         Report.Columns.Add(ChangedTime1).DataType = typeof(Double);
+                        //if (q == 0 && d == 0) k++;
+                        d++;
+                        q++;
                     }
-                    else
-                    {
-                        Report.Columns.Add(Changedt).DataType = typeof(Double);
-                        Report.Columns.Add(ChangedTime1).DataType = typeof(Double);
-                    }
+
                 }
             }
             DataTable dtagents = new DataTable();
@@ -311,37 +311,62 @@ public partial class AgentMonthlyProducts : System.Web.UI.Page
                 cmd.Parameters.AddWithValue("@endtime", todate);
                 dtagents = vdm.SelectQuery(cmd).Tables[0];
             }
-            int p = 0;
             string temp1 = "";
-            foreach (DataRow dragents in dtagents.Rows)
-            {
-                DataRow newrow = Report.NewRow();
-                newrow["SNo"] = p++.ToString();
-                if (temp1 != dragents["RouteName"].ToString())
-                {
-                    newrow["Route Name"] = dragents["RouteName"].ToString();
-                    temp1 = dragents["RouteName"].ToString();
-                }
-                else
-                {
-                    temp1 = dragents["RouteName"].ToString();
-                }
-                newrow["Agent Name"] = dragents["BranchName"].ToString();
-                Report.Rows.Add(newrow);
-            }
+            //foreach (DataRow dragents in dtagents.Rows)
+            //{
+            //    DataRow newrow = Report.NewRow();
+            //    newrow["SNo"] = p++.ToString();
+            //    if (temp1 != dragents["RouteName"].ToString())
+            //    {
+            //        newrow["Route Name"] = dragents["RouteName"].ToString();
+            //        temp1 = dragents["RouteName"].ToString();
+            //    }
+            //    else
+            //    {
+            //        temp1 = dragents["RouteName"].ToString();
+            //    }
+            //    newrow["Agent Name"] = dragents["BranchName"].ToString();
+            //    Report.Rows.Add(newrow);
+            //}
             if (ddlReportType.SelectedValue == "SalesOffice Wise")
             {
+                cmd = new MySqlCommand("SELECT   branchdata.BranchName, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty,ROUND(AVG(indents_subtable.DeliveryQty), 2) AS AvgQty, ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty), 2) AS SaleValue, branchdata.sno,indents.I_date FROM branchmappingtable INNER JOIN branchdata ON branchmappingtable.SubBranch = branchdata.sno INNER JOIN branchmappingtable branchmappingtable_1 ON branchdata.sno = branchmappingtable_1.SuperBranch INNER JOIN branchdata branchdata_1 ON branchmappingtable_1.SubBranch = branchdata_1.sno INNER JOIN indents ON branchdata_1.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE  (indents.I_date BETWEEN @d1 AND @d2) AND (branchmappingtable.SubBranch = @BranchID)  GROUP BY branchdata.sno");
+                cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
+                cmd.Parameters.AddWithValue("@d1", fromdate);
+                cmd.Parameters.AddWithValue("@d2", todate);
+                dtagents = vdm.SelectQuery(cmd).Tables[0];
+
+                int p = 0;
+                foreach (DataRow dragents in dtagents.Rows)
+                {
+                    DataRow newrow = Report.NewRow();
+                    newrow["SNo"] = p++.ToString();
+                    newrow["Branch Name"] = dragents["BranchName"].ToString();
+                    Report.Rows.Add(newrow);
+                }
                 if (months != 0)
                 {
                     for (int j = 0; j < months; j++)
                     {
                         firstmonth = GetLowMonthRetrive(fromdate.AddMonths(j));
                         lastmonth = GetHighMonth(firstmonth);
-                        cmd = new MySqlCommand("SELECT   modifiedroutes.RouteName, modifiedroutes.Sno AS routeid, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, branchdata.sno AS BSno, branchdata.BranchName,indent.I_date FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, Status, I_date, IndentType FROM  indents WHERE (I_date BETWEEN @starttime AND @endtime) AND (Status <> 'D')) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @endtime) AND (modifiedroutes.BranchID = @TripID) OR (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) AND (modifiedroutes.BranchID = @TripID) GROUP BY branchdata.BranchName ORDER BY modifiedroutes.RouteName,indent.I_date");
-                        cmd.Parameters.AddWithValue("@TripID", ddlSalesOffice.SelectedValue);
-                        DateTime dtF = firstmonth.AddDays(-1);
-                        cmd.Parameters.AddWithValue("@starttime", dtF);
-                        cmd.Parameters.AddWithValue("@endtime", lastmonth);
+                        DateTime dtF = firstmonth;
+                        if (ddlSalesOffice.SelectedValue == "7")
+                        {
+                            cmd = new MySqlCommand("SELECT    TripInfo.Sno, TripInfo.DCNo, ProductInfo.Categoryname, Round(SUM(ProductInfo.Qty),2) AS DeliveryQty,ROUND(AVG(ProductInfo.Qty), 2) AS AvgQty, Round(SUM(ProductInfo.UnitPrice * ProductInfo.Qty),2) AS salevalue,TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode, ProductInfo.CatSno,ProductInfo.rank, TripInfo.PlantId,TripInfo.soid,TripInfo.PlantName as BranchName, TripInfo.BranchID FROM (SELECT tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode, branchdata.BranchName as PlantName,branchdata.sno as PlantId,branchdata_1.BranchName,branchdata_1.sno as soid, dispatch.BranchID FROM branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno INNER JOIN branchdata branchdata_1 ON dispatch.BranchID = branchdata_1.sno WHERE (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, ProductName, UnitPrice, Sno, Qty, CatSno, productid,rank FROM (SELECT productsdata.UnitPrice, productsdata.sno AS productid, products_category.sno AS CatSno, products_category.Categoryname,productsdata.ProductName,products_category.rank, tripdata_1.Sno, tripsubdata.Qty FROM tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE  (tripdata_1.AssignDate BETWEEN @d1 AND @d2) and (productsdata.sno not in('208')) ) TripSubInfo) ProductInfo ON  TripInfo.Sno = ProductInfo.Sno GROUP BY TripInfo.PlantId ORDER BY ProductInfo.CatSno,ProductInfo.rank");
+                            cmd.Parameters.AddWithValue("@branch", ddlSalesOffice.SelectedValue);
+                            cmd.Parameters.AddWithValue("@d1", dtF);
+                            cmd.Parameters.AddWithValue("@d2", lastmonth);
+                        }
+                        else
+                        {
+                            cmd = new MySqlCommand("SELECT   branchdata.BranchName, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty,ROUND(AVG(indents_subtable.DeliveryQty), 2) AS AvgQty, ROUND(SUM(indents_subtable.UnitCost * indents_subtable.DeliveryQty), 2) AS SaleValue, branchdata.sno,indents.I_date FROM branchmappingtable INNER JOIN branchdata ON branchmappingtable.SubBranch = branchdata.sno INNER JOIN branchmappingtable branchmappingtable_1 ON branchdata.sno = branchmappingtable_1.SuperBranch INNER JOIN branchdata branchdata_1 ON branchmappingtable_1.SubBranch = branchdata_1.sno INNER JOIN indents ON branchdata_1.sno = indents.Branch_id INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE  (indents.I_date BETWEEN @d1 AND @d2) AND (branchmappingtable.SubBranch = @BranchID)  GROUP BY branchdata.sno");
+                            cmd.Parameters.AddWithValue("@BranchID", ddlSalesOffice.SelectedValue);
+                            cmd.Parameters.AddWithValue("@d1", dtF);
+                            cmd.Parameters.AddWithValue("@d2", lastmonth);
+                        }
+
+
                         DataTable dtAgent = vdm.SelectQuery(cmd).Tables[0];
                         string ChangedTime1 = firstmonth.ToString("MMM/yyyy");
                         string Changedt = firstmonth.ToString("MMM");
@@ -349,59 +374,58 @@ public partial class AgentMonthlyProducts : System.Web.UI.Page
                         TimeSpan TimeSpan = lastmonth.Subtract(dtF);
                         int NoOfdays = TimeSpan.Days;
                         int i; int M;
-                        if (ddlType.SelectedValue == "WithAvg" || ddlType.SelectedValue == "WithOutAvg")
-                        {
-                            N = 0;
-                            i = N + 3;
-                            M = N + 3;
-                        }
-                        else
-                        {
-                            i = N + 2;
-                            M = N + 3;
-                        }
+                        //if (ddlType.SelectedValue == "WithAvg" || ddlType.SelectedValue == "WithOutAvg")
+                        //{
+                        //    N = 0;
+                        //    i = N + 3;
+                        //    M = N + 3;
+                        //}
+                        //else
+                        //{
+                        i = N + 1;
+                        //M = N + 3;
+                        //}
 
                         cmd = new MySqlCommand("SELECT  COUNT(indents.I_date) AS Nodays, indents.Branch_id FROM  indents INNER JOIN  branchmappingtable ON indents.Branch_id = branchmappingtable.SubBranch WHERE (indents.I_date BETWEEN @d1 AND @d2) AND (branchmappingtable.SuperBranch = @branchId) GROUP BY indents.Branch_id");
                         cmd.Parameters.AddWithValue("@BranchId", ddlSalesOffice.SelectedValue);
                         cmd.Parameters.AddWithValue("@d1", dtF);
                         cmd.Parameters.AddWithValue("@d2", lastmonth);
                         DataTable dtagentnoofdays = vdm.SelectQuery(cmd).Tables[0];
-                        
+
                         foreach (DataRow drAgent in Report.Rows)
                         {
+
                             foreach (DataRow dr in dtAgent.Rows)
                             {
                                 try
                                 {
-                                    if (drAgent["Agent Name"].ToString() == dr["BranchName"].ToString())
+                                    if (drAgent["Branch Name"].ToString() == dr["BranchName"].ToString())
                                     {
 
-                                        foreach (DataRow drdtclubtotal in dtagentnoofdays.Select("Branch_id='" + dr["BSno"].ToString() + "'"))
-                                        {
-                                            int.TryParse(drdtclubtotal["Nodays"].ToString(), out NoOfdays);
-                                        }
-                                        double delQty = 0;
+                                        //foreach (DataRow drdtclubtotal in dtagentnoofdays.Select("Branch_id='" + dr["BSno"].ToString() + "'"))
+                                        //{
+                                        //    int.TryParse(drdtclubtotal["Nodays"].ToString(), out NoOfdays);
+                                        //}
                                         int temp = 0;
+                                        double delQty = 0;
                                         int.TryParse(drAgent["SNo"].ToString(), out temp);
                                         double.TryParse(dr["DeliveryQty"].ToString(), out delQty);
-                                        //Report.Rows[temp][Count + i] = dr["DeliveryQty"].ToString();
                                         double avg = 0;
                                         avg = delQty / NoOfdays;
                                         avg = Math.Round(avg, 2);
-                                        //Report.Rows[temp][Count + M] = avg.ToString();
-                                        if (ddlType.SelectedValue == "WithAvg")
-                                        {
-                                            Report.Rows[temp][Count + M] = avg.ToString();
-                                        }
-                                        else if (ddlType.SelectedValue == "WithOutAvg")
-                                        {
-                                            Report.Rows[temp][Count + i] = dr["DeliveryQty"].ToString();
-                                        }
-                                        else
-                                        {
-                                            Report.Rows[temp][Count + i] = dr["DeliveryQty"].ToString();
-                                            Report.Rows[temp][Count + M] = avg.ToString();
-                                        }
+                                        //if (ddlType.SelectedValue == "WithAvg")
+                                        //{
+                                        //    Report.Rows[temp][Count + M] = dr["AvgQty"].ToString();//avg.ToString();
+                                        //}
+                                        //else if (ddlType.SelectedValue == "WithOutAvg")
+                                        //{
+                                        //    Report.Rows[temp][Count + i] = dr["DeliveryQty"].ToString();
+                                        //}
+                                        //else
+                                        //{
+                                        Report.Rows[temp][Count + i] = dr["DeliveryQty"].ToString();
+                                        // Report.Rows[temp][Count + M] = dr["AvgQty"].ToString(); //avg.ToString();
+                                        //}
                                     }
                                 }
                                 catch
@@ -409,11 +433,11 @@ public partial class AgentMonthlyProducts : System.Web.UI.Page
                                 }
                             }
                         }
-                        Count++;
+                        //Count++;
                         N++;
                     }
                     DataRow newvartical = Report.NewRow();
-                    newvartical["Agent Name"] = "Total";
+                    newvartical["Branch Name"] = "Total";
                     double val = 0.0;
                     foreach (DataColumn dc in Report.Columns)
                     {
@@ -430,109 +454,109 @@ public partial class AgentMonthlyProducts : System.Web.UI.Page
                     Session["xportdata"] = Report;
                 }
             }
-            else if (ddlReportType.SelectedValue == "Route Wise")
-            {
-                if (months != 0)
-                {
-                    for (int j = 0; j < months; j++)
-                    {
-                        firstmonth = GetLowMonthRetrive(fromdate.AddMonths(j));
-                        lastmonth = GetHighMonth(firstmonth);
-                        //cmd = new MySqlCommand("SELECT   modifiedroutes.RouteName, modifiedroutes.Sno AS routeid, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, branchdata.sno AS BSno, branchdata.BranchName,indent.I_date FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, Status, I_date, IndentType FROM  indents WHERE (I_date BETWEEN @starttime AND @endtime) AND (Status <> 'D')) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @endtime) AND (modifiedroutes.BranchID = @TripID) OR (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) AND (modifiedroutes.BranchID = @TripID) GROUP BY branchdata.BranchName ORDER BY modifiedroutes.RouteName,indent.I_date");
-                        //cmd.Parameters.AddWithValue("@TripID", ddlSalesOffice.SelectedValue);
-                        //DateTime dtF = firstmonth.AddDays(-1);
-                        //cmd.Parameters.AddWithValue("@starttime", dtF);
-                        //cmd.Parameters.AddWithValue("@endtime", lastmonth);
-                        cmd = new MySqlCommand("SELECT   modifiedroutes.RouteName, modifiedroutes.Sno AS routeid, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, branchdata.sno AS BSno, branchdata.BranchName,indent.I_date FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, Status, I_date, IndentType FROM  indents WHERE (I_date BETWEEN @starttime AND @endtime) AND (Status <> 'D')) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @endtime) AND (modifiedroutes.sno = @TripID) OR (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) AND (modifiedroutes.sno = @TripID) GROUP BY branchdata.BranchName ORDER BY modifiedroutes.RouteName,indent.I_date");
-                        cmd.Parameters.AddWithValue("@TripID", ddlDispName.SelectedValue);
-                        DateTime dtF = firstmonth.AddDays(-1);
-                        cmd.Parameters.AddWithValue("@starttime", dtF);
-                        cmd.Parameters.AddWithValue("@endtime", lastmonth);
-                        DataTable dtAgent = vdm.SelectQuery(cmd).Tables[0]; 
-                        string ChangedTime1 = firstmonth.ToString("MMM/yyyy");
-                        string Changedt = firstmonth.ToString("MMM");
-                        Changedt = Changedt + " Avg";
-                        TimeSpan TimeSpan = lastmonth.Subtract(dtF);
-                        int NoOfdays = TimeSpan.Days;
-                        int i; int M;
-                        if (ddlType.SelectedValue == "WithAvg" || ddlType.SelectedValue == "WithOutAvg")
-                        {
-                            N = 0;
-                            i = N + 3;
-                            M = N + 3;
-                        }
-                        else
-                        {
-                            i = N + 2;
-                            M = N + 3;
-                        }
-                        cmd = new MySqlCommand("SELECT  COUNT(indents.I_date) AS Nodays, indents.Branch_id FROM  indents INNER JOIN  branchmappingtable ON indents.Branch_id = branchmappingtable.SubBranch WHERE (indents.I_date BETWEEN @d1 AND @d2) AND (branchmappingtable.SuperBranch = @branchId) GROUP BY indents.Branch_id");
-                        cmd.Parameters.AddWithValue("@BranchId", ddlSalesOffice.SelectedValue);
-                        cmd.Parameters.AddWithValue("@d1", dtF);
-                        cmd.Parameters.AddWithValue("@d2", lastmonth);
-                        DataTable dtagentnoofdays = vdm.SelectQuery(cmd).Tables[0];
-                        foreach (DataRow drAgent in Report.Rows)
-                        {
-                            foreach (DataRow dr in dtAgent.Rows)
-                            {
-                                try
-                                {
-                                    if (drAgent["Agent Name"].ToString() == dr["BranchName"].ToString())
-                                    {
-                                        foreach (DataRow drdtclubtotal in dtagentnoofdays.Select("Branch_id='" + dr["BSno"].ToString() + "'"))
-                                        {
-                                            int.TryParse(drdtclubtotal["Nodays"].ToString(), out NoOfdays);
-                                        }
-                                        double delQty = 0;
-                                        int temp = 0;
-                                        int.TryParse(drAgent["SNo"].ToString(), out temp);
-                                        double.TryParse(dr["DeliveryQty"].ToString(), out delQty);
-                                        //Report.Rows[temp][Count + i] = dr["DeliveryQty"].ToString();
-                                        double avg = 0;
-                                        avg = delQty / NoOfdays;
-                                        avg = Math.Round(avg, 2);
-                                        //Report.Rows[temp][Count + M] = avg.ToString();
-                                        if (ddlType.SelectedValue == "WithAvg")
-                                        {
-                                            Report.Rows[temp][Count + M] = avg.ToString();
-                                        }
-                                        else if (ddlType.SelectedValue == "WithOutAvg")
-                                        {
-                                            Report.Rows[temp][Count + i] = dr["DeliveryQty"].ToString();
-                                        }
-                                        else
-                                        {
-                                            Report.Rows[temp][Count + i] = dr["DeliveryQty"].ToString();
-                                            Report.Rows[temp][Count + M] = avg.ToString();
-                                        }
-                                    }
-                                }
-                                catch
-                                {
-                                }
-                            }
-                        }
-                        Count++;
-                        N++;
-                    }
-                    DataRow newvartical = Report.NewRow();
-                    newvartical["Agent Name"] = "Total";
-                    double val = 0.0;
-                    foreach (DataColumn dc in Report.Columns)
-                    {
-                        if (dc.DataType == typeof(Double))
-                        {
-                            val = 0.0;
-                            double.TryParse(Report.Compute("sum([" + dc.ToString() + "])", "[" + dc.ToString() + "]<>'0'").ToString(), out val);
-                            newvartical[dc.ToString()] = val;
-                        }
-                    }
-                    Report.Rows.Add(newvartical);
-                    grdReports.DataSource = Report;
-                    grdReports.DataBind();
-                    Session["xportdata"] = Report;
-                }
-            }
+            //else if (ddlReportType.SelectedValue == "Route Wise")
+            //{
+            //    if (months != 0)
+            //    {
+            //        for (int j = 0; j < months; j++)
+            //        {
+            //            firstmonth = GetLowMonthRetrive(fromdate.AddMonths(j));
+            //            lastmonth = GetHighMonth(firstmonth);
+            //            //cmd = new MySqlCommand("SELECT   modifiedroutes.RouteName, modifiedroutes.Sno AS routeid, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, branchdata.sno AS BSno, branchdata.BranchName,indent.I_date FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, Status, I_date, IndentType FROM  indents WHERE (I_date BETWEEN @starttime AND @endtime) AND (Status <> 'D')) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @endtime) AND (modifiedroutes.BranchID = @TripID) OR (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) AND (modifiedroutes.BranchID = @TripID) GROUP BY branchdata.BranchName ORDER BY modifiedroutes.RouteName,indent.I_date");
+            //            //cmd.Parameters.AddWithValue("@TripID", ddlSalesOffice.SelectedValue);
+            //            //DateTime dtF = firstmonth.AddDays(-1);
+            //            //cmd.Parameters.AddWithValue("@starttime", dtF);
+            //            //cmd.Parameters.AddWithValue("@endtime", lastmonth);
+            //            cmd = new MySqlCommand("SELECT   modifiedroutes.RouteName, modifiedroutes.Sno AS routeid, ROUND(SUM(indents_subtable.DeliveryQty), 2) AS DeliveryQty, branchdata.sno AS BSno, branchdata.BranchName,indent.I_date FROM modifiedroutes INNER JOIN modifiedroutesubtable ON modifiedroutes.Sno = modifiedroutesubtable.RefNo INNER JOIN branchdata ON modifiedroutesubtable.BranchID = branchdata.sno INNER JOIN (SELECT IndentNo, Branch_id, Status, I_date, IndentType FROM  indents WHERE (I_date BETWEEN @starttime AND @endtime) AND (Status <> 'D')) indent ON branchdata.sno = indent.Branch_id INNER JOIN indents_subtable ON indent.IndentNo = indents_subtable.IndentNo INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (modifiedroutesubtable.EDate IS NULL) AND (modifiedroutesubtable.CDate <= @endtime) AND (modifiedroutes.sno = @TripID) OR (modifiedroutesubtable.EDate > @starttime) AND (modifiedroutesubtable.CDate <= @starttime) AND (modifiedroutes.sno = @TripID) GROUP BY branchdata.BranchName ORDER BY modifiedroutes.RouteName,indent.I_date");
+            //            cmd.Parameters.AddWithValue("@TripID", ddlDispName.SelectedValue);
+            //            DateTime dtF = firstmonth.AddDays(-1);
+            //            cmd.Parameters.AddWithValue("@starttime", dtF);
+            //            cmd.Parameters.AddWithValue("@endtime", lastmonth);
+            //            DataTable dtAgent = vdm.SelectQuery(cmd).Tables[0]; 
+            //            string ChangedTime1 = firstmonth.ToString("MMM/yyyy");
+            //            string Changedt = firstmonth.ToString("MMM");
+            //            Changedt = Changedt + " Avg";
+            //            TimeSpan TimeSpan = lastmonth.Subtract(dtF);
+            //            int NoOfdays = TimeSpan.Days;
+            //            int i; int M;
+            //            if (ddlType.SelectedValue == "WithAvg" || ddlType.SelectedValue == "WithOutAvg")
+            //            {
+            //                N = 0;
+            //                i = N + 3;
+            //                M = N + 3;
+            //            }
+            //            else
+            //            {
+            //                i = N + 2;
+            //                M = N + 3;
+            //            }
+            //            cmd = new MySqlCommand("SELECT  COUNT(indents.I_date) AS Nodays, indents.Branch_id FROM  indents INNER JOIN  branchmappingtable ON indents.Branch_id = branchmappingtable.SubBranch WHERE (indents.I_date BETWEEN @d1 AND @d2) AND (branchmappingtable.SuperBranch = @branchId) GROUP BY indents.Branch_id");
+            //            cmd.Parameters.AddWithValue("@BranchId", ddlSalesOffice.SelectedValue);
+            //            cmd.Parameters.AddWithValue("@d1", dtF);
+            //            cmd.Parameters.AddWithValue("@d2", lastmonth);
+            //            DataTable dtagentnoofdays = vdm.SelectQuery(cmd).Tables[0];
+            //            foreach (DataRow drAgent in Report.Rows)
+            //            {
+            //                foreach (DataRow dr in dtAgent.Rows)
+            //                {
+            //                    try
+            //                    {
+            //                        if (drAgent["Branch Name"].ToString() == dr["BranchName"].ToString())
+            //                        {
+            //                            foreach (DataRow drdtclubtotal in dtagentnoofdays.Select("Branch_id='" + dr["BSno"].ToString() + "'"))
+            //                            {
+            //                                int.TryParse(drdtclubtotal["Nodays"].ToString(), out NoOfdays);
+            //                            }
+            //                            double delQty = 0;
+            //                            int temp = 0;
+            //                            int.TryParse(drAgent["SNo"].ToString(), out temp);
+            //                            double.TryParse(dr["DeliveryQty"].ToString(), out delQty);
+            //                            //Report.Rows[temp][Count + i] = dr["DeliveryQty"].ToString();
+            //                            double avg = 0;
+            //                            avg = delQty / NoOfdays;
+            //                            avg = Math.Round(avg, 2);
+            //                            //Report.Rows[temp][Count + M] = avg.ToString();
+            //                            if (ddlType.SelectedValue == "WithAvg")
+            //                            {
+            //                                Report.Rows[temp][Count + M] = avg.ToString();
+            //                            }
+            //                            else if (ddlType.SelectedValue == "WithOutAvg")
+            //                            {
+            //                                Report.Rows[temp][Count + i] = dr["DeliveryQty"].ToString();
+            //                            }
+            //                            else
+            //                            {
+            //                                Report.Rows[temp][Count + i] = dr["DeliveryQty"].ToString();
+            //                                Report.Rows[temp][Count + M] = avg.ToString();
+            //                            }
+            //                        }
+            //                    }
+            //                    catch
+            //                    {
+            //                    }
+            //                }
+            //            }
+            //            Count++;
+            //            N++;
+            //        }
+            //        DataRow newvartical = Report.NewRow();
+            //        newvartical["Branch Name"] = "Total";
+            //        double val = 0.0;
+            //        foreach (DataColumn dc in Report.Columns)
+            //        {
+            //            if (dc.DataType == typeof(Double))
+            //            {
+            //                val = 0.0;
+            //                double.TryParse(Report.Compute("sum([" + dc.ToString() + "])", "[" + dc.ToString() + "]<>'0'").ToString(), out val);
+            //                newvartical[dc.ToString()] = val;
+            //            }
+            //        }
+            //        Report.Rows.Add(newvartical);
+            //        grdReports.DataSource = Report;
+            //        grdReports.DataBind();
+            //        Session["xportdata"] = Report;
+            //    }
+            //}
             else
             {
                 pnlHide.Visible = false;
@@ -605,5 +629,7 @@ public partial class AgentMonthlyProducts : System.Web.UI.Page
             lblmsg.Text = ex.Message;
         }
     }
+
     
+
 }
