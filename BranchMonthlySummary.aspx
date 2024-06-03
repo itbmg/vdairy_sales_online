@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
-    CodeFile="AgentMonthlyProducts.aspx.cs" Inherits="AgentMonthlyProducts" %>
+    CodeFile="BranchMonthlySummary.aspx.cs" Inherits="AgentMonthlyProducts" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
@@ -49,18 +49,18 @@
     </div>
     <section class="content-header">
         <h1>
-            Agent Monthly Products<small>Preview</small>
+            Branch Monthly Comparison<small>Preview</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i>Operations</a></li>
-            <li><a href="#">Agent Monthly Products</a></li>
+            <li><a href="#">Branch Monthly Comparison</a></li>
         </ol>
     </section>
     <section class="content">
         <div class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title">
-                    <i style="padding-right: 5px;" class="fa fa-cog"></i>Agent Monthly Products Details
+                    <i style="padding-right: 5px;" class="fa fa-cog"></i>Branch Monthly Comparison
                 </h3>
             </div>
             <div class="box-body">
@@ -69,7 +69,7 @@
             <div>
                 <table>
                     <tr>
-                    <td>
+                    <%--<td>
                                     <span>Report Type</span>
                                 </td>
                                 <td style="height:40px;">
@@ -78,31 +78,35 @@
                                         <asp:ListItem>WithAvg</asp:ListItem>
                                         <asp:ListItem>WithOutAvg</asp:ListItem>
                                     </asp:DropDownList>
-                                </td>
+                                </td>--%>
                                 <td style="width: 5px;">
                                 </td>
 
                                 <td style="height:40px;">
+                                     <asp:Panel ID="ddlreportpannel" runat="server">
                                     <asp:DropDownList ID="ddlReportType" runat="server" CssClass="form-control" AutoPostBack="True"
                                         OnSelectedIndexChanged="ddlReportType_SelectedIndexChanged">
-                                        <asp:ListItem>Route Wise</asp:ListItem>
+                                        <%--<asp:ListItem>Route Wise</asp:ListItem>--%>
                                         <asp:ListItem>SalesOffice Wise</asp:ListItem>
                                     </asp:DropDownList>
+                                         </asp:Panel>
                                 </td>
                                 <td style="width: 5px;">
                                 </td>
                         <td>
                             <asp:Panel ID="PBranch" runat="server">
                                 <asp:DropDownList ID="ddlSalesOffice" runat="server" CssClass="form-control" AutoPostBack="True"
-                                    OnSelectedIndexChanged="ddlSalesOffice_SelectedIndexChanged">
+                                    >
                                 </asp:DropDownList>
                             </asp:Panel>
                         </td>
                           <td style="width: 5px;">
                                 </td>
                         <td>
+                      <asp:Panel ID="disppanel" runat="server">
                             <asp:DropDownList ID="ddlDispName" runat="server" CssClass="form-control">
                             </asp:DropDownList>
+                           </asp:Panel>
                         </td>
                           <td style="width: 5px;">
                                 </td>
@@ -157,7 +161,7 @@
                     </div>
                 </div>
                 <asp:GridView ID="grdReports" runat="server" ForeColor="White" Width="100%" GridLines="Both"
-                    Font-Size="Smaller">
+                    Font-Size="Smaller" OnRowDataBound="grdReports_RowDataBound">
                     <EditRowStyle BackColor="#999999" />
                     <FooterStyle BackColor="Gray" Font-Bold="False" ForeColor="White" />
                     <HeaderStyle BackColor="#f4f4f4" Font-Bold="False" ForeColor="Black" Font-Italic="False"
@@ -182,8 +186,8 @@
         </ContentTemplate>
     </asp:UpdatePanel>
     <br />
-    <asp:Button ID="Button3" Text="Export To Excel" runat="server" CssClass="btn btn-primary"
-        OnClick="btn_Export_Click"  />
+    <%--<asp:Button ID="Button3" Text="Export To Excel" runat="server" CssClass="btn btn-primary"
+        OnClick="btn_Export_Click"  />--%>
         </div>
         </div>
         </section>
