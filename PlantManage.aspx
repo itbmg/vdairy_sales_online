@@ -1794,7 +1794,7 @@
                                                         <tr>
                                                             <td>
                                                                 <label>
-                                                                    Vat Percent</label>
+                                                                    Discount</label>
                                                                 <input type="text" name="price" id="txt_vatPercent" class="form-control" placeholder="Enter Vat Percent" />
                                                             </td>
                                                             <td style="width: 4px;">

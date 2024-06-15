@@ -2300,7 +2300,7 @@ function BindingBranchProducts(msg) {
 //    searchproductagentnames(msg)
     var COLOR = ["#f3f5f7", "#cfe2e0", "", "#cfe2e0"];
     var results = '<div class="divcontainer" style="overflow:auto;width: 1100px;"><table class="table table-bordered table-hover dataTable no-footer" role="grid" aria-describedby="example2_info">';
-    results += '<thead><tr style="background:#cbc6dd;"><th scope="col"></th><th scope="col">Category Name</th><th scope="col">SubCategory Name</th><th scope="col">Product Name</th><th scope="col">Price</th><th scope="col">Vat</th><th scope="col">Status</th></tr></thead></tbody>';
+    results += '<thead><tr style="background:#cbc6dd;"><th scope="col"></th><th scope="col">Category Name</th><th scope="col">SubCategory Name</th><th scope="col">Product Name</th><th scope="col">Price</th><th scope="col">Discount</th><th scope="col">Status</th></tr></thead></tbody>';
     for (var i = 0; i < msg.length; i++) {
         var status = 'InActive';
         if (msg[i].flag == '1') {

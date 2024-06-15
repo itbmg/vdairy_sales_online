@@ -478,7 +478,7 @@
                     HeadSno = Head.options[Head.selectedIndex].value;
                     var HeadOfAccount = Head.options[Head.selectedIndex].text;
                 }
-                if (paymenttype == "Cash" || paymenttype == "PhonePay") {
+                if (paymenttype == "Cash" || paymenttype == "PhonePay" || paymenttype == "Bank Transfer") {
                     var rowsdenominations = $("#tableCollectionDetails tr:gt(0)");
                     var DenominationString = "";
                     var ReturnDenominationString = "";
@@ -685,7 +685,7 @@
                 $('.divChequeDateclass').css('display', 'none');
                 $('.divBankclass').css('display', 'block');
                 $('.divfinanceaccno').css('display', 'table-row');
-                $('#tdDenomination').css('display', 'none');
+                $('#tdDenomination').css('display', 'block');
                 $('.clsclosingbalance').css('display', 'block ');
                 $('.divDebitclass').css('display', 'none');
                 var ddlcollectiontype = document.getElementById('ddlcollectiontype').value;

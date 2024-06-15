@@ -255,7 +255,7 @@
                     tot_qty = parseFloat(hdn_editqty) + parseFloat(txtProductQty);
                     if (tot_qty > 0) {
                         var Product = 0;
-                        Orderdetails.push({ ProductSno: $(this).find('#hdnProductSno').val(), Product: Product, Qty: $(this).find('#txtProductQty').val(),  tub_qty: $(this).find('#txtTubQty').val(), pkt_qty: $(this).find('#txtQtypkts').val() });
+                        Orderdetails.push({ ProductSno: $(this).find('#hdnProductSno').val(), Product: Product, Qty: $(this).find('#txtProductQty').val(), tub_qty: $(this).find('#txtTubQty').val(), pkt_qty: $(this).find('#txtQtypkts').val(), pkt_rate: $(this).find('#hdnPkt_rate').val(), UnitCost: $(this).find('#hdnRate').val(), Unitsqty: $(this).find('#hdnUnitQty').val() });
                     }
                 }
             });
