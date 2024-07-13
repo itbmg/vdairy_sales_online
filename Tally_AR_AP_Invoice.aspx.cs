@@ -1123,9 +1123,13 @@ public partial class Tally_AR_AP_Invoice : System.Web.UI.Page
                                     {
                                         DCNO = "00" + countdc;
                                     }
-                                    if (countdc > 999)
+                                    if (countdc > 999 && countdc <= 9999)
                                     {
                                         DCNO = "0" + countdc;
+                                    }
+                                    if (countdc > 9999)
+                                    {
+                                        DCNO = "" + countdc;
                                     }
                                     if (ddlSalesOffice.SelectedValue == "306")
                                     {
@@ -1181,12 +1185,12 @@ public partial class Tally_AR_AP_Invoice : System.Web.UI.Page
                                     double ltrqty = 0;
                                     //if (branch["Units"].ToString() != "Nos")
                                     //{
-                                        EInvoice obj = new EInvoice();
-                                        ltr_rate = obj.Converting_Ltr_rate(qty.ToString(), branch["Uomqty"].ToString(), rate.ToString());
-                                        //ltrqty = obj.ConvertingLtrs(qty.ToString(), branch["Uomqty"].ToString(), rate.ToString());
-                                        //newrow["Qty"] = Math.Round(ltrqty, 2).ToString();
-                                        rate = ltr_rate;
-                                        //ltrqty = qty;
+                                    EInvoice obj = new EInvoice();
+                                    ltr_rate = obj.Converting_Ltr_rate(qty.ToString(), branch["Uomqty"].ToString(), rate.ToString());
+                                    //ltrqty = obj.ConvertingLtrs(qty.ToString(), branch["Uomqty"].ToString(), rate.ToString());
+                                    //newrow["Qty"] = Math.Round(ltrqty, 2).ToString();
+                                    rate = ltr_rate;
+                                    //ltrqty = qty;
                                     //}
                                     if (fromstateid == tostate)
                                     {
@@ -1310,9 +1314,13 @@ public partial class Tally_AR_AP_Invoice : System.Web.UI.Page
                                 {
                                     DCNO = "00" + countdc;
                                 }
-                                if (countdc > 999)
+                                if (countdc > 999 && countdc <= 9999)
                                 {
                                     DCNO = "0" + countdc;
+                                }
+                                if (countdc > 9999)
+                                {
+                                    DCNO = "" + countdc;
                                 }
                                 if (ddlSalesOffice.SelectedValue == "306")
                                 {
@@ -1368,12 +1376,12 @@ public partial class Tally_AR_AP_Invoice : System.Web.UI.Page
                                 double ltrqty = 0;
                                 //if (branch["Units"].ToString() != "Nos")
                                 //{
-                                    EInvoice obj = new EInvoice();
-                                    ltr_rate = obj.Converting_Ltr_rate(qty.ToString(), branch["Uomqty"].ToString(), rate.ToString());
-                                    //ltrqty = obj.ConvertingLtrs(qty.ToString(), branch["Uomqty"].ToString(), rate.ToString());
-                                    //newrow["Qty"] = Math.Round(ltrqty, 2).ToString();
-                                    rate = ltr_rate;
-                                    //ltrqty = qty;
+                                EInvoice obj = new EInvoice();
+                                ltr_rate = obj.Converting_Ltr_rate(qty.ToString(), branch["Uomqty"].ToString(), rate.ToString());
+                                //ltrqty = obj.ConvertingLtrs(qty.ToString(), branch["Uomqty"].ToString(), rate.ToString());
+                                //newrow["Qty"] = Math.Round(ltrqty, 2).ToString();
+                                rate = ltr_rate;
+                                //ltrqty = qty;
                                 //}
                                 if (fromstateid == tostate)
                                 {
@@ -1579,12 +1587,12 @@ public partial class Tally_AR_AP_Invoice : System.Web.UI.Page
                                                 double ltrqty = 0;
                                                 //if (branch["Units"].ToString() != "Nos")
                                                 //{
-                                                    EInvoice obj = new EInvoice();
-                                                    ltr_rate = obj.Converting_Ltr_rate(qty.ToString(), branch["Uomqty"].ToString(), rate.ToString());
-                                                    //ltrqty = obj.ConvertingLtrs(qty.ToString(), branch["Uomqty"].ToString(), rate.ToString());
-                                                    //newrow["Qty"] = Math.Round(ltrqty, 2).ToString();
-                                                    rate = ltr_rate;
-                                                    //ltrqty = qty;
+                                                EInvoice obj = new EInvoice();
+                                                ltr_rate = obj.Converting_Ltr_rate(qty.ToString(), branch["Uomqty"].ToString(), rate.ToString());
+                                                //ltrqty = obj.ConvertingLtrs(qty.ToString(), branch["Uomqty"].ToString(), rate.ToString());
+                                                //newrow["Qty"] = Math.Round(ltrqty, 2).ToString();
+                                                rate = ltr_rate;
+                                                //ltrqty = qty;
                                                 //}
                                                 if (fromstateid == tostate)
                                                 {
@@ -1752,12 +1760,12 @@ public partial class Tally_AR_AP_Invoice : System.Web.UI.Page
                                             double ltrqty = 0;
                                             //if (branch["Units"].ToString() != "Nos")
                                             //{
-                                                EInvoice obj = new EInvoice();
-                                                ltr_rate = obj.Converting_Ltr_rate(qty.ToString(), branch["Uomqty"].ToString(), rate.ToString());
-                                                // ltrqty = obj.ConvertingLtrs(qty.ToString(), branch["Uomqty"].ToString(), rate.ToString());
-                                                // newrow["Qty"] = Math.Round(ltrqty, 2).ToString();
-                                                rate = ltr_rate;
-                                                // ltrqty = qty;
+                                            EInvoice obj = new EInvoice();
+                                            ltr_rate = obj.Converting_Ltr_rate(qty.ToString(), branch["Uomqty"].ToString(), rate.ToString());
+                                            // ltrqty = obj.ConvertingLtrs(qty.ToString(), branch["Uomqty"].ToString(), rate.ToString());
+                                            // newrow["Qty"] = Math.Round(ltrqty, 2).ToString();
+                                            rate = ltr_rate;
+                                            // ltrqty = qty;
                                             //}
                                             if (fromstateid == tostate)
                                             {
@@ -1869,7 +1877,7 @@ public partial class Tally_AR_AP_Invoice : System.Web.UI.Page
                     }
                 }
             }
-            }
+        }
         catch (Exception ex)
         {
             lblmsg.Text = ex.Message;

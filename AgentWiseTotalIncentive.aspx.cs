@@ -18,11 +18,21 @@ public partial class TotalIncentive : System.Web.UI.Page
     MySqlCommand cmd;
     string UserName = "";
     VehicleDBMgr vdm;
+    string BranchID = "";
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Session["salestype"] == null)
         {
             Response.Redirect("Login.aspx");
+        }
+        if (Session["branch"] == null)
+        {
+            Response.Redirect("Login.aspx");
+        }
+        else
+        {
+            BranchID = Session["branch"].ToString();
         }
         if (!this.IsPostBack)
         {
@@ -38,6 +48,8 @@ public partial class TotalIncentive : System.Web.UI.Page
         lblmsg.Text = " ";
         GetReport();
     }
+    
+
     void FillRouteName()
     {
         try
@@ -46,19 +58,19 @@ public partial class TotalIncentive : System.Web.UI.Page
             if (Session["salestype"].ToString() == "Plant")
             {
                 PBranch.Visible = true;
-                cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.sno FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch WHERE (branchmappingtable.SuperBranch = @SuperBranch) and (branchdata.SalesType=@SalesType)");
-                cmd.Parameters.AddWithValue("@SuperBranch", Session["branch"]);
-                cmd.Parameters.AddWithValue("@SalesType", "21");
+                DataTable dtBranch = new DataTable();
+                dtBranch.Columns.Add("BranchName");
+                dtBranch.Columns.Add("sno");
+                cmd = new MySqlCommand(" SELECT branchroutes.RouteName, branchroutes.Sno, branchroutes.BranchID FROM branchroutes INNER JOIN branchdata ON branchroutes.BranchID = branchdata.sno WHERE (branchroutes.BranchID = @brnchid) OR (branchdata.SalesOfficeID = @SOID)");
+                //cmd = new MySqlCommand("SELECT RouteName, Sno, BranchID FROM branchroutes WHERE (BranchID = @brnchid)");
+                cmd.Parameters.AddWithValue("@SOID", BranchID);
+                cmd.Parameters.AddWithValue("@brnchid", BranchID);
                 DataTable dtRoutedata = vdm.SelectQuery(cmd).Tables[0];
-                //if (ddlSalesOffice.SelectedIndex == -1)
-                //{
-                //    ddlSalesOffice.SelectedItem.Text = "Select";
-                //}
                 ddlSalesOffice.DataSource = dtRoutedata;
-                ddlSalesOffice.DataTextField = "BranchName";
-                ddlSalesOffice.DataValueField = "sno";
+                ddlSalesOffice.DataTextField = "RouteName";
+                ddlSalesOffice.DataValueField = "Sno";
                 ddlSalesOffice.DataBind();
-                ddlSalesOffice.Items.Insert(0, new ListItem("Select", "0"));
+                ddlSalesOffice.Items.Insert(0, new ListItem("Select Route", "0"));
             }
             else
             {
@@ -84,11 +96,13 @@ public partial class TotalIncentive : System.Web.UI.Page
     protected void ddlSalesOffice_SelectedIndexChanged(object sender, EventArgs e)
     {
         vdm = new VehicleDBMgr();
-        cmd = new MySqlCommand("SELECT DispName, sno FROM dispatch WHERE (Branch_Id = @BranchD)");
-        cmd.Parameters.AddWithValue("@BranchD", ddlSalesOffice.SelectedValue);
-        DataTable dtRoutedata = vdm.SelectQuery(cmd).Tables[0];
-        ddlRouteName.DataSource = dtRoutedata;
-        ddlRouteName.DataTextField = "DispName";
+        cmd = new MySqlCommand(" SELECT branchdata.sno, branchdata.BranchName, branchroutes.RouteName FROM branchroutes INNER JOIN branchroutesubtable ON branchroutes.Sno = branchroutesubtable.RefNo INNER JOIN branchdata ON branchroutesubtable.BranchID = branchdata.sno WHERE (branchroutes.Sno = @routesno) AND (branchdata.flag=1) ORDER BY branchdata.BranchName");
+        //cmd = new MySqlCommand("SELECT branchdata.sno, branchdata.BranchName, branchroutes.RouteName FROM branchdata INNER JOIN branchmappingtable ON branchdata.sno = branchmappingtable.SubBranch INNER JOIN branchroutesubtable ON branchmappingtable.SubBranch = branchroutesubtable.BranchID INNER JOIN branchroutes ON branchroutesubtable.RefNo = branchroutes.Sno WHERE (branchmappingtable.SuperBranch = @SuperBranch) AND (branchroutes.Sno = @routesno) ORDER BY branchdata.BranchName");
+        cmd.Parameters.AddWithValue("@SuperBranch", BranchID);
+        cmd.Parameters.AddWithValue("@routesno", ddlSalesOffice.SelectedValue);
+        DataTable dtbranchdata = vdm.SelectQuery(cmd).Tables[0];
+        ddlRouteName.DataSource = dtbranchdata;
+        ddlRouteName.DataTextField = "BranchName";
         ddlRouteName.DataValueField = "sno";
         ddlRouteName.DataBind();
     }

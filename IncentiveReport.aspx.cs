@@ -414,11 +414,11 @@ public partial class IncentiveReport : System.Web.UI.Page
 
                                     avgsale = (totalsale / count);
                                     float.TryParse(drdtclubtotal["SlotQty"].ToString(), out slotqty);
-                                    if (avgsale > slotqty)
-                                    {
+                                    //if (avgsale > slotqty)
+                                    //{
                                         float.TryParse(drdtclubtotal["Amt"].ToString(), out slotamt);
                                         sltamt = drdtclubtotal["Amt"].ToString();
-                                    }
+                                    //}
                                 }
                                 DataRow newrow = dtTotincentive.NewRow();
                                 newrow["ClubbingName"] = clubbingname;
@@ -1646,72 +1646,72 @@ public partial class IncentiveReport : System.Web.UI.Page
                         double actualamt = 0;
                         //DateTime fromdate = Convert.ToDateTime(cleardate);
                         double opdifference = 0;
-                        cmd = new MySqlCommand("SELECT   sno, OppBalance, SaleValue, paidamount, ClosingBalance, IndentDate, EntryDate, agentid, salesofficeid, SaleQty, ReceivedAmount, DiffAmount, RouteId, status FROM tempduetrasactions WHERE (agentid = @Agentid) AND (IndentDate BETWEEN @d1 AND @d2)");
-                        cmd.Parameters.AddWithValue("@Agentid", ddlAgentName.SelectedValue);
-                        cmd.Parameters.AddWithValue("@d1", GetLowDate(ServerDateCurrentdate).AddDays(-1));
-                        cmd.Parameters.AddWithValue("@d2", GetLowDate(ServerDateCurrentdate).AddDays(-1));
-                        DataTable dtpresentverifieddue = vdm.SelectQuery(cmd).Tables[0];
-                        if (dtpresentverifieddue.Rows.Count > 0)
-                        {
-                            double salevalue = 0;
-                            double.TryParse(dtpresentverifieddue.Rows[0]["salevalue"].ToString(), out salevalue);
-                            double prevreceived = 0;
-                            double.TryParse(dtpresentverifieddue.Rows[0]["ReceivedAmount"].ToString(), out prevreceived);
-                            double opp = 0;
-                            double.TryParse(dtpresentverifieddue.Rows[0]["OppBalance"].ToString(), out opp);
-                            double clo = 0;
-                            double.TryParse(dtpresentverifieddue.Rows[0]["ClosingBalance"].ToString(), out clo);
-                            double prsentamount = 0;
-                            double.TryParse(txtincentivegiven.Text, out prsentamount);
-                            double opamt = opp + salevalue;/// - BranchAmount;
-                            double Closing = opamt + prevreceived - BranchAmount;
-                            if (BranchAmount >= prevreceived)
-                            {
-                                actualamt = BranchAmount - prevreceived;
-                            }
-                            else
-                            {
-                                actualamt = prevreceived - BranchAmount;
-                            }
-                            //cmd = new MySqlCommand("Update  tempduetrasactions set  ClosingBalance=ClosingBalance-@ClosingBalance,ReceivedAmount=ReceivedAmount+@ReceivedAmount where  agentid=@agentid AND indentdate=@indentdate");
-                            //cmd.Parameters.AddWithValue("@ClosingBalance", BranchAmount);
-                            //cmd.Parameters.AddWithValue("@ReceivedAmount", BranchAmount);
-                            //cmd.Parameters.AddWithValue("@agentid", ddlAgentName.SelectedValue);
-                            //cmd.Parameters.AddWithValue("@indentdate", GetLowDate(fromdate).AddDays(-1));
-                            //vdm.Update(cmd);
+                        //cmd = new MySqlCommand("SELECT   sno, OppBalance, SaleValue, paidamount, ClosingBalance, IndentDate, EntryDate, agentid, salesofficeid, SaleQty, ReceivedAmount, DiffAmount, RouteId, status FROM tempduetrasactions WHERE (agentid = @Agentid) AND (IndentDate BETWEEN @d1 AND @d2)");
+                        //cmd.Parameters.AddWithValue("@Agentid", ddlAgentName.SelectedValue);
+                        //cmd.Parameters.AddWithValue("@d1", GetLowDate(ServerDateCurrentdate).AddDays(-1));
+                        //cmd.Parameters.AddWithValue("@d2", GetLowDate(ServerDateCurrentdate).AddDays(-1));
+                        //DataTable dtpresentverifieddue = vdm.SelectQuery(cmd).Tables[0];
+                        //if (dtpresentverifieddue.Rows.Count > 0)
+                        //{
+                        //    double salevalue = 0;
+                        //    double.TryParse(dtpresentverifieddue.Rows[0]["salevalue"].ToString(), out salevalue);
+                        //    double prevreceived = 0;
+                        //    double.TryParse(dtpresentverifieddue.Rows[0]["ReceivedAmount"].ToString(), out prevreceived);
+                        //    double opp = 0;
+                        //    double.TryParse(dtpresentverifieddue.Rows[0]["OppBalance"].ToString(), out opp);
+                        //    double clo = 0;
+                        //    double.TryParse(dtpresentverifieddue.Rows[0]["ClosingBalance"].ToString(), out clo);
+                        //    double prsentamount = 0;
+                        //    double.TryParse(txtincentivegiven.Text, out prsentamount);
+                        //    double opamt = opp + salevalue;/// - BranchAmount;
+                        //    double Closing = opamt + prevreceived - BranchAmount;
+                        //    if (BranchAmount >= prevreceived)
+                        //    {
+                        //        actualamt = BranchAmount - prevreceived;
+                        //    }
+                        //    else
+                        //    {
+                        //        actualamt = prevreceived - BranchAmount;
+                        //    }
+                        //    //cmd = new MySqlCommand("Update  tempduetrasactions set  ClosingBalance=ClosingBalance-@ClosingBalance,ReceivedAmount=ReceivedAmount+@ReceivedAmount where  agentid=@agentid AND indentdate=@indentdate");
+                        //    //cmd.Parameters.AddWithValue("@ClosingBalance", BranchAmount);
+                        //    //cmd.Parameters.AddWithValue("@ReceivedAmount", BranchAmount);
+                        //    //cmd.Parameters.AddWithValue("@agentid", ddlAgentName.SelectedValue);
+                        //    //cmd.Parameters.AddWithValue("@indentdate", GetLowDate(fromdate).AddDays(-1));
+                        //    //vdm.Update(cmd);
 
-                            cmd = new MySqlCommand("Update  tempduetrasactions set  ClosingBalance=ClosingBalance-@ClosingBalance,ReceivedAmount=ReceivedAmount+@ReceivedAmount,incentiveamount=incentiveamount+@incentiveamount where  (agentid=@agentid) AND (IndentDate=@indentdate)");
-                            cmd.Parameters.AddWithValue("@ClosingBalance", BranchAmount);
-                            cmd.Parameters.AddWithValue("@ReceivedAmount", BranchAmount);
-                            cmd.Parameters.AddWithValue("@incentiveamount", BranchAmount);
-                            cmd.Parameters.AddWithValue("@agentid", ddlAgentName.SelectedValue);
-                            cmd.Parameters.AddWithValue("@indentdate", GetLowDate(fromdate).AddDays(-1));
-                            vdm.Update(cmd);
-                        }
-                        cmd = new MySqlCommand("SELECT   sno, OppBalance, SaleValue, paidamount, ClosingBalance, IndentDate, EntryDate, agentid, salesofficeid, SaleQty, ReceivedAmount, DiffAmount, RouteId, status FROM tempduetrasactions WHERE (agentid = @Agentid) AND (IndentDate BETWEEN @d1 AND @d2)");
-                        cmd.Parameters.AddWithValue("@Agentid", ddlAgentName.SelectedValue);
-                        cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
-                        cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate));
-                        DataTable dtDueTransactions = vdm.SelectQuery(cmd).Tables[0];
-                        foreach (DataRow drr in dtDueTransactions.Rows)
-                        {
-                            string indentdate = drr["indentdate"].ToString();
-                            DateTime indent_date = Convert.ToDateTime(indentdate);
-                            //cmd = new MySqlCommand("Update  tempduetrasactions set  OppBalance=OppBalance-@opningamount,ClosingBalance=ClosingBalance-@ClosingBalance where agentid=@Branchid AND indentdate=@indentdate");
-                            //cmd.Parameters.AddWithValue("@opningamount", BranchAmount);
-                            //cmd.Parameters.AddWithValue("@ClosingBalance", BranchAmount);
-                            //cmd.Parameters.AddWithValue("@indentdate", GetLowDate(indent_date));
-                            //cmd.Parameters.AddWithValue("@Branchid", ddlAgentName.SelectedValue);
-                            //vdm.Update(cmd);
+                        //    cmd = new MySqlCommand("Update  tempduetrasactions set  ClosingBalance=ClosingBalance-@ClosingBalance,ReceivedAmount=ReceivedAmount+@ReceivedAmount,incentiveamount=incentiveamount+@incentiveamount where  (agentid=@agentid) AND (IndentDate=@indentdate)");
+                        //    cmd.Parameters.AddWithValue("@ClosingBalance", BranchAmount);
+                        //    cmd.Parameters.AddWithValue("@ReceivedAmount", BranchAmount);
+                        //    cmd.Parameters.AddWithValue("@incentiveamount", BranchAmount);
+                        //    cmd.Parameters.AddWithValue("@agentid", ddlAgentName.SelectedValue);
+                        //    cmd.Parameters.AddWithValue("@indentdate", GetLowDate(fromdate).AddDays(-1));
+                        //    vdm.Update(cmd);
+                        //}
+                        //cmd = new MySqlCommand("SELECT   sno, OppBalance, SaleValue, paidamount, ClosingBalance, IndentDate, EntryDate, agentid, salesofficeid, SaleQty, ReceivedAmount, DiffAmount, RouteId, status FROM tempduetrasactions WHERE (agentid = @Agentid) AND (IndentDate BETWEEN @d1 AND @d2)");
+                        //cmd.Parameters.AddWithValue("@Agentid", ddlAgentName.SelectedValue);
+                        //cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
+                        //cmd.Parameters.AddWithValue("@d2", GetHighDate(ServerDateCurrentdate));
+                        //DataTable dtDueTransactions = vdm.SelectQuery(cmd).Tables[0];
+                        //foreach (DataRow drr in dtDueTransactions.Rows)
+                        //{
+                        //    string indentdate = drr["indentdate"].ToString();
+                        //    DateTime indent_date = Convert.ToDateTime(indentdate);
+                        //    //cmd = new MySqlCommand("Update  tempduetrasactions set  OppBalance=OppBalance-@opningamount,ClosingBalance=ClosingBalance-@ClosingBalance where agentid=@Branchid AND indentdate=@indentdate");
+                        //    //cmd.Parameters.AddWithValue("@opningamount", BranchAmount);
+                        //    //cmd.Parameters.AddWithValue("@ClosingBalance", BranchAmount);
+                        //    //cmd.Parameters.AddWithValue("@indentdate", GetLowDate(indent_date));
+                        //    //cmd.Parameters.AddWithValue("@Branchid", ddlAgentName.SelectedValue);
+                        //    //vdm.Update(cmd);
 
-                            cmd = new MySqlCommand("Update  tempduetrasactions set  OppBalance=OppBalance-@opningamount,ClosingBalance=ClosingBalance-@ClosingBalance where (agentid=@Branchid) AND (IndentDate=@indentdate)");
-                            cmd.Parameters.AddWithValue("@opningamount", BranchAmount);
-                            cmd.Parameters.AddWithValue("@ClosingBalance", BranchAmount);
-                            cmd.Parameters.AddWithValue("@indentdate", GetLowDate(indent_date));
-                            cmd.Parameters.AddWithValue("@Branchid", ddlAgentName.SelectedValue);
-                            vdm.Update(cmd);
-                        }
-                        cmd = new MySqlCommand("insert into incentivetransactions (FromDate,Todate,StructureName,BranchId,EntryDate,ActualDiscount,TotalDiscount,Remarks,structure_sno,leakagepercent) values (@FromDate,@Todate,@StructureName,@BranchId,@EntryDate,@ActualDiscount,@TotalDiscount,@Remarks,@structuresno,@leakagepercent)");
+                        //    cmd = new MySqlCommand("Update  tempduetrasactions set  OppBalance=OppBalance-@opningamount,ClosingBalance=ClosingBalance-@ClosingBalance where (agentid=@Branchid) AND (IndentDate=@indentdate)");
+                        //    cmd.Parameters.AddWithValue("@opningamount", BranchAmount);
+                        //    cmd.Parameters.AddWithValue("@ClosingBalance", BranchAmount);
+                        //    cmd.Parameters.AddWithValue("@indentdate", GetLowDate(indent_date));
+                        //    cmd.Parameters.AddWithValue("@Branchid", ddlAgentName.SelectedValue);
+                        //    vdm.Update(cmd);
+                        //}
+                        cmd = new MySqlCommand("insert into incentivetransactions (FromDate,Todate,StructureName,BranchId,EntryDate,ActualDiscount,TotalDiscount,Remarks,structure_sno,leakagepercent,rent,transport) values (@FromDate,@Todate,@StructureName,@BranchId,@EntryDate,@ActualDiscount,@TotalDiscount,@Remarks,@structuresno,@leakagepercent,@rent,@transport)");
                         cmd.Parameters.AddWithValue("@FromDate", fromdate);
                         cmd.Parameters.AddWithValue("@Todate", todate);
                         cmd.Parameters.AddWithValue("@StructureName", ddlstructure.SelectedItem.Text);
@@ -1722,6 +1722,8 @@ public partial class IncentiveReport : System.Web.UI.Page
                         cmd.Parameters.AddWithValue("@TotalDiscount", txtincentivegiven.Text);
                         cmd.Parameters.AddWithValue("@Remarks", txtremarks.Text);
                         cmd.Parameters.AddWithValue("@leakagepercent", Session["leak"]);
+                        cmd.Parameters.AddWithValue("@rent", txtRent.Text);
+                        cmd.Parameters.AddWithValue("@transport", txtTransport.Text);
                         vdm.insert(cmd);
                     }
                     else

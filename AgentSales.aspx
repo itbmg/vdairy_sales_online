@@ -536,12 +536,15 @@
             FinalAmount = total;
 
         }
+        var indarr = [];
         function ddlBranchChange(Id) {
             var IndentDate = document.getElementById('datepicker').value;
             var data = { 'operation': 'GetAllIndentTypes', 'BranchID': Id.value, 'IndentDate': IndentDate };
             var s = function (msg) {
                 if (msg) {
                     BindIndentType(msg);
+                    indarr = msg;
+                    //indenttypecheck();
                 }
                 else {
                 }
@@ -568,6 +571,7 @@
                     checkbox.name = "checkbox";
                     checkbox.value = msg[i].IndentType;
                     checkbox.id = "checkbox";
+                    checkbox.disabled = "true";
                     checkbox.onclick = function () { checked(this); };
                     //checkbox.className = 'checkinput';
                     checkbox.className = 'chkclass';
@@ -580,9 +584,25 @@
                 }
             }
         }
+        function ddlindenttype() {
+            var itype = document.getElementById('txtIndentType').value;
+            for (var i = 0; i < indarr.length; i++) {
+                if (itype.toUpperCase() == indarr[i].IndentType.toUpperCase()) {
+                    document.getElementById('txtIndentType').value = "";
+                    alert("Please Enter Another Indent Type");
+                    return false;
+                }
+            }
+        }
         function checked(thisid) {
             var refdcno = $(thisid).next('.Indentcls').html();
             document.getElementById('txtIndentType').value = refdcno;
+            var itype=document.getElementById('txtIndentType').value;
+            if (refdcno == itype) {
+                document.getElementById('txtIndentType').value = "";
+                alert("Please Enter Another Indent Type");
+                return false;
+            }
 
         }
 //        function GetPrintDetails() {
@@ -629,6 +649,15 @@
                         <div style="width: 100%; height: 175px;">
                             <div style="width: 50%; float: left;">
                                 <table align="center">
+                                     <tr>
+                                        <td>
+                                            <label>
+                                                Date</label>
+                                        </td>
+                                        <td style="height: 40px;">
+                                        <input type="date" id="datepicker" placeholder="DD-MM-YYYY" class="form-control" />
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td>
                                             <label>Sales Office Name</label>
@@ -668,23 +697,16 @@
                                              </select>
                                             </td>
                                     </tr>
+                                   
                                     <tr>
                                         <td>
                                           <label>  Indent Type</label>
                                         </td>
                                         <td style="height: 40px;">
-                                            <input type="text" id="txtIndentType" class="form-control" placeholder="Enter Indent Type" />
+                                            <input type="text" id="txtIndentType" class="form-control" placeholder="Enter Indent Type" onchange="ddlindenttype();"/>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <label>
-                                                Date</label>
-                                        </td>
-                                        <td style="height: 40px;">
-                                        <input type="date" id="datepicker" placeholder="DD-MM-YYYY" class="form-control" />
-                                        </td>
-                                    </tr>
+                                    
                                     <tr>
                                         <td>
                                            <label> Vehicle No</label>

@@ -229,7 +229,7 @@ public partial class monthlyagentwiseincentive : System.Web.UI.Page
             //lblroute.Text = ddlRouteName.SelectedItem.Text;
             lbl_fromDate.Text = fromdate.ToString("dd-MM-yyyy hh:mm");
             lbl_selttodate.Text = todate.ToString("dd-MM-yyyy hh:mm");
-            cmd = new MySqlCommand("SELECT sno, FromDate, Todate, StructureName, BranchId, EntryDate, ActualDiscount, TotalDiscount, Remarks, structure_sno, leakagepercent, DueClear FROM incentivetransactions WHERE (FromDate BETWEEN @d1 AND @d2) AND (BranchId = @BranchId)");
+            cmd = new MySqlCommand("SELECT sno, FromDate, Todate, StructureName, BranchId,transport,rent, EntryDate, ActualDiscount, TotalDiscount, Remarks, structure_sno, leakagepercent, DueClear FROM incentivetransactions WHERE (FromDate BETWEEN @d1 AND @d2) AND (BranchId = @BranchId)");
             cmd.Parameters.AddWithValue("@branchid", ddlAgentName.SelectedValue);
             cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
             cmd.Parameters.AddWithValue("@d2", GetHighDate(todate.AddDays(-1)));
@@ -239,6 +239,8 @@ public partial class monthlyagentwiseincentive : System.Web.UI.Page
             string leakpercent = dtstructuresno.Rows[0]["leakagepercent"].ToString();
             string incentivegiven = dtstructuresno.Rows[0]["TotalDiscount"].ToString();
             string remarks = dtstructuresno.Rows[0]["Remarks"].ToString(); 
+            string transport = dtstructuresno.Rows[0]["transport"].ToString(); 
+            string rent = dtstructuresno.Rows[0]["rent"].ToString(); 
             cmd = new MySqlCommand("SELECT productsdata.sno, productsdata.ProductName, product_clubbing.ClubName, incentive_structure.StructureName, product_clubbing.sno AS clubbingsno,products_category.Categoryname, products_subcategory.category_sno FROM incentive_structure INNER JOIN incentive_struct_sub ON incentive_structure.sno = incentive_struct_sub.is_sno INNER JOIN product_clubbing ON incentive_struct_sub.clubbingID = product_clubbing.sno INNER JOIN subproductsclubbing ON product_clubbing.sno = subproductsclubbing.Clubsno INNER JOIN productsdata ON subproductsclubbing.Productid = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (incentive_structure.sno = @StructureID) ");
             cmd.Parameters.AddWithValue("@StructureID", structuresno);
             DataTable dtincentivestructure = vdm.SelectQuery(cmd).Tables[0];
@@ -308,7 +310,7 @@ public partial class monthlyagentwiseincentive : System.Web.UI.Page
                                 // Total += DeliveryQty * UnitCost;
                                 int.TryParse(dr["categorysno"].ToString(), out categorysno);
 
-                                if (categorysno == 9)
+                                if (categorysno == 1)
                                 {
                                     string invsno = dr["invsno"].ToString();
                                     if (invsno == "4")
@@ -339,7 +341,7 @@ public partial class monthlyagentwiseincentive : System.Web.UI.Page
                             double prdtQty = 0;
                             double.TryParse(drtotprdt["DeliveryQty"].ToString(), out prdtQty);
                             prdtQty = Math.Round(prdtQty, 2);
-                            if (drtotprdt["categorysno"].ToString() == "9")
+                            if (drtotprdt["categorysno"].ToString() == "1")
                             {
                                 
                                 double prdtamt = 0;
@@ -427,11 +429,11 @@ public partial class monthlyagentwiseincentive : System.Web.UI.Page
                         float.TryParse(drdtclubtotal["deliveryqty"].ToString(), out totalsale);
                         avgsale = (totalsale / count);
                         float.TryParse(drdtclubtotal["SlotQty"].ToString(), out slotqty);
-                        if (avgsale > slotqty)
-                        {
+                        //if (avgsale > slotqty)
+                        //{
                             float.TryParse(drdtclubtotal["Amt"].ToString(), out slotamt);
                             sltamt = drdtclubtotal["Amt"].ToString();
-                        }
+                        //}
                     }
                     DataRow newrow = dtTotincentive.NewRow();
                     newrow["ClubbingName"] = clubbingname;
@@ -476,6 +478,9 @@ public partial class monthlyagentwiseincentive : System.Web.UI.Page
                 newrowtotal["TotalAmount"] = Math.Round(incentive, 2);
                 dtTotincentive.Rows.Add(newrowtotal);
                 lblactualdiscount1.Text = Math.Round(incentive, 2).ToString();
+                lblincentivegiven.Text = incentivegiven;
+                lblTransport1.Text = transport;
+                lblRent1.Text = rent;
                 lblincentivegiven.Text = incentivegiven;
                 txtremarks.Text = remarks;
                 DataRow headerrow = Report.NewRow();

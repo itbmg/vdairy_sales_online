@@ -164,11 +164,25 @@
                 <div>
                     <table style="width: 100%;">
                         <tr>
+                            
                             <td>
                                 <asp:Label ID="lblactualdiscount" runat="server">ActualDiscount:</asp:Label>
                             </td>
                             <td>
                                 <asp:Label ID="lblactualdiscount1" runat="server" Text="" ForeColor="Red" Font-Size="20px"></asp:Label>
+                            </td>
+                            <td>
+                                <asp:Label ID="lblRent" runat="server">Rent:</asp:Label>
+                            </td>
+                            <td>
+                                <asp:Label ID="lblRent1" runat="server" Text="" ForeColor="Red" Font-Size="20px"></asp:Label>
+                            </td>
+                            <td>
+                                <asp:Label ID="lblTransport" runat="server">Transport:</asp:Label>
+                            </td>
+                            <td>
+                                <asp:Label ID="lblTransport1" runat="server" Style="font-size: 20px;" ForeColor="Red"
+                                    Text=""></asp:Label>
                             </td>
                             <td>
                                 <asp:Label ID="lbincentivegiven" runat="server">IncentiveGiven:</asp:Label>
