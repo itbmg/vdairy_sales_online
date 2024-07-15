@@ -2086,7 +2086,7 @@ public partial class Dreport : System.Web.UI.Page
     protected void btnGenerate_Click(object sender, EventArgs e)
     {
         string TitleName = Session["TitleName"].ToString();
-        //if (TitleName == "Sri Vyshnavi Dairy Specialities (P) Ltd")
+        //if (TitleName == "Sri Vyshnavi Foods Pvt Ltd")
         //{
         GetReport();
         //}

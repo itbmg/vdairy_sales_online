@@ -340,7 +340,7 @@ public partial class AgentInvoiceReport : System.Web.UI.Page
                 lblfromdate.Visible = false;
                 lbltodate.Visible = false;
                 lblTo.Visible = false;
-                lbladdress1.Text = "SRI VYSHNAVI DAIRY SPECIALITIES (P) LTD";
+                lbladdress1.Text = "Sri Vyshnavi Foods Pvt Ltd";
                 //lbladdress1.te
             }
             else

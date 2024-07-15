@@ -101,7 +101,7 @@ public partial class exporttoxl : System.Web.UI.Page
                 int columnscount = dtt.Columns.Count;
                 //For Header
 
-                //HttpContext.Current.Response.Write("<Td colspan='" + columnscount + "' align='center' style='font-size:30.0pt;'>Sri Vyshnavi Dairy Specialities (P) Ltd</Td><TR>");
+                //HttpContext.Current.Response.Write("<Td colspan='" + columnscount + "' align='center' style='font-size:30.0pt;'>Sri Vyshnavi Foods Pvt Ltd</Td><TR>");
                 //HttpContext.Current.Response.Write("<Td colspan='" + columnscount + "' align='center' style='font-size:20.0pt;'>" + title + "</Td><TR>");
 
                 //am getting my grid's column headers

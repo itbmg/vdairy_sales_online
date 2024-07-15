@@ -376,7 +376,7 @@
                     </div>
                     <div align="center">
                         <asp:Label ID="lblTitle" runat="server" Font-Bold="true" Font-Size="20px" ForeColor="#0252aa"
-                            Text="">Sri Vyshnavi Dairy Specialities (P) Ltd </asp:Label>
+                            Text="">Sri Vyshnavi Foods Pvt Ltd </asp:Label>
                         <br />
                         <asp:Label ID="lblAddress" runat="server" Font-Bold="true" Font-Size="12px" ForeColor="#0252aa"
                             Text="">R.S.No:381/2, Punabaka village Post, Pellakuru Mandal, Nellore District -524129., Andhra Pradesh(State). Phone: 9440622077, Fax: 044 – 26177799. </asp:Label>

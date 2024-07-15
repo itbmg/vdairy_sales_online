@@ -735,7 +735,7 @@
                                             <td style="width: 50%;">
                                                 <asp:Label ID="lbl1" runat="server" style="font-weight: bold;color: #0252aa;" Text="HEAD MARETING"></asp:Label>
                                                 <br />
-                                                <asp:Label ID="lbl2" runat="server" style="font-weight: bold;color: #0252aa;" Text="SRI VYSHNAVI DAIRY SPECIALITIES (P) LTD"></asp:Label>
+                                                <asp:Label ID="lbl2" runat="server" style="font-weight: bold;color: #0252aa;" Text="Sri Vyshnavi Foods Pvt Ltd"></asp:Label>
                                                 <br/>
                                                 <asp:Label ID="lblbranch" runat="server" style="font-weight: bold;color: #0252aa;" Text=""></asp:Label>
                                             </td>
