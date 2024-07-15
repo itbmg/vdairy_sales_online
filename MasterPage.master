@@ -951,6 +951,7 @@ j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; 
                                     <li id="lidcreport"><a href="Dc_print.aspx">DC Report</a></li>
                                     <li id="litotaldc"><a href="TotalDCReport.aspx">Total DC Report</a></li>
                                     <li id="li11"><a href="DayWiseDispatch.aspx">Day Wise DC Report</a></li>
+                                    <li id="Lioffer"><a href="OfferDc_Print.aspx">Offer DC Print</a></li>
                                     <li id="liproductwisedcreport"><a href="ProductWiseTotalDCReport.aspx">Product Wise
                                                 Total DC Report</a></li>
                                     <li id="li17"><a href="DispatchWiseDcReport.aspx">Despatch Wise DC Report</a></li>
