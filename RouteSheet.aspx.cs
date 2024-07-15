@@ -361,7 +361,7 @@ public partial class RouteSheet : System.Web.UI.Page
                     totalcr = milktotal.ToString();
                     newrow["TOTAL Milk INDENT(ltr/pkts)"] = milktotal;
                     newrow["TOTAL Curd INDENT(ltr/pkts)"] = curdtotal;
-                    newrow["Total Sales Amount"] = TotalOfferAmpunt + TotalAmpunt;
+                    newrow["Total Sales Amount"] =  TotalAmpunt; //TotalOfferAmpunt +
                     //newrow["Issued Crates/Cans"] = indenttubs + '/' + indentcans;
                     Report.Rows.Add(newrow);
                     i++;
