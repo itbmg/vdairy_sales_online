@@ -352,7 +352,7 @@ public partial class RouteSheet : System.Web.UI.Page
                                 //double curdqty = qtyvalue * uom / 1000;
                                 curdtotal += qtyvalue;
                             }
-                            indandofferQty = UnitQty + offerqty;
+                            indandofferQty = UnitQty;// + offerqty;
                             newrow[dr["ProductName"].ToString()] = indandofferQty;
                             TotalAmpunt += Totcost;
                             //Report.Rows.Add(newrow);
