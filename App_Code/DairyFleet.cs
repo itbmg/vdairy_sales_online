@@ -24560,6 +24560,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             dtallProducts.Columns.Add("PktQty");
             dtallProducts.Columns.Add("pkt_rate");
             dtallProducts.Columns.Add("unitcost");
+            dtallProducts.Columns.Add("OfferPktQty");
             foreach (DataRow dr in dtproductsdata.Rows)
             {
                 DataRow newRow = dtallProducts.NewRow();
@@ -24572,9 +24573,10 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 newRow["unitcost"] = "0";
                 newRow["pkt_rate"] = dr["unitprice"].ToString();
                 newRow["UnitQty"] = dr["UnitQty"].ToString();
+                newRow["OfferPktQty"] = "0";
                 dtallProducts.Rows.Add(newRow);
             }
-            cmd = new MySqlCommand("SELECT productsdata.sno,productsdata.ProductName, tripsubdata.unitcost,tripsubdata.pkt_rate,tripsubdata.Qty AS TotalQty,tripsubdata.pkt_qty,tripsubdata.tub_qty  FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno WHERE (tripdata.Sno = @tripid)");
+            cmd = new MySqlCommand("SELECT productsdata.sno,productsdata.ProductName, tripsubdata.unitcost,tripsubdata.pkt_rate,tripsubdata.Qty AS TotalQty,tripsubdata.pkt_qty,tripsubdata.tub_qty,tripsubdata.offerqty  FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno WHERE (tripdata.Sno = @tripid)");
             cmd.Parameters.AddWithValue("@tripid", DcNo);
             DataTable dttripprdt = vdbmngr.SelectQuery(cmd).Tables[0];
             foreach (DataRow drtripprdt in dttripprdt.Rows)
@@ -24593,6 +24595,13 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         drprdtcpy["pkt_rate"] = drtripprdt["pkt_rate"].ToString();
                         drprdtcpy["unitcost"] = drtripprdt["unitcost"].ToString();
                         drprdtcpy["TotalQty"] = totalqty;
+
+                        float offer_Pktqty = 0;
+                        float.TryParse(drtripprdt["offerqty"].ToString(), out offer_Pktqty);
+                        float offer_Pktqtycpy = 0;
+                        float.TryParse(drprdtcpy["OfferPktQty"].ToString(), out offer_Pktqtycpy);
+                        float Offertotalpktqty = offer_Pktqty + offer_Pktqtycpy;
+                        drprdtcpy["OfferPktQty"] = totalqty;
                     }
                     else
                     {
@@ -24611,6 +24620,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                 getProducts.ProductName = dr["ProductName"].ToString();
                 getProducts.TotalQty = dr["TotalQty"].ToString();
                 getProducts.orderunitqty = dr["TotalQty"].ToString();
+                getProducts.OfferPkt_qty = dr["OfferPktQty"].ToString();
                 getProducts.Unitqty = dr["UnitQty"].ToString();
                 getProducts.Units = dr["Units"].ToString();
                 getProducts.invqty = dr["Qty"].ToString();
@@ -33370,17 +33380,25 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         {
                             if (drofferprdt["sno"].ToString() == drprdtcpy["sno"].ToString())
                             {
-                                double TotofferPkt_qty = 0;
-                                double offerqty = 0;
-                                double offerLtrqty = 0;
-                                //foreach (DataRow dro in dtofferProducts.Select("sno='" + drprdt["sno"].ToString() + "'"))
-                                //{
-                                double uom = 0;
-                                double.TryParse(drofferprdt["uom"].ToString(), out uom);
-                                double.TryParse(drofferprdt["TotalofferQty"].ToString(), out offerqty);
-                                TotofferPkt_qty += offerqty;
-                                offerLtrqty = offerqty * uom / 1000;
-                                //}
+                                //double TotofferPkt_qty = 0;
+                                //double offerqty = 0;
+                                //double offerLtrqty = 0;
+                                ////foreach (DataRow dro in dtofferProducts.Select("sno='" + drprdt["sno"].ToString() + "'"))
+                                ////{
+                                //double uom = 0;
+                                //double.TryParse(drofferprdt["uom"].ToString(), out uom);
+                                //double.TryParse(drofferprdt["TotalofferQty"].ToString(), out offerqty);
+                                //TotofferPkt_qty += offerqty;
+                                //offerLtrqty = offerqty * uom / 1000;
+                                ////}
+                                //drprdtcpy["OfferPkt_qty"] = TotofferPkt_qty;
+
+                                float offerpktqty = 0;
+                                float TotofferPkt_qty = 0;
+                                float.TryParse(drofferprdt["TotalofferQty"].ToString(), out offerpktqty);
+                                float offerPktqtycpy = 0;
+                                float.TryParse(drprdtcpy["OfferPkt_qty"].ToString(), out offerPktqtycpy);
+                                 TotofferPkt_qty = offerpktqty + offerPktqtycpy;
                                 drprdtcpy["OfferPkt_qty"] = TotofferPkt_qty;
                             }
                             else

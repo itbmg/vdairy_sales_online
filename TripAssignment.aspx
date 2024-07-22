@@ -236,10 +236,23 @@
         }
         function GetProducts(msg) {
             $('#divFillScreen').removeTemplate();
-            $('#divFillScreen').setTemplateURL('TripRoutes7.htm');
+            $('#divFillScreen').setTemplateURL('TripRoutes9.htm');
             $('#divFillScreen').processTemplate(msg);
             
             getTripValuesCalculation();
+            getTripoffertotal();
+        }
+        function getTripoffertotal() {
+            var tot_offerpkt = 0;
+            $('.hdnOfferQtyPktsClass').each(function (i, obj) {
+                var pktqty = $(this).closest('tr').find('#hdnOfferQtyPkts').text();
+                if (pktqty == "" || pktqty == "0") {
+                }
+                else {
+                    tot_offerpkt += parseFloat(pktqty);
+                }
+            });
+            document.getElementById('txt_OffetQtyPkts').innerHTML = parseFloat(tot_offerpkt).toFixed(2);
         }
         function getTripValuesCalculation() {
             var tot_ltr = 0;
@@ -252,6 +265,8 @@
                 }
             });
             document.getElementById('txt_QtyLtr').innerHTML = parseFloat(tot_ltr).toFixed(2);
+
+           
         }
         function GetInventory(msg) {
             $('#divInventory').removeTemplate();
@@ -302,13 +317,13 @@
                     var txtProductQty = $(this).find('#txtProductQty').val();
                     var tot_qty = 0;
                     tot_qty = parseFloat(hdn_editqty) + parseFloat(txtProductQty);
-                    var off_rqty = $(this).find('#hdnOfferQtyPkts').val();
+                    var off_rqty = $(this).find('#hdnOfferQtyPkts').text();
                     var Offer_Quantity = 0;
                     Offer_Quantity = parseFloat(off_rqty);
 
                     if (tot_qty > 0 || Offer_Quantity > 0) {
                         var Product = 0;
-                        Orderdetails.push({ ProductSno: $(this).find('#hdnProductSno').val(), Product: Product, Qty: $(this).find('#txtProductQty').val(), tub_qty: $(this).find('#txtTubQty').val(), pkt_qty: $(this).find('#txtQtypkts').val(), OfferPkt_qty: $(this).find('#hdnOfferQtyPkts').val() });
+                        Orderdetails.push({ ProductSno: $(this).find('#hdnProductSno').val(), Product: Product, Qty: $(this).find('#txtProductQty').val(), tub_qty: $(this).find('#txtTubQty').val(), pkt_qty: $(this).find('#txtQtypkts').val(), OfferPkt_qty: $(this).find('#hdnOfferQtyPkts').text() });
                     }
                 }
             });
@@ -338,7 +353,7 @@
                     }
                     if (msg == "Data Successfully Saved") {
                         $('#divFillScreen').removeTemplate();
-                        $('#divFillScreen').setTemplateURL('TripRoutes7.htm');
+                        $('#divFillScreen').setTemplateURL('TripRoutes9.htm');
                         $('#divFillScreen').processTemplate(datatab);
                         $('#divInventory').removeTemplate();
                         $('#divInventory').setTemplateURL('TripInventory.htm');
@@ -348,7 +363,7 @@
                     }
                     if (msg == "Data Successfully Updated") {
                         $('#divFillScreen').removeTemplate();
-                        $('#divFillScreen').setTemplateURL('TripRoutes7.htm');
+                        $('#divFillScreen').setTemplateURL('TripRoutes9.htm');
                         $('#divFillScreen').processTemplate(datatab);
                         $('#divInventory').removeTemplate();
                         $('#divInventory').setTemplateURL('TripInventory.htm');

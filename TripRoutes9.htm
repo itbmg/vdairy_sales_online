@@ -34,6 +34,11 @@
                 </td>
                 <td style="width: 16%; height: 20px; text-align: center; font-size: 12px; font-weight: bold;
                     color: #2f3293;">
+                    Offer(Pkts)
+                    <br />
+                </td>
+                <td style="width: 16%; height: 20px; text-align: center; font-size: 12px; font-weight: bold;
+                    color: #2f3293;">
                     UOM
                     <br />
                 </td>
@@ -57,12 +62,12 @@
                     text-align: center; padding: 0px 0px 0px 3px">
                     <input type="number" id="txtQtypkts" value="{ $T.data.Qtypkts }" onkeyup="OrderPktQtyChange(this);" class="Unitqtyclass"
                            style="width:100%;height:34px;border:1px solid gray; border-radius:6px 6px 6px 6px;font-size:16px;" placeholder="Enter Pkts" />
-                    <input type="hidden" id="hdnOfferQtyPkts" value="{ $T.data.OfferPkt_qty }" />
+                    
                 </td>
                 <td style="width: 16%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
                     color: Gray;" align="center">
                     <input type="number" id="txtTubQty" value="{ $T.data.tubQty }" onkeyup="OrderTubQtyChange(this);" class="Unittubqtyclass"
-                            style="width:100%;height:34px;border:1px solid gray; border-radius:6px 6px 6px 6px;font-size:16px;" placeholder="Enter Tubs" />
+                           style="width:100%;height:34px;border:1px solid gray; border-radius:6px 6px 6px 6px;font-size:16px;" placeholder="Enter Tubs" />
                     <input type="hidden" id="hdnUnitQty" value="{ $T.data.Unitqty }" />
                     <input type="hidden" id="hdnUnits" value="{ $T.data.Units }" />
                     <input type="hidden" id="hdnQty" value="{ $T.data.invqty }" />
@@ -74,11 +79,18 @@
                 <td style="width: 16%; height: 30px; font-size: 11px; vertical-align: middle; text-align: center;
                     color: Gray;" align="center">
                     <!--<input type="number" id="txtProductQty" class="totProductQtyclass" value="{ $T.data.tubs }" onkeyup="return OrderTubQtyChange();" />
-                    <span id="" class="totExtraltrs" style="font-size: 15px; color: Red;"  ></span>-->
-                    <span style="width: 100%; font-size: 16px; color: Black; font-weight: bold;" ID="txtDupUnitQty" ><b>{ $T.data.orderunitqty }</b></span>
+        <span id="" class="totExtraltrs" style="font-size: 15px; color: Red;"  ></span>-->
+                    <span style="width: 100%; font-size: 16px; color: Black; font-weight: bold;" ID="txtDupUnitQty"><b>{ $T.data.orderunitqty }</b></span>
                     <input type="hidden" id="txtProductQty" class="totalQtyclass" value="{ $T.data.orderunitqty }" />
                     <input type="hidden" id="hdn_editqty" value="{ $T.data.orderunitqty }" />
 
+                </td>
+                <td style="width: 16%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
+                    color: Gray;">
+                    <span id="hdnOfferQtyPkts" class="hdnOfferQtyPktsClass" style="font-size: 15px; color: Red;">
+                        <b>{ $T.data.OfferPkt_qty }</b>
+                    </span>
+                    <!--<input type="hidden" id="hdnOfferQtyPkts" value="{ $T.data.OfferPkt_qty }" />-->
                 </td>
                 <td style="width: 16%; height: 30px; vertical-align: middle; font-size: 11px; text-align: center;
                     color: Gray;">
@@ -102,6 +114,10 @@
                 <td style="width: 16%; font-size: 11px; height: 30px; color: Gray; vertical-align: middle;
                     text-align: center;" align="center">
                     <span style="font-size: 16px; color: Red;font-weight:bold;" id="txt_QtyLtr"></span>
+                </td>
+                <td style="width: 16%; font-size: 11px; height: 30px; color: Gray; vertical-align: middle;
+                    text-align: center;" align="center">
+                    <span style="font-size: 16px; color: Red;font-weight:bold;" id="txt_OffetQtyPkts"></span>
                 </td>
                 <td style="width: 16%; font-size: 11px; height: 30px; color: Gray; vertical-align: middle;
                     text-align: center;" align="center"></td>
