@@ -880,17 +880,25 @@ public partial class TotalDCReport : System.Web.UI.Page
             ///Ravi
             ///274854
             string bid = Session["branch"].ToString();
-            cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,ProductInfo.ProductName,ProductInfo.Categoryname, ProductInfo.Qty, ProductInfo.pkt_qty,ProductInfo.prodsno,TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM            branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE        (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, ProductName, Sno, Qty,pkt_qty,prodsno FROM (SELECT products_category.Categoryname, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty,tripsubdata.pkt_qty,productsdata.sno as prodsno FROM            tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno order by TripInfo.Sno");
+            cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,ProductInfo.ProductName,ProductInfo.Categoryname,ProductInfo.Qty,ProductInfo.offerqty,ProductInfo.pkt_qty,ProductInfo.prodsno,TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM            branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE        (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, ProductName, Sno, Qty,pkt_qty,prodsno,offerqty FROM (SELECT products_category.Categoryname, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty,tripsubdata.pkt_qty,tripsubdata.offerqty,productsdata.sno as prodsno FROM            tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2)) TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno  order by TripInfo.Sno");
             //cmd = new MySqlCommand("SELECT tripdata.Sno,tripdata.Dcno, tripsubdata.Qty, productsdata.ProductName, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, products_category.Categoryname,dispatch.DispType, dispatch.DispMode FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchdata ON dispatch.Branch_Id = branchdata.sno WHERE (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2) OR (tripdata.AssignDate BETWEEN @d1 AND @d2) AND (branchdata.SalesOfficeID = @SOID)");
             cmd.Parameters.AddWithValue("@branch", Session["branch"]);
             cmd.Parameters.AddWithValue("@SOID", Session["branch"]);
             cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
             cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate));
             DataTable dtble = vdm.SelectQuery(cmd).Tables[0];
-            //cmd = new MySqlCommand("SELECT products_category.Categoryname, products_subcategory.SubCatName, branchproducts.Rank, productsdata.ProductName, branchproducts.branch_sno FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno INNER JOIN empmanage ON tripdata.DEmpId = empmanage.Sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata.AssignDate BETWEEN @d1 AND @d2) AND (empmanage.Branch = @BranchID) AND (branchproducts.branch_sno = @Branch) GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
-            //cmd = new MySqlCommand("SELECT products_category.Categoryname, products_subcategory.SubCatName, branchproducts.Rank, productsdata.ProductName, branchproducts.branch_sno FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata.AssignDate BETWEEN @d1 AND @d2) AND (branchproducts.branch_sno = @Branch) AND (tripdata.BranchID = @BranchID) GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
+
+            cmd = new MySqlCommand("SELECT TripInfo.Sno, TripInfo.DCNo,ProductInfo.ProductName,ProductInfo.Categoryname, ProductInfo.Qty, ProductInfo.offerqty,ProductInfo.pkt_qty,ProductInfo.prodsno,TripInfo.I_Date, TripInfo.VehicleNo, TripInfo.Status, TripInfo.DispName, TripInfo.DispType, TripInfo.DispMode FROM (SELECT tripdata.Sno, tripdata.DCNo, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, dispatch.DispType, dispatch.DispMode FROM            branchdata INNER JOIN dispatch ON branchdata.sno = dispatch.Branch_Id INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN tripdata ON triproutes.Tripdata_sno = tripdata.Sno WHERE        (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2)) TripInfo INNER JOIN (SELECT Categoryname, ProductName, Sno, Qty,pkt_qty,prodsno,offerqty FROM (SELECT products_category.Categoryname, productsdata.ProductName, tripdata_1.Sno, tripsubdata.Qty,tripsubdata.pkt_qty,tripsubdata.offerqty,productsdata.sno as prodsno FROM            tripdata tripdata_1 INNER JOIN tripsubdata ON tripdata_1.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata_1.AssignDate BETWEEN @d1 AND @d2) and tripsubdata.offerqty <>'0') TripSubInfo) ProductInfo ON TripInfo.Sno = ProductInfo.Sno order by TripInfo.Sno");
+            //cmd = new MySqlCommand("SELECT tripdata.Sno,tripdata.Dcno, tripsubdata.Qty, productsdata.ProductName, tripdata.I_Date, tripdata.VehicleNo, tripdata.Status, dispatch.DispName, products_category.Categoryname,dispatch.DispType, dispatch.DispMode FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN triproutes ON tripdata.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno INNER JOIN branchdata ON dispatch.Branch_Id = branchdata.sno WHERE (dispatch.Branch_Id = @branch) AND (tripdata.AssignDate BETWEEN @d1 AND @d2) OR (tripdata.AssignDate BETWEEN @d1 AND @d2) AND (branchdata.SalesOfficeID = @SOID)");
+            cmd.Parameters.AddWithValue("@branch", Session["branch"]);
+            cmd.Parameters.AddWithValue("@SOID", Session["branch"]);
+            cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
+            cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate));
+            DataTable dtoffer = vdm.SelectQuery(cmd).Tables[0];
+
+
+
             cmd = new MySqlCommand("SELECT products_category.Categoryname, products_subcategory.SubCatName, branchproducts.Rank, productsdata.ProductName,productsdata.sno, branchproducts.branch_sno FROM tripdata INNER JOIN tripsubdata ON tripdata.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN branchproducts ON productsdata.sno = branchproducts.product_sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (tripdata.AssignDate BETWEEN @d1 AND @d2) AND (branchproducts.branch_sno = @Branch)  GROUP BY productsdata.ProductName ORDER BY branchproducts.Rank");
-            //cmd.Parameters.AddWithValue("@Flag", "1");
             cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate));
             cmd.Parameters.AddWithValue("@d2", GetHighDate(Todate));
             cmd.Parameters.AddWithValue("@BranchID", Session["branch"].ToString());
@@ -920,6 +928,9 @@ public partial class TotalDCReport : System.Web.UI.Page
                 Report.Columns.Add("Total Amount", typeof(Double));
                 // DataTable distincttable = view.ToTable(true, "DispName", "VehicleNo", "Sno", "Status", "I_Date", "Dcno");
                 DataTable distincttable = view.ToTable(true, "DispName", "VehicleNo", "Sno", "Status", "I_Date", "Dcno", "DispType", "DispMode");
+                DataView view1 = new DataView(dtoffer);
+                DataTable distincttable1 = view1.ToTable(true, "DispName", "VehicleNo", "Sno", "Status", "I_Date", "Dcno", "DispType", "DispMode");
+
                 int i = 1;
                 foreach (DataRow branch in distincttable.Rows)
                 {
@@ -1029,8 +1040,11 @@ public partial class TotalDCReport : System.Web.UI.Page
                                 double assqty = 0;
                                 double curdBm = 0;
                                 double Buttermilk = 0;
-                                double AssignQty = 0;
-                                double.TryParse(dr["Qty"].ToString(), out AssignQty);
+                                double actualqty = 0;
+                                double.TryParse(dr["Qty"].ToString(), out actualqty);
+                                double offerqty = 0;
+                                double.TryParse(dr["offerqty"].ToString(), out offerqty);
+                                double AssignQty = actualqty - offerqty;
                                 newrow[dr["ProductName"].ToString()] = AssignQty;
                                 if (dr["Categoryname"].ToString() == "MILK")
                                 {
@@ -1049,6 +1063,7 @@ public partial class TotalDCReport : System.Web.UI.Page
                                 }
                             }
                         }
+                       
                         newrow["Total Milk"] = total;
                         newrow["Total Curd&BM"] = totalcurdandBM;
                         newrow["Total Lts"] = total + totalcurdandBM;
@@ -1081,9 +1096,152 @@ public partial class TotalDCReport : System.Web.UI.Page
                         Report.Rows.Add(newrow);
                         i++;
                     }
+
                 }
 
-                
+                foreach (DataRow branch in distincttable1.Rows)
+                {
+                    if (branch["Status"].ToString() == "C")
+                    {
+                    }
+                    else
+                    {
+                        cmd = new MySqlCommand("SELECT invid, Qty FROM tripinvdata WHERE (Tripdata_sno = @tripid)");
+                        cmd.Parameters.AddWithValue("@tripid", branch["Sno"].ToString());
+                        DataTable dtissuedinv = vdm.SelectQuery(cmd).Tables[0];
+                        DataRow newrow = Report.NewRow();
+                        newrow["SNo"] = i;
+                        newrow["VehicleNo"] = branch["VehicleNo"].ToString();
+                        newrow["Ref DC No"] = branch["Sno"].ToString();
+                        string BranchId = Session["branch"].ToString();
+                        string DcNo = branch["Dcno"].ToString();
+
+                        if (BranchId == "172")
+                        {
+                            DcNo = "P" + DcNo;
+                        }
+                        if (BranchId == "1801")
+                        {
+                            DcNo = "K" + DcNo;
+                        }
+                        else if (BranchId == "7")
+                        {
+                            DcNo = "W" + DcNo;
+                        }
+                        else if (BranchId == "174")
+                        {
+                            DcNo = "CSO" + DcNo;
+                        }
+                        else if (BranchId == "285")
+                        {
+                            DcNo = "TPT" + DcNo;
+                        }
+                        else if (BranchId == "282")
+                        {
+                            DcNo = "SKHT" + DcNo;
+                        }
+                        else if (BranchId == "271")
+                        {
+                            DcNo = "NLR" + DcNo;
+                        }
+                        else if (BranchId == "306")
+                        {
+                            DcNo = "KANCHI" + DcNo;
+                        }
+                        else if (BranchId == "570")
+                        {
+                            DcNo = "VJD" + DcNo;
+                        }
+                        else if (BranchId == "3")
+                        {
+                            DcNo = "KHM" + DcNo;
+                        }
+                        else if (BranchId == "159")
+                        {
+                            DcNo = "HYD" + DcNo;
+                        }
+                        else if (BranchId == "457")
+                        {
+                            DcNo = "WGL" + DcNo;
+                        }
+                        else if (BranchId == "538")
+                        {
+                            DcNo = "BNGLR" + DcNo;
+                        }
+                        else if (BranchId == "527")
+                        {
+                            DcNo = "PNR" + DcNo;
+                        }
+                        else if (BranchId == "2749")
+                        {
+                            DcNo = "MDPL" + DcNo;
+                        }
+                        else if (BranchId == "2909")
+                        {
+                            DcNo = "VLR" + DcNo;
+                        }
+                        else if (BranchId == "3559")
+                        {
+                            DcNo = "CTR" + DcNo;
+                        }
+                        newrow["DC No"] = DcNo;
+                        newrow["Route Name"] = "Offer_" + branch["DispName"].ToString();
+                        string DispType = branch["DispType"].ToString();
+                        string DispMode = branch["DispMode"].ToString();
+                        string dctype = DispMode;
+                        if (DispMode == "")
+                        {
+                            dctype = DispType;
+                        }
+                        newrow["DC Type"] = dctype;
+                        string AssignDate = branch["I_Date"].ToString();
+                        DateTime dtAssignDate = Convert.ToDateTime(AssignDate);
+                        string ChangedTime = dtAssignDate.ToString("dd/MMM/yyyy");
+                        newrow["DC Date"] = ChangedTime;
+                        double total = 0;
+                        double totalcurdandBM = 0;
+                        foreach (DataRow dr in dtoffer.Rows)
+                        {
+                            if (branch["Sno"].ToString() == dr["Sno"].ToString())
+                            {
+                                double assqty = 0;
+                                double curdBm = 0;
+                                double Buttermilk = 0;
+                                double actualqty = 0;
+                                double offerqty = 0;
+                                double.TryParse(dr["offerqty"].ToString(), out offerqty);
+                                newrow[dr["ProductName"].ToString()] = offerqty;
+                                if (dr["Categoryname"].ToString() == "MILK")
+                                {
+                                    double.TryParse(dr["offerqty"].ToString(), out assqty);
+                                    total += assqty;
+                                }
+                                if (dr["Categoryname"].ToString() == "CURD" || dr["Categoryname"].ToString() == "OTHERS" || dr["Categoryname"].ToString() == "Curd Cups" || dr["Categoryname"].ToString() == "Curd Buckets")
+                                {
+                                    double.TryParse(dr["offerqty"].ToString(), out curdBm);
+                                    totalcurdandBM += curdBm;
+                                }
+                                if (dr["Categoryname"].ToString() == "ButterMilk")
+                                {
+                                    double.TryParse(dr["offerqty"].ToString(), out Buttermilk);
+                                    totalcurdandBM += Buttermilk;
+                                }
+                            }
+                        }
+
+                        newrow["Total Milk"] = total;
+                        newrow["Total Curd&BM"] = totalcurdandBM;
+                        newrow["Total Lts"] = total + totalcurdandBM;
+                        if (total != 0 || totalcurdandBM != 0)
+                        {
+                            Report.Rows.Add(newrow);
+                        }
+                        i++;
+                    }
+
+                }
+
+
 
                 //foreach (var column in Report.Columns.Cast<DataColumn>().ToArray())
                 //{
