@@ -192,417 +192,417 @@ public partial class IncentiveReport : System.Web.UI.Page
                     dtprevdate = DateTime.Parse(todt);
                     //if (fromdate > dtprevdate)
                     //{
-                        //cmd = new MySqlCommand("SELECT productsdata.sno,productsdata.ProductName, product_clubbing.ClubName, incentive_structure.StructureName, product_clubbing.sno AS clubbingsno FROM incentive_structure INNER JOIN incentive_struct_sub ON incentive_structure.sno = incentive_struct_sub.is_sno INNER JOIN product_clubbing ON incentive_struct_sub.clubbingID = product_clubbing.sno INNER JOIN subproductsclubbing ON product_clubbing.sno = subproductsclubbing.Clubsno INNER JOIN productsdata ON subproductsclubbing.Productid = productsdata.sno WHERE (incentive_structure.sno = @StructureID)");
-                        cmd = new MySqlCommand("SELECT productsdata.sno, productsdata.ProductName, product_clubbing.ClubName, incentive_structure.StructureName, product_clubbing.sno AS clubbingsno,products_category.Categoryname, products_subcategory.category_sno FROM incentive_structure INNER JOIN incentive_struct_sub ON incentive_structure.sno = incentive_struct_sub.is_sno INNER JOIN product_clubbing ON incentive_struct_sub.clubbingID = product_clubbing.sno INNER JOIN subproductsclubbing ON product_clubbing.sno = subproductsclubbing.Clubsno INNER JOIN productsdata ON subproductsclubbing.Productid = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (incentive_structure.sno = @StructureID) ");
-                        cmd.Parameters.AddWithValue("@StructureID", ddlstructure.SelectedValue);
-                        DataTable dtincentivestructure = vdm.SelectQuery(cmd).Tables[0];
-                        // cmd = new MySqlCommand("SELECT DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate, branchdata.BranchName, indents_subtable.DeliveryQty * indents_subtable.UnitCost AS Amount,productsdata.ProductName, productsdata.sno AS prdtsno, indents_subtable.DeliveryQty, indents_subtable.UnitCost FROM indents INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN branchdata ON indents.Branch_id = branchdata.sno INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (branchdata.sno = @BranchID) AND (indents.I_date BETWEEN @d1 AND @d2) GROUP BY indents.I_date, branchdata.BranchName, productsdata.ProductName, indents_subtable.DeliveryQty");
-                        cmd = new MySqlCommand("SELECT DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate, branchdata.BranchName, SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost) AS Amount,productsdata.ProductName, productsdata.sno AS prdtsno,Inventorysno as invsno, sum(indents_subtable.DeliveryQty) AS DeliveryQty, indents_subtable.UnitCost, products_category.Categoryname,products_category.sno AS categorysno FROM indents INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN branchdata ON indents.Branch_id = branchdata.sno INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (branchdata.sno = @BranchID) AND (indents.I_date BETWEEN @d1 AND @d2) AND (indents_subtable.DeliveryQty <> ' ')  GROUP BY DATE(indents.I_date), branchdata.BranchName, productsdata.ProductName");
-                        cmd.Parameters.AddWithValue("@BranchID", ddlAgentName.SelectedValue);
-                        cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-                        cmd.Parameters.AddWithValue("@d2", GetHighDate(todate.AddDays(-1)));
-                        DataTable dtdelivered = vdm.SelectQuery(cmd).Tables[0];
+                    //cmd = new MySqlCommand("SELECT productsdata.sno,productsdata.ProductName, product_clubbing.ClubName, incentive_structure.StructureName, product_clubbing.sno AS clubbingsno FROM incentive_structure INNER JOIN incentive_struct_sub ON incentive_structure.sno = incentive_struct_sub.is_sno INNER JOIN product_clubbing ON incentive_struct_sub.clubbingID = product_clubbing.sno INNER JOIN subproductsclubbing ON product_clubbing.sno = subproductsclubbing.Clubsno INNER JOIN productsdata ON subproductsclubbing.Productid = productsdata.sno WHERE (incentive_structure.sno = @StructureID)");
+                    cmd = new MySqlCommand("SELECT productsdata.sno, productsdata.ProductName, product_clubbing.ClubName, incentive_structure.StructureName, product_clubbing.sno AS clubbingsno,products_category.Categoryname, products_subcategory.category_sno FROM incentive_structure INNER JOIN incentive_struct_sub ON incentive_structure.sno = incentive_struct_sub.is_sno INNER JOIN product_clubbing ON incentive_struct_sub.clubbingID = product_clubbing.sno INNER JOIN subproductsclubbing ON product_clubbing.sno = subproductsclubbing.Clubsno INNER JOIN productsdata ON subproductsclubbing.Productid = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (incentive_structure.sno = @StructureID) ");
+                    cmd.Parameters.AddWithValue("@StructureID", ddlstructure.SelectedValue);
+                    DataTable dtincentivestructure = vdm.SelectQuery(cmd).Tables[0];
+                    // cmd = new MySqlCommand("SELECT DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate, branchdata.BranchName, indents_subtable.DeliveryQty * indents_subtable.UnitCost AS Amount,productsdata.ProductName, productsdata.sno AS prdtsno, indents_subtable.DeliveryQty, indents_subtable.UnitCost FROM indents INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN branchdata ON indents.Branch_id = branchdata.sno INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno WHERE (branchdata.sno = @BranchID) AND (indents.I_date BETWEEN @d1 AND @d2) GROUP BY indents.I_date, branchdata.BranchName, productsdata.ProductName, indents_subtable.DeliveryQty");
+                    cmd = new MySqlCommand("SELECT DATE_FORMAT(indents.I_date, '%d %b %y') AS IndentDate, branchdata.BranchName, SUM(indents_subtable.DeliveryQty * indents_subtable.UnitCost) AS Amount,productsdata.ProductName, productsdata.sno AS prdtsno,Inventorysno as invsno, sum(indents_subtable.DeliveryQty) AS DeliveryQty, indents_subtable.UnitCost, products_category.Categoryname,products_category.sno AS categorysno FROM indents INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN branchdata ON indents.Branch_id = branchdata.sno INNER JOIN productsdata ON indents_subtable.Product_sno = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (branchdata.sno = @BranchID) AND (indents.I_date BETWEEN @d1 AND @d2) AND (indents_subtable.DeliveryQty <> ' ')  GROUP BY DATE(indents.I_date), branchdata.BranchName, productsdata.ProductName");
+                    cmd.Parameters.AddWithValue("@BranchID", ddlAgentName.SelectedValue);
+                    cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+                    cmd.Parameters.AddWithValue("@d2", GetHighDate(todate.AddDays(-1)));
+                    DataTable dtdelivered = vdm.SelectQuery(cmd).Tables[0];
 
-                        cmd = new MySqlCommand("SELECT invtras.TransType, invtras.FromTran, invtras.ToTran, SUM(invtras.Qty) AS qty, invtras.DOE, invmaster.sno AS invsno, invmaster.InvName FROM (SELECT TransType, FromTran, ToTran, Qty, EmpID, VarifyStatus, VTripId, VEmpId, Sno, B_inv_sno, DOE, VQty FROM invtransactions12 WHERE (ToTran = @branchid) AND (DOE BETWEEN @d1 AND @d2) OR (DOE BETWEEN @d1 AND @d2) AND (FromTran = @branchid)) invtras INNER JOIN invmaster ON invtras.B_inv_sno = invmaster.sno GROUP BY invtras.TransType, invmaster.sno");
-                        cmd.Parameters.AddWithValue("@branchid", ddlAgentName.SelectedValue);
-                        DateTime dt1 = GetLowDate(fromdate.AddDays(-1));
-                        DateTime dt2 = GetLowDate(todate);
-                        cmd.Parameters.AddWithValue("@d1", dt1.AddHours(15));
-                        cmd.Parameters.AddWithValue("@d2", dt2.AddHours(15));
-                        DataTable dtinventoryDC = vdm.SelectQuery(cmd).Tables[0];
+                    cmd = new MySqlCommand("SELECT invtras.TransType, invtras.FromTran, invtras.ToTran, SUM(invtras.Qty) AS qty, invtras.DOE, invmaster.sno AS invsno, invmaster.InvName FROM (SELECT TransType, FromTran, ToTran, Qty, EmpID, VarifyStatus, VTripId, VEmpId, Sno, B_inv_sno, DOE, VQty FROM invtransactions12 WHERE (ToTran = @branchid) AND (DOE BETWEEN @d1 AND @d2) OR (DOE BETWEEN @d1 AND @d2) AND (FromTran = @branchid)) invtras INNER JOIN invmaster ON invtras.B_inv_sno = invmaster.sno GROUP BY invtras.TransType, invmaster.sno");
+                    cmd.Parameters.AddWithValue("@branchid", ddlAgentName.SelectedValue);
+                    DateTime dt1 = GetLowDate(fromdate.AddDays(-1));
+                    DateTime dt2 = GetLowDate(todate);
+                    cmd.Parameters.AddWithValue("@d1", dt1.AddHours(15));
+                    cmd.Parameters.AddWithValue("@d2", dt2.AddHours(15));
+                    DataTable dtinventoryDC = vdm.SelectQuery(cmd).Tables[0];
 
-                        cmd = new MySqlCommand("SELECT idIndent_Permissions, SalesOfficeId, AgentId, Permission_From, Permission_To, Permission_For, Entry_Date, Given_By, Remarks FROM indent_permissions WHERE (AgentId = @branchid) AND (Permission_For = @permissionfor)");
-                        cmd.Parameters.AddWithValue("@branchid", ddlAgentName.SelectedValue);
-                        cmd.Parameters.AddWithValue("@permissionfor", "Incentive");
-                        DataTable dtpermission = vdm.SelectQuery(cmd).Tables[0];
+                    cmd = new MySqlCommand("SELECT idIndent_Permissions, SalesOfficeId, AgentId, Permission_From, Permission_To, Permission_For, Entry_Date, Given_By, Remarks FROM indent_permissions WHERE (AgentId = @branchid) AND (Permission_For = @permissionfor)");
+                    cmd.Parameters.AddWithValue("@branchid", ddlAgentName.SelectedValue);
+                    cmd.Parameters.AddWithValue("@permissionfor", "Incentive");
+                    DataTable dtpermission = vdm.SelectQuery(cmd).Tables[0];
 
-                        int dtrowscount = dtdelivered.Rows.Count;
-                        if (dtrowscount == 0)
+                    int dtrowscount = dtdelivered.Rows.Count;
+                    if (dtrowscount == 0)
+                    {
+                        if (txtTodate.Text == "")
                         {
-                            if (txtTodate.Text == "")
-                            {
 
-                            }
-                            else
-                            {
-                                lblmsg.Text = "No Indent Found Between These Days";
-                            }
-                            grdReports.DataSource = Report;
-                            grdReports.DataBind();
                         }
                         else
                         {
-                            float count = 0;
-                            count = (float)(todate - fromdate.AddDays(-1)).TotalDays;
-                            Report = new DataTable();
-                            Report.Columns.Add("IndentDate");
-                            //Report.Columns.Add("Branch Name");
-                            DataView view = new DataView(dtdelivered);
-                            DataTable distinctProduct = view.ToTable(true, "ProductName");
-                            foreach (DataRow dr in distinctProduct.Rows)
+                            lblmsg.Text = "No Indent Found Between These Days";
+                        }
+                        grdReports.DataSource = Report;
+                        grdReports.DataBind();
+                    }
+                    else
+                    {
+                        float count = 0;
+                        count = (float)(todate - fromdate.AddDays(-1)).TotalDays;
+                        Report = new DataTable();
+                        Report.Columns.Add("IndentDate");
+                        //Report.Columns.Add("Branch Name");
+                        DataView view = new DataView(dtdelivered);
+                        DataTable distinctProduct = view.ToTable(true, "ProductName");
+                        foreach (DataRow dr in distinctProduct.Rows)
+                        {
+                            Report.Columns.Add(dr["ProductName"].ToString());
+                        }
+                        Report.Columns.Add("Total  Ltrs");
+                        DataTable distincttable = view.ToTable(true, "BranchName", "IndentDate");
+                        DataTable distincttotal = view.ToTable(true, "ProductName", "DeliveryQty");
+                        int i = 1;
+                        double Total = 0;
+                        double TotalQty = 0;
+                        double prdtwisetotal = 0;
+                        double prdtwiseamount = 0;
+                        int categorysno = 0;
+                        foreach (DataRow branch in distincttable.Rows)
+                        {
+                            DataRow newrow = Report.NewRow();
+                            string IndentDate = branch["IndentDate"].ToString();
+                            DateTime dtIndentDate = Convert.ToDateTime(IndentDate).AddDays(1);
+                            string ChangedTime = dtIndentDate.ToString("dd/MMM/yyyy");
+                            newrow["IndentDate"] = ChangedTime;
+                            //newrow["Branch Name"] = branch["BranchName"].ToString();
+                            Total = 0;
+                            foreach (DataRow dr in dtdelivered.Rows)
                             {
-                                Report.Columns.Add(dr["ProductName"].ToString());
-                            }
-                            Report.Columns.Add("Total  Ltrs");
-                            DataTable distincttable = view.ToTable(true, "BranchName", "IndentDate");
-                            DataTable distincttotal = view.ToTable(true, "ProductName", "DeliveryQty");
-                            int i = 1;
-                            double Total = 0;
-                            double TotalQty = 0;
-                            double prdtwisetotal = 0;
-                            double prdtwiseamount = 0;
-                            int categorysno = 0;
-                            foreach (DataRow branch in distincttable.Rows)
-                            {
-                                DataRow newrow = Report.NewRow();
-                                string IndentDate = branch["IndentDate"].ToString();
-                                DateTime dtIndentDate = Convert.ToDateTime(IndentDate).AddDays(1);
-                                string ChangedTime = dtIndentDate.ToString("dd/MMM/yyyy");
-                                newrow["IndentDate"] = ChangedTime;
-                                //newrow["Branch Name"] = branch["BranchName"].ToString();
-                                Total = 0;
-                                foreach (DataRow dr in dtdelivered.Rows)
+                                if (branch["IndentDate"].ToString() == dr["IndentDate"].ToString())
                                 {
-                                    if (branch["IndentDate"].ToString() == dr["IndentDate"].ToString())
+                                    if (dr["DeliveryQty"].ToString() != "")
                                     {
-                                        if (dr["DeliveryQty"].ToString() != "")
+                                        double DeliveryQty = 0;
+                                        double.TryParse(dr["DeliveryQty"].ToString(), out DeliveryQty);
+                                        DeliveryQty = Math.Round(DeliveryQty, 2);
+                                        double UnitCost = 0;
+                                        double.TryParse(dr["UnitCost"].ToString(), out UnitCost);
+                                        newrow[dr["ProductName"].ToString()] = DeliveryQty;
+                                        // Total += DeliveryQty * UnitCost;
+                                        int.TryParse(dr["categorysno"].ToString(), out categorysno);
+                                        if (categorysno == 1)
                                         {
-                                            double DeliveryQty = 0;
-                                            double.TryParse(dr["DeliveryQty"].ToString(), out DeliveryQty);
-                                            DeliveryQty = Math.Round(DeliveryQty, 2);
-                                            double UnitCost = 0;
-                                            double.TryParse(dr["UnitCost"].ToString(), out UnitCost);
-                                            newrow[dr["ProductName"].ToString()] = DeliveryQty;
-                                            // Total += DeliveryQty * UnitCost;
-                                            int.TryParse(dr["categorysno"].ToString(), out categorysno);
-                                            if (categorysno == 1)
-                                            {
-                                                string invsno = dr["invsno"].ToString();
-                                                if (invsno == "4")
-                                                {
-                                                    Totalbulkmilksale += DeliveryQty;
-                                                }
-                                                Totalmilksale += DeliveryQty;
-                                            }
-                                            Total += DeliveryQty;
-                                        }
-                                    }
-                                }
-                                newrow["Total  Ltrs"] = Total;
-                                TotalQty += Total;
-                                Report.Rows.Add(newrow);
-                            }
-                            DataRow newvartical = Report.NewRow();
-                            newvartical["IndentDate"] = "Total";
-                            foreach (DataRow dr in distinctProduct.Rows)
-                            {
-                                prdtwisetotal = 0;
-                                foreach (DataRow drtotprdt in dtdelivered.Rows)
-                                {
-                                    if (dr["ProductName"].ToString() == drtotprdt["ProductName"].ToString())
-                                    {
-                                        double prdtQty = 0;
-                                        double.TryParse(drtotprdt["DeliveryQty"].ToString(), out prdtQty);
-                                        prdtQty = Math.Round(prdtQty, 2);
-                                        if (drtotprdt["categorysno"].ToString() == "1")
-                                        {
-                                            double prdtamt = 0;
-                                            double.TryParse(drtotprdt["Amount"].ToString(), out prdtamt);
-                                            prdtwiseamount += prdtamt;
-
-                                            string invsno = drtotprdt["invsno"].ToString();
+                                            string invsno = dr["invsno"].ToString();
                                             if (invsno == "4")
                                             {
-                                                Totalbulkmilksaleamount += prdtamt;
+                                                Totalbulkmilksale += DeliveryQty;
                                             }
+                                            Totalmilksale += DeliveryQty;
                                         }
-                                        prdtwisetotal += prdtQty;
-
+                                        Total += DeliveryQty;
                                     }
                                 }
-                                newvartical[dr["ProductName"].ToString()] = prdtwisetotal;
                             }
-                            totmilkamt = (float)prdtwiseamount;
-                            //double val = 0;
-                            //double.TryParse(Report.Compute("sum([Total  Amount])", "[Total  Amount]<>'0'").ToString(), out val);
-                            newvartical["Total  Ltrs"] = TotalQty;
-
-                            double val1 = 0;
-                            foreach (DataColumn dc in Report.Columns)
+                            newrow["Total  Ltrs"] = Total;
+                            TotalQty += Total;
+                            Report.Rows.Add(newrow);
+                        }
+                        DataRow newvartical = Report.NewRow();
+                        newvartical["IndentDate"] = "Total";
+                        foreach (DataRow dr in distinctProduct.Rows)
+                        {
+                            prdtwisetotal = 0;
+                            foreach (DataRow drtotprdt in dtdelivered.Rows)
                             {
-                                if (dc.DataType == typeof(Double))
+                                if (dr["ProductName"].ToString() == drtotprdt["ProductName"].ToString())
                                 {
-                                    val1 = 0.0;
-                                    double.TryParse(Report.Compute("sum([" + dc.ToString() + "])", "[" + dc.ToString() + "]<>'0'").ToString(), out val1);
-                                    newvartical[dc.ToString()] = val1;
+                                    double prdtQty = 0;
+                                    double.TryParse(drtotprdt["DeliveryQty"].ToString(), out prdtQty);
+                                    prdtQty = Math.Round(prdtQty, 2);
+                                    if (drtotprdt["categorysno"].ToString() == "1")
+                                    {
+                                        double prdtamt = 0;
+                                        double.TryParse(drtotprdt["Amount"].ToString(), out prdtamt);
+                                        prdtwiseamount += prdtamt;
+
+                                        string invsno = drtotprdt["invsno"].ToString();
+                                        if (invsno == "4")
+                                        {
+                                            Totalbulkmilksaleamount += prdtamt;
+                                        }
+                                    }
+                                    prdtwisetotal += prdtQty;
+
                                 }
                             }
-                            Report.Rows.Add(newvartical);
-                            string productnames = "";
-                            if (dtincentivestructure.Rows.Count > 0)
+                            newvartical[dr["ProductName"].ToString()] = prdtwisetotal;
+                        }
+                        totmilkamt = (float)prdtwiseamount;
+                        //double val = 0;
+                        //double.TryParse(Report.Compute("sum([Total  Amount])", "[Total  Amount]<>'0'").ToString(), out val);
+                        newvartical["Total  Ltrs"] = TotalQty;
+
+                        double val1 = 0;
+                        foreach (DataColumn dc in Report.Columns)
+                        {
+                            if (dc.DataType == typeof(Double))
                             {
-                                foreach (DataColumn dc in Report.Columns)
+                                val1 = 0.0;
+                                double.TryParse(Report.Compute("sum([" + dc.ToString() + "])", "[" + dc.ToString() + "]<>'0'").ToString(), out val1);
+                                newvartical[dc.ToString()] = val1;
+                            }
+                        }
+                        Report.Rows.Add(newvartical);
+                        string productnames = "";
+                        if (dtincentivestructure.Rows.Count > 0)
+                        {
+                            foreach (DataColumn dc in Report.Columns)
+                            {
+                                DataRow[] drstr = dtincentivestructure.Select("ProductName='" + dc.ToString() + "'");
+                                if (drstr.Length > 0)
                                 {
-                                    DataRow[] drstr = dtincentivestructure.Select("ProductName='" + dc.ToString() + "'");
-                                    if (drstr.Length > 0)
+                                }
+                                else
+                                {
+                                    if (dc.ToString() == "IndentDate" || dc.ToString() == "Total  Ltrs")
                                     {
                                     }
                                     else
                                     {
-                                        if (dc.ToString() == "IndentDate" || dc.ToString() == "Total  Ltrs")
-                                        {
-                                        }
-                                        else
-                                        {
-                                            productnames += dc.ToString() + " ,";
-                                        }
+                                        productnames += dc.ToString() + " ,";
                                     }
                                 }
                             }
-                            lbl_warn.Text = productnames;
+                        }
+                        lbl_warn.Text = productnames;
 
-                            foreach (DataColumn col in Report.Columns)
+                        foreach (DataColumn col in Report.Columns)
+                        {
+                            string Pname = col.ToString();
+                            string ProductName = col.ToString();
+                            ProductName = GetSpace(ProductName);
+                            Report.Columns[Pname].ColumnName = ProductName;
+                        }
+                        if (Report.Columns.Count == 3)
+                        {
+                            Report.Columns.Add("  ");
+                            Report.Columns.Add("   ");
+                            Report.Columns.Add("    ");
+                        }
+                        if (Report.Columns.Count == 4)
+                        {
+                            Report.Columns.Add("  ");
+                        }
+
+                        DataTable dtTotincentive = new DataTable();
+                        dtTotincentive.Columns.Add("ClubbingName");
+                        dtTotincentive.Columns.Add("TotalSale").DataType = typeof(Double);
+                        dtTotincentive.Columns.Add("AverageSale").DataType = typeof(Double);
+                        dtTotincentive.Columns.Add("DiscountSlot");
+                        dtTotincentive.Columns.Add("TotalAmount").DataType = typeof(Double);
+
+                        string clubbingname = "";
+                        string categoryserial = "1";
+                        float milkincentive = 0;
+
+                        DataView incentiveview = new DataView(dtincentivestructure);
+                        DataTable dticentive = incentiveview.ToTable(true, "ClubName", "clubbingsno");
+
+                        //cmd = new MySqlCommand("SELECT ROUND(SUM(indents_subtable.DeliveryQty), 2) AS deliveryqty,subproductsclubbing. FROM indents INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN subproductsclubbing ON indents_subtable.Product_sno = subproductsclubbing.Productid WHERE (indents.Branch_id = @selectedbrnch) AND (indents_subtable.D_date BETWEEN @d1 AND @d2)");
+                        cmd = new MySqlCommand("SELECT result.deliveryqty, result.ClubName, result.Clubsno, slabs.SlotQty, slabs.Amt FROM (SELECT ROUND(SUM(indents_subtable.DeliveryQty), 2) AS deliveryqty, subproductsclubbing.Clubsno, product_clubbing.ClubName FROM indents INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN subproductsclubbing ON indents_subtable.Product_sno = subproductsclubbing.Productid INNER JOIN product_clubbing ON subproductsclubbing.Clubsno = product_clubbing.sno WHERE (indents.Branch_id = @selectedbrnch) AND (indents.I_date BETWEEN @d1 AND @d2) GROUP BY subproductsclubbing.Clubsno) result INNER JOIN slabs ON result.Clubsno = slabs.club_sno");
+                        cmd.Parameters.AddWithValue("@selectedbrnch", ddlAgentName.SelectedValue);
+                        cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
+                        cmd.Parameters.AddWithValue("@d2", GetHighDate(todate.AddDays(-1)));
+                        DataTable dtclubtotal = vdm.SelectQuery(cmd).Tables[0];
+                        foreach (DataRow drincetiveclub in dticentive.Rows)
+                        {
+                            float avgsale = 0;
+                            float slotqty = 0;
+                            float slotamt = 0;
+                            float totalsale = 0;
+                            string sltamt = "";
+                            clubbingname = drincetiveclub["ClubName"].ToString();
+                            //categoryserial = drincetiveclub["category_sno"].ToString();
+                            foreach (DataRow drdtclubtotal in dtclubtotal.Select("Clubsno='" + drincetiveclub["clubbingsno"].ToString() + "'"))
                             {
-                                string Pname = col.ToString();
-                                string ProductName = col.ToString();
-                                ProductName = GetSpace(ProductName);
-                                Report.Columns[Pname].ColumnName = ProductName;
+                                float.TryParse(drdtclubtotal["deliveryqty"].ToString(), out totalsale);
+
+                                avgsale = (totalsale / count);
+                                float.TryParse(drdtclubtotal["SlotQty"].ToString(), out slotqty);
+                                //if (avgsale > slotqty)
+                                //{
+                                float.TryParse(drdtclubtotal["Amt"].ToString(), out slotamt);
+                                sltamt = drdtclubtotal["Amt"].ToString();
+                                //}
                             }
-                            if (Report.Columns.Count == 3)
+                            DataRow newrow = dtTotincentive.NewRow();
+                            newrow["ClubbingName"] = clubbingname;
+                            newrow["TotalSale"] = Math.Round(totalsale, 2);
+                            newrow["AverageSale"] = Math.Round(avgsale, 2);
+                            newrow["DiscountSlot"] = sltamt;
+                            newrow["TotalAmount"] = Math.Round(totalsale * slotamt, 2);
+
+                            if (categoryserial == "1")
                             {
-                                Report.Columns.Add("  ");
-                                Report.Columns.Add("   ");
-                                Report.Columns.Add("    ");
+                                milkincentive += (float)Math.Round(totalsale * slotamt, 2);
                             }
-                            if (Report.Columns.Count == 4)
+                            dtTotincentive.Rows.Add(newrow);
+                        }
+                        double totalmilksale = 0;
+                        string leak = txtleakage.Text;
+                        leakpercentage = (float)Convert.ToDouble(leak);
+                        Session["leak"] = leakpercentage;
+                        double TotMilkandMilkAmt = 0;
+                        Totalmilksale = Totalmilksale - Totalbulkmilksale;
+                        totmilkamt = totmilkamt - Totalbulkmilksaleamount;
+                        TotMilkandMilkAmt = totmilkamt / Totalmilksale;
+                        double totleakincentive = 0;
+                        //int.TryParse(txtleakage.Text, out leakpercentage);
+                        if (leakpercentage != 0)
+                        {
+                            totalmilksale = leakpercentage / 100 * Totalmilksale;
+                            totleakincentive = totalmilksale * TotMilkandMilkAmt;
+                            DataRow newrow = dtTotincentive.NewRow();
+                            newrow["ClubbingName"] = "LEAKAGE";
+                            newrow["TotalSale"] = Math.Round(Totalmilksale, 2);
+                            newrow["AverageSale"] = Math.Round(totalmilksale, 2);
+                            newrow["DiscountSlot"] = Math.Round(TotMilkandMilkAmt, 2);
+                            newrow["TotalAmount"] = Math.Round(totleakincentive, 2);
+                            dtTotincentive.Rows.Add(newrow);
+
+                        }
+                        DataRow newrowtotal = dtTotincentive.NewRow();
+                        newrowtotal["DiscountSlot"] = "TotalDiscount";
+                        float incentive = 0;
+                        float.TryParse(dtTotincentive.Compute("sum([TotalAmount])", "[TotalAmount]<>'0'").ToString(), out incentive);
+                        newrowtotal["TotalAmount"] = Math.Round(incentive, 2);
+                        dtTotincentive.Rows.Add(newrowtotal);
+                        lblactualdiscount1.Text = Math.Round(incentive, 2).ToString();
+                        txtincentivegiven.Text = Math.Round(incentive).ToString();
+                        DataRow headerrow = Report.NewRow();
+                        headerrow[0] = "ClubbingName";
+                        headerrow[1] = "TotalSale";
+                        headerrow[2] = "AverageSale";
+                        headerrow[3] = "DiscountSlot";
+                        headerrow[4] = "TotalAmount";
+                        Report.Rows.Add(headerrow);
+
+                        //DataTable dtsum = new DataTable();
+                        //dtsum = Report.Copy();
+                        foreach (DataRow drr in dtTotincentive.Rows)
+                        {
+                            DataRow newrow = Report.NewRow();
+                            newrow[0] = drr["ClubbingName"].ToString();
+                            newrow[1] = drr["TotalSale"].ToString();
+                            newrow[2] = drr["AverageSale"].ToString();
+                            newrow[3] = drr["DiscountSlot"].ToString();
+                            newrow[4] = drr["TotalAmount"].ToString();
+                            Report.Rows.Add(newrow);
+                        }
+
+                        #region------------>Inventory Balance<-----------------
+                        int totcrates_del = 0;
+                        int totcrates_col = 0;
+                        int totcans_del = 0;
+                        int totcans_col = 0;
+                        foreach (DataRow drinv in dtinventoryDC.Rows)
+                        {
+                            if (drinv["TransType"].ToString() == "2")
                             {
-                                Report.Columns.Add("  ");
-                            }
-
-                            DataTable dtTotincentive = new DataTable();
-                            dtTotincentive.Columns.Add("ClubbingName");
-                            dtTotincentive.Columns.Add("TotalSale").DataType = typeof(Double);
-                            dtTotincentive.Columns.Add("AverageSale").DataType = typeof(Double);
-                            dtTotincentive.Columns.Add("DiscountSlot");
-                            dtTotincentive.Columns.Add("TotalAmount").DataType = typeof(Double);
-
-                            string clubbingname = "";
-                            string categoryserial = "1";
-                            float milkincentive = 0;
-
-                            DataView incentiveview = new DataView(dtincentivestructure);
-                            DataTable dticentive = incentiveview.ToTable(true, "ClubName", "clubbingsno");
-
-                            //cmd = new MySqlCommand("SELECT ROUND(SUM(indents_subtable.DeliveryQty), 2) AS deliveryqty,subproductsclubbing. FROM indents INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN subproductsclubbing ON indents_subtable.Product_sno = subproductsclubbing.Productid WHERE (indents.Branch_id = @selectedbrnch) AND (indents_subtable.D_date BETWEEN @d1 AND @d2)");
-                            cmd = new MySqlCommand("SELECT result.deliveryqty, result.ClubName, result.Clubsno, slabs.SlotQty, slabs.Amt FROM (SELECT ROUND(SUM(indents_subtable.DeliveryQty), 2) AS deliveryqty, subproductsclubbing.Clubsno, product_clubbing.ClubName FROM indents INNER JOIN indents_subtable ON indents.IndentNo = indents_subtable.IndentNo INNER JOIN subproductsclubbing ON indents_subtable.Product_sno = subproductsclubbing.Productid INNER JOIN product_clubbing ON subproductsclubbing.Clubsno = product_clubbing.sno WHERE (indents.Branch_id = @selectedbrnch) AND (indents.I_date BETWEEN @d1 AND @d2) GROUP BY subproductsclubbing.Clubsno) result INNER JOIN slabs ON result.Clubsno = slabs.club_sno");
-                            cmd.Parameters.AddWithValue("@selectedbrnch", ddlAgentName.SelectedValue);
-                            cmd.Parameters.AddWithValue("@d1", GetLowDate(fromdate.AddDays(-1)));
-                            cmd.Parameters.AddWithValue("@d2", GetHighDate(todate.AddDays(-1)));
-                            DataTable dtclubtotal = vdm.SelectQuery(cmd).Tables[0];
-                            foreach (DataRow drincetiveclub in dticentive.Rows)
-                            {
-                                float avgsale = 0;
-                                float slotqty = 0;
-                                float slotamt = 0;
-                                float totalsale = 0;
-                                string sltamt = "";
-                                clubbingname = drincetiveclub["ClubName"].ToString();
-                                //categoryserial = drincetiveclub["category_sno"].ToString();
-                                foreach (DataRow drdtclubtotal in dtclubtotal.Select("Clubsno='" + drincetiveclub["clubbingsno"].ToString() + "'"))
+                                if (drinv["invsno"].ToString() == "1")
                                 {
-                                    float.TryParse(drdtclubtotal["deliveryqty"].ToString(), out totalsale);
-
-                                    avgsale = (totalsale / count);
-                                    float.TryParse(drdtclubtotal["SlotQty"].ToString(), out slotqty);
-                                    //if (avgsale > slotqty)
-                                    //{
-                                        float.TryParse(drdtclubtotal["Amt"].ToString(), out slotamt);
-                                        sltamt = drdtclubtotal["Amt"].ToString();
-                                    //}
+                                    int Dcrates = 0;
+                                    int.TryParse(drinv["qty"].ToString(), out Dcrates);
+                                    totcrates_del += Dcrates;
                                 }
-                                DataRow newrow = dtTotincentive.NewRow();
-                                newrow["ClubbingName"] = clubbingname;
-                                newrow["TotalSale"] = Math.Round(totalsale, 2);
-                                newrow["AverageSale"] = Math.Round(avgsale, 2);
-                                newrow["DiscountSlot"] = sltamt;
-                                newrow["TotalAmount"] = Math.Round(totalsale * slotamt, 2);
-
-                                if (categoryserial == "1")
+                                if (drinv["invsno"].ToString() == "2")
                                 {
-                                    milkincentive += (float)Math.Round(totalsale * slotamt, 2);
+                                    int Dcans = 0;
+                                    int.TryParse(drinv["qty"].ToString(), out Dcans);
+                                    totcans_del += Dcans;
                                 }
-                                dtTotincentive.Rows.Add(newrow);
-                            }
-                            double totalmilksale = 0;
-                            string leak = txtleakage.Text;
-                            leakpercentage = (float)Convert.ToDouble(leak);
-                            Session["leak"] = leakpercentage;
-                            double TotMilkandMilkAmt = 0;
-                            Totalmilksale = Totalmilksale - Totalbulkmilksale;
-                            totmilkamt = totmilkamt - Totalbulkmilksaleamount;
-                            TotMilkandMilkAmt = totmilkamt / Totalmilksale;
-                            double totleakincentive = 0;
-                            //int.TryParse(txtleakage.Text, out leakpercentage);
-                            if (leakpercentage != 0)
-                            {
-                                totalmilksale = leakpercentage / 100 * Totalmilksale;
-                                totleakincentive = totalmilksale * TotMilkandMilkAmt;
-                                DataRow newrow = dtTotincentive.NewRow();
-                                newrow["ClubbingName"] = "LEAKAGE";
-                                newrow["TotalSale"] = Math.Round(Totalmilksale, 2);
-                                newrow["AverageSale"] = Math.Round(totalmilksale, 2);
-                                newrow["DiscountSlot"] = Math.Round(TotMilkandMilkAmt, 2);
-                                newrow["TotalAmount"] = Math.Round(totleakincentive, 2);
-                                dtTotincentive.Rows.Add(newrow);
-
-                            }
-                            DataRow newrowtotal = dtTotincentive.NewRow();
-                            newrowtotal["DiscountSlot"] = "TotalDiscount";
-                            float incentive = 0;
-                            float.TryParse(dtTotincentive.Compute("sum([TotalAmount])", "[TotalAmount]<>'0'").ToString(), out incentive);
-                            newrowtotal["TotalAmount"] = Math.Round(incentive, 2);
-                            dtTotincentive.Rows.Add(newrowtotal);
-                            lblactualdiscount1.Text = Math.Round(incentive, 2).ToString();
-                            txtincentivegiven.Text = Math.Round(incentive).ToString();
-                            DataRow headerrow = Report.NewRow();
-                            headerrow[0] = "ClubbingName";
-                            headerrow[1] = "TotalSale";
-                            headerrow[2] = "AverageSale";
-                            headerrow[3] = "DiscountSlot";
-                            headerrow[4] = "TotalAmount";
-                            Report.Rows.Add(headerrow);
-
-                            //DataTable dtsum = new DataTable();
-                            //dtsum = Report.Copy();
-                            foreach (DataRow drr in dtTotincentive.Rows)
-                            {
-                                DataRow newrow = Report.NewRow();
-                                newrow[0] = drr["ClubbingName"].ToString();
-                                newrow[1] = drr["TotalSale"].ToString();
-                                newrow[2] = drr["AverageSale"].ToString();
-                                newrow[3] = drr["DiscountSlot"].ToString();
-                                newrow[4] = drr["TotalAmount"].ToString();
-                                Report.Rows.Add(newrow);
-                            }
-
-                            #region------------>Inventory Balance<-----------------
-                            int totcrates_del = 0;
-                            int totcrates_col = 0;
-                            int totcans_del = 0;
-                            int totcans_col = 0;
-                            foreach (DataRow drinv in dtinventoryDC.Rows)
-                            {
-                                if (drinv["TransType"].ToString() == "2")
+                                if (drinv["invsno"].ToString() == "3")
                                 {
-                                    if (drinv["invsno"].ToString() == "1")
-                                    {
-                                        int Dcrates = 0;
-                                        int.TryParse(drinv["qty"].ToString(), out Dcrates);
-                                        totcrates_del += Dcrates;
-                                    }
-                                    if (drinv["invsno"].ToString() == "2")
-                                    {
-                                        int Dcans = 0;
-                                        int.TryParse(drinv["qty"].ToString(), out Dcans);
-                                        totcans_del += Dcans;
-                                    }
-                                    if (drinv["invsno"].ToString() == "3")
-                                    {
-                                        int Dcans = 0;
-                                        int.TryParse(drinv["qty"].ToString(), out Dcans);
-                                        totcans_del += Dcans;
-                                    }
-                                    if (drinv["invsno"].ToString() == "4")
-                                    {
-                                        int Dcans = 0;
-                                        int.TryParse(drinv["qty"].ToString(), out Dcans);
-                                        totcans_del += Dcans;
-                                    }
-                                    if (drinv["invsno"].ToString() == "5")
-                                    {
-                                        int Dcans = 0;
-                                        int.TryParse(drinv["qty"].ToString(), out Dcans);
-                                        totcans_del += Dcans;
-                                    }
-
+                                    int Dcans = 0;
+                                    int.TryParse(drinv["qty"].ToString(), out Dcans);
+                                    totcans_del += Dcans;
                                 }
-                                if (drinv["TransType"].ToString() == "1" || drinv["TransType"].ToString() == "3")
+                                if (drinv["invsno"].ToString() == "4")
                                 {
-                                    if (drinv["invsno"].ToString() == "1")
-                                    {
-                                        int Ccrates = 0;
-                                        int.TryParse(drinv["qty"].ToString(), out Ccrates);
-                                        totcrates_col += Ccrates;
-                                    }
-                                    if (drinv["invsno"].ToString() == "2")
-                                    {
-                                        int Ccans = 0;
-                                        int.TryParse(drinv["qty"].ToString(), out Ccans);
-                                        totcans_col += Ccans;
-                                    }
-                                    if (drinv["invsno"].ToString() == "3")
-                                    {
-                                        int Ccans = 0;
-                                        int.TryParse(drinv["qty"].ToString(), out Ccans);
-                                        totcans_col += Ccans;
-                                    }
-                                    if (drinv["invsno"].ToString() == "4")
-                                    {
-                                        int Ccans = 0;
-                                        int.TryParse(drinv["qty"].ToString(), out Ccans);
-                                        totcans_col += Ccans;
-                                    }
-                                    if (drinv["invsno"].ToString() == "5")
-                                    {
-                                        int Ccans = 0;
-                                        int.TryParse(drinv["qty"].ToString(), out Ccans);
-                                        totcans_col += Ccans;
-                                    }
-
+                                    int Dcans = 0;
+                                    int.TryParse(drinv["qty"].ToString(), out Dcans);
+                                    totcans_del += Dcans;
                                 }
+                                if (drinv["invsno"].ToString() == "5")
+                                {
+                                    int Dcans = 0;
+                                    int.TryParse(drinv["qty"].ToString(), out Dcans);
+                                    totcans_del += Dcans;
+                                }
+
                             }
-                            int totcratesbal = 0;
-                            int totcansbal = 0;
-                            totcratesbal = totcrates_del - totcrates_col;
-                            totcansbal = totcans_del - totcans_col;
-                            if (totcratesbal < 0)
+                            if (drinv["TransType"].ToString() == "1" || drinv["TransType"].ToString() == "3")
                             {
-                                totcratesbal = 0;
+                                if (drinv["invsno"].ToString() == "1")
+                                {
+                                    int Ccrates = 0;
+                                    int.TryParse(drinv["qty"].ToString(), out Ccrates);
+                                    totcrates_col += Ccrates;
+                                }
+                                if (drinv["invsno"].ToString() == "2")
+                                {
+                                    int Ccans = 0;
+                                    int.TryParse(drinv["qty"].ToString(), out Ccans);
+                                    totcans_col += Ccans;
+                                }
+                                if (drinv["invsno"].ToString() == "3")
+                                {
+                                    int Ccans = 0;
+                                    int.TryParse(drinv["qty"].ToString(), out Ccans);
+                                    totcans_col += Ccans;
+                                }
+                                if (drinv["invsno"].ToString() == "4")
+                                {
+                                    int Ccans = 0;
+                                    int.TryParse(drinv["qty"].ToString(), out Ccans);
+                                    totcans_col += Ccans;
+                                }
+                                if (drinv["invsno"].ToString() == "5")
+                                {
+                                    int Ccans = 0;
+                                    int.TryParse(drinv["qty"].ToString(), out Ccans);
+                                    totcans_col += Ccans;
+                                }
+
                             }
-                            if (totcansbal < 0)
-                            {
-                                totcansbal = 0;
-                            }
-                            int totbalanceinventory = 0;
-                            totbalanceinventory = totcratesbal + totcansbal;
-                            if (totbalanceinventory <= 0)
+                        }
+                        int totcratesbal = 0;
+                        int totcansbal = 0;
+                        totcratesbal = totcrates_del - totcrates_col;
+                        totcansbal = totcans_del - totcans_col;
+                        if (totcratesbal < 0)
+                        {
+                            totcratesbal = 0;
+                        }
+                        if (totcansbal < 0)
+                        {
+                            totcansbal = 0;
+                        }
+                        int totbalanceinventory = 0;
+                        totbalanceinventory = totcratesbal + totcansbal;
+                        if (totbalanceinventory <= 0)
+                        {
+                            lblmsg.Text = "";
+
+                        }
+                        if (totbalanceinventory > 0)
+                        {
+                            if (dtpermission.Rows.Count > 0)
                             {
                                 lblmsg.Text = "";
 
                             }
-                            if (totbalanceinventory > 0)
+                            else
                             {
-                                if (dtpermission.Rows.Count > 0)
-                                {
-                                    lblmsg.Text = "";
-
-                                }
-                                else
-                                {
-                                    lblmsg.Text = "Crates Balance   :" + totcratesbal + "  Cans Balance    :" + totcansbal;
-                                }
+                                lblmsg.Text = "Crates Balance   :" + totcratesbal + "  Cans Balance    :" + totcansbal;
                             }
-                            #endregion
-
-                            grdReports.DataSource = Report;
-                            grdReports.DataBind();
-                            Session["xportdata"] = Report;
-                            Session["xporttype"] = "Incentive Report";
-                            Session["agentname"] = ddlAgentName.SelectedItem.Text;
-                            Session["routename"] = ddlRouteName.SelectedItem.Text;
-                            Session["date"] = ServerDateCurrentdate.ToString("dd-MM-yyyy hh:mm");
-
                         }
+                        #endregion
+
+                        grdReports.DataSource = Report;
+                        grdReports.DataBind();
+                        Session["xportdata"] = Report;
+                        Session["xporttype"] = "Incentive Report";
+                        Session["agentname"] = ddlAgentName.SelectedItem.Text;
+                        Session["routename"] = ddlRouteName.SelectedItem.Text;
+                        Session["date"] = ServerDateCurrentdate.ToString("dd-MM-yyyy hh:mm");
+
+                    }
 
                     //}
                     //else
@@ -1758,31 +1758,31 @@ public partial class IncentiveReport : System.Web.UI.Page
                 string Remarks = txtremarks.Text;
                 string UserSno = Session["UserSno"].ToString();
                 string BranchID = Session["branch"].ToString();
-                    cmd = new MySqlCommand("SELECT Sno, BranchId, HeadName, LimitAmount, AccountType, AgentID, EmpID, accountcode, flag FROM accountheads WHERE (BranchId = @BranchID) AND (HeadName LIKE '%Sales Discount%')");
-                    cmd.Parameters.AddWithValue("@BranchID", BranchID);
-                    DataTable dtincentive = vdm.SelectQuery(cmd).Tables[0];
-                    if (dtincentive.Rows.Count > 0)
-                    {
-                        HeadSno = dtincentive.Rows[0]["Sno"].ToString();
-                    }
+                cmd = new MySqlCommand("SELECT Sno, BranchId, HeadName, LimitAmount, AccountType, AgentID, EmpID, accountcode, flag FROM accountheads WHERE (BranchId = @BranchID) AND (HeadName LIKE '%Sales Discount%')");
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                DataTable dtincentive = vdm.SelectQuery(cmd).Tables[0];
+                if (dtincentive.Rows.Count > 0)
+                {
+                    HeadSno = dtincentive.Rows[0]["Sno"].ToString();
+                }
 
-                    //as for instrectins of apurva sir and chairman sir
+                //as for instrectins of apurva sir and chairman sir
 
-                    //cmd = new MySqlCommand("INSERT INTO collections (Branchid, AmountPaid, Denominations, Remarks, PaidDate, UserData_sno, PaymentType, ReturnDenomin, PayTime, EmpID, ChequeNo, ReceiptNo,headsno) VALUES (@Branchid, @AmountPaid, @Denominations, @Remarks, @PaidDate, @UserData_sno, @PaymentType, @ReturnDenomin, @PayTime, @EmpID, @ChequeNo,@ReceiptNo,@headsno)");
-                    //cmd.Parameters.AddWithValue("@Branchid", ddlAgentName.SelectedValue);
-                    //cmd.Parameters.AddWithValue("@AmountPaid", txtincentivegiven.Text);
-                    //cmd.Parameters.AddWithValue("@Remarks", Remarks);
-                    //cmd.Parameters.AddWithValue("@headsno", HeadSno);
-                    //cmd.Parameters.AddWithValue("@PaidDate", ServerDateCurrentdate);
-                    //cmd.Parameters.AddWithValue("@PayTime", ServerDateCurrentdate);
-                    //cmd.Parameters.AddWithValue("@UserData_sno", Username);
-                    //cmd.Parameters.AddWithValue("@PaymentType", PaymentType);
-                    //cmd.Parameters.AddWithValue("@EmpID", UserSno);
-                    //cmd.Parameters.AddWithValue("@ChequeNo", ChequeNo);
-                    //cmd.Parameters.AddWithValue("@ReceiptNo", CashReceiptNo);
-                    //cmd.Parameters.AddWithValue("@Denominations", DenominationString);
-                    //cmd.Parameters.AddWithValue("@ReturnDenomin", ReturnDenominationString);
-                    //vdm.insert(cmd);
+                //cmd = new MySqlCommand("INSERT INTO collections (Branchid, AmountPaid, Denominations, Remarks, PaidDate, UserData_sno, PaymentType, ReturnDenomin, PayTime, EmpID, ChequeNo, ReceiptNo,headsno) VALUES (@Branchid, @AmountPaid, @Denominations, @Remarks, @PaidDate, @UserData_sno, @PaymentType, @ReturnDenomin, @PayTime, @EmpID, @ChequeNo,@ReceiptNo,@headsno)");
+                //cmd.Parameters.AddWithValue("@Branchid", ddlAgentName.SelectedValue);
+                //cmd.Parameters.AddWithValue("@AmountPaid", txtincentivegiven.Text);
+                //cmd.Parameters.AddWithValue("@Remarks", Remarks);
+                //cmd.Parameters.AddWithValue("@headsno", HeadSno);
+                //cmd.Parameters.AddWithValue("@PaidDate", ServerDateCurrentdate);
+                //cmd.Parameters.AddWithValue("@PayTime", ServerDateCurrentdate);
+                //cmd.Parameters.AddWithValue("@UserData_sno", Username);
+                //cmd.Parameters.AddWithValue("@PaymentType", PaymentType);
+                //cmd.Parameters.AddWithValue("@EmpID", UserSno);
+                //cmd.Parameters.AddWithValue("@ChequeNo", ChequeNo);
+                //cmd.Parameters.AddWithValue("@ReceiptNo", CashReceiptNo);
+                //cmd.Parameters.AddWithValue("@Denominations", DenominationString);
+                //cmd.Parameters.AddWithValue("@ReturnDenomin", ReturnDenominationString);
+                //vdm.insert(cmd);
                 lblmsg.Text = "Record Inserted Successfully";
                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Record Inserted Successfully')", true);
                 // ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Please select Correct FromDate')", true);
@@ -1959,6 +1959,96 @@ public partial class IncentiveReport : System.Web.UI.Page
             //        txtremarks.ReadOnly = true;
             //        GetReport();
             //    }
+        }
+        catch
+        {
+
+        }
+
+    }
+
+
+    protected void txtRentChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            string givenincentive = lblincentivegiven.Text;
+            string transport = txtTransport.Text;
+            string rent = txtRent.Text;
+            string other = txtOthers.Text;
+            string actual = lblactualdiscount1.Text;
+            double other_Amt = 0;
+            double.TryParse(other, out other_Amt);
+            double actual_inceAmt = 0;
+            double.TryParse(actual, out actual_inceAmt);
+            double give_inceAmt = 0;
+            double.TryParse(givenincentive, out give_inceAmt);
+            double transamt = 0;
+            double.TryParse(transport, out transamt);
+            double renamt = 0;
+            double.TryParse(rent, out renamt);
+            double total = actual_inceAmt + give_inceAmt + transamt + renamt + other_Amt;
+
+            txtincentivegiven.Text = total.ToString();
+        }
+        catch
+        {
+
+        }
+
+    }
+    protected void txtTransportChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            string givenincentive = lblincentivegiven.Text;
+            string transport = txtTransport.Text;
+            string rent = txtRent.Text;
+            string other = txtOthers.Text;
+            string actual = lblactualdiscount1.Text;
+            double other_Amt = 0;
+            double.TryParse(other, out other_Amt);
+            double actual_inceAmt = 0;
+            double.TryParse(actual, out actual_inceAmt);
+            double give_inceAmt = 0;
+            double.TryParse(givenincentive, out give_inceAmt);
+            double transamt = 0;
+            double.TryParse(transport, out transamt);
+            double renamt = 0;
+            double.TryParse(rent, out renamt);
+            double total = actual_inceAmt + give_inceAmt + transamt + renamt + other_Amt;
+
+            txtincentivegiven.Text = total.ToString();
+        }
+        catch
+        {
+
+        }
+
+    }
+
+    protected void txtOthersChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            string givenincentive = lblincentivegiven.Text;
+            string transport = txtTransport.Text;
+            string rent = txtRent.Text;
+            string other = txtOthers.Text;
+            string actual = lblactualdiscount1.Text;
+            double other_Amt = 0;
+            double.TryParse(other, out other_Amt);
+            double actual_inceAmt = 0;
+            double.TryParse(actual, out actual_inceAmt);
+            double give_inceAmt = 0;
+            double.TryParse(givenincentive, out give_inceAmt);
+            double transamt = 0;
+            double.TryParse(transport, out transamt);
+            double renamt = 0;
+            double.TryParse(rent, out renamt);
+            double total = actual_inceAmt + give_inceAmt + transamt + renamt+ other_Amt;
+
+            txtincentivegiven.Text = total.ToString();
         }
         catch
         {

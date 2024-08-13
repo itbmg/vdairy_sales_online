@@ -34705,6 +34705,9 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                             float.TryParse(o.tub_qty, out tubQty);
                             float OfferPkt_qty;
                             float.TryParse(o.OfferPkt_qty, out OfferPkt_qty);
+
+
+
                             cmd.Parameters.AddWithValue("@tub_qty", tubQty);
                             cmd.Parameters.AddWithValue("@offerqty", OfferPkt_qty);
                             vdbmngr.insert(cmd);

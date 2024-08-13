@@ -209,27 +209,35 @@
                                 <asp:Label ID="lblactualdiscount" runat="server">ActualDiscount:</asp:Label>
                             </td>
                             <td>
-                                <asp:Label ID="lblactualdiscount1" runat="server" Text="" ForeColor="Red" Font-Size="20px"></asp:Label>
+                                <asp:Label ID="lblactualdiscount1" Width="80px" runat="server" Text="" ForeColor="Red" Font-Size="20px"></asp:Label>
                             </td>
                              <td>
                                 <asp:Label ID="lblRent" runat="server">Rent:</asp:Label>
                             </td>
                             <td>
-                                <asp:TextBox ID="txtRent" runat="server" Width="105px"></asp:TextBox>
+                                <asp:TextBox ID="txtRent" runat="server" Width="80px" Text="0"  AutoPostBack="true" OnTextChanged="txtRentChanged"></asp:TextBox>
                             </td>
                              <td>
                                 <asp:Label ID="lblTransport" runat="server">Transport:</asp:Label>
                             </td>
                             <td>
-                                <asp:TextBox ID="txtTransport" runat="server" Width="105px"></asp:TextBox>
+                                <asp:TextBox ID="txtTransport" runat="server" Width="80px" Text="0" AutoPostBack="true" OnTextChanged="txtTransportChanged"></asp:TextBox>
+                            </td>
+                             <td>
+                                <asp:Label ID="lblOthers" runat="server">Other:</asp:Label>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtOthers" runat="server" Width="80px" Text="0" AutoPostBack="true" OnTextChanged="txtOthersChanged"></asp:TextBox>
                             </td>
                             <td>
                                 <asp:Label ID="lblincentivegiven" runat="server">IncentiveGiven:</asp:Label>
                             </td>
                             <td>
-                                <asp:TextBox ID="txtincentivegiven" runat="server" Width="205px"></asp:TextBox>
+                                <asp:TextBox ID="txtincentivegiven" runat="server" Width="105px"></asp:TextBox>
                             </td>
                         </tr>
+                    </table>
+                         <table style="width: 100%;">
                         <tr>
                             <td>
                                 <asp:Label ID="Label1" runat="server">Remarks:</asp:Label>
@@ -239,6 +247,7 @@
                             </td>
                         </tr>
                     </table>
+                    &nbsp&nbsp&nbsp&nbsp&nbsp
                     <table style="width: 100%;">
                         <tr>
                             <td style="width: 25%;">
