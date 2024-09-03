@@ -49,8 +49,8 @@
             var labelhidden = document.getElementById("<%= lblhidden.ClientID %>").innerHTML;
             labelObj.value = "";
             label.value = "";
-            document.getElementById('<%=lblTotalAmout.ClientID %>').innerHTML = totdif;
-            document.getElementById('<%=lblDiffernce.ClientID %>').innerHTML = totdif - parseFloat(labelhidden);
+            document.getElementById('<%=lblTotalAmout.ClientID %>').innerHTML = parseFloat(totdif);
+            document.getElementById('<%=lblDiffernce.ClientID %>').innerHTML = parseFloat(totdif) - parseFloat(labelhidden);
 
 //            var totCash = document.getElementById('txtAmount').innerHTML;
 //            var BalCash = totCash - TotalCash;
