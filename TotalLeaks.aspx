@@ -131,7 +131,7 @@
                                 <div align="center">
                                     <div style="width: 100%;">
                                         <div style="width: 11%; float: left;">
-                                            <img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="95px" height="90px" />
+                                            <img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="100px" height="88px" />
                                             <%--  <img src="Images/VLogo.png" width="100" height="80" />--%>
                                         </div>
                                         <div style="left: 0%; text-align: center;">

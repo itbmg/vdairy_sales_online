@@ -426,7 +426,7 @@
                    <div class="content">
                     <div style="border:2px solid gray;">
                     <div style="width: 17%; float: right; padding-top:5px;">
-                        <img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="100px" height="72px" />
+                        <img src="Images/Vyshnavilogo.png" alt="Vyshnavi Dairy" width="100px" height="88px" />
                         <br />
                     </div>
                     <div style="border:1px solid gray;">
