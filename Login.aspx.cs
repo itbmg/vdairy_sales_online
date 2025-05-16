@@ -33,13 +33,13 @@ public partial class Login : System.Web.UI.Page
         pwd = Request.QueryString["pwd"];
         try
         {
-            if (username.Length > 0 && username != null && username != "")
-            {
+        //if (username.Length > 0 && username != null && username != "")
+        //{
 
-                txtUserName.Text = username.Trim();
-                txtPassword.Text = pwd.Trim();
-                Loginfo();
-            }
+        //    txtUserName.Text = username.Trim();
+        //    txtPassword.Text = pwd.Trim();
+        //    Loginfo();
+        //}
         }
         catch (Exception ex)
         {

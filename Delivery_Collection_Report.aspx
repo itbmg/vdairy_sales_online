@@ -131,6 +131,11 @@
                                 <td>
                                     <asp:Button ID="btnGenerate" Text="Generate" runat="server" OnClientClick="OrderValidate();"
                                         CssClass="btn btn-primary" OnClick="btnGenerate_Click" />
+
+                                </td>
+
+                                <td>
+                                     <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/exporttoxl_utility.ashx"> Export to XL</asp:HyperLink>
                                 </td>
                             </tr>
                         </table>

@@ -13,6 +13,8 @@
         type="text/css" />
     <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
     <script src="Barcode/jquery-barcode.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <style type="text/css">
         .ddlDropStatus {
             width: 100%;
@@ -81,8 +83,8 @@
         }
 
         #qrcode {
-            width: 160px;
-            height: 160px;
+            width: 145px;
+            height: 145px;
             margin-top: 15px;
         }
     </style>
@@ -573,23 +575,41 @@
         //bar code end
 
         //QR code
+        //function GenerateQRCode(signed_qr_code) {
+        //    var data = "eyJhbGciOiJSUzI1NiIsImtpZCI6IkI4RDYzRUNCNThFQTVFNkY0QUFDM0Q1MjQ1NDNCMjI0NjY2OUIwRjgiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJ1TlkteTFqcVhtOUtyRDFTUlVPeUpHWnBzUGcifQ.eyJkYXRhIjoie1wiU2VsbGVyR3N0aW5cIjpcIjM2QUFHQ1M2MDIyRjFaSlwiLFwiQnV5ZXJHc3RpblwiOlwiMzZCVkRQRzQ2NDlFMVpPXCIsXCJEb2NOb1wiOlwiV1lSLzIyLTIzVC8zMjMwNlwiLFwiRG9jVHlwXCI6XCJJTlZcIixcIkRvY0R0XCI6XCIxMS8wMS8yMDIzXCIsXCJUb3RJbnZWYWxcIjo5MDkuMDMsXCJJdGVtQ250XCI6MyxcIk1haW5Ic25Db2RlXCI6XCIwNDAzOTAxMFwiLFwiSXJuXCI6XCIzM2FiNGFhNzBhODAzNmNiOWQ0Yjg4ZTlhNWI5MzYyNTIyY2I1ZmNjOWU4ZjY3MmViMzU1NDcyZjY2OWRmZWRjXCIsXCJJcm5EdFwiOlwiMjAyMy0wMS0xMSAxMToxODowMFwifSIsImlzcyI6Ik5JQyJ9.nGdvOpCRKCQsIEgoE54SjoGhjZAVMQQZCd_T7dOMXxorKcmXv5Y9Ti6q1BilLzpDrp1GwnidMS-CoEL83L3YZK5ONOk1AACEuTll6dCpfHNZldeUVOxDo0gmWHkOpPpZMICiW4cXvZEpu6G8FNxrhUgpLCLcQS9XMIpWtEvEv8B4ejvQ0DkRDi61ACTvP-_gq_JKsK8urj37SWI8Ow6Yx69EKfw0iVmNaHKo8Yqm-N5gS1cWXrOnNSu5wS_Zolm38wQPZbWGu8JDIG4rLIjBMeqqNkKi9LujRDKD1OUxHrDy0RDFa2cgw8H71x_vbSPt0YcPq0YEmlx-VOoNNG4gOg"//signed_qr_code;
+        //    var size = "155";
+        //    if (data == "") {
+        //        alert('please enter a url or text');
+        //        return false;
+        //    } else {
+        //        if ($("#image").is(':empty')) {
+        //            $("#image").append("<img src='http://chart.apis.google.com/chart?cht=qr&chl=" + data + "&chs=" + size + "' alt='qr' />");
+        //            return false;
+        //        } else {
+        //            $("#image").html("");
+        //            $("#image").append("<img src='http://chart.apis.google.com/chart?cht=qr&chl=" + data + "&chs=" + size + "' alt='qr' />");
+        //            return false;
+        //        }
+        //    }
+        //}
+
         function GenerateQRCode(signed_qr_code) {
-            var data = "eyJhbGciOiJSUzI1NiIsImtpZCI6IkI4RDYzRUNCNThFQTVFNkY0QUFDM0Q1MjQ1NDNCMjI0NjY2OUIwRjgiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJ1TlkteTFqcVhtOUtyRDFTUlVPeUpHWnBzUGcifQ.eyJkYXRhIjoie1wiU2VsbGVyR3N0aW5cIjpcIjM2QUFHQ1M2MDIyRjFaSlwiLFwiQnV5ZXJHc3RpblwiOlwiMzZCVkRQRzQ2NDlFMVpPXCIsXCJEb2NOb1wiOlwiV1lSLzIyLTIzVC8zMjMwNlwiLFwiRG9jVHlwXCI6XCJJTlZcIixcIkRvY0R0XCI6XCIxMS8wMS8yMDIzXCIsXCJUb3RJbnZWYWxcIjo5MDkuMDMsXCJJdGVtQ250XCI6MyxcIk1haW5Ic25Db2RlXCI6XCIwNDAzOTAxMFwiLFwiSXJuXCI6XCIzM2FiNGFhNzBhODAzNmNiOWQ0Yjg4ZTlhNWI5MzYyNTIyY2I1ZmNjOWU4ZjY3MmViMzU1NDcyZjY2OWRmZWRjXCIsXCJJcm5EdFwiOlwiMjAyMy0wMS0xMSAxMToxODowMFwifSIsImlzcyI6Ik5JQyJ9.nGdvOpCRKCQsIEgoE54SjoGhjZAVMQQZCd_T7dOMXxorKcmXv5Y9Ti6q1BilLzpDrp1GwnidMS-CoEL83L3YZK5ONOk1AACEuTll6dCpfHNZldeUVOxDo0gmWHkOpPpZMICiW4cXvZEpu6G8FNxrhUgpLCLcQS9XMIpWtEvEv8B4ejvQ0DkRDi61ACTvP-_gq_JKsK8urj37SWI8Ow6Yx69EKfw0iVmNaHKo8Yqm-N5gS1cWXrOnNSu5wS_Zolm38wQPZbWGu8JDIG4rLIjBMeqqNkKi9LujRDKD1OUxHrDy0RDFa2cgw8H71x_vbSPt0YcPq0YEmlx-VOoNNG4gOg"//signed_qr_code;
-            var size = "155";
-            if (data == "") {
-                alert('please enter a url or text');
-                return false;
-            } else {
-                if ($("#image").is(':empty')) {
-                    $("#image").append("<img src='http://chart.apis.google.com/chart?cht=qr&chl=" + data + "&chs=" + size + "' alt='qr' />");
-                    return false;
-                } else {
-                    $("#image").html("");
-                    $("#image").append("<img src='http://chart.apis.google.com/chart?cht=qr&chl=" + data + "&chs=" + size + "' alt='qr' />");
-                    return false;
-                }
+            var data = signed_qr_code || "Default Text";
+
+            if (data === "") {
+                alert("Please enter a URL or text");
+                return;
             }
+
+            document.getElementById("image").innerHTML = ""; // Clear previous QR
+            new QRCode(document.getElementById("image"), {
+                text: data,
+                width: 145,
+                height: 145,
+                top:15
+            });
         }
+
 
         function CallPrint(strid) {
             document.getElementById("div_itemdetails1").style.borderCollapse = "collapse";

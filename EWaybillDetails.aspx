@@ -15,6 +15,7 @@
     <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>--%>
     <script src="Barcode/jquery-barcode.js" type="text/javascript"></script>
     <link href="autocomplete/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style type="text/css">
         .ddlDropStatus {
@@ -174,50 +175,51 @@
             results += '<thead><tr><th scope="col">AgentName</th><th scope="col">GstNo</th><th scope="col">InvoiceNo</th><th scope="col">TotalValue</th><th scope="col">Distance</th><th scope="col">VehcleNo</th><th scope="col" style="display:none;">Type</th><th scope="col">Status</th></tr></thead></tbody>';
             for (var i = 0; i < msg.length; i++) {
                 //if (msg[i].Totalvalue >= "50000") {
-                    results += '<tr>';
-                    results += '<td id="spnagentname" type="text" class="clsAgentName">' + msg[i].AgentName + '</td>';
-                    results += '<td id="spnagentname" type="text" class="clsgst">' + msg[i].gstno + '</td>';
-                    results += '<td id="spnagentname" style="display:none;"  class="clsAgentId">' + msg[i].Agentid + '</td>';
-                    results += '<td id="spnagentname"  class="clsInvoiceNo">' + msg[i].InvoiceNo + '</td>';
-                    results += '<td id="spnagentname"  class="clsTotvalue">' + msg[i].Totalvalue + '</td>';
-                    if (msg[i].Distance == "0") {
-                        results += '<td class="cls_Distance"><input id="txtDistance" type="text" class="form-control" placeholder="Enter Distance" value="' + msg[i].Distance + '"/></td>';
-                    }
-                    else {
-                        results += '<td data-title="brandstatus"  class="cls_Distance">' + msg[i].Distance + '</td>';
-                    }
-                    results += '<td data-title="brandstatus" style = "display:none;" class="cls_ewb_no">' + msg[i].ewb_no + '</td>';
-                    results += '<td data-title="brandstatus" style = "display:none;" class="cls_ewb_date">' + msg[i].ewb_date + '</td>';
-                    results += '<td data-title="brandstatus" style = "display:none;" class="cls_ewb_expiredate">' + msg[i].ewb_expiredate + '</td>';
-                    results += '<td data-title="brandstatus" style = "display:none;" class="cls_GeneratedBy">' + msg[i].GeneratedBy + '</td>';
-                    results += '<td data-title="brandstatus" style = "display:none;" class="cls_InvoiceDate">' + msg[i].ewb_expiredate + '</td>';
-                    if (msg[i].VehNo == "") {
-                        results += '<td><input id="ddlvehcle" class="cls_VehNo form-control" placeholder="Select Vehcle Number" type="text"  class="form-control"  style=""  value="' + msg[i].VehNo + '"/></td>';
-                    }
-                    else {
-                        results += '<td data-title="brandstatus" id="ddlvehcle" class="cls_VehNo">' + msg[i].VehNo + '</td>';
-                    }
-                results += '<td data-title="brandstatus" style = "display:none;" class="12">' + msg[i].UserType + '</td>';
-                if (msg[i].InvoiceStatus == "R") {
-                    results += '<td data-title="brandstatus" id="spnIRN" style = "display:none;" class="clsIRN" >' + msg[i].Irn + '</td>';
+                results += '<tr>';
+                results += '<td id="spnagentname" type="text" class="clsAgentName">' + msg[i].AgentName + '</td>';
+                results += '<td id="spngst" type="text" class="clsgst">' + msg[i].gstno + '</td>';
+                results += '<td id="spnagentid" style="display:none;"  class="clsAgentId">' + msg[i].Agentid + '</td>';
+                results += '<td id="spninvoice"  class="clsInvoiceNo">' + msg[i].InvoiceNo + '</td>';
+                results += '<td id="spntotval"  class="clsTotvalue">' + msg[i].Totalvalue + '</td>';
+                if (msg[i].Distance == "0") {
+                    results += '<td class="cls_Distance"><input id="txtDistance" type="text" class="form-control" placeholder="Enter Distance" value="' + msg[i].Distance + '"/></td>';
                 }
-                    var status = msg[i].status;
-                    if (status == "R") {
-                        status = "Raised"
-                    }
-                    if (msg[i].status == "R") {
-                        results += '<td data-title="brandstatus"  class="11">' + status + '</td>';
-                        results += '<td data-title="brandstatus"><button type="button"  disabled="true"  title="Click Here To Generate Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="GenerateEinvoice(this)"><i class="fa fa-file-text"></i></button></td>';
-                        results += '<td data-title="brandstatus"><button type="button" title="Click Here To View E-WayBill!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_eWayBill_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
+                else {
+                    results += '<td data-title="dist"  class="cls_Distance">' + msg[i].Distance + '</td>';
+                }
+                results += '<td data-title="cls_ewb_no" style = "display:none;" class="cls_ewb_no">' + msg[i].ewb_no + '</td>';
+                results += '<td data-title="cls_ewb_date" style = "display:none;" class="cls_ewb_date">' + msg[i].ewb_date + '</td>';
+                results += '<td data-title="cls_ewb_expiredate" style = "display:none;" class="cls_ewb_expiredate">' + msg[i].ewb_expiredate + '</td>';
+                results += '<td data-title="cls_GeneratedBy" style = "display:none;" class="cls_GeneratedBy">' + msg[i].GeneratedBy + '</td>';
+                results += '<td data-title="cls_InvoiceDate" style = "display:none;" class="cls_InvoiceDate">' + msg[i].ewb_expiredate + '</td>';
+                if (msg[i].VehNo == "") {
+                    results += '<td><input id="ddlvehcle" class="cls_VehNo form-control" placeholder="Select Vehcle Number" type="text"  class="form-control"  style=""  value="' + msg[i].VehNo + '"/></td>';
+                }
+                else {
+                    results += '<td><input id="ddlvehcle" class="cls_VehNo form-control" placeholder="Select Vehcle Number" readonly type="text"  class="form-control"  style=""  value="' + msg[i].VehNo + '"/></td>';
+                    //results += '<td data-title="cls_VehNo" id="ddlvehcle" class="cls_VehNo">' + msg[i].VehNo + '</td>';
+                }
+                results += '<td data-title="usertype" style = "display:none;" class="12">' + msg[i].UserType + '</td>';
+                if (msg[i].InvoiceStatus == "R") {
+                    results += '<td data-title="irn" id="spnIRN" style = "display:none;" class="clsIRN" >' + msg[i].Irn + '</td>';
+                }
+                var status = msg[i].status;
+                if (status == "R") {
+                    status = "Raised"
+                }
+                if (msg[i].status == "R") {
+                    results += '<td data-title="brandstatus"  class="11">' + status + '</td>';
+                    results += '<td data-title="brandstatus"><button type="button"  disabled="true"  title="Click Here To Generate Einvoice!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="GenerateEinvoice(this)"><i class="fa fa-file-text"></i></button></td>';
+                    results += '<td data-title="brandstatus"><button type="button" title="Click Here To View E-WayBill!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_eWayBill_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
 
-                    }
-                    else {
-                        results += '<td data-title="brandstatus"  class="11">' + status + '</td>';
-                        results += '<td data-title="brandstatus"><button  type="button" title="Click Here To Generate E-WayBill!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="Generate_eWayBill(this)"><i class="fa fa-file-text"></i></span></button></td>';
-                        results += '<td data-title="brandstatus"><button type="button" disabled="true" title="Click Here To View E-WayBill!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_eWayBill_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
-                    }
+                }
+                else {
+                    results += '<td data-title="brandstatus"  class="11">' + status + '</td>';
+                    results += '<td data-title="brandstatus"><button  type="button" title="Click Here To Generate E-WayBill!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 editcls"   onclick="Generate_eWayBill(this)"><i class="fa fa-file-text"></i></span></button></td>';
+                    results += '<td data-title="brandstatus"><button type="button" disabled="true" title="Click Here To View E-WayBill!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 prntcls"  onclick="View_eWayBill_Click(this)"><span class="glyphicon glyphicon-list-alt" style="top: 0px !important;"></span></button></td>';
+                }
                 results += '<td data-title="brandstatus"><button type="button" disabled="true" title="Click Here To Cancel E-WayBill!" class="btn btn-info btn-outline btn-circle btn-lg m-r-5 removeclass"   onclick="CanceleWayBill(this)"><span class="glyphicon glyphicon-remove-circle" style="top: 0px !important;"></span></button></td></tr>';
-                    results += '<td style="display:none" class="4">' + i + '</td></tr>';
+                results += '<td style="display:none" class="4">' + i + '</td></tr>';
                 //}
             }
             results += '</table></div>';
@@ -271,10 +273,10 @@
 
             var Distance = $(id).closest("tr").find('#txtDistance').val();
             var invoiceno = $(id).parent().parent().children('.clsInvoiceNo').html();
-            if (Distance == "" || Distance =="0") {
-                alert("Enter Distance");
-                return false;
-            }
+            //if (Distance == "" || Distance == "0") {
+            //    alert("Enter Distance");
+            //    return false;
+            //}
             if (UserType == "R") {
                 var irn = $(id).parent().parent().children('.clsIRN').html();
                 if (irn == "" || irn == null) {
@@ -344,9 +346,10 @@
 
 
             var branchID = document.getElementById("ddlsalesOffice").value;
-            var ddltype = document.getElementById("ddltype").value;
+            var ddltaxtype = document.getElementById("ddltype").value;
 
-            var data = { 'operation': 'btnAgentInvoice_click', 'fromdate': FromDate, 'AgentId': agentid, 'SOID': branchID, 'ddltype': ddltype };
+            var data = {
+                'operation': 'btnAgentInvoice_click', 'fromdate': FromDate, 'AgentId': agentid, 'SOID': branchID, 'ddltaxtype': ddltaxtype, 'ddltype':'Tax' };
             var s = function (msg) {
                 if (msg) {
                     if (msg == "Data not found") {
@@ -613,23 +616,42 @@
         //bar code end
 
         //QR code
-        function GenerateQRCode(ewb_no) {
-            var data = ewb_no;
-            var size = "155";
-            if (data == "") {
-                alert('please enter a url or text');
-                return false;
-            } else {
-                if ($("#image").is(':empty')) {
-                    $("#image").append("<img src='http://chart.apis.google.com/chart?cht=qr&chl=" + data + "&chs=" + size + "' alt='qr' />");
-                    return false;
-                } else {
-                    $("#image").html("");
-                    $("#image").append("<img src='http://chart.apis.google.com/chart?cht=qr&chl=" + data + "&chs=" + size + "' alt='qr' />");
-                    return false;
-                }
+        //function GenerateQRCode(ewb_no) {
+        //    var data = ewb_no;
+        //    var size = "155";
+        //    if (data == "") {
+        //        alert('please enter a url or text');
+        //        return false;
+        //    } else {
+        //        if ($("#image").is(':empty')) {
+        //            $("#image").append("<img src='http://chart.apis.google.com/chart?cht=qr&chl=" + data + "&chs=" + size + "' alt='qr' />");
+        //            return false;
+        //        } else {
+        //            $("#image").html("");
+        //            $("#image").append("<img src='http://chart.apis.google.com/chart?cht=qr&chl=" + data + "&chs=" + size + "' alt='qr' />");
+        //            return false;
+        //        }
+        //    }
+        //}
+
+        function GenerateQRCode(signed_qr_code) {
+            var data = signed_qr_code || "Default Text";
+
+            if (data === "") {
+                alert("Please enter a URL or text");
+                return;
             }
+
+            document.getElementById("image").innerHTML = ""; // Clear previous QR
+            new QRCode(document.getElementById("image"), {
+                text: data,
+                width: 145,
+                height: 145,
+                top: 15
+            });
         }
+
+
 
         function CallPrint(strid) {
             document.getElementById("div_itemdetails1").style.borderCollapse = "collapse";

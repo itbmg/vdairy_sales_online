@@ -15143,9 +15143,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     {
                         if (tostate == "")
                         {
-                            // naveen 
                             tostate = drprdt["stateid"].ToString();
-                            // end naveen
                         }
                         foreach (DataRow dr in dtIndent.Rows)
                         {
@@ -23776,7 +23774,6 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     }
                     else
                     {
-                        // naveen
                         if (transactiontype == "Employee")
                         {
                             foreach (CashDetails o in obj.CashDetails)
@@ -25992,7 +25989,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     }
                 }
             }
-            //indent naveen
+            //indent 
             DateTime sindentdate = Convert.ToDateTime(indentdate);
             cmd = new MySqlCommand("SELECT MAX(sno) as sno FROM agent_bal_trans WHERE agentid=@agentid and inddate between @d1 and @d2");
             cmd.Parameters.AddWithValue("@agentid", BranchID);
@@ -26390,7 +26387,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                     }
                 }
             }
-            //indent naveen
+            //indent 
             DateTime sindentdate = Convert.ToDateTime(indentdate);
             cmd = new MySqlCommand("SELECT MAX(sno) as sno FROM agent_bal_trans WHERE agentid=@agentid and inddate between @d1 and @d2");
             cmd.Parameters.AddWithValue("@agentid", BranchID);
@@ -34895,299 +34892,300 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
                         }
                     }
                 }
-                #region sms
+                //#region sms
 
-                cmd = new MySqlCommand("SELECT Sno, smsstatus, Status, AssignDate, EmpId, I_Date FROM tripdata WHERE (Sno = @tripid)");
-                cmd.Parameters.AddWithValue("@tripid", tripid);
-                DataTable dt_smsstatus = vdbmngr.SelectQuery(cmd).Tables[0];
-                string sms_status = "0";
-                if (dt_smsstatus.Rows.Count > 0)
-                {
-                    sms_status = dt_smsstatus.Rows[0]["smsstatus"].ToString();
-                }
-                if (sms_status == "0")
-                {
-                    string ProductName = "";
-                    string DetailProductName = "";
-                    string Producttot = "";
-                    string dispatchtime = "";
-                    double TotalQty = 0;
-                    cmd = new MySqlCommand("SELECT result.Sno, result.AssignDate, result.Plantime, result.DispTime, dispatch.DispName FROM (SELECT Sno, AssignDate, Plantime, DispTime FROM tripdata WHERE (BranchID = @branchid) AND (AssignDate BETWEEN @d1 AND @d2) AND (DispTime IS NOT NULL)) result INNER JOIN triproutes ON result.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno WHERE (dispatch.flag <> 0) AND (dispatch.Branch_Id = @branchid) ORDER BY result.DispTime");
-                    cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
-                    cmd.Parameters.AddWithValue("@d1", GetLowDate(AssignDate));
-                    cmd.Parameters.AddWithValue("@d2", GetHighDate(AssignDate));
-                    DataTable dtdispatchno = vdbmngr.SelectQuery(cmd).Tables[0];
-                    if (dtdispatchno.Rows.Count > 0)
-                    {
-                        cmd = new MySqlCommand("SELECT DispTime FROM tripdata WHERE (Sno = @tripid)");
-                        cmd.Parameters.AddWithValue("@tripid", tripid);
-                        DataTable dtdisptime = vdbmngr.SelectQuery(cmd).Tables[0];
-                        DateTime IndTime = ServerDateCurrentdate;
-                        if (dtdisptime.Rows.Count > 0)
-                        {
-                            dispatchtime = dtdisptime.Rows[0]["DispTime"].ToString();
-                            IndTime = Convert.ToDateTime(dtdisptime.Rows[0]["DispTime"].ToString());
-                        }
-                        string brch = "";
-                        if (context.Session["branch"].ToString() == "172")
-                        {
-                            brch = "PBK__";
-                        }
-                        if (context.Session["branch"].ToString() == "158")
-                        {
-                            brch = "WYRA__";
-                        }
-                        if (context.Session["branch"].ToString() == "1801")
-                        {
-                            brch = "KPM__";
-                        }
-                        ProductName += brch + "Despatch-" + dtdispatchno.Rows.Count + "\r\n";
-                        ProductName += "Date :" + AssignDate.ToString("dd-MM") + "   Time:" + IndTime.ToString("HH:mm") + "\r\n";
-                    }
-                    cmd = new MySqlCommand("SELECT sno, SubCat_sno, ProductName, Qty, Units, UnitPrice, Flag, UserData_sno, Rank, Inventorysno, VatPercent, Product_type FROM productsdata");
-                    DataTable dtProducts = vdbmngr.SelectQuery(cmd).Tables[0];
-                    foreach (orderdetail o in obj.data)
-                    {
-                        if (o.Productsno != null)
-                        {
-                            if (o.Qty != "0")
-                            {
-                                double unitQty = 0;
-                                double.TryParse(o.Qty, out unitQty);
-                                DataRow[] drproducts = dtProducts.Select("sno=" + o.Productsno + "");
-                                string product = "";
-                                foreach (DataRow drp in drproducts)
-                                {
-                                    product = drp["ProductName"].ToString();
-                                }
-                                DetailProductName += product + "=" + Math.Round(unitQty, 2) + ";" + "\r\n";
-                                TotalQty += Math.Round(unitQty, 2);
-                            }
-                        }
-                    }
-                    // cmd = new MySqlCommand("SELECT dispatch.sno, dispatch.BranchID, SUM(tripsubdata.Qty) AS dispatchqty, products_category.Categoryname, products_category.sno AS categorysno,dispatch.DispName, productsdata.ProductName FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate FROM tripdata WHERE (AssignDate BETWEEN @d1 AND @d2)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN tripsubdata ON tripdat.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (dispatch.DispMode IS NULL) AND (dispatch.sno = @dispid) OR (dispatch.DispMode = 'SPL') AND (dispatch.sno = @dispid) GROUP BY productsdata.sno ORDER BY categorysno");
-                    cmd = new MySqlCommand("SELECT dispatch.sno, dispatch.BranchID, SUM(tripsubdata.Qty) AS dispatchqty, products_category.Categoryname, products_category.sno AS categorysno, dispatch.DispName, productsdata.ProductName FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate FROM tripdata WHERE (AssignDate BETWEEN @d1 AND @d2)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN tripsubdata ON tripdat.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (dispatch.DispMode IS NULL) AND (dispatch.sno = @dispid) OR (dispatch.DispMode = 'SPL') AND (dispatch.sno = @dispid) GROUP BY categorysno");
-                    cmd.Parameters.AddWithValue("@dispid", RouteID);
-                    cmd.Parameters.AddWithValue("@d1", GetLowDate(AssignDate.AddDays(-1)));
-                    cmd.Parameters.AddWithValue("@d2", GetHighDate(AssignDate.AddDays(-1)));
-                    DataTable dtpreviousdispatch = vdbmngr.SelectQuery(cmd).Tables[0];
-                    cmd = new MySqlCommand("SELECT dispatch.sno, dispatch.BranchID, SUM(tripsubdata.Qty) AS dispatchqty, products_category.Categoryname, products_category.sno AS categorysno, dispatch.DispName FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate FROM tripdata WHERE (Sno = @tripid)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN tripsubdata ON tripdat.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (dispatch.DispMode IS NULL) OR (dispatch.DispMode = 'SPL') GROUP BY categorysno");
-                    cmd.Parameters.AddWithValue("@tripid", tripid);
-                    DataTable dtmilkandcurd = vdbmngr.SelectQuery(cmd).Tables[0];
-                    cmd = new MySqlCommand("SELECT SUM(tripsubdata.Qty) AS dispatchqty, products_category.Categoryname, products_category.sno AS categorysno, dispatch.DispName, productsdata.sno, productsdata.ProductName FROM  dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate FROM tripdata WHERE (Sno = @tripid)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN tripsubdata ON tripdat.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (dispatch.DispMode IS NULL) AND (products_category.sno > 10) OR (dispatch.DispMode = 'SPL') GROUP BY productsdata.sno");
-                    cmd.Parameters.AddWithValue("@tripid", tripid);
-                    DataTable dtbiprdt = vdbmngr.SelectQuery(cmd).Tables[0];
-                    double milk = 0;
-                    double Prevmilk = 0;
-                    double curd = 0;
-                    double Prevcurd = 0;
-                    double BM = 0;
-                    double PrevBM = 0;
-                    double other = 0;
-                    double prevother = 0;
-                    double totmilk = 0;
-                    double totcurd = 0;
-                    double totBM = 0;
-                    double tot = 0;
-                    double Prevtot = 0;
-                    double diffmilk = 0;
-                    double diffcurd = 0;
-                    double diffBM = 0;
-                    double finaldiff = 0;
-                    if (dtmilkandcurd.Rows.Count > 0)
-                    {
-                        foreach (DataRow dr in dtmilkandcurd.Rows)
-                        {
-                            if (dr["categorysno"].ToString() == "9")
-                            {
+                //cmd = new MySqlCommand("SELECT Sno, smsstatus, Status, AssignDate, EmpId, I_Date FROM tripdata WHERE (Sno = @tripid)");
+                //cmd.Parameters.AddWithValue("@tripid", tripid);
+                //DataTable dt_smsstatus = vdbmngr.SelectQuery(cmd).Tables[0];
+                //string sms_status = "0";
+                //if (dt_smsstatus.Rows.Count > 0)
+                //{
+                //    sms_status = dt_smsstatus.Rows[0]["smsstatus"].ToString();
+                //}
+                //if (sms_status == "0")
+                //{
+                //    string ProductName = "";
+                //    string DetailProductName = "";
+                //    string Producttot = "";
+                //    string dispatchtime = "";
+                //    double TotalQty = 0;
+                //    cmd = new MySqlCommand("SELECT result.Sno, result.AssignDate, result.Plantime, result.DispTime, dispatch.DispName FROM (SELECT Sno, AssignDate, Plantime, DispTime FROM tripdata WHERE (BranchID = @branchid) AND (AssignDate BETWEEN @d1 AND @d2) AND (DispTime IS NOT NULL)) result INNER JOIN triproutes ON result.Sno = triproutes.Tripdata_sno INNER JOIN dispatch ON triproutes.RouteID = dispatch.sno WHERE (dispatch.flag <> 0) AND (dispatch.Branch_Id = @branchid) ORDER BY result.DispTime");
+                //    cmd.Parameters.AddWithValue("@branchid", context.Session["branch"].ToString());
+                //    cmd.Parameters.AddWithValue("@d1", GetLowDate(AssignDate));
+                //    cmd.Parameters.AddWithValue("@d2", GetHighDate(AssignDate));
+                //    DataTable dtdispatchno = vdbmngr.SelectQuery(cmd).Tables[0];
+                //    if (dtdispatchno.Rows.Count > 0)
+                //    {
+                //        cmd = new MySqlCommand("SELECT DispTime FROM tripdata WHERE (Sno = @tripid)");
+                //        cmd.Parameters.AddWithValue("@tripid", tripid);
+                //        DataTable dtdisptime = vdbmngr.SelectQuery(cmd).Tables[0];
+                //        DateTime IndTime = ServerDateCurrentdate;
+                //        if (dtdisptime.Rows.Count > 0)
+                //        {
+                //            dispatchtime = dtdisptime.Rows[0]["DispTime"].ToString();
+                //            IndTime = Convert.ToDateTime(dtdisptime.Rows[0]["DispTime"].ToString());
+                //        }
+                //        string brch = "";
+                //        if (context.Session["branch"].ToString() == "172")
+                //        {
+                //            brch = "PBK__";
+                //        }
+                //        if (context.Session["branch"].ToString() == "158")
+                //        {
+                //            brch = "WYRA__";
+                //        }
+                //        if (context.Session["branch"].ToString() == "1801")
+                //        {
+                //            brch = "KPM__";
+                //        }
+                //        ProductName += brch + "Despatch-" + dtdispatchno.Rows.Count + "\r\n";
+                //        ProductName += "Date :" + AssignDate.ToString("dd-MM") + "   Time:" + IndTime.ToString("HH:mm") + "\r\n";
+                //    }
+                //    cmd = new MySqlCommand("SELECT sno, SubCat_sno, ProductName, Qty, Units, UnitPrice, Flag, UserData_sno, Rank, Inventorysno, VatPercent, Product_type FROM productsdata");
+                //    DataTable dtProducts = vdbmngr.SelectQuery(cmd).Tables[0];
+                //    foreach (orderdetail o in obj.data)
+                //    {
+                //        if (o.Productsno != null)
+                //        {
+                //            if (o.Qty != "0")
+                //            {
+                //                double unitQty = 0;
+                //                double.TryParse(o.Qty, out unitQty);
+                //                DataRow[] drproducts = dtProducts.Select("sno=" + o.Productsno + "");
+                //                string product = "";
+                //                foreach (DataRow drp in drproducts)
+                //                {+@
+                //                    product = drp["ProductName"].ToString();
+                //                }
+                //                DetailProductName += product + "=" + Math.Round(unitQty, 2) + ";" + "\r\n";
+                //                TotalQty += Math.Round(unitQty, 2);
+                //            }
+                //        }
+                //    }
+                //    // cmd = new MySqlCommand("SELECT dispatch.sno, dispatch.BranchID, SUM(tripsubdata.Qty) AS dispatchqty, products_category.Categoryname, products_category.sno AS categorysno,dispatch.DispName, productsdata.ProductName FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate FROM tripdata WHERE (AssignDate BETWEEN @d1 AND @d2)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN tripsubdata ON tripdat.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (dispatch.DispMode IS NULL) AND (dispatch.sno = @dispid) OR (dispatch.DispMode = 'SPL') AND (dispatch.sno = @dispid) GROUP BY productsdata.sno ORDER BY categorysno");
+                //    cmd = new MySqlCommand("SELECT dispatch.sno, dispatch.BranchID, SUM(tripsubdata.Qty) AS dispatchqty, products_category.Categoryname, products_category.sno AS categorysno, dispatch.DispName, productsdata.ProductName FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate FROM tripdata WHERE (AssignDate BETWEEN @d1 AND @d2)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN tripsubdata ON tripdat.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (dispatch.DispMode IS NULL) AND (dispatch.sno = @dispid) OR (dispatch.DispMode = 'SPL') AND (dispatch.sno = @dispid) GROUP BY categorysno");
+                //    cmd.Parameters.AddWithValue("@dispid", RouteID);
+                //    cmd.Parameters.AddWithValue("@d1", GetLowDate(AssignDate.AddDays(-1)));
+                //    cmd.Parameters.AddWithValue("@d2", GetHighDate(AssignDate.AddDays(-1)));
+                //    DataTable dtpreviousdispatch = vdbmngr.SelectQuery(cmd).Tables[0];
+                //    cmd = new MySqlCommand("SELECT dispatch.sno, dispatch.BranchID, SUM(tripsubdata.Qty) AS dispatchqty, products_category.Categoryname, products_category.sno AS categorysno, dispatch.DispName FROM dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate FROM tripdata WHERE (Sno = @tripid)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN tripsubdata ON tripdat.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (dispatch.DispMode IS NULL) OR (dispatch.DispMode = 'SPL') GROUP BY categorysno");
+                //    cmd.Parameters.AddWithValue("@tripid", tripid);
+                //    DataTable dtmilkandcurd = vdbmngr.SelectQuery(cmd).Tables[0];
+                //    cmd = new MySqlCommand("SELECT SUM(tripsubdata.Qty) AS dispatchqty, products_category.Categoryname, products_category.sno AS categorysno, dispatch.DispName, productsdata.sno, productsdata.ProductName FROM  dispatch INNER JOIN triproutes ON dispatch.sno = triproutes.RouteID INNER JOIN (SELECT Sno, AssignDate FROM tripdata WHERE (Sno = @tripid)) tripdat ON triproutes.Tripdata_sno = tripdat.Sno INNER JOIN tripsubdata ON tripdat.Sno = tripsubdata.Tripdata_sno INNER JOIN productsdata ON tripsubdata.ProductId = productsdata.sno INNER JOIN products_subcategory ON productsdata.SubCat_sno = products_subcategory.sno INNER JOIN products_category ON products_subcategory.category_sno = products_category.sno WHERE (dispatch.DispMode IS NULL) AND (products_category.sno > 10) OR (dispatch.DispMode = 'SPL') GROUP BY productsdata.sno");
+                //    cmd.Parameters.AddWithValue("@tripid", tripid);
+                //    DataTable dtbiprdt = vdbmngr.SelectQuery(cmd).Tables[0];
+                //    double milk = 0;
+                //    double Prevmilk = 0;
+                //    double curd = 0;
+                //    double Prevcurd = 0;
+                //    double BM = 0;
+                //    double PrevBM = 0;
+                //    double other = 0;
+                //    double prevother = 0;
+                //    double totmilk = 0;
+                //    double totcurd = 0;
+                //    double totBM = 0;
+                //    double tot = 0;
+                //    double Prevtot = 0;
+                //    double diffmilk = 0;
+                //    double diffcurd = 0;
+                //    double diffBM = 0;
+                //    double finaldiff = 0;
+                //    if (dtmilkandcurd.Rows.Count > 0)
+                //    {
+                //        foreach (DataRow dr in dtmilkandcurd.Rows)
+                //        {
+                //            if (dr["categorysno"].ToString() == "9")
+                //            {
 
-                                double.TryParse(dr["dispatchqty"].ToString(), out milk);
-                                milk = Math.Round(milk, 2);
-                                totmilk += milk;
-                                tot += milk;
-                                foreach (DataRow drdtclubtotal in dtpreviousdispatch.Select("categorysno='" + dr["categorysno"].ToString() + "'"))
-                                {
-                                    double.TryParse(drdtclubtotal["dispatchqty"].ToString(), out Prevmilk);
-                                }
-                                diffmilk = Math.Round(milk - Prevmilk, 2);
-                                Prevtot += Prevmilk;
-                                Producttot += "MILK :" + milk + "(" + Math.Round(diffmilk, 2) + ")" + "\r\n";
-                            }
-                            else if (dr["categorysno"].ToString() == "10")
-                            {
-                                double.TryParse(dr["dispatchqty"].ToString(), out curd);
-                                curd = Math.Round(curd, 2);
-                                totcurd += curd;
-                                tot += curd;
+                //                double.TryParse(dr["dispatchqty"].ToString(), out milk);
+                //                milk = Math.Round(milk, 2);
+                //                totmilk += milk;
+                //                tot += milk;
+                //                foreach (DataRow drdtclubtotal in dtpreviousdispatch.Select("categorysno='" + dr["categorysno"].ToString() + "'"))
+                //                {
+                //                    double.TryParse(drdtclubtotal["dispatchqty"].ToString(), out Prevmilk);
+                //                }
+                //                diffmilk = Math.Round(milk - Prevmilk, 2);
+                //                Prevtot += Prevmilk;
+                //                Producttot += "MILK :" + milk + "(" + Math.Round(diffmilk, 2) + ")" + "\r\n";
+                //            }
+                //            else if (dr["categorysno"].ToString() == "10")
+                //            {
+                //                double.TryParse(dr["dispatchqty"].ToString(), out curd);
+                //                curd = Math.Round(curd, 2);
+                //                totcurd += curd;
+                //                tot += curd;
 
-                                foreach (DataRow drdtclubtotal in dtpreviousdispatch.Select("categorysno='" + dr["categorysno"].ToString() + "'"))
-                                {
-                                    double.TryParse(drdtclubtotal["dispatchqty"].ToString(), out Prevcurd);
-                                }
-                                diffcurd = Math.Round(curd - Prevcurd, 2);
-                                Prevtot += Prevcurd;
-                                Producttot += "Curd :" + curd + "(" + Math.Round(diffcurd, 2) + ")" + "\r\n";
-                            }
-                            else if (dr["categorysno"].ToString() == "12")
-                            {
-                                double.TryParse(dr["dispatchqty"].ToString(), out BM);
-                                BM = Math.Round(BM, 2);
-                                totBM += BM;
-                                tot += BM;
-                                foreach (DataRow drdtclubtotal in dtpreviousdispatch.Select("categorysno='" + dr["categorysno"].ToString() + "'"))
-                                {
-                                    double.TryParse(drdtclubtotal["dispatchqty"].ToString(), out PrevBM);
-                                }
-                                diffBM = Math.Round(BM - PrevBM, 2);
-                                Prevtot += PrevBM;
-                                Producttot += "Butter Milk :" + BM + "(" + Math.Round(diffBM, 2) + ")" + "\r\n";
-                            }
-                            else
-                            {
-                                // double.TryParse(dr["dispatchqty"].ToString(), out other);
-                                foreach (DataRow drdtclubtotal in dtbiprdt.Select("categorysno='" + dr["categorysno"].ToString() + "'"))
-                                {
-                                    double.TryParse(drdtclubtotal["dispatchqty"].ToString(), out other);
-                                    other = Math.Round(other, 2);
-                                    tot += other;
-                                    Producttot += drdtclubtotal["ProductName"].ToString() + "  :" + other + "\r\n";
-                                }
-                            }
-                        }
-                        foreach (DataRow drdt in dtpreviousdispatch.Rows)
-                        {
-                            if (drdt["categorysno"].ToString() == "9")
-                            {
-                            }
-                            else if (drdt["categorysno"].ToString() == "10")
-                            {
-                            }
-                            else if (drdt["categorysno"].ToString() == "12")
-                            {
-                            }
-                            else
-                            {
-                                double.TryParse(drdt["dispatchqty"].ToString(), out prevother);
-                                prevother = Math.Round(prevother, 2);
-                                Prevtot += prevother;
-                            }
-                        }
-                    }
-                    finaldiff = Math.Round(tot - Prevtot, 2);
-                    Producttot += "Total :" + tot + "(" + Math.Round(finaldiff, 2) + ")" + "\r\n";
-                    cmd = new MySqlCommand("SELECT mobilenotable.PhoneNumber, dispatch.DispName,dispatch.DispTime FROM mobilenotable INNER JOIN dispatch ON mobilenotable.DispNo = dispatch.sno WHERE (mobilenotable.DispNo = @DispNo) and (mobilenotable.MsgType = @Msgtype) ");
-                    cmd.Parameters.AddWithValue("@DispNo", RouteID);
-                    cmd.Parameters.AddWithValue("@Msgtype", 2);
-                    DataTable dtPhoneNumbers = vdbmngr.SelectQuery(cmd).Tables[0];
-                    int msgcount = 0;
-                    if (dtPhoneNumbers.Rows.Count > 0)
-                    {
-                        foreach (DataRow dr in dtPhoneNumbers.Rows)
-                        {
-                            string phonenumber = dr["PhoneNumber"].ToString();
-                            string time = "";
-                            if (dr["DispTime"].ToString() == "")
-                            {
-                                DateTime distime = Convert.ToDateTime(dispatchtime);
-                                time = distime.ToString("HH:mm");
-                            }
-                            else
-                            {
-                                DateTime distime = Convert.ToDateTime(dr["DispTime"].ToString());
-                                time = distime.ToString("HH:mm");
-                            }
+                //                foreach (DataRow drdtclubtotal in dtpreviousdispatch.Select("categorysno='" + dr["categorysno"].ToString() + "'"))
+                //                {
+                //                    double.TryParse(drdtclubtotal["dispatchqty"].ToString(), out Prevcurd);
+                //                }
+                //                diffcurd = Math.Round(curd - Prevcurd, 2);
+                //                Prevtot += Prevcurd;
+                //                Producttot += "Curd :" + curd + "(" + Math.Round(diffcurd, 2) + ")" + "\r\n";
+                //            }
+                //            else if (dr["categorysno"].ToString() == "12")
+                //            {
+                //                double.TryParse(dr["dispatchqty"].ToString(), out BM);
+                //                BM = Math.Round(BM, 2);
+                //                totBM += BM;
+                //                tot += BM;
+                //                foreach (DataRow drdtclubtotal in dtpreviousdispatch.Select("categorysno='" + dr["categorysno"].ToString() + "'"))
+                //                {
+                //                    double.TryParse(drdtclubtotal["dispatchqty"].ToString(), out PrevBM);
+                //                }
+                //                diffBM = Math.Round(BM - PrevBM, 2);
+                //                Prevtot += PrevBM;
+                //                Producttot += "Butter Milk :" + BM + "(" + Math.Round(diffBM, 2) + ")" + "\r\n";
+                //            }
+                //            else
+                //            {
+                //                // double.TryParse(dr["dispatchqty"].ToString(), out other);
+                //                foreach (DataRow drdtclubtotal in dtbiprdt.Select("categorysno='" + dr["categorysno"].ToString() + "'"))
+                //                {
+                //                    double.TryParse(drdtclubtotal["dispatchqty"].ToString(), out other);
+                //                    other = Math.Round(other, 2);
+                //                    tot += other;
+                //                    Producttot += drdtclubtotal["ProductName"].ToString() + "  :" + other + "\r\n";
+                //                }
+                //            }
+                //        }
+                //        foreach (DataRow drdt in dtpreviousdispatch.Rows)
+                //        {
+                //            if (drdt["categorysno"].ToString() == "9")
+                //            {
+                //            }
+                //            else if (drdt["categorysno"].ToString() == "10")
+                //            {
+                //            }
+                //            else if (drdt["categorysno"].ToString() == "12")
+                //            {
+                //            }
+                //            else
+                //            {
+                //                double.TryParse(drdt["dispatchqty"].ToString(), out prevother);
+                //                prevother = Math.Round(prevother, 2);
+                //                Prevtot += prevother;
+                //            }
+                //        }
+                //    }
+                //    finaldiff = Math.Round(tot - Prevtot, 2);
+                //    Producttot += "Total :" + tot + "(" + Math.Round(finaldiff, 2) + ")" + "\r\n";
+                //    cmd = new MySqlCommand("SELECT mobilenotable.PhoneNumber, dispatch.DispName,dispatch.DispTime FROM mobilenotable INNER JOIN dispatch ON mobilenotable.DispNo = dispatch.sno WHERE (mobilenotable.DispNo = @DispNo) and (mobilenotable.MsgType = @Msgtype) ");
+                //    cmd.Parameters.AddWithValue("@DispNo", RouteID);
+                //    cmd.Parameters.AddWithValue("@Msgtype", 2);
+                //    DataTable dtPhoneNumbers = vdbmngr.SelectQuery(cmd).Tables[0];
+                //    int msgcount = 0;
+                //    if (dtPhoneNumbers.Rows.Count > 0)
+                //    {
+                //        foreach (DataRow dr in dtPhoneNumbers.Rows)
+                //        {
+                //            string phonenumber = dr["PhoneNumber"].ToString();
+                //            string time = "";
+                //            if (dr["DispTime"].ToString() == "")
+                //            {
+                //                DateTime distime = Convert.ToDateTime(dispatchtime);
+                //                time = distime.ToString("HH:mm");
+                //            }
+                //            else
+                //            {
+                //                DateTime distime = Convert.ToDateTime(dr["DispTime"].ToString());
+                //                time = distime.ToString("HH:mm");
+                //            }
 
-                            string DispatchName = dr["DispName"].ToString();
-                            string[] words = DispatchName.Split('_');
-                            string dttime = ServerDate.ToString("dd/MM/yyyy");
-                            if (msgcount == 0)
-                            {
-                                ProductName += words[0] + "(" + time + ")" + "\r\n";
-                                ProductName += "DC NO :" + tripid + "\r\n";
-                                ProductName += Producttot;
-                                msgcount++;
-                            }
-                            if (phonenumber.Length == 10)
-                            {
-                                try
-                                {
-                                    if (context.Session["TitleName"].ToString() == "Sri Vyshnavi Foods Pvt Ltd")
-                                    {
-                                        WebClient client = new WebClient();
-                                        //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
+                //            string DispatchName = dr["DispName"].ToString();
+                //            string[] words = DispatchName.Split('_');
+                //            string dttime = ServerDate.ToString("dd/MM/yyyy");
+                //            if (msgcount == 0)
+                //            {
+                //                ProductName += words[0] + "(" + time + ")" + "\r\n";
+                //                ProductName += "DC NO :" + tripid + "\r\n";
+                //                ProductName += Producttot;
+                //                msgcount++;
+                //            }
+                //            if (phonenumber.Length == 10)
+                //            {
+                //                try
+                //                {
+                //                    if (context.Session["TitleName"].ToString() == "Sri Vyshnavi Foods Pvt Ltd")
+                //                    {
+                //                        WebClient client = new WebClient();
+                //                        //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
 
-                                        string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=%20" + ProductName + "&type=1";
-                                        Stream data = client.OpenRead(baseurl);
-                                        StreamReader reader = new StreamReader(data);
-                                        string ResponseID = reader.ReadToEnd();
-                                        data.Close();
-                                        reader.Close();
+                //                        string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=%20" + ProductName + "&type=1";
+                //                        Stream data = client.OpenRead(baseurl);
+                //                        StreamReader reader = new StreamReader(data);
+                //                        string ResponseID = reader.ReadToEnd();
+                //                        data.Close();
+                //                        reader.Close();
 
-                                    }
-                                    else
-                                    {
-                                        WebClient client = new WebClient();
-                                        //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
+                //                    }
+                //                    else
+                //                    {
+                //                        WebClient client = new WebClient();
+                //                        //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
 
-                                        string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VFWYRA&to=" + phonenumber + "&msg=%20" + ProductName + "&type=1";
-                                        Stream data = client.OpenRead(baseurl);
-                                        StreamReader reader = new StreamReader(data);
-                                        string ResponseID = reader.ReadToEnd();
-                                        data.Close();
-                                        reader.Close();
-                                    }
-                                }
-                                catch
-                                {
-                                }
-                            }
-                            if (phonenumber != "9382525919")
-                            {
-                                if (phonenumber.Length == 10)
-                                {
-                                    try
-                                    {
-                                        if (context.Session["TitleName"].ToString() == "Sri Vyshnavi Foods Pvt Ltd")
-                                        {
-                                            WebClient client = new WebClient();
+                //                        string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VFWYRA&to=" + phonenumber + "&msg=%20" + ProductName + "&type=1";
+                //                        Stream data = client.OpenRead(baseurl);
+                //                        StreamReader reader = new StreamReader(data);
+                //                        string ResponseID = reader.ReadToEnd();
+                //                        data.Close();
+                //                        reader.Close();
+                //                    }
+                //                }
+                //                catch
+                //                {
+                //                }
+                //            }
+                //            if (phonenumber != "9382525919")
+                //            {
+                //                if (phonenumber.Length == 10)
+                //                {
+                //                    try
+                //                    {
+                //                        if (context.Session["TitleName"].ToString() == "Sri Vyshnavi Foods Pvt Ltd")
+                //                        {
+                //                            WebClient client = new WebClient();
 
-                                            //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
+                //                            //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
 
-                                            string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=%20" + words[0] + "%20Despatch%20%20Completed%20%20for%20:" + dttime + "%20With\r\n" + "DCNo:" + tripid + "\r\n" + DetailProductName + "TotalQty =" + TotalQty + "&type=1";
-                                            Stream data = client.OpenRead(baseurl);
-                                            StreamReader reader = new StreamReader(data);
-                                            string ResponseID = reader.ReadToEnd();
-                                            data.Close();
-                                            reader.Close();
-                                        }
-                                        else
-                                        {
-                                            WebClient client = new WebClient();
+                //                            string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=%20" + words[0] + "%20Despatch%20%20Completed%20%20for%20:" + dttime + "%20With\r\n" + "DCNo:" + tripid + "\r\n" + DetailProductName + "TotalQty =" + TotalQty + "&type=1";
+                //                            Stream data = client.OpenRead(baseurl);
+                //                            StreamReader reader = new StreamReader(data);
+                //                            string ResponseID = reader.ReadToEnd();
+                //                            data.Close();
+                //                            reader.Close();
+                //                        }
+                //                        else
+                //                        {
+                //                            WebClient client = new WebClient();
 
-                                            //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
+                //                            //http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=
 
-                                            string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VFWYRA&to=" + phonenumber + "&msg=%20" + words[0] + "%20Despatch%20%20Completed%20%20for%20:" + dttime + "%20With\r\n" + "DCNo:" + tripid + "\r\n" + DetailProductName + "TotalQty =" + TotalQty + "&type=1";
-                                            Stream data = client.OpenRead(baseurl);
-                                            StreamReader reader = new StreamReader(data);
-                                            string ResponseID = reader.ReadToEnd();
-                                            data.Close();
-                                            reader.Close();
-                                        }
-                                    }
-                                    catch
-                                    {
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    int smsstat = 1;
-                    cmd = new MySqlCommand("update tripdata set smsstatus=@sms_status where Sno=@tripid");
-                    cmd.Parameters.AddWithValue("@tripid", tripid);
-                    cmd.Parameters.AddWithValue("@sms_status", smsstat);
-                    vdbmngr.Update(cmd);
-                }
-                #endregion
+                //                            string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VFWYRA&to=" + phonenumber + "&msg=%20" + words[0] + "%20Despatch%20%20Completed%20%20for%20:" + dttime + "%20With\r\n" + "DCNo:" + tripid + "\r\n" + DetailProductName + "TotalQty =" + TotalQty + "&type=1";
+                //                            Stream data = client.OpenRead(baseurl);
+                //                            StreamReader reader = new StreamReader(data);
+                //                            string ResponseID = reader.ReadToEnd();
+                //                            data.Close();
+                //                            reader.Close();
+                //                        }
+                //                    }
+                //                    catch
+                //                    {
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
+                //    int smsstat = 1;
+                //    cmd = new MySqlCommand("update tripdata set smsstatus=@sms_status where Sno=@tripid");
+                //    cmd.Parameters.AddWithValue("@tripid", tripid);
+                //    cmd.Parameters.AddWithValue("@sms_status", smsstat);
+                //    vdbmngr.Update(cmd);
+                //}
+                //#endregion
+
                 var jsonSerializer = new JavaScriptSerializer();
                 var jsonString = String.Empty;
                 context.Request.InputStream.Position = 0;
@@ -35930,35 +35928,35 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
 
 
-            //foreach (inventorydetail iv in obj.invdata)
-            //{
-            //    if (iv.InventorySno != null)
-            //    {
-            //        float qty;
-            //        float.TryParse(iv.Qty, out qty);
-            //        if (qty > 0)
-            //        {
-            //            cmd = new MySqlCommand("insert into tripinvdata (Tripdata_Sno,invid,Qty,Remaining)values(@Tripdata_Sno,@invId,@Qty,@remaining)");
-            //            cmd.Parameters.AddWithValue("@Tripdata_Sno", TripSno);
-            //            cmd.Parameters.AddWithValue("@invId", iv.InventorySno);
-            //            cmd.Parameters.AddWithValue("@Qty", qty);
-            //            cmd.Parameters.AddWithValue("@remaining", qty);
-            //            vdbmngr.insert(cmd);
-            //            cmd = new MySqlCommand("update inventory_monitor set Qty=Qty+@Qty where Inv_Sno=@Inv_Sno and BranchId=@BranchId");
-            //            cmd.Parameters.AddWithValue("@Qty", qty);
-            //            cmd.Parameters.AddWithValue("@Inv_Sno", iv.InventorySno);
-            //            cmd.Parameters.AddWithValue("@BranchId", BranchID);
-            //            if (vdbmngr.Update(cmd) == 0)
-            //            {
-            //                cmd = new MySqlCommand("Insert into inventory_monitor(Qty,Inv_Sno,BranchId) values(@Qty,@Inv_Sno,@BranchId)");
-            //                cmd.Parameters.AddWithValue("@Qty", qty);
-            //                cmd.Parameters.AddWithValue("@Inv_Sno", iv.InventorySno);
-            //                cmd.Parameters.AddWithValue("@BranchId", BranchID);
-            //                vdbmngr.insert(cmd);
-            //            }
-            //        }
-            //    }
-            //}
+            foreach (inventorydetail iv in obj.invdata)
+            {
+                if (iv.InventorySno != null)
+                {
+                    float qty;
+                    float.TryParse(iv.Qty, out qty);
+                    if (qty > 0)
+                    {
+                        cmd = new MySqlCommand("insert into tripinvdata (Tripdata_Sno,invid,Qty,Remaining)values(@Tripdata_Sno,@invId,@Qty,@remaining)");
+                        cmd.Parameters.AddWithValue("@Tripdata_Sno", TripSno);
+                        cmd.Parameters.AddWithValue("@invId", iv.InventorySno);
+                        cmd.Parameters.AddWithValue("@Qty", qty);
+                        cmd.Parameters.AddWithValue("@remaining", qty);
+                        vdbmngr.insert(cmd);
+                        //cmd = new MySqlCommand("update inventory_monitor set Qty=Qty+@Qty where Inv_Sno=@Inv_Sno and BranchId=@BranchId");
+                        //cmd.Parameters.AddWithValue("@Qty", qty);
+                        //cmd.Parameters.AddWithValue("@Inv_Sno", iv.InventorySno);
+                        //cmd.Parameters.AddWithValue("@BranchId", BranchID);
+                        //if (vdbmngr.Update(cmd) == 0)
+                        //{
+                        //    cmd = new MySqlCommand("Insert into inventory_monitor(Qty,Inv_Sno,BranchId) values(@Qty,@Inv_Sno,@BranchId)");
+                        //    cmd.Parameters.AddWithValue("@Qty", qty);
+                        //    cmd.Parameters.AddWithValue("@Inv_Sno", iv.InventorySno);
+                        //    cmd.Parameters.AddWithValue("@BranchId", BranchID);
+                        //    vdbmngr.insert(cmd);
+                        //}
+                    }
+                }
+            }
             var jsonSerializer = new JavaScriptSerializer();
             var jsonString = String.Empty;
             context.Request.InputStream.Position = 0;
@@ -44939,26 +44937,26 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string password { get; set; } //= "Password@123";
         public string client_id { get; set; } //= "83416692-7826-419a-8922-790556910a80";
         public string client_secret { get; set; } //= "20f94dc1-5066-4ce5-8993-4d85b7899a0f";
-        public string Email { get; set; } //= "naveen.vdmtech@gmail.com";
+        public string Email { get; set; } //= "svfwyra@gmail.com";
         public string gstin { get; set; }
         public eWay_Login(string soid)
         {
             if (soid == "4")
             {
                 this.username = "API_dairysoftap";
-                this.password = "Password@123";
-                this.client_id = "83416692-7826-419a-8922-790556910a80";
-                this.client_secret = "20f94dc1-5066-4ce5-8993-4d85b7899a0f";
-                this.Email = "naveen.vdmtech@gmail.com";
+                this.password = "Vyshnavi@2025";
+                this.client_id = "9e889869-1f4c-4095-9c30-b05007c63d64";
+                this.client_secret = "8ef1f598-6639-4ed7-94a9-9d8c09bbc5b2";
+                this.Email = "svfwyra@gmail.com";
                 this.gstin = "37AAGCS6022F1ZH";
             }
             else
             {
                 this.username = "Api_api_vyshnavids";
-                this.password = "Password@123";
-                this.client_id = "7b57fc57-4f88-41e7-a52e-00f642bc789c";
-                this.client_secret = "db685d26-1431-4aeb-9c42-1f73f5ef0d9c";
-                this.Email = "naveen.vdmtech@gmail.com";
+                this.password = "Vyshnavi@2025";
+                this.client_id = "9e889869-1f4c-4095-9c30-b05007c63d64";
+                this.client_secret = "8ef1f598-6639-4ed7-94a9-9d8c09bbc5b2";
+                this.Email = "svfwyra@gmail.com";
                 this.gstin = "36AAGCS6022F1ZJ";
             }
         }
@@ -44969,7 +44967,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         using (var httpClient = new HttpClient())
         {
-            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/ewaybillapi/v1.03/authenticate?email=naveen.vdmtech%40gmail.com&username=Api_api_vyshnavids&password=Password%40123"))
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/ewaybillapi/v1.03/authenticate?email=svfwyra@gmail.com&username=Api_api_vyshnavids&password=Vyshnavi@2025"))
             {
                 string ip_address = GetLocalIPAddress();
                 if (ip_address == "Error")
@@ -45299,7 +45297,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         DateTime fromdate = Convert.ToDateTime(from_date);
         using (var httpClient = new HttpClient())
         {
-            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/GENERATE_EWAYBILL/version/V1_03?email=naveen.vdmtech%40gmail.com"))
+            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/GENERATE_EWAYBILL/version/V1_03?email=svfwyra@gmail.com"))
             {
                 string ip_address = GetLocalIPAddress();
                 if (ip_address == "Error")
@@ -45611,7 +45609,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
         public string password { get; set; } //= "Password@123";
         public string client_id { get; set; } //= "83416692-7826-419a-8922-790556910a80";
         public string client_secret { get; set; } //= "20f94dc1-5066-4ce5-8993-4d85b7899a0f";
-        public string Email { get; set; } //= "naveen.vdmtech@gmail.com";
+        public string Email { get; set; } //= "svfwyra@gmail.com";
         public string gstin { get; set; }
         public string soid { get; set; }
         public EInvoice_Login(string soid)
@@ -45619,19 +45617,19 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
             if (soid == "4")
             {
                 this.username = "API_dairysoftap";
-                this.password = "Password@123";
-                this.client_id = "83416692-7826-419a-8922-790556910a80";
-                this.client_secret = "20f94dc1-5066-4ce5-8993-4d85b7899a0f";
-                this.Email = "naveen.vdmtech@gmail.com";
+                this.password = "Vyshnavi@2025";
+                this.client_id = "3c3f1995-0636-44b2-89bc-1c66e4d2b549";
+                this.client_secret = "e45a697d-2e2e-4b8d-b75a-9dda175ffaaf";
+                this.Email = "svfwyra@gmail.com";
                 this.gstin = "37AAGCS6022F1ZH";
             }
             else
             {
                 this.username = "Api_api_vyshnavids";
-                this.password = "Password@123";
-                this.client_id = "83416692-7826-419a-8922-790556910a80";
-                this.client_secret = "20f94dc1-5066-4ce5-8993-4d85b7899a0f";
-                this.Email = "naveen.vdmtech@gmail.com";
+                this.password = "Vyshnavi@2025";
+                this.client_id = "3c3f1995-0636-44b2-89bc-1c66e4d2b549";
+                this.client_secret = "e45a697d-2e2e-4b8d-b75a-9dda175ffaaf";
+                this.Email = "svfwyra@gmail.com";
                 this.gstin = "36AAGCS6022F1ZJ";
             }
         }
@@ -45695,7 +45693,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         using (var httpClient = new HttpClient())
         {
-            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/einvoice/authenticate?email=naveen.vdmtech%40gmail.com"))
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/einvoice/authenticate?email=svfwyra@gmail.com"))
             {
                 string ip_address = GetLocalIPAddress();
                 if (ip_address == "Error")
@@ -46497,7 +46495,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         using (var httpClient = new HttpClient())
         {
-            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/GENERATE/version/V1_03?email=naveen.vdmtech%40gmail.com"))
+            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/GENERATE/version/V1_03?email=svfwyra@gmail.com"))
             {
                 string ip_address = GetLocalIPAddress();
                 if (ip_address == "Error")
@@ -46607,38 +46605,14 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     //        context.Response.Write(response);
     //    }
     //}
-    //private string get_e_envoice_details(string token, string IRN_No,string SOID)
-    //{
-    //    EInvoice_Login Elogin = new EInvoice_Login(SOID);
-    //    using (var httpClient = new HttpClient())
-    //    {
-    //        // IRNNUMBER (IRN == Invoice Reference Number ) send dynamically 
-    //        using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/einvoice/type/GETIRN/version/V1_03?param1=" + IRN_No + "&email=naveen.vdmtech%40gmail.com"))
-    //        {
-    //            string ip_address = GetLocalIPAddress();
-    //            if (ip_address == "Error")
-    //                ip_address = "182.18.162.51:52144";
-    //            request.Headers.TryAddWithoutValidation("Accept", "application/json");
-    //            request.Headers.TryAddWithoutValidation("username", Elogin.username);
-    //            request.Headers.TryAddWithoutValidation("ip_address", ip_address);
-    //            request.Headers.TryAddWithoutValidation("client_id", Elogin.client_id);
-    //            request.Headers.TryAddWithoutValidation("client_secret", Elogin.client_secret);
-    //            request.Headers.TryAddWithoutValidation("auth-token", token);
-    //            request.Headers.TryAddWithoutValidation("gstin", Elogin.gstin);
-
-    //            var response = httpClient.SendAsync(request).Result;
-    //            var contents = response.Content.ReadAsStringAsync().Result;
-    //            return contents;
-    //        }
-    //    }
-    //}
+    
     private string cancel_invoice_reference_number(string token, string irnNumber)
     {
 
 
         using (var httpClient = new HttpClient())
         {
-            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/CANCEL/version/V1_03?email=naveen.vdmtech%40gmail.com"))
+            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/CANCEL/version/V1_03?email=svfwyra@gmail.com"))
             {
                 string ip_address = GetLocalIPAddress();
                 if (ip_address == "Error")
@@ -47098,7 +47072,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
 
         using (var httpClient = new HttpClient())
         {
-            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/GENERATE_EWAYBILL/version/V1_03?email=naveen.vdmtech%40gmail.com"))
+            using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.mastergst.com/einvoice/type/GENERATE_EWAYBILL/version/V1_03?email=svfwyra@gmail.com"))
             {
                 string ip_address = GetLocalIPAddress();
                 if (ip_address == "Error")
@@ -47154,7 +47128,7 @@ public class DairyFleet : IHttpHandler, IRequiresSessionState
     {
         using (var httpClient = new HttpClient())
         {
-            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/einvoice/type/GETEWAYBILLIRN/version/V1_03?param1==" + irnNumber + "&supplier_gstn=" + suppliergstin + "&email=naveen.vdmtech%40gmail.com"))
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.mastergst.com/einvoice/type/GETEWAYBILLIRN/version/V1_03?param1==" + irnNumber + "&supplier_gstn=" + suppliergstin + "&email=svfwyra@gmail.com"))
             {
                 string ip_address = GetLocalIPAddress();
                 if (ip_address == "Error")
